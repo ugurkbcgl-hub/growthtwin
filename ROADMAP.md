@@ -6,11 +6,10 @@ Status: complete
 - Kept the synced project mirror and its sources/ files untouched.
 
 ## M1 — Private source-of-truth repository
-Status: pending
-- Create or connect the private GitHub repository named growthtwin.
-- Connect this local repository to the authorized remote.
-- Set main as the default branch; protect it from direct pushes and require passing CI.
-- Add issue templates and establish issue-first work tracking.
+Status: partially complete — private repository, authorized connection, initial push, `main` default branch, and issue template are in place.
+- Created the private GitHub repository `ugurkbcgl-hub/growthtwin` and pushed the baseline.
+- Use feature branches and pull requests as the working convention.
+- Enforced branch protection and required CI are pending: GitHub returned HTTP 403 because this private repository needs GitHub Pro for branch protection. Keep the repository private; do not change visibility to public to bypass this limit. Revisit the plan only after reviewing the recurring cost.
 
 ## M2 — Development environment and cost decision
 Status: pending
@@ -39,7 +38,6 @@ Status: pending
 - Do not begin GrowthTwin product features or Phase 1 without the user's explicit go-ahead.
 
 ## Current blockers
-- The initial scaffold is not committed because Git author identity is not configured.
-- No remote GitHub repository or authenticated GitHub CLI is available in this workspace yet.
+- `main` is not protected by GitHub because the current account plan does not allow branch protection on a private repository. CI checks have not been configured yet.
 - The NVIDIA Build API key in the supplied screenshot should be revoked and replaced before use. The replacement key must stay out of this repository and chat.
 - The account-specific NVIDIA model limits are not visible from the screenshot; check them in the signed-in Build account.
