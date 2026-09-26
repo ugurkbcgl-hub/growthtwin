@@ -33,7 +33,7 @@ The reference specification describes a modular monolith with workers and a targ
 - Host: Acer Nitro ANV15-51, Windows, 13th Gen Intel Core i5-13420H, 31.7 GB RAM.
 - NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to Windows and WSL2.
 - Ubuntu on WSL2 is present.
-- Git is present. GitHub CLI 2.101.0 is installed and authorized through the local credential store. Ollama 0.34.4 is installed; Qwen3 0.6B and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison.
+- Git is present. GitHub CLI 2.101.0 is installed and authorized through the local credential store. Ollama 0.34.4 is installed; Qwen3 0.6B, 1.7B, and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison.
 - Docker CLI was not found during the initial inventory.
 - The ChatGPT project mirror contains reference files but is not a Git repository. Its sources/ directory remains read-only.
 

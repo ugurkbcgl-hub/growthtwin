@@ -25,9 +25,10 @@ Environment: Windows workstation with an RTX 3050 Laptop GPU (6 GB VRAM), 31.7 G
 | Model | Download | First response | Model load | Generation | GPU / VRAM | Output quality |
 |---|---:|---:|---:|---:|---|---|
 | Qwen3 0.6B | 522 MB | 2.31 s | 1.90 s | 31 tokens in 0.22 s | 100% GPU / about 1.53 GB VRAM | Turkish and quick, but shortened the requested wording and added an unwanted malformed hashtag. |
+| Qwen3 1.7B | 1.4 GB | 2.83 s | 2.19 s | 35 tokens in 0.45 s | 100% GPU / about 2.2 GB total VRAM | Followed the caption-only request in Turkish without a hashtag, but one phrase was unnatural and needs editing. Best of these three single samples, not publish-ready. |
 | Qwen3 4B | 2.5 GB | 5.29 s | 2.62 s | 100-token limit reached in 2.52 s | 100% GPU / about 3.65 GB VRAM | Returned English process-style text instead of a usable Turkish caption and hit the token cap. |
 
-Both fit in the 6 GB GPU. Neither is approved as a content-generation choice from this one test; improve the prompt and test multiple samples before deciding. No provider API key or real customer data was used. The local Ollama server was left running, but both models were stopped after measurement.
+All three fit in the 6 GB GPU. Qwen3 1.7B is the most promising local draft candidate so far, but it needs human editing; no model is approved for publishing from one sample each. Improve the prompt and test multiple samples before deciding. No provider API key or real customer data was used. The local Ollama server was left running, but all models were stopped after measurement; model weights remain installed.
 
 ## Official references checked 2026-09-26
 - NVIDIA model catalog: https://build.nvidia.com/models
