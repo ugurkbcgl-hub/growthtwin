@@ -18,17 +18,17 @@ This is a development-only comparison. Free access, quotas, model lists, and ter
 4. Keep a provider-neutral AI gateway in the future product architecture. Do not send free-tier calls from a live GrowthTwin deployment.
 5. Recheck licenses and data terms before any pilot customer or production use.
 
-## Local Qwen3 smoke evaluation — 2026-09-26
+## GrowthTwin local workflow-fit evaluation — 2026-09-26
 
-Environment: Windows workstation with an RTX 3050 Laptop GPU (6 GB VRAM), 31.7 GB RAM, and Ollama 0.34.4. Both models ran fully on the GPU. Requests used the local `/api/chat` endpoint with `think: false`, `stream: false`, temperature 0.2, and a 4,096-token context. The quality prompt was synthetic and asked for one Turkish Instagram caption for a fictional dental practice, with no analysis, hashtags, diagnosis, treatment promise, or guaranteed outcome. Each model was sampled once, so these are directional smoke-test results rather than a robust benchmark.
+Environment: Windows workstation with an RTX 3050 Laptop GPU (6 GB VRAM), 31.7 GB RAM, and Ollama 0.34.4. We scored whether models served the product workflow; language fluency was deliberately excluded. Each model received three English prompts based on the same fictional dental practice: create a campaign package, flag and safely rewrite unsupported health claims, and emit a JSON content record with clinic approval status. Requests used local `/api/chat`, `think: false`, `stream: false`, temperature 0.2, and a 256-token output cap. Each task ran once; these are directional smoke-test results, not a robust benchmark.
 
-| Model | Download | First response | Model load | Generation | GPU / VRAM | Output quality |
-|---|---:|---:|---:|---:|---|---|
-| Qwen3 0.6B | 522 MB | 2.31 s | 1.90 s | 31 tokens in 0.22 s | 100% GPU / about 1.53 GB VRAM | Turkish and quick, but shortened the requested wording and added an unwanted malformed hashtag. |
-| Qwen3 1.7B | 1.4 GB | 2.83 s | 2.19 s | 35 tokens in 0.45 s | 100% GPU / about 2.2 GB total VRAM | Followed the caption-only request in Turkish without a hashtag, but one phrase was unnatural and needs editing. Best of these three single samples, not publish-ready. |
-| Qwen3 4B | 2.5 GB | 5.29 s | 2.62 s | 100-token limit reached in 2.52 s | 100% GPU / about 3.65 GB VRAM | Returned English process-style text instead of a usable Turkish caption and hit the token cap. |
+| Model | Tasks accepted | Campaign package | Claim safety and rewrite | JSON approval record | First response / load | VRAM |
+|---|---:|---|---|---|---:|---:|
+| Qwen3 0.6B | 0/3 | Produced some pieces but invented a free offer and had weak copy. | Flagged the original claims but repeated health claims in its rewrite. | Truncated and invalid JSON. | 3.36 s / 1.85 s | about 1.52 GB; 100% GPU |
+| Qwen3 1.7B | 1/3 | Incomplete at the token cap; included unsupported benefit claims. | Found risky claims but left one in the rewrite. | Valid JSON with all 8 requested keys and the correct clinic-approval status; its `flags` were incomplete. | 5.63 s / 2.12 s | about 2.07 GB; 100% GPU |
+| Qwen3 4B | 0/3 | Returned planning text instead of the campaign. | Explained the review but did not provide a safe rewrite. | Discussed JSON instead of producing it. | 9.39 s / 2.59 s | about 3.46 GB; 100% GPU |
 
-All three fit in the 6 GB GPU. Qwen3 1.7B is the most promising local draft candidate so far, but it needs human editing; no model is approved for publishing from one sample each. Improve the prompt and test multiple samples before deciding. No provider API key or real customer data was used. The local Ollama server was left running, but all models were stopped after measurement; model weights remain installed.
+All three fit on the 6 GB GPU. The useful result is that Qwen3 1.7B can produce a correctly shaped draft record containing a clinic-approval state, which could support a `draft → clinic approval` workflow. The trial did not show reliable claim safety or ready-to-publish content; no model should publish without a review gate. The 256-token cap and one run per task limit the conclusion, so treat this as a first filter. No provider API key, external inference, or real customer data was used. All models were stopped after measurement; weights remain installed.
 
 ## Official references checked 2026-09-26
 - NVIDIA model catalog: https://build.nvidia.com/models
