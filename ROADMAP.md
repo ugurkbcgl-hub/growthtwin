@@ -20,10 +20,10 @@ Status: pending
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: pending
-- Complete PROJECT.md, ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and ADR process.
-- Add a small repository skeleton only; do not create product services prematurely.
-- Add formatting, lint, type, unit/integration, security/dependency and build checks to CI.
+Status: in progress — architecture and guardrail docs plus language-neutral placeholders drafted; stack-dependent CI remains open.
+- Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
+- Add only a small repository skeleton; do not create product services prematurely.
+- Add formatting, lint, type, unit/integration, security/dependency and build checks to CI after choosing the implementation stack.
 
 ## M4 — Demo application and deployment chain
 Status: pending
@@ -40,5 +40,5 @@ Status: pending
 
 ## Current blockers
 - CI checks have not been configured, so `main` does not yet require a passing status check.
-- The user confirmed the exposed NVIDIA Build API key was replaced. Keep the replacement secret out of this repository and chat; account-specific model limits still need to be recorded.
-- Exact per-model NVIDIA Build limits have not been recorded; check them in the signed-in Build account.
+- The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
+- M2 host and staging/cost decisions, and M3 stack-dependent CI, remain open.

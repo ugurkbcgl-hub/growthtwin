@@ -18,7 +18,7 @@ The first product scope described in the project reference is:
 Long video, Google Ads, full CRM, and production growth-graph functionality are later work.
 
 ## Phase 0 objective
-Build and demonstrate a repeatable development workflow before building the GrowthTwin product: private repository, persistent project docs, isolated development/staging/production configuration, CI, a small demo app, a staging deployment, E2E coverage, health checks, backup and a tested rollback path.
+Build and demonstrate a repeatable development workflow before building the GrowthTwin product: the public repository selected by the user, persistent project docs, isolated development/staging/production configuration, CI, a small demo app, a staging deployment, E2E coverage, health checks, backup and a tested rollback path.
 
 The reference specification describes a modular monolith with workers and a target architecture including Next.js, FastAPI, PostgreSQL/pgvector, Temporal, Redis, object storage, and an AI gateway. These are candidate decisions until recorded and accepted; do not create unnecessary services during Phase 0.
 
@@ -43,6 +43,6 @@ The project reference sets a Phase 0 working hard limit of USD 100/month, with a
 ## Open decisions
 1. Which CI checks should be required on `main` once the workflow is in place?
 2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
-3. What exact account quota is visible in NVIDIA Build for the selected development models? Do not share the replacement key in chat or commit it.
+3. What exact per-model NVIDIA Build limits and account quota are visible for the selected development models? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits in the account before relying on them.
 4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
 5. Which technical stack candidates from the reference should become accepted architecture decisions?

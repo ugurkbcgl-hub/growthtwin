@@ -8,7 +8,7 @@
 ## Coordination
 - Act as the project coordinator: split work into small, independent tasks with a clear expected result, delegate when it materially helps, follow progress, review the results, and report one integrated status.
 - Avoid assigning simultaneous edits to the same files. Keep the user-facing decision list short and explicit.
-- Use repository issues and pull requests as the durable work record once the private GitHub remote is connected. Until then, ROADMAP.md is the interim task tracker.
+- Use repository issues and pull requests as the durable work record now that the user's public GitHub remote is connected. ROADMAP.md remains the interim tracker for Phase 0 tasks.
 
 ## Engineering workflow
 - Complete Phase 0 before starting GrowthTwin product features.
