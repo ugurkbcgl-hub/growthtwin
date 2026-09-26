@@ -2,7 +2,7 @@
 
 ## Status
 - Current phase: Phase 0, development factory.
-- Repository: local scaffold created; private GitHub remote not connected.
+- Repository: private GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected; `main` is the default branch and the baseline is pushed. GitHub rejected branch protection for this private repository with HTTP 403 and requires Pro; repository visibility remains private.
 - Product feature implementation: not started.
 - Project name is a codename and may change.
 
@@ -33,15 +33,16 @@ The reference specification describes a modular monolith with workers and a targ
 - Host: Acer Nitro ANV15-51, Windows, 13th Gen Intel Core i5-13420H, 31.7 GB RAM.
 - NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to the host.
 - Ubuntu on WSL2 is present.
-- Git is present. GitHub CLI, Docker CLI, and Ollama were not found during the initial inventory.
+- Git is present. GitHub CLI 2.101.0 is installed and authorized through the local credential store. Ollama 0.34.4 is installed; Qwen3 0.6B and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison.
+- Docker CLI was not found during the initial inventory.
 - The ChatGPT project mirror contains reference files but is not a Git repository. Its sources/ directory remains read-only.
 
 ## Budget and project constraints
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
 ## Open decisions
-1. Which GitHub account/organization will own the private growthtwin repository, and how will this workspace get authorized access?
+1. Should we accept the recurring GitHub Pro cost to enforce branch protection on this private repository, or keep manual branch/PR discipline for now? Do not make the repository public to avoid this cost.
 2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
-3. Which free model/API should be the initial text-generation benchmark, and what exact account quota is visible in NVIDIA Build?
+3. What exact account quota is visible in NVIDIA Build after the exposed key is revoked and replaced? No replacement key should be shared in chat or committed.
 4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
 5. Which technical stack candidates from the reference should become accepted architecture decisions?

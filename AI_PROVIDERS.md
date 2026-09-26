@@ -18,6 +18,17 @@ This is a development-only comparison. Free access, quotas, model lists, and ter
 4. Keep a provider-neutral AI gateway in the future product architecture. Do not send free-tier calls from a live GrowthTwin deployment.
 5. Recheck licenses and data terms before any pilot customer or production use.
 
+## Local Qwen3 smoke evaluation — 2026-09-26
+
+Environment: Windows workstation with an RTX 3050 Laptop GPU (6 GB VRAM), 31.7 GB RAM, and Ollama 0.34.4. Both models ran fully on the GPU. Requests used the local `/api/chat` endpoint with `think: false`, `stream: false`, temperature 0.2, and a 4,096-token context. The quality prompt was synthetic and asked for one Turkish Instagram caption for a fictional dental practice, with no analysis, hashtags, diagnosis, treatment promise, or guaranteed outcome. Each model was sampled once, so these are directional smoke-test results rather than a robust benchmark.
+
+| Model | Download | First response | Model load | Generation | GPU / VRAM | Output quality |
+|---|---:|---:|---:|---:|---|---|
+| Qwen3 0.6B | 522 MB | 2.31 s | 1.90 s | 31 tokens in 0.22 s | 100% GPU / about 1.53 GB VRAM | Turkish and quick, but shortened the requested wording and added an unwanted malformed hashtag. |
+| Qwen3 4B | 2.5 GB | 5.29 s | 2.62 s | 100-token limit reached in 2.52 s | 100% GPU / about 3.65 GB VRAM | Returned English process-style text instead of a usable Turkish caption and hit the token cap. |
+
+Both fit in the 6 GB GPU. Neither is approved as a content-generation choice from this one test; improve the prompt and test multiple samples before deciding. No provider API key or real customer data was used. The local Ollama server was left running, but both models were stopped after measurement.
+
 ## Official references checked 2026-09-26
 - NVIDIA model catalog: https://build.nvidia.com/models
 - NVIDIA NIM API trial terms: https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf
