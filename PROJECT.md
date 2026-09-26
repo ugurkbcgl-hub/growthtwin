@@ -1,0 +1,47 @@
+# GrowthTwin project brief
+
+## Status
+- Current phase: Phase 0, development factory.
+- Repository: local scaffold created; private GitHub remote not connected.
+- Product feature implementation: not started.
+- Project name is a codename and may change.
+
+## Product direction
+GrowthTwin is intended to help dental clinics in Türkiye create, review, publish, and learn from social content. The first five customers are planned as free pilot customers from the founders' existing network.
+
+The first product scope described in the project reference is:
+- Instagram Reels and short video, image posts, captions/copy
+- Clinic approval before publishing
+- Publishing and analytics
+- A web panel and email
+
+Long video, Google Ads, full CRM, and production growth-graph functionality are later work.
+
+## Phase 0 objective
+Build and demonstrate a repeatable development workflow before building the GrowthTwin product: private repository, persistent project docs, isolated development/staging/production configuration, CI, a small demo app, a staging deployment, E2E coverage, health checks, backup and a tested rollback path.
+
+The reference specification describes a modular monolith with workers and a target architecture including Next.js, FastAPI, PostgreSQL/pgvector, Temporal, Redis, object storage, and an AI gateway. These are candidate decisions until recorded and accepted; do not create unnecessary services during Phase 0.
+
+## AI provider direction
+- NVIDIA Build/NIM's hosted free endpoints are a useful place to prototype and compare models. NVIDIA's trial terms restrict this access to evaluation/testing and exclude production use.
+- The shared screenshot exposed an API key. Treat that key as compromised: rotate it in NVIDIA Build before any further use. Do not store the old or replacement value here.
+- Do not submit real clinic or patient data to free/trial endpoints. Use synthetic examples while evaluating.
+- A small local model through Ollama is a candidate for private, no-per-call-cost experiments. This workstation has 32 GB RAM and an RTX 3050 Laptop GPU with 6 GB VRAM; runtime and context memory still need to be measured.
+- Do not select a production model or provider yet. Keep the integration behind an AI gateway so providers can change.
+
+## Workstation and tool inventory (2026-09-26)
+- Host: Acer Nitro ANV15-51, Windows, 13th Gen Intel Core i5-13420H, 31.7 GB RAM.
+- NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to the host.
+- Ubuntu on WSL2 is present.
+- Git is present. GitHub CLI, Docker CLI, and Ollama were not found during the initial inventory.
+- The ChatGPT project mirror contains reference files but is not a Git repository. Its sources/ directory remains read-only.
+
+## Budget and project constraints
+The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
+
+## Open decisions
+1. Which GitHub account/organization will own the private growthtwin repository, and how will this workspace get authorized access?
+2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
+3. Which free model/API should be the initial text-generation benchmark, and what exact account quota is visible in NVIDIA Build?
+4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
+5. Which technical stack candidates from the reference should become accepted architecture decisions?
