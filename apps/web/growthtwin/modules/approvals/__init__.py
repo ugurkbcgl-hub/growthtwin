@@ -1,0 +1,1 @@
+"""Content approval boundary placeholder."""

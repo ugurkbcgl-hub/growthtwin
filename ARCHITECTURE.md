@@ -66,4 +66,4 @@ An editor may change a draft at any point before dispatch; a changed version ret
 
 ## Open architecture decisions
 
-Web/API stack, database, authentication provider, job runner, object storage, deployment host, CI checks, and production AI provider are undecided. See [the ADR index](docs/adr/README.md) and [PROJECT.md](PROJECT.md).
+The initial application stack is accepted as Django 5.2 LTS + PostgreSQL (see [ADR-0002](docs/adr/0002-application-stack-and-local-environment.md)). The exact PostgreSQL major/minor and local installation method, authentication extensions, job runner, object storage, deployment host, CI checks, and production AI provider remain undecided. See [the ADR index](docs/adr/README.md) and [PROJECT.md](PROJECT.md).

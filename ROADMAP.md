@@ -12,10 +12,10 @@ Status: mostly complete — repository, `main`, issue template, and enforced pul
 - Use feature branches and pull requests for changes. Add a required CI status check after a CI workflow exists.
 
 ## M2 — Development environment and cost decision
-Status: in progress — recommendation is to use the current workstation and avoid a remote development server; application stack awaits owner decision in ADR-0002.
-- If the proposed Django stack is accepted, add a Python runtime to the current Windows development environment and keep the single Codex-managed checkout in place; do not create a second WSL checkout.
+Status: in progress — Django 5.2 LTS + PostgreSQL accepted; local Python is installed and the single-workstation path is in progress.
+- Python 3.13.15 is installed in the current user's Windows environment. Keep the single Codex-managed checkout in place; do not create a second WSL checkout.
 - Ubuntu WSL2 is available for local Linux tooling if needed. WSL is version 2.6.1.0; the distro was stopped at inventory time.
-- Windows Node.js 24.11.1/npm 11.6.2 are available. Docker CLI, `psql`, and a native Windows Python runtime were not found in the current session; the Python setup depends on the stack decision.
+- Windows Node.js 24.11.1/npm 11.6.2 remain available for other tooling. Docker CLI and `psql` were not found in the current session; Node is not needed for the accepted Django server stack.
 - Decide how to provide local PostgreSQL after the stack choice; avoid paid or hosted services for local development.
 - Ollama 0.34.4 and the earlier Qwen3 evaluation are recorded in AI_PROVIDERS.md; no more model sweeps are part of M2.
 - No paid infrastructure or recurring service has been enabled.
@@ -23,7 +23,7 @@ Status: in progress — recommendation is to use the current workstation and avo
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: in progress — architecture and guardrail docs plus language-neutral placeholders drafted; stack-dependent CI remains open.
+Status: in progress — architecture/guardrail docs and Django module skeleton added; CI checks remain open.
 - Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
 - Add only a small repository skeleton; do not create product services prematurely.
 - Add formatting, lint, type, unit/integration, security/dependency and build checks to CI after choosing the implementation stack.

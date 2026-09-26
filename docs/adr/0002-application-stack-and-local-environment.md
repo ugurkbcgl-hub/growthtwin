@@ -1,6 +1,6 @@
 # ADR-0002: Application stack and local development environment
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-09-27
 - Decision owner: Project owner
 
@@ -42,17 +42,17 @@ This follows the project's original reference candidate and separates the React 
 
 **Trade-offs:** it creates two application runtimes, two deployable components, and an API contract to maintain before the first demo demonstrates a need for that split.
 
-## Proposed decision
+## Accepted decision
 
-Propose **Django 5.2 LTS + PostgreSQL** as the initial application stack, with one application under `apps/web` and a modular monolith structure. Use the currently supported stable PostgreSQL major at implementation time and verify the chosen staging provider supports it. PostgreSQL 18 is current as of this proposal and receives upstream major-version support for five years.
+On 2026-09-27, the project owner accepted **Django 5.2 LTS + PostgreSQL** as the initial application stack, with one application under `apps/web` and a modular monolith structure. Use the latest supported 5.2.x security patch when installing. Use the currently supported stable PostgreSQL major at implementation time and verify the chosen staging provider supports it. PostgreSQL 18 is current as of this decision and receives upstream major-version support for five years.
 
-For local development, keep the repository at its current single Windows checkout. If the proposal is accepted, install a supported Python runtime on Windows rather than creating a second WSL copy that could diverge from the Codex workspace. Choose the local PostgreSQL installation method after the stack proposal is accepted. Docker Desktop is not required for the app runtime; do not install it unless its license eligibility is confirmed. No remote development server, staging service, or paid resource is needed for this local setup.
+For local development, keep the repository at its current single Windows checkout. Install a supported Python runtime on Windows rather than creating a second WSL copy that could diverge from the Codex workspace. The local PostgreSQL installation method remains open. Docker Desktop is not required for the app runtime; do not install it unless its license eligibility is confirmed. No remote development server, staging service, or paid resource is needed for this local setup.
 
 For CI, use GitHub-hosted standard Ubuntu runners once the application exists. GitHub documents standard hosted runner usage as free for public repositories. Add the required branch-protection check after the workflow name is stable; do not use the laptop as a self-hosted runner.
 
 Defer Redis, Temporal, pgvector, object storage, and a worker until an accepted feature requires them. Keep publishing/scheduling outside the M4 demo. The AI gateway may call local Ollama or a hosted trial provider through server-side adapters; hosted trials receive synthetic evaluation inputs only and do not serve end users.
 
-This is a proposal, not an accepted technology decision or authorization to begin product features. The user must accept or revise it before implementation is scaffolded.
+This decision authorizes the Phase 0 Django foundation only. It does not authorize GrowthTwin product features, production deployment, real clinic/social account data, or paid infrastructure.
 
 ## Consequences
 
