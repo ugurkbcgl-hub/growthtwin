@@ -29,20 +29,20 @@ The reference specification describes a modular monolith with workers and a targ
 - A small local model through Ollama is a candidate for private, no-per-call-cost experiments. Initial Qwen3 runtime and VRAM measurements on this workstation are recorded in AI_PROVIDERS.md; no production model has been selected.
 - Do not select a production model or provider yet. Keep the integration behind an AI gateway so providers can change.
 
-## Workstation and tool inventory (2026-09-26)
+## Workstation and tool inventory (2026-09-27)
 - Host: Acer Nitro ANV15-51, Windows, 13th Gen Intel Core i5-13420H, 31.7 GB RAM.
 - NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to Windows and WSL2.
-- Ubuntu on WSL2 is present.
-- Git is present. GitHub CLI 2.101.0 is installed and authorized through the local credential store. Ollama 0.34.4 is installed; Qwen3 0.6B, 1.7B, and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison.
-- Docker CLI was not found during the initial inventory.
+- Ubuntu is installed as a WSL2 distribution; WSL package version 2.6.1.0 was observed, and the distribution was stopped when checked.
+- Git is present. GitHub CLI was not found in the current PowerShell session; Git push to the configured remote works. Windows Node.js 24.11.1 and npm 11.6.2 are available. A native Windows Python runtime, Docker CLI, and `psql` command were not found in the current session.
+- Ollama 0.34.4 is installed; Qwen3 0.6B, 1.7B, and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison. No additional model tests are planned for this setup step.
 - The ChatGPT project mirror contains reference files but is not a Git repository. Its sources/ directory remains read-only.
 
 ## Budget and project constraints
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
 ## Open decisions
-1. Which CI checks should be required on `main` once the workflow is in place?
-2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
-3. What exact per-model NVIDIA Build limits and account quota are visible for the selected development models? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits in the account before relying on them.
-4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
-5. Which technical stack candidates from the reference should become accepted architecture decisions?
+1. Should the proposed Django 5.2 LTS + PostgreSQL stack in ADR-0002 be accepted, or should we choose Next.js instead?
+2. After the stack decision, which specific CI status check should be required on `main`?
+3. Which local PostgreSQL setup should be used for M4, keeping the current single Codex-managed checkout intact?
+4. What exact per-model NVIDIA Build limits and account quota are visible for future development evaluations? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits before relying on them.
+5. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?

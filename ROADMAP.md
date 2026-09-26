@@ -12,9 +12,12 @@ Status: mostly complete — repository, `main`, issue template, and enforced pul
 - Use feature branches and pull requests for changes. Add a required CI status check after a CI workflow exists.
 
 ## M2 — Development environment and cost decision
-Status: pending
-- Decide whether WSL2 Ubuntu is a short-term bootstrap or a separate Linux development server is needed now.
-- Initial inventory is complete. Ollama 0.34.4 is installed on the Windows workstation; the Qwen3 local smoke evaluation is recorded in AI_PROVIDERS.md.
+Status: in progress — recommendation is to use the current workstation and avoid a remote development server; application stack awaits owner decision in ADR-0002.
+- If the proposed Django stack is accepted, add a Python runtime to the current Windows development environment and keep the single Codex-managed checkout in place; do not create a second WSL checkout.
+- Ubuntu WSL2 is available for local Linux tooling if needed. WSL is version 2.6.1.0; the distro was stopped at inventory time.
+- Windows Node.js 24.11.1/npm 11.6.2 are available. Docker CLI, `psql`, and a native Windows Python runtime were not found in the current session; the Python setup depends on the stack decision.
+- Decide how to provide local PostgreSQL after the stack choice; avoid paid or hosted services for local development.
+- Ollama 0.34.4 and the earlier Qwen3 evaluation are recorded in AI_PROVIDERS.md; no more model sweeps are part of M2.
 - No paid infrastructure or recurring service has been enabled.
 - Estimate cloud costs and obtain a user decision before a single spend above USD 20 or any recurring service.
 - Keep monthly spending under the confirmed project cap.
@@ -41,4 +44,4 @@ Status: pending
 ## Current blockers
 - CI checks have not been configured, so `main` does not yet require a passing status check.
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
-- M2 host and staging/cost decisions, and M3 stack-dependent CI, remain open.
+- The application stack and local PostgreSQL setup need a decision; staging provider/cost is deferred to M4.

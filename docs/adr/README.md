@@ -13,3 +13,4 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 ## Decisions
 
 - [0001 — Modular monolith boundaries](0001-modular-monolith.md) — Proposed
+- [0002 — Application stack and local environment](0002-application-stack-and-local-environment.md) — Proposed
