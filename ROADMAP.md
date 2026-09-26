@@ -14,7 +14,8 @@ Status: partially complete — private repository, authorized connection, initia
 ## M2 — Development environment and cost decision
 Status: pending
 - Decide whether WSL2 Ubuntu is a short-term bootstrap or a separate Linux development server is needed now.
-- Inventory Ubuntu, GPU passthrough, disk, and installed tools before installing anything.
+- Initial inventory is complete. Ollama 0.34.4 is installed on the Windows workstation; the Qwen3 local smoke evaluation is recorded in AI_PROVIDERS.md.
+- No paid infrastructure or recurring service has been enabled.
 - Estimate cloud costs and obtain a user decision before a single spend above USD 20 or any recurring service.
 - Keep monthly spending under the confirmed project cap.
 
