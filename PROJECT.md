@@ -2,7 +2,7 @@
 
 ## Status
 - Current phase: Phase 0, development factory.
-- Repository: private GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected; `main` is the default branch and the baseline is pushed. GitHub rejected branch protection for this private repository with HTTP 403 and requires Pro; repository visibility remains private.
+- Repository: public GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected at the user's request; `main` is the default branch. Branch protection now requires PRs and blocks force-push/deletion. Required CI status checks remain to be configured after a workflow exists.
 - Product feature implementation: not started.
 - Project name is a codename and may change.
 
@@ -24,9 +24,9 @@ The reference specification describes a modular monolith with workers and a targ
 
 ## AI provider direction
 - NVIDIA Build/NIM's hosted free endpoints are a useful place to prototype and compare models. NVIDIA's trial terms restrict this access to evaluation/testing and exclude production use.
-- The shared screenshot exposed an API key. Treat that key as compromised: rotate it in NVIDIA Build before any further use. Do not store the old or replacement value here.
+- The user confirmed the API key exposed in the screenshot has been replaced. Keep the replacement secret out of chat and the repository.
 - Do not submit real clinic or patient data to free/trial endpoints. Use synthetic examples while evaluating.
-- A small local model through Ollama is a candidate for private, no-per-call-cost experiments. This workstation has 32 GB RAM and an RTX 3050 Laptop GPU with 6 GB VRAM; runtime and context memory still need to be measured.
+- A small local model through Ollama is a candidate for private, no-per-call-cost experiments. Initial Qwen3 runtime and VRAM measurements on this workstation are recorded in AI_PROVIDERS.md; no production model has been selected.
 - Do not select a production model or provider yet. Keep the integration behind an AI gateway so providers can change.
 
 ## Workstation and tool inventory (2026-09-26)
@@ -41,8 +41,8 @@ The reference specification describes a modular monolith with workers and a targ
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
 ## Open decisions
-1. Should we accept the recurring GitHub Pro cost to enforce branch protection on this private repository, or keep manual branch/PR discipline for now? Do not make the repository public to avoid this cost.
+1. Which CI checks should be required on `main` once the workflow is in place?
 2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
-3. What exact account quota is visible in NVIDIA Build after the exposed key is revoked and replaced? No replacement key should be shared in chat or committed.
+3. What exact account quota is visible in NVIDIA Build for the selected development models? Do not share the replacement key in chat or commit it.
 4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
 5. Which technical stack candidates from the reference should become accepted architecture decisions?

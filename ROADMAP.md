@@ -5,11 +5,11 @@ Status: complete
 - Created a separate local Git workspace and project baseline docs.
 - Kept the synced project mirror and its sources/ files untouched.
 
-## M1 — Private source-of-truth repository
-Status: partially complete — private repository, authorized connection, initial push, `main` default branch, and issue template are in place.
-- Created the private GitHub repository `ugurkbcgl-hub/growthtwin` and pushed the baseline.
-- Use feature branches and pull requests as the working convention.
-- Enforced branch protection and required CI are pending: GitHub returned HTTP 403 because this private repository needs GitHub Pro for branch protection. Keep the repository private; do not change visibility to public to bypass this limit. Revisit the plan only after reviewing the recurring cost.
+## M1 — Public source-of-truth repository
+Status: mostly complete — repository, `main`, issue template, and enforced pull-request protections are in place; required CI checks remain pending.
+- Created `ugurkbcgl-hub/growthtwin` as a public repository at the user's request and pushed the baseline.
+- `main` is the default branch. Enforced branch protection requires pull requests, applies to administrators, blocks force-pushes and deletion, requires conversation resolution, and requires linear history.
+- Use feature branches and pull requests for changes. Add a required CI status check after a CI workflow exists.
 
 ## M2 — Development environment and cost decision
 Status: pending
@@ -39,6 +39,6 @@ Status: pending
 - Do not begin GrowthTwin product features or Phase 1 without the user's explicit go-ahead.
 
 ## Current blockers
-- `main` is not protected by GitHub because the current account plan does not allow branch protection on a private repository. CI checks have not been configured yet.
-- The NVIDIA Build API key in the supplied screenshot should be revoked and replaced before use. The replacement key must stay out of this repository and chat.
-- The account-specific NVIDIA model limits are not visible from the screenshot; check them in the signed-in Build account.
+- CI checks have not been configured, so `main` does not yet require a passing status check.
+- The user confirmed the exposed NVIDIA Build API key was replaced. Keep the replacement secret out of this repository and chat; account-specific model limits still need to be recorded.
+- Exact per-model NVIDIA Build limits have not been recorded; check them in the signed-in Build account.

@@ -12,7 +12,7 @@ This is a development-only comparison. Free access, quotas, model lists, and ter
 | Hugging Face Inference Providers | Occasional fallback experiment | Free accounts currently receive USD 0.10 monthly credits, subject to change; too small for the main development workflow. |
 
 ## Evaluation sequence
-1. Revoke the exposed NVIDIA key and create a replacement directly in NVIDIA Build. Keep its value in a local secret store; never paste it into chat or commit it.
+1. The user confirmed the exposed NVIDIA key has been replaced. Keep the replacement in a local secret store; never paste it into chat or commit it.
 2. In the signed-in NVIDIA Build account, inspect the account's displayed request/rate limits and choose one free chat model and, if needed, one embedding model.
 3. Use identical synthetic Turkish dental-clinic prompts across NVIDIA and a small local Ollama model. Record quality, latency, failure/rate-limit behavior, and operator effort.
 4. Keep a provider-neutral AI gateway in the future product architecture. Do not send free-tier calls from a live GrowthTwin deployment.
