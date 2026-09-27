@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 15:16 (Europe/Istanbul)
+Last verified: 2026-09-27 15:20 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -13,7 +13,7 @@ Last verified: 2026-09-27 15:16 (Europe/Istanbul)
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; `main` is the default branch).
 - Checkout: `C:\Users\Public\Desktop\GrowthTwin`, on `m4/heroku-staging`, based on `main` at `76c4527`.
 - PR #9 was merged as `76c4527` on 2026-09-27. Its required `Django system check` passed (run `36316593684`); post-merge `main` CI run `36316666985` also passed.
-- No PR is open for the current staging work yet. The branch currently contains uncommitted Heroku runtime, security, readiness, CI, ADR, and continuity updates.
+- PR #10 is open for the Heroku runtime, security, readiness, CI, ADR, and continuity updates: https://github.com/ugurkbcgl-hub/growthtwin/pull/10. Check the current run on the latest commit before merging.
 - Main protection requires PR review flow, the passing `Django system check` on an up-to-date branch, conversation resolution, and linear history; force-push and deletion are blocked.
 - The owner delegated routine implementation and merge decisions after review and successful required CI.
 
@@ -30,7 +30,7 @@ Last verified: 2026-09-27 15:16 (Europe/Istanbul)
 
 ## Next action
 
-Review the current diff, commit and push `m4/heroku-staging`, open its PR, and wait for the required CI result. After the reviewed change is merged, the owner must complete Heroku's Terms of Service and sign in through the browser before the approved resources can be provisioned.
+Review PR #10's latest CI result and diff, then merge after the required check passes. The owner must complete Heroku's Terms of Service and sign in through the browser before the approved resources can be provisioned.
 
 ## Not rechecked
 
