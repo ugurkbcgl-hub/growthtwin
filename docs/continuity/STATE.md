@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 12:52 (Europe/Istanbul)
+Last verified: 2026-09-27 12:54 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -12,7 +12,7 @@ Last verified: 2026-09-27 12:52 (Europe/Istanbul)
 
 - Repository: `https://github.com/ugurkbcgl-hub/growthtwin` (public; `main` is the default branch).
 - Working branch: `docs/qwen3-local-evaluation`; pull request [#3](https://github.com/ugurkbcgl-hub/growthtwin/pull/3) was open against `main` at the last check.
-- GitHub Actions `Django system check` passed on the previously verified PR head `99aa57f` on 2026-09-27. The PR review findings have been addressed in the current branch; the required check for the updated revision is pending verification.
+- GitHub Actions `Django system check` passed on review-fix commit `8ec870b` on 2026-09-27. The PR review findings have been addressed in the current branch.
 - `main` protection now requires a PR and that check from the GitHub Actions app on an up-to-date branch. It also enforces linear history and conversation resolution, applies to administrators, and blocks force-pushes and deletion.
 - Use feature branches and PRs. Do not merge PR #3 unless the user asks.
 
@@ -25,7 +25,7 @@ Last verified: 2026-09-27 12:52 (Europe/Istanbul)
 
 ## Next action
 
-Verify the required check on the updated PR #3 revision and review its result. After the PR is merged through the approved flow, continue the remaining M3 guardrails. Keep M4 and product work gated; do not merge autonomously.
+Recheck the live PR #3 status before any merge. Merge only on the user's explicit instruction; after the approved PR flow completes, continue the remaining M3 guardrails. Keep M4 and product work gated.
 
 ## Not rechecked this session
 
