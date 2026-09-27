@@ -1,4 +1,4 @@
-"""Environment-driven Django settings for the Phase 0 application shell."""
+"""Environment-driven Django settings for the GrowthTwin web application."""
 
 import os
 from pathlib import Path
@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "growthtwin.apps.GrowthTwinConfig",
+    "growthtwin.site.apps.SiteConfig",
     "growthtwin.demo.apps.DemoConfig",
 ]
 

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "growthtwin-web"
 version = "0.1.0"
-description = "Phase 0 Django application foundation for GrowthTwin"
+description = "GrowthTwin self-service advertising website"
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "Django>=5.2,<5.3",
@@ -41,4 +41,9 @@ include = ["config*", "growthtwin*"]
 "growthtwin.demo" = [
     "templates/demo/*.html",
     "templates/registration/*.html",
+]
+"growthtwin.site" = [
+    "templates/site/*.html",
+    "static/site/css/*.css",
+    "static/site/js/*.js",
 ]

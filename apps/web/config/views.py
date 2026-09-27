@@ -1,4 +1,4 @@
-"""Operational views shared by the Phase 0 application."""
+"""Operational views shared by the GrowthTwin web application."""
 
 import os
 

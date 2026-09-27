@@ -14,9 +14,11 @@ The product should remove routine operator work after an advertiser gives a brie
 - Local browser E2E and GitHub-hosted CI provide the initial feedback loop. Keep local UI work on synthetic data.
 - Heroku staging has one approved Basic web dyno and one Essential-0 PostgreSQL database (about USD 12/month before tax); the deployed app is still the synthetic demo. Current `main` is not yet deployed.
 
-## Phase 1 — Product experience prototype (next)
+## Phase 1 — Product experience prototype
 
 **Goal:** demonstrate the simplest complete user experience without waiting for external APIs, paid infrastructure, or a production model.
+
+Status: in progress — the public page and client-side synthetic brief → preview → sample-report flow are implemented on `product/campaign-experience-prototype`; PR and CI status must be checked live.
 
 - Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
 - Let a user describe an advertising goal with a short plain-language brief, then progressively ask only for essential missing details such as destination, timing, and maximum spend.
