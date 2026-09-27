@@ -9,7 +9,10 @@ description = "Phase 0 Django application foundation for GrowthTwin"
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "Django>=5.2,<5.3",
+    "dj-database-url>=2.3,<4",
+    "gunicorn>=25,<26",
     "psycopg[binary]>=3.2,<4",
+    "whitenoise>=6.9,<7",
 ]
 
 [project.optional-dependencies]

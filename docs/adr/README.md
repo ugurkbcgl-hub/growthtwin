@@ -14,3 +14,4 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 
 - [0001 — Modular monolith boundaries](0001-modular-monolith.md) — Accepted
 - [0002 — Application stack and local environment](0002-application-stack-and-local-environment.md) — Accepted
+- [0003 — Heroku Phase 0 staging](0003-heroku-phase-0-staging.md) — Accepted

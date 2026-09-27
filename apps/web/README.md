@@ -16,6 +16,13 @@ workflow implementation yet.
     (defaults to `false`), `DJANGO_ALLOWED_HOSTS` (defaults to
     `localhost,127.0.0.1`), `POSTGRES_HOST` (defaults to `127.0.0.1`), and
     `POSTGRES_PORT` (defaults to `5432`).
+- Staging can instead provide a PostgreSQL `DATABASE_URL`; the app enforces SSL
+  for that connection. Configure `DJANGO_ALLOWED_HOSTS`,
+  `DJANGO_CSRF_TRUSTED_ORIGINS`, `DJANGO_SECURE_SSL_REDIRECT=true`, and
+  `DJANGO_SECURE_COOKIES=true` in the staging provider's config store. Set
+  `DJANGO_SECURE_HSTS_SECONDS=3600` for the staging hostname.
+- `GET /health/` checks database readiness and reports the deployment revision
+  without returning configuration or database details.
 
 No credentials are included in this repository. The application reads settings
 from environment variables and does not load `.env` files automatically. The

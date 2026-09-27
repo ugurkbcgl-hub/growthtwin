@@ -14,3 +14,4 @@ __pycache__/
 .coverage
 /apps/web/build/
 /apps/web/dist/
+/apps/web/staticfiles/

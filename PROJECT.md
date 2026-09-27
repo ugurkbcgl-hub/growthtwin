@@ -40,6 +40,7 @@ The project owner accepted Django 5.2 LTS + PostgreSQL as the initial applicatio
 ## Budget and project constraints
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
+- On 2026-09-27, the owner approved Phase 0 Heroku staging at about USD 12/month before taxes: one Basic web dyno and one Essential-0 PostgreSQL database. This approval is limited to the synthetic demo and these two services; no paid add-ons or additional dynos without a new decision. Delete the app and database after M4 acceptance to stop recurring charges.
+
 ## Open decisions
 1. What exact per-model NVIDIA Build limits and account quota are visible for future development evaluations? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits before relying on them.
-2. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?

@@ -30,11 +30,11 @@ Status: complete for the Phase 0 shell — architecture and guardrail docs are i
 - Dependency auditing and package builds run in CI. M4 adds focused Django tests for the synthetic demo; introduce type-checking tooling only when the Python surface area benefits from it.
 
 ## M4 — Demo application and deployment chain
-Status: in progress — the synthetic profile-edit flow is merged and passed CI against PostgreSQL 18.6. The staging plan is prepared; provisioning remains gated on approval of the recurring charge.
+Status: in progress — the synthetic profile-edit flow is merged and passed CI against PostgreSQL 18.6. The owner approved Heroku staging at about USD 12/month on 2026-09-27; provisioning and E2E checks remain in progress.
 - Build only a small demo profile-edit flow to validate the development factory. Complete (PR #7).
-- Recommended staging plan: Heroku Basic web dyno ($7/month) plus Essential-0 Postgres ($5/month), about USD 12/month before taxes or optional services. Heroku currently lists PostgreSQL 18 support. Render's free Postgres expires after 30 days and does not include backups, so it is a poor fit for repeatable staging.
-- Shutdown plan: use synthetic data only, avoid paid add-ons, and delete both the Heroku app and database after M4 acceptance to end the recurring charges.
-- Provision after the owner approves this recurring-cost plan; then run the critical Playwright path.
+- Provision one Heroku Basic web dyno and one Essential-0 PostgreSQL 18 database; expected recurring cost is about USD 12/month before taxes. Do not add paid add-ons or additional dynos.
+- Deploy from reviewed source, use synthetic data only, and run the critical Playwright path.
+- Shutdown plan: delete both the Heroku app and database after M4 acceptance to end recurring charges.
 - Verify health/readiness checks, logs, versioned deployment, backups, and rollback.
 
 Pricing and provider details were checked 2026-09-27: [Heroku pricing](https://www.heroku.com/pricing/), [Heroku Postgres plans](https://devcenter.heroku.com/articles/heroku-postgres-plans), [Heroku Postgres version support](https://devcenter.heroku.com/articles/heroku-postgres-version-support), and [Render free-tier limits](https://render.com/docs/free).
@@ -48,4 +48,4 @@ Status: pending
 
 ## Current blockers
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
-- The staging provider and recurring-cost ceiling remain open for M4.
+- Heroku setup is not complete: the browser is at the Terms of Service page, the CLI is not installed, and no authenticated deployment session is available. No app or database has been provisioned.
