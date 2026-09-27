@@ -12,6 +12,7 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 
 - `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application's declared dependencies on Python 3.13 and runs `python manage.py check` with non-secret placeholder settings.
 - This is a configuration/system check only. The Phase 0 shell has no product test suite, and this workflow does not exercise database-backed behavior or PostgreSQL integration.
+- Branch protection requires the passing `Django system check` status from the GitHub Actions app and requires the PR branch to be up to date with `main`.
 
 ## Product verification layers
 

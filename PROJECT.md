@@ -2,7 +2,7 @@
 
 ## Status
 - Current phase: Phase 0, development factory.
-- Repository: public GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected at the user's request; `main` is the default branch. Branch protection now requires PRs and blocks force-push/deletion. Required CI status checks remain to be configured after a workflow exists.
+- Repository: public GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected at the user's request; `main` is the default branch. Branch protection requires PRs, blocks force-push/deletion, and requires the `Django system check` from GitHub Actions to pass on an up-to-date branch.
 - Product feature implementation: not started.
 - Project name is a codename and may change.
 
@@ -41,6 +41,5 @@ The project owner accepted Django 5.2 LTS + PostgreSQL as the initial applicatio
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
 ## Open decisions
-1. Which CI status check should be required on `main` after its workflow stabilizes?
-2. What exact per-model NVIDIA Build limits and account quota are visible for future development evaluations? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits before relying on them.
-3. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
+1. What exact per-model NVIDIA Build limits and account quota are visible for future development evaluations? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits before relying on them.
+2. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?

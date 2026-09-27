@@ -6,10 +6,10 @@ Status: complete
 - Kept the synced project mirror and its sources/ files untouched.
 
 ## M1 — Public source-of-truth repository
-Status: mostly complete — repository, `main`, issue template, and enforced pull-request protections are in place; required CI checks remain pending.
+Status: mostly complete — repository, `main`, issue template, pull-request protections, and the required CI status check are in place.
 - Created `ugurkbcgl-hub/growthtwin` as a public repository at the user's request and pushed the baseline.
-- `main` is the default branch. Enforced branch protection requires pull requests, applies to administrators, blocks force-pushes and deletion, requires conversation resolution, and requires linear history.
-- Use feature branches and pull requests for changes. Add a required CI status check after a CI workflow exists.
+- `main` is the default branch. Enforced branch protection requires pull requests, applies to administrators, blocks force-pushes and deletion, requires conversation resolution and linear history, and requires the passing `Django system check` from GitHub Actions on an up-to-date branch.
+- Use feature branches and pull requests for changes.
 
 ## M2 — Development environment and cost decision
 Status: complete — local Django/PostgreSQL workflow installed and verified; no paid services enabled.
@@ -24,7 +24,7 @@ Status: complete — local Django/PostgreSQL workflow installed and verified; no
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: in progress — architecture/guardrail docs and Django module skeleton added; the initial Django system-check workflow is awaiting its first successful PR run and required-check configuration.
+Status: in progress — architecture/guardrail docs and Django module skeleton added; the initial Django system-check workflow passes on PR #3 and is required by `main`.
 - Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
 - Add only a small repository skeleton; do not create product services prematurely.
 - Start CI with the existing Django shell check. Add formatting, lint, type, unit/integration, security/dependency, and build checks as their tooling and testable application behavior are established.
@@ -43,6 +43,5 @@ Status: pending
 - Do not begin GrowthTwin product features or Phase 1 without the user's explicit go-ahead.
 
 ## Current blockers
-- CI checks have not been configured, so `main` does not yet require a passing status check.
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
 - The staging provider and recurring-cost ceiling remain open for M4.
