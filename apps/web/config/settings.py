@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -63,16 +65,25 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": required_setting("POSTGRES_DB"),
-        "USER": required_setting("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
-        "HOST": os.environ.get("POSTGRES_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": required_setting("POSTGRES_DB"),
+            "USER": required_setting("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+            "HOST": os.environ.get("POSTGRES_HOST", "127.0.0.1"),
+            "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,7 +99,33 @@ TIME_ZONE = "Europe/Istanbul"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
+}
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SECURE_SSL_REDIRECT", "false").lower() in {
+    "1",
+    "true",
+    "yes",
+}
+SECURE_HSTS_SECONDS = int(os.environ.get("DJANGO_SECURE_HSTS_SECONDS", "0"))
+secure_cookies = os.environ.get("DJANGO_SECURE_COOKIES", "false").lower() in {
+    "1",
+    "true",
+    "yes",
+}
+SESSION_COOKIE_SECURE = secure_cookies
+CSRF_COOKIE_SECURE = secure_cookies
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "DENY"
 LOGIN_URL = "login"

@@ -32,4 +32,4 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 
 ## Phase 0 acceptance checks
 
-M4 should verify the synthetic demo profile-edit path, application health/readiness, deployment version, backup/restore, and rollback. M5 should exercise a CI failure that blocks merge and a controlled rollback. Record actual commands, outcomes, and costs in the completion report.
+M4 should verify the synthetic demo profile-edit path, `GET /health/` database readiness and deployment version, backup/restore, and rollback. M5 should exercise a CI failure that blocks merge and a controlled rollback. Record actual commands, outcomes, and costs in the completion report.

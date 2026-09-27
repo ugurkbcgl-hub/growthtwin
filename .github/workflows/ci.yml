@@ -42,6 +42,16 @@ jobs:
       - name: Install application and development dependencies
         run: python -m pip install -e ".[dev]"
 
+      - name: Verify Heroku root dependencies and entry point
+        working-directory: .
+        run: python -m pip install -r requirements.txt
+
+      - name: Check root Heroku entry point formatting and lint
+        working-directory: .
+        run: |
+          python -m ruff format --check --config apps/web/pyproject.toml manage.py
+          python -m ruff check --config apps/web/pyproject.toml manage.py
+
       - name: Check Python formatting
         run: python -m ruff format --check .
 
@@ -55,6 +65,21 @@ jobs:
         run: |
           python -m build --sdist --wheel
           python scripts/verify_build_artifacts.py
+
+      - name: Verify Heroku entry point and static asset build
+        working-directory: .
+        env:
+          DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment-use-random-key-123456789
+          DJANGO_DEBUG: "false"
+          DJANGO_ALLOWED_HOSTS: staging.example.test
+          DJANGO_CSRF_TRUSTED_ORIGINS: https://staging.example.test
+          DJANGO_SECURE_SSL_REDIRECT: "true"
+          DJANGO_SECURE_COOKIES: "true"
+          DJANGO_SECURE_HSTS_SECONDS: "3600"
+          DATABASE_URL: postgres://growthtwin_ci@127.0.0.1:5432/growthtwin_ci
+        run: |
+          python manage.py check --deploy
+          python manage.py collectstatic --noinput
 
       - name: Run Django system check
         env:
