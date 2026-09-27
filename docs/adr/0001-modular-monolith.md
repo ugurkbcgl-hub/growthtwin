@@ -1,12 +1,12 @@
 # ADR-0001: Modular monolith boundaries
 
-- Status: Proposed
-- Date: 2026-09-26
+- Status: Accepted
+- Date: 2026-09-27
 - Decision owner: Project owner
 
 ## Context
 
-GrowthTwin needs clear boundaries for content, approval, AI-provider access, publishing, analytics, and workspace access. The reference architecture lists several candidate services and technologies, but the project is still in Phase 0 and has not selected an implementation stack or hosting environment.
+GrowthTwin needs clear boundaries for content, approval, AI-provider access, publishing, analytics, and workspace access. The project remains in Phase 0. The initial application stack is recorded separately in [ADR-0002](0002-application-stack-and-local-environment.md); hosting and several supporting technologies remain open.
 
 ## Decision drivers
 
@@ -22,9 +22,9 @@ GrowthTwin needs clear boundaries for content, approval, AI-provider access, pub
 
 ## Decision
 
-Propose a modular monolith as the initial logical architecture. Define workspace/access, content/versioning, approval, publishing, analytics, AI gateway, background jobs, persistence, and operations as boundaries. Keep the language, framework, database, authentication, job system, storage, cloud provider, and production AI provider undecided.
+Adopt a modular monolith as the initial logical architecture. Define workspace/access, content/versioning, approval, publishing, analytics, AI gateway, background jobs, persistence, and operations as boundaries. The initial application stack is decided in ADR-0002. Keep authentication extensions, job system, storage, cloud provider, and production AI provider undecided until a concrete need is reviewed.
 
-This is a proposal for review, not authorization to begin product implementation. Phase 0 restrictions remain in force.
+This decision accepts the architecture boundaries; it does not authorize product implementation. Phase 0 restrictions remain in force.
 
 ## Consequences
 
@@ -35,5 +35,5 @@ This is a proposal for review, not authorization to begin product implementation
 
 ## Follow-up
 
-- Review this proposal with the project owner.
-- Record stack and hosting choices in separate ADRs only when needed for Phase 0 implementation.
+- Review module boundaries before adding implementation.
+- ADR-0002 records the initial application stack. Record hosting and supporting technology choices in separate ADRs before implementation depends on them.

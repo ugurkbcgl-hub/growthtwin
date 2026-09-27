@@ -6,7 +6,7 @@
 
 ## Context
 
-GrowthTwin needs a web panel for clinic workspaces, content drafts and versions, review/approval, and eventually social publishing and analytics. Phase 0 currently allows only a synthetic-data profile-edit demo. The repository architecture proposes a modular monolith and leaves implementation choices open.
+GrowthTwin needs a web panel for clinic workspaces, content drafts and versions, review/approval, and eventually social publishing and analytics. Phase 0 currently allows only a synthetic-data profile-edit demo. ADR-0001 accepts a modular monolith; hosting and supporting technology choices remain open.
 
 Current workstation evidence: Windows 11; Ubuntu is installed under WSL2 (WSL package 2.6.1.0; distro was stopped when checked); Node.js 24.11.1 and npm 11.6.2 are available on Windows; Python 3.13.15 and PostgreSQL 18.6 with `psql` are installed on Windows. The Codex-managed Git checkout is on the Windows filesystem. Do not create a second working checkout in WSL without first confirming the Codex workspace can use it as the single source of truth.
 
@@ -28,13 +28,13 @@ One Python application with Django templates/forms and the built-in authenticati
 
 **Why this is the proposed default:** the first product workflows are records, roles, review states, and approvals. Django provides a mature path for those data-oriented workflows in one application, while Python leaves a straightforward option for future media/model tooling. Django's built-in authentication and admin can shorten internal setup, though tenant-specific authorization still needs careful application rules. NIM and Ollama integrations remain ordinary HTTP adapters.
 
-**Trade-offs:** Python is not available as a native runtime in the current Windows session, so it must be installed. This is one extra environment setup compared with reusing Node.js, but it avoids starting two product applications. Django's admin is not the clinic-facing content editor; those screens still need custom design. Django 5.2 LTS supports PostgreSQL 14+ and has extended support through April 2028.
+**Trade-offs:** Python 3.13.15 is installed on the current Windows host, but the application still needs its project-specific virtual environment and dependencies set up. Django avoids starting two product application runtimes. Django's admin is not the clinic-facing content editor; those screens still need custom design. Django 5.2 LTS supports PostgreSQL 14+ and has extended support through April 2028.
 
 ### B. Next.js App Router + TypeScript + PostgreSQL
 
 One full-stack application under `apps/web`. Node.js 24.11.1 and npm 11.6.2 are already available on the Windows host; Next.js supports Windows/WSL and its starter includes TypeScript defaults. This is the fastest route to the M4 profile demo and gives a React-based interface suited to a highly interactive editor.
 
-**Trade-offs:** Next.js server functions and route handlers are a backend-for-frontend layer, not a complete replacement for a deliberately designed backend. We would need to explicitly choose authentication/session handling, authorization, persistence access, migrations, and tenant scoping. Python is not in the current native Windows toolchain, but all current model options can be reached over HTTP. Scheduled publishing would need a durable background worker regardless of framework.
+**Trade-offs:** Next.js server functions and route handlers are a backend-for-frontend layer, not a complete replacement for a deliberately designed backend. We would need to explicitly choose authentication/session handling, authorization, persistence access, migrations, and tenant scoping. NIM and Ollama can be reached over HTTP from a Node.js application. Scheduled publishing would need a durable background worker regardless of framework.
 
 ### C. Next.js + FastAPI + PostgreSQL
 
@@ -55,7 +55,7 @@ For local development, keep the repository at its current single Windows checkou
 - The Django framework migrations and system check completed successfully.
 - The helper scripts are documented in `apps/web/README.md`. This update does not authorize product features, staging deployment, or paid services.
 
-For CI, use GitHub-hosted standard Ubuntu runners once the application exists. GitHub documents standard hosted runner usage as free for public repositories. Add the required branch-protection check after the workflow name is stable; do not use the laptop as a self-hosted runner.
+CI uses a GitHub-hosted standard Ubuntu runner through `.github/workflows/ci.yml`. The `Django system check` is required on protected `main`, and pull requests must be up to date with `main`; these repository settings were verified on 2026-09-27. Do not use the laptop as a self-hosted runner.
 
 Defer Redis, Temporal, pgvector, object storage, and a worker until an accepted feature requires them. Keep publishing/scheduling outside the M4 demo. The AI gateway may call local Ollama or a hosted trial provider through server-side adapters; hosted trials receive synthetic evaluation inputs only and do not serve end users.
 

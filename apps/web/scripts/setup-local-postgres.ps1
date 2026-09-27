@@ -72,11 +72,11 @@ try {
 DO $block$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'growthtwin_app') THEN
-        CREATE ROLE growthtwin_app LOGIN;
+        CREATE ROLE growthtwin_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
     END IF;
 END;
 $block$;
-ALTER ROLE growthtwin_app WITH LOGIN;
+ALTER ROLE growthtwin_app WITH LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
 SELECT 'CREATE DATABASE growthtwin OWNER growthtwin_app'
 WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'growthtwin')
 \gexec

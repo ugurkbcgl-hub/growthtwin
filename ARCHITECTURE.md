@@ -1,6 +1,6 @@
-# GrowthTwin architecture (proposed)
+# GrowthTwin architecture
 
-Status: Phase 0 design proposal. This document defines boundaries, not an accepted programming language, framework, database, hosting provider, or vendor choice. Record those choices in an accepted ADR before implementation depends on them.
+Status: Phase 0 design baseline. The modular monolith boundaries are accepted in ADR-0001, and the initial application stack (Django 5.2 LTS + PostgreSQL) is accepted separately in ADR-0002. Hosting and vendor choices remain open until recorded in an accepted ADR.
 
 ## Product boundary
 
