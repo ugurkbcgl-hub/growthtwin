@@ -1,35 +1,38 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 13:30 (Europe/Istanbul)
+Last verified: 2026-09-27 14:24 (Europe/Istanbul)
 
 ## Goal and working rules
 
-- Complete Phase 0: establish and demonstrate a repeatable, safe development workflow before implementing product features.
+- Complete Phase 0: establish and demonstrate a repeatable, safe development workflow before implementing GrowthTwin product features.
 - Product direction: an AI-assisted content, review, publishing, and analytics workflow for dental clinics in Türkiye.
-- Keep hosted evaluations synthetic and credentials out of chat and Git. No paid infrastructure, staging deployment, or product features without the relevant Phase 0 gate and explicit user decision.
+- Keep hosted evaluations synthetic and credentials out of chat and Git. No paid infrastructure or staging service without an explicit approved plan.
 
 ## Repository and review
 
-- Repository: `https://github.com/ugurkbcgl-hub/growthtwin` (public; `main` is the default branch).
-- Pull request [#3](https://github.com/ugurkbcgl-hub/growthtwin/pull/3) was merged on 2026-09-27 as `394d3d4`; the post-merge `Django system check` passed.
-- Pull request [#4](https://github.com/ugurkbcgl-hub/growthtwin/pull/4) was merged on 2026-09-27 as `2f53376`; the post-merge CI passed with the Django check, Ruff formatting, and Ruff lint steps.
-- Pull request [#5](https://github.com/ugurkbcgl-hub/growthtwin/pull/5) is open on `ci/python-dependency-audit`, adding a pinned Python dependency vulnerability audit. The required CI passed on implementation commit `0337b3e` on 2026-09-27.
-- `main` protection now requires a PR and that check from the GitHub Actions app on an up-to-date branch. It also enforces linear history and conversation resolution, applies to administrators, and blocks force-pushes and deletion.
-- Use feature branches and PRs. Do not merge an open PR unless the user explicitly asks.
+- Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; main is the default branch).
+- Checkout: C:\Users\Public\Desktop\GrowthTwin, on branch m4/demo-profile-edit.
+- PR #3 merged as 394d3d4; post-merge CI passed.
+- PR #4 merged as 2f53376; post-merge CI passed with the Django check, Ruff formatting, and Ruff lint.
+- PR #5 merged as 580d972; post-merge CI passed with dependency auditing.
+- PR #6 merged as 60e3e92; post-merge CI passed with the source and wheel build checks.
+- PR #7 is open on m4/demo-profile-edit. Commit 5352054 passed required CI, including formatting, lint, dependency audit, distribution content checks, Django system check, migration consistency, and Django tests against PostgreSQL 18.6.
+- main protection requires a PR and the Django system check from GitHub Actions on an up-to-date branch; it also requires linear history and conversation resolution, applies to administrators, and blocks force-push and deletion.
+- Use feature branches and PRs. The user has delegated routine project decisions, including merges after review and successful required CI.
 
 ## Phase 0 status
 
-- M2 local Django/PostgreSQL setup is recorded as complete in the roadmap; PostgreSQL service state and the protected secret store were not rechecked in this session.
-- M3 is in progress. The Django system-check, Python formatting, and lint checks are active and required; dependency auditing is in PR #5. Type, test, and build checks remain for later, testable work.
-- M4 staging and M5 final acceptance remain pending. No product feature implementation has been authorized or started.
-- The project record says no paid infrastructure is enabled; this was not rechecked in this session.
+- M2 is recorded complete in the roadmap. Local PostgreSQL service state and protected credential storage were not checked in this turn.
+- M3 guardrails are complete for the Django shell: architecture/docs, required configuration check, Ruff format/lint, dependency audit, and source/wheel build verification are in main. A type checker remains unselected until the codebase benefits from one.
+- M4 synthetic profile-edit demo is in PR #7. Four local tests passed using the isolated in-memory SQLite test settings; PR CI passed the same behavior tests against ephemeral PostgreSQL 18.6. The build verifies both archives contain the demo templates.
+- The staging provider and cost ceiling remain open; this work did not enable a staging service. Product feature implementation, social publishing, and AI provider calls remain out of scope.
 
 ## Next action
 
-Recheck the live PR #5 status before merge. Merge only on the user's explicit instruction; after it lands, continue the remaining M3 guardrails. Keep M4 and product work gated.
+After PR #7 is merged, compare suitable staging options and current costs. Present a concrete provider, monthly estimate, and shutdown plan; obtain the required approval before provisioning any staging or paid service. Keep all demo data synthetic.
 
-## Not rechecked this session
+## Not rechecked
 
-- Local Python/PostgreSQL service state and the DPAPI-protected secret store.
+- Local PostgreSQL service and the DPAPI-protected credential store.
 - NVIDIA Build account quotas and current model limits.
-- Staging provider and recurring-cost estimate for M4.
+- Staging provider pricing and recurring-cost estimate.

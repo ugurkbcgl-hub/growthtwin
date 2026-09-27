@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GrowthTwin demo girişi</title>
+  </head>
+  <body>
+    <main>
+      <h1>GrowthTwin Phase 0 demosu</h1>
+      <p>Bu ekran yalnızca sentetik verilerle geliştirme sürecini doğrular.</p>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        <button type="submit">Giriş yap</button>
+      </form>
+    </main>
+  </body>
+</html>

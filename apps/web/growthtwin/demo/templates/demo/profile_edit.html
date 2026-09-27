@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo klinik profili</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Demo klinik profili</h1>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">Çıkış yap</button>
+        </form>
+      </header>
+      <p>Bu formda yalnızca sentetik demo bilgileri kullanın.</p>
+      {% if messages %}
+        {% for message in messages %}
+          <p role="status">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Profili kaydet</button>
+      </form>
+    </main>
+  </body>
+</html>

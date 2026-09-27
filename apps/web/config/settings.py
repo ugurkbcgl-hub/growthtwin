@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "growthtwin.apps.GrowthTwinConfig",
+    "growthtwin.demo.apps.DemoConfig",
 ]
 
 MIDDLEWARE = [
@@ -90,3 +91,6 @@ USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "DENY"
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "demo:profile-edit"
+LOGOUT_REDIRECT_URL = "login"
