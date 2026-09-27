@@ -1,38 +1,39 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 18:17 (Europe/Istanbul)
+Last verified: 2026-09-27 19:25 (Europe/Istanbul)
 
 ## Goal and working rules
 
-- Complete Phase 0: establish and demonstrate a repeatable, safe development workflow before implementing GrowthTwin product features.
+- Complete Phase 0 before building GrowthTwin product features.
 - Product direction: an AI-assisted content, review, publishing, and analytics workflow for dental clinics in Türkiye.
-- Keep hosted evaluations synthetic and credentials out of chat and Git. The only approved paid service is the bounded Heroku staging setup described below.
-- Low-usage handoff: `AGENTS.md` and this folder's `README.md` now define an early-preparation threshold of 10% remaining and completion by 5%. The active Codex heartbeat checks hourly and stays quiet unless work is needed.
+- The owner wants the assistant to coordinate tasks, use subagents when useful and allowed, track their results, and give concise Turkish updates. Avoid making the owner do routine terminal work.
+- Prefer fit-for-purpose AI over Turkish-language specialization. Keep model/provider choices replaceable; use synthetic data for hosted trials.
+- Do not expose credentials or private data. Do not exceed the approved Heroku staging resources or use additional paid services.
 
 ## Repository and review
 
-- Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; `main` is the default branch).
-- At snapshot time, local `main` was clean at `57b69c3`; this state refresh is on `docs/low-usage-handoff-snapshot` based on that commit.
-- PR #13 merged as `4a2e86e`; its required and post-merge main CI passed. PR #14 merged as `57b69c3`; its required CI run `36328827264` and post-merge `main` CI run `36328912152` passed.
-- Main protection requires the PR flow, successful `Django system check` on an up-to-date branch, resolved conversations, and linear history; force-push and deletion are blocked.
-- The owner delegated routine implementation and merge decisions after review and successful required CI.
+- Repository: `https://github.com/ugurkbcgl-hub/growthtwin` (public).
+- Current branch: `m4/profile-edit-playwright-e2e`, created from `origin/main` at `6464c24`.
+- PR #17 is open against `main`: [test: add browser E2E for demo profile](https://github.com/ugurkbcgl-hub/growthtwin/pull/17).
+- PR head at creation: `3fd926c` (`test: add browser E2E for demo profile`). This handoff snapshot is being added after that implementation commit; verify the live PR head and branch status.
+- Required `Django system check` for PR #17 was pending at the last check (run `36333159110`). Do not claim CI passed. PR #3 and PR #15 are merged.
+- Never push directly to `main`. Follow repository review and merge rules; do not merge PR #17 until its required checks pass and it has been reviewed.
 
-## Phase 0 status
+## Phase 0 status and verified progress
 
-- M2 is recorded complete. Local PostgreSQL service and DPAPI-protected credential storage were not rechecked in this session.
-- M3 guardrails are complete for the Django shell.
-- M4 synthetic profile-edit demo is merged in PR #7. Staging app `growthtwin-stage-270927` is deployed from reviewed `main` commit `ac2f627` at https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
-- Heroku Resources showed one Basic web dyno and one Essential-0 PostgreSQL add-on, estimated at about USD 12/month before taxes. No other paid add-on or dyno was shown. Delete the app and database after M4 acceptance. Use synthetic data only.
-- Heroku deployment and release phase succeeded. Fresh `GET /health/` requests at 2026-09-27 13:31:50 UTC and 14:57:12 UTC returned HTTP 200 with 38 bytes in router/app logs. The browser client blocked fresh navigation and retained an old `400` page, so the body was not visible in the browser. The root `/` route returns 404; the documented demo path is `/demo/profile/`.
-- The repo has focused Django profile-edit tests but no Playwright E2E. Staging profile-edit E2E, backup/restore, and controlled rollback have not been completed.
-- Product features, social publishing, and AI provider calls remain out of scope.
+- M2 local Django/PostgreSQL setup is complete. M3 guardrails and baseline CI are complete.
+- M4 is in progress. Heroku staging is approved for one Basic web dyno and one Essential-0 PostgreSQL database (about USD 12/month before taxes); no other paid services are approved. Delete both after M4 acceptance.
+- The current staging health URL returned HTTP 200 with a 38-byte response during this session. Browser-visible health output and current Heroku resource allocation still need checking.
+- PR #17 adds pinned Playwright 1.63.0, a browser flow for login, profile save, persistence, and logout, an isolated local E2E test in CI, and a staging runner that prompts for credentials without saving or logging them.
+- Local `python manage.py test e2e --settings=config.test_settings` passed (1 test). `ruff format --check .`, `ruff check .`, and `git diff --check` passed after the import-order fix. The local test emitted a non-failing warning that the staticfiles directory was absent.
+- Actual staging browser E2E has not run. It needs a disposable, least-privilege staging user. No Heroku CLI was available in this host's PATH; find a safe one-off provisioning path before asking the owner to perform terminal steps.
+- Backup/restore, controlled rollback, and final M4 report remain incomplete. No GrowthTwin product workflows or AI provider calls are in scope.
+- The Codex usage tool reported 97% used / 3% remaining. NVIDIA account/model quota remains unverified. Recheck current usage at the next session; preserve low-usage handoff rules.
 
 ## Next action
 
-Implement and run a focused Playwright E2E for the synthetic `/demo/profile/` flow using a disposable staging test account and a credential-safe setup. Then verify backup/restore and controlled rollback, record actual results, and complete M4 acceptance before deleting the approved staging resources.
+Check PR #17's required CI result and review it. Fix any failure; merge only after required CI passes and review is complete. Then resume the staging E2E with a disposable user, followed by backup/restore and rollback verification.
 
-## Not rechecked
+## Recheck at the next session
 
-- Local PostgreSQL service and DPAPI-protected credential store.
-- NVIDIA Build account quotas and current model limits.
-- Browser-visible health response body, staging E2E, backup/restore, and rollback.
+Verify current Codex usage, branch/worktree/PR state, and CI. If staging is needed, verify the app is reachable and still uses only its approved resources. The staging runner is `python -m e2e.run_staging` from `apps/web`; it is restricted to the approved Heroku hostname and asks for the disposable username/password interactively, with the password hidden. Do not put credentials in a command, environment variable, file, trace, log, or GitHub PR.
