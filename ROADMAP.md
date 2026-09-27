@@ -31,10 +31,10 @@ Status: complete for the Phase 0 shell — architecture and guardrail docs are i
 Status: in progress — the synthetic profile-edit flow is merged and passed CI (PR #7); the approved Heroku staging app is deployed. Staging E2E, backup/restore, and rollback checks remain.
 - Build only a small demo profile-edit flow to validate the development factory. Complete (PR #7).
 - Provisioning complete: `growthtwin-stage-270927` has one Heroku Basic web dyno and one Essential-0 PostgreSQL database. Resources screen estimated about USD 12/month before taxes; no other paid resource was shown.
-- Deployment complete: connected GitHub repository `ugurkbcgl-hub/growthtwin`, branch `main`, revision `ac2f627` deployed on 2026-09-27. Heroku reported deployment and release phase success. App: https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
-- Health log check: a fresh `GET /health/?check=20260927-istanbul-01` returned HTTP 200 and 38 bytes in Heroku router/app logs. Browser-visible response verification remains unresolved because the tab retained a `400` page after a blocked navigation.
-- A pinned Playwright browser test now covers the synthetic profile flow against an isolated local Django test server; the local run passed. PR #17 adds it to CI and provides a staging runner that prompts for a disposable account without saving its password.
-- Staging browser E2E remains pending: no disposable account has been provisioned, and the new PR's required CI check is pending. Verify login/CSRF/redirect behavior on the approved staging hostname after PR review and CI pass.
+- Last recorded deployment: connected GitHub repository `ugurkbcgl-hub/growthtwin`, branch `main`, revision `ac2f627` deployed on 2026-09-27; Heroku reported deployment and release phase success. Deployment of newer `main` commit `f2973b6` has not been checked. App: https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
+- Health checks: Heroku router/app logs recorded an earlier HTTP 200 response. A follow-up direct PowerShell `GET /health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. Database readiness is confirmed; deployed revision and browser-visible behavior remain unverified.
+- A pinned Playwright browser test covers the synthetic profile flow against an isolated local Django test server; the local run passed. PR #17 merged as `f2973b6`; its required CI run `36334388490` and post-merge main CI run `36334519381` both passed. It adds the test to CI and a staging runner that prompts for a disposable account without saving its password.
+- Staging browser E2E remains pending because no disposable account has been provisioned. The app exposes no public signup or Django admin route; use a provisioning method within the approved resource limit. Verify login/CSRF/redirect behavior on the approved staging hostname, then delete the disposable account and profile.
 - Then verify backup/restore and controlled rollback; record their actual results before M4 acceptance.
 - Shutdown plan: delete the app and database after M4 acceptance to end recurring charges.
 
@@ -48,5 +48,5 @@ Pricing and provider details were checked 2026-09-27: [Heroku pricing](https://w
 
 ## Current blockers
 
-- Phase 0 M4 acceptance remains incomplete: merge PR #17 after review and CI pass, run staging profile-edit E2E with a disposable account, verify backup/restore and rollback, and confirm the browser-visible health response.
+- Phase 0 M4 acceptance remains incomplete: provision a disposable staging account safely and run profile-edit E2E, confirm the health response and deployed revision, and verify backup/restore and rollback.
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not been recorded; check the signed-in Build account before relying on them.
