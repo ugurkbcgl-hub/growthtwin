@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 23:35 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI run `36346656517` passed. PR #25 is open at `b5b5b7d9b0e77d6551a064cfd27c92854f8131f4`; required CI run `36348500467` passed. This state refresh adds a commit, so verify CI again on the new PR #25 head.
+Last verified: 2026-09-27 23:47 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI run `36346656517` passed. PR #25 is open at `749bb39af1714239771c1bf98ecb29c3e1d0537f`; required CI run `36349187231` passed. This state refresh adds a commit; verify the new CI run on the resulting PR #25 head.
 
 ## Goal and working rules
 
@@ -10,22 +10,22 @@ Last verified: 2026-09-27 23:35 (Europe/Istanbul). PR #23 is open at `68c1a2bc02
 - Routine work should not require a GrowthTwin employee. Advertisers authorize accounts and set enforceable spend, schedule, and content limits; pause on uncertainty.
 - Use synthetic data in local, CI, and staging. Keep secrets and private advertiser data out of chat, source, logs, issues, and handoff files.
 - Only approved paid infrastructure is the existing Heroku Basic dyno plus Essential-0 PostgreSQL at about USD 12/month before tax. Do not add paid services, live publishing, or advertiser spend without authorization.
-- Read `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md`, and this file in order; then recheck Git, PR, and CI state live.
+- Read `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md`, and this file in order; then recheck Git, PR, and CI state.
 
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Use feature branches and PRs; do not push directly to `main`.
 - PR #23: https://github.com/ugurkbcgl-hub/growthtwin/pull/23 — open, base `main`, head `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`, required CI run `36346656517` passed.
-- Issue #24 tracks session-scoped synthetic campaign drafts.
-- PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `b5b5b7d9b0e77d6551a064cfd27c92854f8131f4`, required CI run `36348500467` passed. It is stacked on PR #23 and currently targets `feature/GT-022-turkey-advertising-roadmap`; retarget to `main` after #23 merges.
+- Issue #24 tracks session-scoped synthetic campaign drafts, UUID identifiers, in-session edits, isolation, and cleanup.
+- PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `749bb39af1714239771c1bf98ecb29c3e1d0537f`, required CI run `36349187231` passed. It is stacked on PR #23 and currently targets `feature/GT-022-turkey-advertising-roadmap`; retarget to `main` after #23 merges.
 - No PR has been merged or deployed as part of this work.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- Phase 1's website prototype is merged to `main`: synthetic brief → preview → simulated pause → sample report. PR #25 adds the first Phase 2 persistence slice but does not add AI generation, account connection, publication, ad spend, or real metrics.
-- PR #25 adds a validated Django campaign-draft record linked to the anonymous Django session. The same session can restore its preview; another session cannot read it. Django session cleanup deletes linked drafts. The UI warns to use synthetic input only.
-- Local verification on the code head: all 11 Django tests passed with SQLite test settings; `makemigrations --check --dry-run` reported no changes; Ruff format/lint, `node --check`, and `git diff --check` passed. Required PR CI also passed on the code head.
+- Phase 1's website prototype is merged to `main`: synthetic brief → preview → simulated pause → sample report. PR #25 adds the first Phase 2 persistence slice; it does not add AI generation, account connection, publication, ad spend, or real metrics.
+- PR #25 stores only the brief, daily cap, and duration in a UUID-keyed draft linked to the anonymous Django session. The owner session can restore and edit the same draft; other sessions cannot read or change it. Django session cleanup deletes linked drafts. The UI warns to use synthetic input only.
+- Local verification on the latest code head: all 14 Django tests passed with SQLite test settings; `makemigrations --check --dry-run` reported no changes; Ruff format/lint, `node --check`, and `git diff --check` passed. Required PR CI also passed on the code head.
 - No AI provider, ad destination, live account connection, publishing, advertiser spend, new paid service, or deployment was added.
 
 ## Open decisions and risks
@@ -37,4 +37,4 @@ Last verified: 2026-09-27 23:35 (Europe/Istanbul). PR #23 is open at `68c1a2bc02
 
 ## Next action
 
-Recheck CI on the latest PR #25 head after this state update; keep #25 open while #23 is open, then retarget #25 to `main` if #23 merges and verify CI again.
+Verify CI triggered by this state refresh. Keep PR #25 open while PR #23 is open; after #23 merges, retarget #25 to `main` and verify its required CI again. Do not merge without an explicit owner request.
