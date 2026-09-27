@@ -15,7 +15,7 @@ Last verified: 2026-09-27 21:05 (Europe/Istanbul), before the local prototype PR
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin; `main` is protected; use feature branches and PRs.
 - Product-direction documentation PR #20 was merged as `4c822626c4627e90c5240e09a224ceca34a6d9cc`. Its required check `36338295417` and post-merge main CI `36338406074` passed.
-- Current branch: `product/campaign-experience-prototype`, based on that main commit. It contains the first local website prototype and roadmap status update. The branch changes are not committed and the PR was not yet open at this snapshot.
+- Current branch: `product/campaign-experience-prototype` at `134817d`, based on that main commit. It contains the first local website prototype and roadmap status update. The PR was not yet open at this snapshot.
 - The owner previously authorized routine merges after review and successful required CI. Never push directly to `main`.
 
 ## Product and implementation status
@@ -34,4 +34,4 @@ Last verified: 2026-09-27 21:05 (Europe/Istanbul), before the local prototype PR
 
 ## Next action
 
-Commit and open the local prototype PR, verify its required CI, review and merge it under the standing authorization; then extend the local flow to save synthetic advertiser/campaign records without connecting a platform or spending money.
+Open the local prototype PR, verify its required CI, review and merge it under the standing authorization; then extend the local flow to save synthetic advertiser/campaign records without connecting a platform or spending money.
