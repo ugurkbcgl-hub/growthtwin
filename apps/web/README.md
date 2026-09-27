@@ -35,3 +35,16 @@ loads the locally protected credentials only for the Django process.
 
 There are no custom clinic models, profile screens, publishing or analytics
 workflows, AI provider calls, or background workers in this Phase 0 shell.
+
+## Python quality checks
+
+Install the application and its pinned development tooling from `apps/web`:
+
+```powershell
+python -m pip install -e ".[dev]"
+python -m ruff format --check .
+python -m ruff check .
+```
+
+Ruff's formatting and lint rules are configured in `pyproject.toml`. To apply
+formatting locally, run `python -m ruff format .` and review the resulting diff.
