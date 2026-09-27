@@ -6,12 +6,12 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 
 - Review documentation and architecture changes for consistency, secret leakage, and scope drift.
 - For repository changes, run only checks supported by the current repository. Do not claim an app test passed when there is no app yet.
-- CI should eventually check formatting, lint, types, unit/integration tests, dependency/security signals, and build output after the stack is chosen.
+- CI now checks Python formatting and linting. Add type checks, unit/integration tests, dependency/security signals, and build output as the application and their supporting tools are established.
 
 ## Current CI baseline
 
-- `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application's declared dependencies on Python 3.13 and runs `python manage.py check` with non-secret placeholder settings.
-- This is a configuration/system check only. The Phase 0 shell has no product test suite, and this workflow does not exercise database-backed behavior or PostgreSQL integration.
+- `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application and pinned development tooling on Python 3.13, checks formatting with `python -m ruff format --check .`, lints with `python -m ruff check .`, and runs `python manage.py check` with non-secret placeholder settings.
+- These are formatting, static lint, and configuration/system checks. The Phase 0 shell has no product test suite, and this workflow does not exercise database-backed behavior or PostgreSQL integration.
 - Branch protection requires the passing `Django system check` status from the GitHub Actions app and requires the PR branch to be up to date with `main`.
 
 ## Product verification layers
