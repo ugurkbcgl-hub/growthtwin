@@ -8,6 +8,11 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 - For repository changes, run only checks supported by the current repository. Do not claim an app test passed when there is no app yet.
 - CI should eventually check formatting, lint, types, unit/integration tests, dependency/security signals, and build output after the stack is chosen.
 
+## Current CI baseline
+
+- `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application's declared dependencies on Python 3.13 and runs `python manage.py check` with non-secret placeholder settings.
+- This is a configuration/system check only. The Phase 0 shell has no product test suite, and this workflow does not exercise database-backed behavior or PostgreSQL integration.
+
 ## Product verification layers
 
 1. **Unit:** domain rules such as workspace authorization, content versioning, and approval invalidation.

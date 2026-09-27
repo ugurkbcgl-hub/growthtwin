@@ -24,10 +24,10 @@ Status: complete — local Django/PostgreSQL workflow installed and verified; no
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: in progress — architecture/guardrail docs and Django module skeleton added; CI checks remain open.
+Status: in progress — architecture/guardrail docs and Django module skeleton added; the initial Django system-check workflow is awaiting its first successful PR run and required-check configuration.
 - Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
 - Add only a small repository skeleton; do not create product services prematurely.
-- Add formatting, lint, type, unit/integration, security/dependency and build checks to CI after choosing the implementation stack.
+- Start CI with the existing Django shell check. Add formatting, lint, type, unit/integration, security/dependency, and build checks as their tooling and testable application behavior are established.
 
 ## M4 — Demo application and deployment chain
 Status: pending
