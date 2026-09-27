@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 14:37 (Europe/Istanbul)
+Last verified: 2026-09-27 14:40 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -11,12 +11,13 @@ Last verified: 2026-09-27 14:37 (Europe/Istanbul)
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; main is the default branch).
-- Checkout: C:\Users\Public\Desktop\GrowthTwin, on branch docs/refresh-phase0-status; PR #8 is open with this continuity/roadmap refresh.
+- Checkout: C:\Users\Public\Desktop\GrowthTwin, on branch docs/post-pr8-handoff (post-merge handoff refresh in progress; PR not yet opened).
 - PR #3 merged as 394d3d4; post-merge CI passed.
 - PR #4 merged as 2f53376; post-merge CI passed with the Django check, Ruff formatting, and Ruff lint.
 - PR #5 merged as 580d972; post-merge CI passed with dependency auditing.
 - PR #6 merged as 60e3e92; post-merge CI passed with the source and wheel build checks.
 - PR #7 merged as e4b5738 on 2026-09-27. Its required CI passed, and post-merge main CI run 36315736901 succeeded, including formatting, lint, dependency audit, distribution content checks, Django system check, migration consistency, and Django tests against PostgreSQL 18.6.
+- PR #8 merged as 0b640d5 on 2026-09-27. Required CI run 36316352002 and post-merge main CI run 36316433857 both succeeded.
 - main protection requires a PR and the Django system check from GitHub Actions on an up-to-date branch; it also requires linear history and conversation resolution, applies to administrators, and blocks force-push and deletion.
 - Use feature branches and PRs. The user has delegated routine project decisions, including merges after review and successful required CI.
 
@@ -30,7 +31,7 @@ Last verified: 2026-09-27 14:37 (Europe/Istanbul)
 
 ## Next action
 
-Complete and merge the continuity/roadmap refresh. Then obtain approval for the documented Heroku staging cost before provisioning; keep all demo data synthetic and delete the app/database after M4 acceptance.
+Obtain approval for the proposed USD 12/month Heroku staging plan before provisioning. If approved, use synthetic data only, run the Playwright and deployment-safety checks, and delete the app/database after M4 acceptance.
 
 ## Not rechecked
 
