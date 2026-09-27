@@ -1,11 +1,11 @@
 # GrowthTwin
 
-GrowthTwin is currently a project codename for an AI-assisted growth and content workflow for dental clinics in Türkiye.
+GrowthTwin is a self-service advertising website for individuals, creators, and businesses. Its goal is to carry an advertiser's request through campaign planning, creative production, safe checks, authorized publishing, and understandable performance reporting with as little effort from the user as possible. Routine work should not require a GrowthTwin operator; automation must stay within the advertiser's explicit account, schedule, content, and spend limits.
 
-This public repository starts with Phase 0: establishing a safe, affordable development workflow before building product features. See [PROJECT.md](PROJECT.md), [ROADMAP.md](ROADMAP.md), and the proposed [architecture](ARCHITECTURE.md).
+Product development now focuses on a local, synthetic-data website prototype. The previous clinic profile-edit app is only a development/staging check. Dental clinics remain a possible early pilot cohort, while the product itself should support different advertiser types.
 
-The Phase 0 foundation currently consists of project/security/deployment/testing guidance, a modular architecture, an ADR process, and a Django application shell under `apps/web`. Django 5.2 LTS + PostgreSQL is accepted as the initial stack; PostgreSQL 18.6 is installed for local development. The staging provider and cost remain open, and no paid services have been provisioned. See [the ADR index](docs/adr/README.md) for recorded decisions.
+The existing stack is Django 5.2 LTS + PostgreSQL in one modular monolith. No production AI provider, publishing platform, production host, or additional paid service has been selected. See [PROJECT.md](PROJECT.md), [ROADMAP.md](ROADMAP.md), [ARCHITECTURE.md](ARCHITECTURE.md), and [the ADR index](docs/adr/README.md) for the current direction and boundaries.
 
-No clinic/customer data or API credentials belong in this repository.
+Use the single checkout at `C:\Users\Public\Desktop\GrowthTwin`, feature branches, pull requests, and the existing CI workflow. Local prototypes and hosted model experiments must use synthetic data. The approved Heroku app is limited to Phase 0 staging and is not a production or AI serving environment.
 
-To resume work in another chat or with another model, start with the [continuity handoff](docs/continuity/README.md) and its current [project state](docs/continuity/STATE.md).
+To resume in another chat, read the required project files in the order documented by [the continuity guide](docs/continuity/README.md), then verify the current Git and CI state before acting.

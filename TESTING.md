@@ -1,38 +1,33 @@
 # Testing strategy
 
-Status: Phase 0 policy. Add automated checks alongside a chosen implementation stack; do not add framework-specific tooling before that choice. Keep verification proportional to the change and focus on the critical user and operational paths.
+Keep verification proportional to the change. Local product prototypes use synthetic data and must make mock actions/results visible as mock. Do not contact a publishing platform or trigger ad spend in ordinary tests.
 
-## Before product features
+## Current CI and demo coverage
 
-- Review documentation and architecture changes for consistency, secret leakage, and scope drift.
-- For repository changes, run only checks supported by the current repository. Keep Phase 0 demo tests synthetic and separate from product acceptance coverage.
-- CI checks formatting, linting, dependency vulnerabilities, Python distribution builds, Django configuration, migration consistency, and focused demo behavior. Add type checks and broader tests as the application grows.
-
-## Current CI baseline
-
-- `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application in editable mode with pinned development tooling on Python 3.13, checks formatting with `python -m ruff format --check .`, lints with `python -m ruff check .`, audits the installed Python dependencies with `python -m pip_audit --local --skip-editable --progress-spinner off`, builds source and wheel distributions with `python -m build --sdist --wheel`, and runs `python manage.py check` with non-secret placeholder settings.
-- These are formatting, static lint, dependency vulnerability, package build, and configuration/system checks. The current tests cover only the synthetic profile-edit demo. They do not exercise product workflows or external integrations. The dependency audit needs network access to query the vulnerability service. The build creates distribution artifacts under `apps/web/build/` and `apps/web/dist/`; Git ignores both paths.
-- The distribution verifier checks that both archive formats include the login and profile templates.
-- The job starts an ephemeral PostgreSQL 18.6 service with CI-only placeholder credentials, verifies migration consistency, and runs the Django test suite. GitHub destroys the service when the job ends. Local focused tests can use config.test_settings to run on an in-memory SQLite database without touching the restricted development database.
-- The same job installs the pinned Playwright Python package and Chromium before the standard Django test command discovers and runs the browser test in `apps/web/e2e` against the ephemeral PostgreSQL service. The test uses a generated local account and does not contact staging or require credentials. For local focused runs, `python manage.py test e2e --settings=config.test_settings` uses isolated SQLite.
-- Branch protection requires the passing `Django system check` status from the GitHub Actions app and requires the PR branch to be up to date with `main`.
+- `.github/workflows/ci.yml` runs for pull requests and pushes to `main`. It installs the Django app and pinned development tools on Python 3.13, checks formatting with Ruff, runs lint, audits installed dependencies with `pip-audit`, builds source/wheel distributions, verifies the templates are present, runs `python manage.py check`, checks migration consistency, and runs Django tests.
+- CI uses an ephemeral PostgreSQL 18.6 service with CI-only placeholder credentials. GitHub destroys the service after the run.
+- A pinned Playwright/Chromium browser test covers the synthetic profile-edit demo against that CI PostgreSQL service. For a focused local run it can use the isolated in-memory SQLite settings. This is demo coverage, not campaign-product coverage.
+- Dependency auditing requires network access to its vulnerability service. Build artifacts under `apps/web/build/` and `apps/web/dist/` are ignored by Git.
+- The protected `main` branch requires the `Django system check` from GitHub Actions and an up-to-date PR branch.
 
 ## Product verification layers
 
-1. **Unit:** domain rules such as workspace authorization, content versioning, and approval invalidation.
-2. **Integration:** persistence constraints, tenant isolation, job idempotency, and provider adapter contracts using fakes or sandbox accounts.
-3. **End-to-end:** the critical path from editing a profile/content draft through approval and the relevant status screen. Publishing tests must use a sandbox or a controlled fake until explicitly authorized.
-4. **Operational:** readiness/health behavior, deploy version visibility, backup restoration, and rollback.
+1. **Unit:** campaign states, advertiser authorization, budgets, content validation, and transition rules.
+2. **Integration:** PostgreSQL constraints and tenant isolation; AI schema and provider contracts with fakes; platform authorization, idempotency, retries, and result reconciliation with sandbox accounts or controlled fakes.
+3. **End-to-end:** brief → campaign preview → configured automation state → report. Until a real destination is selected, publishing/results are synthetic and clearly labeled.
+4. **Operational:** readiness and deployed revision, secrets/config separation, backups and restore, rollback, emergency stop, and visible job failures.
+5. **Usability/accessibility:** keyboard and screen-reader essentials, responsive layouts, clear progress/error states, short intake effort, and comprehension of limits/results.
 
 ## AI evaluation
 
 - Keep model quality/latency experiments separate from application correctness tests.
-- Use a small, versioned, synthetic evaluation set. Review output quality against task-specific criteria; do not treat a single sample as proof of quality.
-- Record provider, model identifier, date, latency, failures, and any quota observed, but never record API keys or real customer data.
-- Do not run broad or repeated model sweeps without a concrete decision they will inform. Hosted trials are not production acceptance tests.
+- Use a small, versioned synthetic benchmark covering representative advertiser types and the first chosen campaign/channel tasks.
+- Score factuality against known brand facts, policy/claim handling, destination-format validity, schema validity, useful draft quality, latency, cost, and failure behavior. A single sample is not evidence of reliability.
+- Existing Qwen/NVIDIA dental-task measurements in `AI_PROVIDERS.md` are exploratory, one-run results. They do not prove quality across customer types and do not authorize autonomous publishing.
+- Record provider, model identifier, date, latency, failures, and observed quota; never record keys or real advertiser data. Trial hosted services are not production acceptance tests.
 
-## Phase 0 acceptance checks
+## Phase gates
 
-M4 should verify the synthetic demo profile-edit path, `GET /health/` database readiness and deployment version, backup/restore, and rollback. M5 should exercise a CI failure that blocks merge and a controlled rollback. Record actual commands, outcomes, and costs in the completion report.
-
-The staging browser runner is `python -m e2e.run_staging` from `apps/web`, after installing `.[e2e]` and Chromium. It prompts for a disposable regular test account and password without placing the password in command-line arguments, environment variables, logs, or files. Only run it against the approved staging hostname with synthetic values; delete the disposable account and its profile after the run.
+- Local website and campaign UX can be tested with synthetic data before staging/recovery work is complete.
+- Before real platform accounts, an external beta, or production, verify staging E2E, backup/restore, rollback, controlled CI failure blocking, platform permission revocation, spend ceilings, stop behavior, and the main advertiser journey. Record actual results; do not infer them from CI's synthetic test.
+- Never use staging or a hosted trial model for real advertiser/customer data or live paid campaigns.

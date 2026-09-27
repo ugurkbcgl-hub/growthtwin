@@ -1,43 +1,42 @@
 # Deployment and environment policy
 
-Status: Heroku has been provisioned for staging with the owner's approval for about USD 12/month before taxes. Production hosting is out of scope.
+Status: the owner approved one Heroku staging app for the Phase 0 synthetic demo, at an observed estimate of about USD 12/month before tax. There is no production deployment. Local product UX work is the current focus.
 
 ## Environments
 
-- **Local development:** synthetic data; local-only secrets; convenient iteration.
-- **Staging:** isolated configuration and synthetic/demo data; verifies deployment and integration behavior. Do not connect real clinic accounts or use trial AI endpoints with customer data.
-- **Production:** separate secrets, data, permissions, and deployment pipeline. No production service is part of the current phase.
+- **Local development:** synthetic data, current Windows checkout, local Django/PostgreSQL, and locally protected secrets. This is the primary place to build the website and validate campaign UX.
+- **Staging:** isolated config and synthetic/demo data only. The approved Heroku app is for release-readiness checks; do not connect real advertiser accounts, run live campaigns, or serve end users from it.
+- **Production:** separate credentials, data, permissions, observability, and a reviewed pipeline. No production service is selected or authorized.
 
-Do not copy production data into development or staging. Promotion between environments must not carry credentials across environment boundaries.
+Do not copy production data into development or staging. Promotion must never carry credentials across environment boundaries.
 
 ## Deployment controls
 
-- Build a versioned artifact from reviewed source and deploy through CI/CD; do not change production files or databases manually.
-- Keep environment configuration external to source. Grant the smallest required permissions and rotate credentials through the provider's secret store.
-- Expose health/readiness checks and the deployed revision. Collect logs and operational metrics without secrets or sensitive user content.
-- Before a production release, verify a recoverable backup, a health check, and a practical rollback path. Record schema changes and recovery order.
-- Use staged rollout and explicit approval for production changes once production exists.
+- Build versioned artifacts from reviewed source and deploy through a controlled pipeline; do not edit production files or databases manually.
+- Keep environment configuration in the relevant secret store. Grant the smallest required permissions and make connection revocation possible.
+- Expose health/readiness and deployed revision. Log operational metadata without secrets or unnecessary advertiser content.
+- Before external beta or production, verify a recoverable backup, health check, monitoring, emergency stop, and practical rollback. Record schema-change recovery order.
+- Publishing and spend-affecting actions must pass the current advertiser authorization and limit checks in application code. A staging deployment must never be treated as permission to spend.
 
 ## Cost and provider controls
 
-- The project reference sets a working ceiling of USD 100/month, a warning near USD 80/month, and user approval for a single spend above USD 20. Confirm the current cap before provisioning.
-- Estimate recurring and one-time charges before enabling a service. Keep an owner, expected monthly cost, and shutdown path for each resource.
-- For Phase 0 staging only, the owner approved one Heroku Basic web dyno and one Essential-0 PostgreSQL database, about USD 12/month before taxes. Use PostgreSQL 18, add no paid add-ons or additional dynos, and delete the app and database after M4 acceptance. This does not authorize production hosting or additional recurring services.
-- NVIDIA Build/NIM trial endpoints are limited to development/evaluation under their terms and are not a production deployment option.
-- No cloud, queue, object storage, or paid AI provider is selected by this policy; Heroku is the sole approved Phase 0 staging exception.
+- The project reference sets a working cap of USD 100/month, a warning near USD 80/month, and user approval for a single spend above USD 20.
+- Estimate recurring and one-time charges before enabling a service; record an owner, expected cost, and shutdown path.
+- The Phase 0 approval covers one Heroku Basic web dyno and one Essential-0 PostgreSQL database, observed near USD 12/month before tax. It does not authorize add-ons, more dynos, production hosting, or paid AI. Delete the app and database when staging is no longer needed.
+- No production AI provider, cloud host, queue, object storage, or paid integration is selected. Do not add paid resources without a new owner decision.
+- NVIDIA Build/NIM trial endpoints are only for synthetic development/evaluation and cannot serve GrowthTwin end users.
 
-## Heroku Phase 0 staging
+## Heroku Phase 0 staging snapshot
 
-- On 2026-09-27, Heroku app `growthtwin-stage-270927` was deployed from connected repository `ugurkbcgl-hub/growthtwin`, branch `main`, revision `ac2f627`. The dashboard Activity page still showed `ac2f627d` as the latest code deployment; releases v6-v10 after it were config-var changes. Current `main` (`a18e2fd`) is not deployed. App URL: https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
-- The Resources page was rechecked on 2026-09-27: one Basic web dyno at about USD 0.010/hour and one Essential-0 PostgreSQL add-on at about USD 0.007/hour; the dashboard estimated about USD 12/month. No other paid resources were listed.
-- Heroku reported a successful deployment and release phase; the release command applies migrations. A direct PowerShell `GET /health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. The app is ready but its endpoint does not report the revision. A fresh in-app browser request was blocked by the browser client (`ERR_BLOCKED_BY_CLIENT`), so browser-visible behavior remains unverified.
-- Deploy only the synthetic demo. Keep `DJANGO_SECRET_KEY` in Heroku config vars; the attached database supplies `DATABASE_URL`. Never copy either secret value into source, documentation, chat, or logs.
-- Pin Python to 3.13, serve Django with Gunicorn and WhiteNoise, and run migrations in the Heroku release phase.
-- Set `DJANGO_ALLOWED_HOSTS` and `DJANGO_CSRF_TRUSTED_ORIGINS` to the selected `*.herokuapp.com` hostname. Enable secure cookies and HTTPS redirection behind Heroku's proxy, with one-hour HSTS (`DJANGO_SECURE_HSTS_SECONDS=3600`). Keep HSTS limited to this hostname; do not enable `includeSubDomains` or preload for the staging app.
-- Expose `/health/` for readiness and deployed revision. Verify the endpoint, profile-edit path, backups, and rollback before M4 acceptance.
-- PR #17 merged as `f2973b6`; its Playwright path passes locally and in CI, but has not run against staging. The app has no public signup or Django admin route, so no disposable staging account exists yet. Use synthetic values only and do not log or commit credentials.
-- Backup/restore and rollback remain unverified. Do not provision an additional paid dyno or service beyond the approved Basic dyno and Essential-0 database without a new approval.
+- App: `growthtwin-stage-270927` at `https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/`.
+- Last dashboard observation recorded at 2026-09-27 20:06 Europe/Istanbul: one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL add-on (~USD 0.007/hour); dashboard estimate about USD 12/month.
+- At that observation the latest deployed code revision was `ac2f627d`; later releases were configuration changes. Current `main` at `6aba41e` was not deployed. Recheck the dashboard before deploying because it can change.
+- A direct request to `/health/?check=20260927-followup-01` returned HTTP 200 and `{"status":"ok","version":"unknown"}`. Database readiness responded, but the app did not identify its revision. An in-app browser request was blocked by the client, so that browser path remains unverified.
+- The synthetic profile-edit E2E passes locally and in CI but has not run against this staging deployment. No disposable staging account has been provisioned. Backup/restore and rollback are also unverified.
+- Keep only synthetic values in the staging app and its database. Do not expose or copy config-var secrets. No extra paid dyno or service is approved for account provisioning.
 
-## Phase 0 rollout
+## Rollout gates
 
-M2 resolves the bootstrap host and cost limits. M3 establishes stack-appropriate CI. M4 deploys only the synthetic demo after a staging provider and budget are accepted; its E2E and recovery checks are still pending. M5 verifies CI failure blocking, rollback, and records the results. Production deployment remains out of scope.
+- Local website prototype: no deployment required; use synthetic examples and local verification.
+- External beta: complete staging E2E, backup/restore, rollback, CI merge-gate check, security/privacy review, and selected platform integration tests first.
+- Production: requires separate owner approval for provider, recurring costs, advertiser-spend authority, monitoring, support, and data-retention arrangements.
