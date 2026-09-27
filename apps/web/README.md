@@ -44,6 +44,7 @@ Install the application and its pinned development tooling from `apps/web`:
 python -m pip install -e ".[dev]"
 python -m ruff format --check .
 python -m ruff check .
+python -m pip_audit --local --skip-editable --progress-spinner off
 ```
 
 Ruff's formatting and lint rules are configured in `pyproject.toml`. To apply
