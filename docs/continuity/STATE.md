@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 15:29 (Europe/Istanbul)
+Last verified: 2026-09-27 17:48 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -11,10 +11,8 @@ Last verified: 2026-09-27 15:29 (Europe/Istanbul)
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; `main` is the default branch).
-- Checkout: `C:\Users\Public\Desktop\GrowthTwin`, on `docs/post-pr11-handoff`, based on `main` at `0f92a4d`.
-- PR #9 was merged as `76c4527` on 2026-09-27. Its required `Django system check` passed (run `36316593684`); post-merge `main` CI run `36316666985` also passed.
-- PR #10 was merged as `a2b1036` on 2026-09-27: https://github.com/ugurkbcgl-hub/growthtwin/pull/10. Its required CI run `36318704396` passed; post-merge `main` CI run `36318870519` passed.
-- PR #11 was merged as `0f92a4d` on 2026-09-27: https://github.com/ugurkbcgl-hub/growthtwin/pull/11. Its required CI run `36318956018` and post-merge `main` CI run `36319020272` passed.
+- Local checkout: `C:\Users\Public\Desktop\GrowthTwin`; this handoff update is on `docs/heroku-staging-handoff`, based on clean `main` at `ac2f627` before these documentation edits.
+- PR #12 merged as `ac2f627` on 2026-09-27; its required CI run `36319171723` and post-merge `main` CI run `36319239593` passed.
 - Main protection requires PR review flow, the passing `Django system check` on an up-to-date branch, conversation resolution, and linear history; force-push and deletion are blocked.
 - The owner delegated routine implementation and merge decisions after review and successful required CI.
 
@@ -22,20 +20,18 @@ Last verified: 2026-09-27 15:29 (Europe/Istanbul)
 
 - M2 is recorded complete. Local PostgreSQL service state and DPAPI-protected credential storage were not rechecked in this session.
 - M3 guardrails are complete for the Django shell.
-- M4 synthetic profile-edit demo is merged in PR #7. The approved staging plan is one Heroku Basic dyno and one Essential-0 PostgreSQL 18 database at about USD 12/month before taxes. No Heroku app or database exists yet.
-- The owner approved this bounded staging spend on 2026-09-27. No paid add-ons or additional dynos are authorized; delete the app and database after M4 acceptance. Use synthetic data only.
-- Heroku onboarding is not complete: the in-app browser displays the Terms of Service page, the Heroku CLI is not installed, and no authenticated deployment session is available. No terms were accepted or cloud resources created by Codex. The user replied "sen tanımla" to a status question; a follow-up request for explicit authorization to accept the legally binding terms is still unanswered. Do not accept until that authorization arrives, or ask the owner to accept manually.
-- Installing the official Heroku CLI was attempted from Heroku's official source, but the command execution policy rejected the installer action before it ran. Do not try to bypass the policy; after account setup, use the Heroku dashboard or have the owner install the official CLI manually.
-- PR #10 adds the root Heroku Python entry point and dependencies, Gunicorn/WhiteNoise/DATABASE_URL settings, HTTPS and secure-cookie/HSTS configuration, a GET-only database readiness endpoint, focused tests, CI validation, and ADR/deployment documentation.
-- Local checks completed: Ruff format/lint; pip-audit (no known vulnerabilities); source/wheel build and template archive checks; Django `check --deploy`; WhiteNoise `collectstatic`; migration consistency; six Django tests using isolated SQLite settings; synthetic `DATABASE_URL` parsing with SSL required. The deployment check exits successfully with Django advisories W005/W021 because HSTS is intentionally not extended to subdomains or preload. PostgreSQL CI for this new branch has not run yet.
+- M4 synthetic profile-edit demo is merged in PR #7. Staging app `growthtwin-stage-270927` is deployed from reviewed `main` commit `ac2f627` at https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
+- Heroku Resources showed one Basic web dyno and one Essential-0 PostgreSQL add-on, estimated at about USD 12/month before taxes. No other paid add-on or dyno was shown. The user approved only this bounded staging setup; delete it after M4 acceptance. Use synthetic data only.
+- Heroku reported successful deployment and release phase. A fresh `GET /health/?check=20260927-istanbul-01` returned HTTP 200 with 38 bytes in both router and app logs at 2026-09-27 13:31:50 UTC. The browser tab still displayed an earlier `400` response after a navigation attempt was blocked; the response body and UI/log discrepancy remain unverified.
+- The repository has focused Django tests for the profile-edit behavior, but no Playwright end-to-end test was found. Staging profile-edit E2E, backup/restore, and controlled rollback have not been completed.
 - Product features, social publishing, and AI provider calls remain out of scope.
 
 ## Next action
 
-After the handoff snapshot is merged, complete Heroku account setup and authentication, then provision only the approved Basic dyno and Essential-0 PostgreSQL database. Do not accept the Terms of Service on the owner's behalf without explicit authorization.
+Add a focused Playwright end-to-end check for the synthetic profile-edit path and define a disposable staging test-account setup that keeps credentials out of source, chat, and logs. Then verify backup/restore and controlled rollback before recording M4 acceptance.
 
 ## Not rechecked
 
 - Local PostgreSQL service and DPAPI-protected credential store.
 - NVIDIA Build account quotas and current model limits.
-- Heroku account setup and authentication. No app, database, dyno, or add-on has been created.
+- A browser-confirmed health response body, staging E2E, backup/restore, and rollback.
