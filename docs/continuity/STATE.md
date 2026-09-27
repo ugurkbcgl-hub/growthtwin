@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 20:34 (Europe/Istanbul), before the product-direction PR was opened.
+Last verified: 2026-09-27 20:47 (Europe/Istanbul), while PR #20 CI was running.
 
 ## Goal and working rules
 
@@ -15,7 +15,8 @@ Last verified: 2026-09-27 20:34 (Europe/Istanbul), before the product-direction 
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin; `main` is default and protected; changes go through PRs.
 - At the start of this work, `main` was `6aba41e27ef6a6ea6974697d2aa2577321595180`, clean, with no open PRs. Latest main CI run `36335898184` passed.
-- Current work branch: `product/autonomous-advertising-reorientation`, based on that `main`. It updates product, architecture, security, roadmap, and continuity docs to reflect the owner's new direction. PR was not yet open at this snapshot; recheck live status.
+- Current work branch: `product/autonomous-advertising-reorientation` at `9c07243`, based on that `main`.
+- PR #20, `docs: refocus GrowthTwin on ad automation website`, is open: https://github.com/ugurkbcgl-hub/growthtwin/pull/20. Required check `Django system check` / CI run `36338252883` was in progress at this snapshot. Recheck before acting.
 - The owner previously authorized routine merges after review and successful required CI. Do not push directly to `main`.
 
 ## Current product/workflow status
@@ -34,4 +35,4 @@ Last verified: 2026-09-27 20:34 (Europe/Istanbul), before the product-direction 
 
 ## Next action
 
-Open the product-direction documentation PR, review the required CI result, and merge it under the standing authorization; then build the Phase 1 local campaign-intake and campaign-status prototype with clearly labeled synthetic data and no external publishing calls.
+Review PR #20's required CI result and merge it if green under the standing authorization; then build the Phase 1 local campaign-intake and campaign-status prototype with clearly labeled synthetic data and no external publishing calls.
