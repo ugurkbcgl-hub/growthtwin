@@ -30,10 +30,14 @@ Status: complete for the Phase 0 shell — architecture and guardrail docs are i
 - Dependency auditing and package builds run in CI. M4 adds focused Django tests for the synthetic demo; introduce type-checking tooling only when the Python surface area benefits from it.
 
 ## M4 — Demo application and deployment chain
-Status: in progress — the synthetic profile-edit flow is being added and tested locally/in CI. Staging remains gated on an accepted provider and cost ceiling.
-- Build only a small demo profile-edit flow to validate the development factory.
-- Deploy the demo to staging after the provider and budget decision; run its critical Playwright path.
+Status: in progress — the synthetic profile-edit flow is merged and passed CI against PostgreSQL 18.6. The staging plan is prepared; provisioning remains gated on approval of the recurring charge.
+- Build only a small demo profile-edit flow to validate the development factory. Complete (PR #7).
+- Recommended staging plan: Heroku Basic web dyno ($7/month) plus Essential-0 Postgres ($5/month), about USD 12/month before taxes or optional services. Heroku currently lists PostgreSQL 18 support. Render's free Postgres expires after 30 days and does not include backups, so it is a poor fit for repeatable staging.
+- Shutdown plan: use synthetic data only, avoid paid add-ons, and delete both the Heroku app and database after M4 acceptance to end the recurring charges.
+- Provision after the owner approves this recurring-cost plan; then run the critical Playwright path.
 - Verify health/readiness checks, logs, versioned deployment, backups, and rollback.
+
+Pricing and provider details were checked 2026-09-27: [Heroku pricing](https://www.heroku.com/pricing/), [Heroku Postgres plans](https://devcenter.heroku.com/articles/heroku-postgres-plans), [Heroku Postgres version support](https://devcenter.heroku.com/articles/heroku-postgres-version-support), and [Render free-tier limits](https://render.com/docs/free).
 
 ## M5 — Phase 0 final acceptance
 Status: pending
