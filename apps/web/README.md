@@ -45,7 +45,9 @@ python -m pip install -e ".[dev]"
 python -m ruff format --check .
 python -m ruff check .
 python -m pip_audit --local --skip-editable --progress-spinner off
+python -m build --sdist --wheel
 ```
 
 Ruff's formatting and lint rules are configured in `pyproject.toml`. To apply
 formatting locally, run `python -m ruff format .` and review the resulting diff.
+The build command writes distribution files under `build/` and `dist/`; Git ignores both.

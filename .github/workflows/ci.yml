@@ -37,6 +37,9 @@ jobs:
       - name: Audit installed Python dependencies
         run: python -m pip_audit --local --skip-editable --progress-spinner off
 
+      - name: Build Python source and wheel distributions
+        run: python -m build --sdist --wheel
+
       - name: Run Django system check
         env:
           DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment
