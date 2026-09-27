@@ -12,11 +12,12 @@ Status: mostly complete — repository, `main`, issue template, and enforced pul
 - Use feature branches and pull requests for changes. Add a required CI status check after a CI workflow exists.
 
 ## M2 — Development environment and cost decision
-Status: in progress — Django 5.2 LTS + PostgreSQL accepted; local Python is installed and the single-workstation path is in progress.
+Status: complete — local Django/PostgreSQL workflow installed and verified; no paid services enabled.
 - Python 3.13.15 is installed in the current user's Windows environment. Keep the single Codex-managed checkout in place; do not create a second WSL checkout.
 - Ubuntu WSL2 is available for local Linux tooling if needed. WSL is version 2.6.1.0; the distro was stopped at inventory time.
-- Windows Node.js 24.11.1/npm 11.6.2 remain available for other tooling. Docker CLI and `psql` were not found in the current session; Node is not needed for the accepted Django server stack.
-- Decide how to provide local PostgreSQL after the stack choice; avoid paid or hosted services for local development.
+- Windows Node.js 24.11.1/npm 11.6.2 remain available for other tooling. PostgreSQL 18.6 and `psql` are installed locally; the `postgresql-x64-18` service is running on port 5432. Docker CLI was not found in the current session; Node is not needed for the accepted Django server stack.
+- `growthtwin` database and restricted `growthtwin_app` role were created. Django migrations and the Django system check passed.
+- Local database and Django secrets are protected for this Windows user with DPAPI outside the repository. No credential values are committed.
 - Ollama 0.34.4 and the earlier Qwen3 evaluation are recorded in AI_PROVIDERS.md; no more model sweeps are part of M2.
 - No paid infrastructure or recurring service has been enabled.
 - Estimate cloud costs and obtain a user decision before a single spend above USD 20 or any recurring service.
@@ -44,4 +45,4 @@ Status: pending
 ## Current blockers
 - CI checks have not been configured, so `main` does not yet require a passing status check.
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
-- The application stack and local PostgreSQL setup need a decision; staging provider/cost is deferred to M4.
+- The staging provider and recurring-cost ceiling remain open for M4.

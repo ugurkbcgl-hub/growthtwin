@@ -8,7 +8,7 @@
 
 GrowthTwin needs a web panel for clinic workspaces, content drafts and versions, review/approval, and eventually social publishing and analytics. Phase 0 currently allows only a synthetic-data profile-edit demo. The repository architecture proposes a modular monolith and leaves implementation choices open.
 
-Current workstation evidence: Windows 11; Ubuntu is installed under WSL2 (WSL package 2.6.1.0; distro was stopped when checked); Node.js 24.11.1 and npm 11.6.2 are available on Windows; Docker CLI, `psql`, and a native Windows Python runtime were not found in the current PowerShell session. The Codex-managed Git checkout is on the Windows filesystem. Do not create a second working checkout in WSL without first confirming the Codex workspace can use it as the single source of truth.
+Current workstation evidence: Windows 11; Ubuntu is installed under WSL2 (WSL package 2.6.1.0; distro was stopped when checked); Node.js 24.11.1 and npm 11.6.2 are available on Windows; Python 3.13.15 and PostgreSQL 18.6 with `psql` are installed on Windows. The Codex-managed Git checkout is on the Windows filesystem. Do not create a second working checkout in WSL without first confirming the Codex workspace can use it as the single source of truth.
 
 NVIDIA NIM and Ollama can both be accessed over HTTP, so the choice of app language does not determine which provider can be integrated. Hosted NIM remains evaluation-only, with synthetic data.
 
@@ -46,7 +46,14 @@ This follows the project's original reference candidate and separates the React 
 
 On 2026-09-27, the project owner accepted **Django 5.2 LTS + PostgreSQL** as the initial application stack, with one application under `apps/web` and a modular monolith structure. Use the latest supported 5.2.x security patch when installing. Use the currently supported stable PostgreSQL major at implementation time and verify the chosen staging provider supports it. PostgreSQL 18 is current as of this decision and receives upstream major-version support for five years.
 
-For local development, keep the repository at its current single Windows checkout. Install a supported Python runtime on Windows rather than creating a second WSL copy that could diverge from the Codex workspace. The local PostgreSQL installation method remains open. Docker Desktop is not required for the app runtime; do not install it unless its license eligibility is confirmed. No remote development server, staging service, or paid resource is needed for this local setup.
+For local development, keep the repository at its current single Windows checkout. Use the installed supported Python runtime rather than creating a second WSL copy that could diverge from the Codex workspace. PostgreSQL 18.6 is installed locally and is used for development. Docker Desktop is not required for the app runtime; do not install it unless its license eligibility is confirmed. No remote development server, staging service, or paid resource is needed for this local setup.
+
+### Local environment update — 2026-09-27
+
+- PostgreSQL 18.6 is running as the local `postgresql-x64-18` Windows service on port 5432.
+- The `growthtwin` database and restricted `growthtwin_app` role are set up; app credentials are generated and protected with Windows DPAPI outside the repository.
+- The Django framework migrations and system check completed successfully.
+- The helper scripts are documented in `apps/web/README.md`. This update does not authorize product features, staging deployment, or paid services.
 
 For CI, use GitHub-hosted standard Ubuntu runners once the application exists. GitHub documents standard hosted runner usage as free for public repositories. Add the required branch-protection check after the workflow name is stable; do not use the laptop as a self-hosted runner.
 
@@ -61,7 +68,7 @@ This decision authorizes the Phase 0 Django foundation only. It does not authori
 - Authentication primitives are available, but tenant-level authorization and workspace isolation still require deliberate design and verification.
 - A future scheduler may need a worker process, but can remain in the same repository and share domain modules.
 - The installed Node runtime remains available for tooling, but it is not required for the proposed server-side application.
-- The staging provider, database hosting, local PostgreSQL installation method, and project cost ceiling remain open.
+- The staging provider, database hosting, and project cost ceiling remain open.
 
 ## Official references checked 2026-09-27
 

@@ -19,8 +19,8 @@ workflow implementation yet.
 
 No credentials are included in this repository. The application reads settings
 from environment variables and does not load `.env` files automatically. The
-local setup helper stores the Django secret and chosen database password in the
-current Windows user's `%LOCALAPPDATA%\GrowthTwin\secrets` directory,
+local setup helper stores its generated Django secret and application password
+in the current Windows user's `%LOCALAPPDATA%\GrowthTwin\secrets` directory,
 encrypted with Windows DPAPI.
 
 In PowerShell 7, run `scripts\setup-local-postgres.ps1` once. At the hidden

@@ -10,6 +10,14 @@
 - Avoid assigning simultaneous edits to the same files. Keep the user-facing decision list short and explicit.
 - Use repository issues and pull requests as the durable work record now that the user's public GitHub remote is connected. ROADMAP.md remains the interim tracker for Phase 0 tasks.
 
+## Session continuity
+- At the start of each session, read `docs/continuity/README.md`, `docs/continuity/STATE.md`, `PROJECT.md`, and `ROADMAP.md`; then verify branch, Git status, and linked PR before acting.
+- Treat `STATE.md` as a concise handoff snapshot, not as an authority above the current user request or accepted project decisions.
+- After a material milestone or before handing work to another chat/model, update `STATE.md` with verified progress, current branch/PR, open decisions, and one next action.
+- Update the durable project document or ADR when a decision/status changes; do not use the continuity note to hide stale or conflicting canonical docs.
+- Keep the state model-neutral and useful to a new person. Never include passwords, API keys, tokens, private customer data, or secret values. Record only where secrets are safely stored, if needed.
+- Keep history compact: replace the current snapshot instead of appending a transcript. Record uncertainty as unverified rather than guessing.
+
 ## Engineering workflow
 - Complete Phase 0 before starting GrowthTwin product features.
 - Before coding, inspect relevant repository docs and state a plan with acceptance criteria. Keep changes small and reversible.
