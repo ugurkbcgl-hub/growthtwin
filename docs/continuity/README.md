@@ -20,8 +20,16 @@ Update `STATE.md` with only verified current facts: objective, completed work, b
 
 Never record API keys, passwords, access tokens, secret values, or private customer data here. If relevant, record only that a credential is stored in an approved secret store and whether it needs rotation. Do not copy credentials into another chat or model.
 
+## Low-usage transition
+
+- When the Codex usage tool shows 10% remaining or less, begin preparing the handoff; complete it by 5% remaining.
+- At the threshold, check the live usage value, repository branch/worktree, latest commit, open PRs, and CI results. Resolve or clearly record in-flight work.
+- Audit the canonical docs and fix only stale facts. Update `STATE.md` with the verified state and exactly one next action. Do not rewrite accurate documents or invent completion claims.
+- End by generating one current, copy-ready Turkish prompt for the next AI chat. It should make the next chat read the required files and recheck current Git/PR facts before acting.
+- If repository access or the usage limit is unavailable, say what could not be verified and do not present an unverified handoff as current.
+
 ## Copyable handoff prompt
 
-> Continue the GrowthTwin project from its repository. First read `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md`, and `docs/continuity/STATE.md`; then verify the current branch, working-tree state, and PR. Treat the current user request as authoritative, preserve the Phase 0 gates, keep credentials out of chat and Git, and update the continuity snapshot after meaningful progress. Start with the single next action in `STATE.md` and report progress in clear Turkish.
+> GrowthTwin projesini kaldığı yerden sürdür. Önce `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md` ve `docs/continuity/STATE.md` dosyalarını bu sırayla oku; sonra dalı, çalışma ağacını, son commit'i, açık PR'ları ve CI durumunu yeniden doğrula. Teknik koordinatör olarak işi küçük adımlarla ilerlet; terminal işlerini kullanıcıya yaptırma. Phase 0 tamamlanmadan ürün özelliklerine geçme. Onaylanan Heroku sınırını aşma, sentetik veri kullan ve gizli bilgileri hiçbir yere yazma. `STATE.md` içindeki tek Next action adımından devam et, uygun dokümanları güncel tut ve ilerlemeyi anlaşılır Türkçe özetle.
 
 If the next model cannot access the repository, provide it the current `STATE.md` text and the user's new request. The repository remains the durable source of truth; never include secrets in the pasted context.

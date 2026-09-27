@@ -18,6 +18,15 @@
 - Keep the state model-neutral and useful to a new person. Never include passwords, API keys, tokens, private customer data, or secret values. Record only where secrets are safely stored, if needed.
 - Keep history compact: replace the current snapshot instead of appending a transcript. Record uncertainty as unverified rather than guessing.
 
+## Low-usage session handoff
+
+- If the current Codex window reports 10% remaining or less, begin the handoff early; finish it by 5% so there is room for a clear transfer.
+- At 5% remaining, stop starting new implementation tasks. Verify repository and PR state, settle or explicitly note running work, audit the canonical project documents, and update only documents whose facts changed: PROJECT, ROADMAP, DEPLOYMENT, TESTING, SECURITY, accepted ADRs, and STATE as applicable.
+- Keep STATE concise and current: timestamp/timezone; branch, worktree and latest commit; current PR and required/post-merge CI results; verified accomplishments; unresolved issues; one next action.
+- Produce a ready-to-paste Turkish continuation prompt for the next AI chat with repository location, required read order, current verified state, Phase 0 scope and security constraints, and the exact next action. The new chat must verify facts that can change.
+- Never include secrets, private data, or unverified claims. Do not edit accurate documents just to touch every file.
+- If corrections need commits, use a feature branch and PR; never push directly to `main`. Merge only under the owner's standing authorization and after review and required CI pass.
+
 ## Engineering workflow
 - Complete Phase 0 before starting GrowthTwin product features.
 - Before coding, inspect relevant repository docs and state a plan with acceptance criteria. Keep changes small and reversible.
