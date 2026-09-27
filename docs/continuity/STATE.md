@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 14:40 (Europe/Istanbul)
+Last verified: 2026-09-27 14:41 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -11,7 +11,7 @@ Last verified: 2026-09-27 14:40 (Europe/Istanbul)
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; main is the default branch).
-- Checkout: C:\Users\Public\Desktop\GrowthTwin, on branch docs/post-pr8-handoff (post-merge handoff refresh in progress; PR not yet opened).
+- Checkout: C:\Users\Public\Desktop\GrowthTwin, on branch docs/post-pr8-handoff; PR #9 is open with this post-merge handoff refresh.
 - PR #3 merged as 394d3d4; post-merge CI passed.
 - PR #4 merged as 2f53376; post-merge CI passed with the Django check, Ruff formatting, and Ruff lint.
 - PR #5 merged as 580d972; post-merge CI passed with dependency auditing.
