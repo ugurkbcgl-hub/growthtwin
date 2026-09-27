@@ -1,52 +1,64 @@
-# Phase 0 roadmap
+# GrowthTwin roadmap
 
-## M0 — Local project workspace
-Status: complete
-- Created a separate local Git workspace and project baseline docs.
-- Kept the synced project mirror and its sources/ files untouched.
+## Direction reset — 2026-09-27
 
-## M1 — Public source-of-truth repository
-Status: mostly complete — repository, `main`, issue template, pull-request protections, and the required CI status check are in place.
-- Created `ugurkbcgl-hub/growthtwin` as a public repository at the user's request and pushed the baseline.
-- `main` is the default branch. Enforced branch protection requires pull requests, applies to administrators, blocks force-pushes and deletion, requires conversation resolution and linear history, and requires the passing `Django system check` from GitHub Actions on an up-to-date branch.
-- Use feature branches and pull requests for changes.
+The owner asked to refocus GrowthTwin on the actual self-service advertising website. The product vision is now an end-to-end campaign autopilot for individuals, creators, and businesses; the earlier dental-clinic-only content workflow is a possible pilot cohort, not the product boundary. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), and accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md).
 
-## M2 — Development environment and cost decision
-Status: complete — local Django/PostgreSQL workflow installed and verified; no paid services enabled at the time M2 was completed.
-- Python 3.13.15 is installed in the current user's Windows environment. Keep the single Codex-managed checkout in place; do not create a second WSL checkout.
-- Ubuntu WSL2 is available for local Linux tooling if needed. WSL is version 2.6.1.0; the distro was stopped in the last inventory.
-- Windows Node.js 24.11.1/npm 11.6.2 remain available for other tooling. PostgreSQL 18.6 and `psql` are installed locally; the `postgresql-x64-18` service was running in the last inventory. Docker CLI was not found in that inventory; Node is not needed for the accepted Django server stack.
-- `growthtwin` database and restricted `growthtwin_app` role were created. Earlier Django migrations and the Django system check passed.
-- Local database and Django secrets are protected for this Windows user with DPAPI outside the repository. No credential values are committed.
-- Ollama 0.34.4 and the earlier Qwen3 evaluation are recorded in AI_PROVIDERS.md; no more model sweeps are part of this setup step.
-- Heroku staging was separately approved for M4 at approximately USD 12/month before taxes. Keep spending within that one Basic dyno + one Essential-0 database limit; no additional paid services are authorized.
+The product should remove routine operator work after an advertiser gives a brief, connects an account, and sets explicit limits. The system must pause and notify the advertiser when it cannot safely proceed. Current work prioritizes the real website and local synthetic-data development; it does not authorize production publishing, real ad spend, or additional paid infrastructure.
 
-## M3 — Repository and engineering guardrails
-Status: complete for the Phase 0 shell — architecture and guardrail docs are in place, and CI checks Django configuration, formatting, linting, dependency vulnerabilities, and Python distributions. Type-checking remains unselected until the application has enough code to benefit from it.
-- Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
-- Add only a small repository skeleton; do not create product services prematurely.
-- Dependency auditing and package builds run in CI. M4 adds focused Django tests for the synthetic demo; introduce type-checking tooling only when the Python surface area benefits from it.
+## Existing foundation — in place for local product work
 
-## M4 — Demo application and deployment chain
-Status: in progress — the synthetic profile-edit flow is merged and passed CI (PR #7); the approved Heroku staging app is deployed. Staging E2E, backup/restore, and rollback checks remain.
-- Build only a small demo profile-edit flow to validate the development factory. Complete (PR #7).
-- Provisioning verified in the Heroku Resources page on 2026-09-27: one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL database (~USD 0.007/hour); the dashboard estimated about USD 12/month. No other paid resource was listed.
-- The dashboard Activity page showed `ac2f627d` as the latest code deployment; later releases v6-v10 were config-var changes. Current `main` (`a18e2fd`) is not deployed. The last deployment and release phase succeeded. App: https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
-- Health checks: a direct PowerShell `GET /health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. Database readiness is confirmed, but the revision is not reported. An in-app browser request was blocked by the client (`ERR_BLOCKED_BY_CLIENT`), so browser-visible behavior remains unverified.
-- A pinned Playwright browser test covers the synthetic profile flow against an isolated local Django test server; the local run passed. PR #17 merged as `f2973b6`; its required CI run `36334388490` and post-merge main CI run `36334519381` both passed. It adds the test to CI and a staging runner that prompts for a disposable account without saving its password.
-- Staging browser E2E remains pending because no disposable account has been provisioned. The app exposes no public signup or Django admin route; use a provisioning method within the approved resource limit. Verify login/CSRF/redirect behavior on the approved staging hostname, then delete the disposable account and profile.
-- Then verify backup/restore and controlled rollback; record their actual results before M4 acceptance.
-- Shutdown plan: delete the app and database after M4 acceptance to end recurring charges.
+- Public GitHub repository, protected `main`, pull-request workflow, and CI are active. Latest verified `main` is `6aba41e`; no open PRs; CI run `36335898184` passed.
+- Django 5.2 LTS + PostgreSQL 18 is the accepted local stack and is already scaffolded under `apps/web`.
+- CI checks Django configuration, formatting, linting, dependency vulnerabilities, package builds, migrations, and focused tests. A synthetic profile edit E2E exists locally and in CI.
+- Local browser E2E and GitHub-hosted CI provide the initial feedback loop. Keep local UI work on synthetic data.
+- Heroku staging has one approved Basic web dyno and one Essential-0 PostgreSQL database (about USD 12/month before tax); the deployed app is still the synthetic demo. Current `main` is not yet deployed.
 
-## M5 — Phase 0 final acceptance
-Status: pending
-- Exercise a CI failure that blocks merge and a controlled rollback.
-- Record verified results, costs, risks, and open decisions in PHASE_0_COMPLETION_REPORT.md.
-- Do not begin GrowthTwin product features or Phase 1 without the user's explicit go-ahead.
+## Phase 1 — Product experience prototype (next)
 
-Pricing and provider details were checked 2026-09-27: [Heroku pricing](https://www.heroku.com/pricing/), [Heroku Postgres plans](https://devcenter.heroku.com/articles/heroku-postgres-plans), [Heroku Postgres version support](https://devcenter.heroku.com/articles/heroku-postgres-version-support), and [Render free-tier limits](https://render.com/docs/free).
+**Goal:** demonstrate the simplest complete user experience without waiting for external APIs, paid infrastructure, or a production model.
 
-## Current blockers
+- Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
+- Let a user describe an advertising goal with a short plain-language brief, then progressively ask only for essential missing details such as destination, timing, and maximum spend.
+- Show a believable campaign lifecycle with synthetic example output: request received, plan prepared, creative preview, destination/schedule, and performance summary. Label mock publishing and metrics clearly.
+- Keep editing, current status, spend boundary, and pause/stop visible. Do not hard-code clinic fields.
+- **Acceptance:** a new visitor can understand the offer; a synthetic advertiser can move through brief → campaign preview → mock result without staff help; the layout works on mobile and desktop; no external account, AI provider, or publishing API is called.
 
-- Phase 0 M4 acceptance remains incomplete: provision a disposable staging account safely and run profile-edit E2E, confirm the health response and deployed revision, and verify backup/restore and rollback.
-- The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not been recorded; check the signed-in Build account before relying on them.
+## Phase 2 — Local campaign vertical slice
+
+**Goal:** connect the website to deterministic campaign records and evaluate draft generation without creating external side effects.
+
+- Model advertiser/workspace, brand facts, campaign brief, versioned creatives, destinations, user-defined caps, and status history.
+- Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.
+- Add quality checks for missing/unsupported claims, format constraints, and budget/schedule completeness. A rejected or ambiguous output stays paused.
+- Verify tenant isolation, schema validation, retry/idempotency behavior, and the campaign user journey.
+- **Acceptance:** the local end-to-end path saves a campaign, produces or safely rejects a structured draft, explains its state, and cannot publish or incur ad spend.
+
+## Phase 3 — First publishing and reporting integration
+
+**Goal:** prove one authorized destination before expanding channel coverage.
+
+- Choose the first platform only after checking current API access, app review, supported campaign/creative formats, authorization requirements, reporting coverage, and maintenance cost.
+- Build OAuth/account connection and revocation, narrow scopes, a test/sandbox path, immutable action records, safe retries, and a user-visible emergency stop.
+- Require explicit advertiser authorization and a hard platform-enforced spend boundary. Never let a model modify a cap or directly invoke a publishing API.
+- Import performance data and present plain-language results. Do not imply that automated optimization is supported until the API and safe bounds are verified.
+- **Acceptance:** a controlled test account can publish, report, stop, and recover from a simulated provider failure without exceeding its configured limits.
+
+## Phase 4 — Limited beta and production readiness
+
+**Goal:** invite a small pilot group only after the real operational and data protections are ready.
+
+- Finish staging E2E, backup/restore, rollback, deployment-revision health reporting, and a tested CI merge gate.
+- Review platform approvals, privacy notice/consent, model/provider data terms, data deletion/export, retention, OAuth token handling, accessibility, monitoring, and incident procedures.
+- Estimate production hosting and AI costs; ask the owner before any new recurring service or advertiser campaign-spend feature is enabled.
+- Start with the owners' existing business contacts as an optional cohort; broaden only after observed usability and quality evidence.
+- **Acceptance:** a documented pilot run stays within the approved service budget and advertiser caps, can be stopped and recovered, and produces a useful report with no unreviewed safety failures.
+
+## Deferred until evidence supports them
+
+- More ad platforms, multiple vertical-specific workflows, native mobile clients, organic-content calendars, long-form video generation, full CRM, vector search, microservices, a separate queue service, and automatic multi-channel budget optimization.
+- Production AI/provider selection and production hosting.
+
+## Existing Phase 0 tasks retained as gates
+
+Staging browser E2E for the demo, backup/restore, controlled rollback, and final cost/CI recording remain incomplete. They are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.

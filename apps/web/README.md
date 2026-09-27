@@ -1,9 +1,10 @@
-# GrowthTwin web application foundation
+# GrowthTwin web application
 
-This folder contains the Phase 0 Django application shell. It is one Django
-application with domain module boundaries documented under
-`growthtwin/modules/`; those modules intentionally contain no clinic or content
-workflow implementation yet.
+This folder contains the Django application shell and the old synthetic profile
+demo used to check the development workflow. Local campaign UX work is now
+authorized and should use synthetic data. Domain module boundaries are
+documented under `growthtwin/modules/`; the campaign product workflow has not
+been implemented yet.
 
 ## Runtime prerequisites
 
@@ -41,8 +42,9 @@ Windows DPAPI for the current Windows user. Then use
 loads the locally protected credentials only for the Django process.
 
 The Phase 0 demo contains one profile screen with data scoped to the signed-in
-demo user. It has no social publishing, analytics, AI provider calls, or
-background workers, and it must use synthetic data only.
+demo user. It has no campaign publishing, analytics, AI provider calls, or
+background workers. It must use synthetic data only and should not be mistaken
+for the planned advertising product.
 
 ## Phase 0 demo
 

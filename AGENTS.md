@@ -28,7 +28,9 @@
 - If corrections need commits, use a feature branch and PR; never push directly to `main`. Merge only under the owner's standing authorization and after review and required CI pass.
 
 ## Engineering workflow
-- Complete Phase 0 before starting GrowthTwin product features.
+- The user has authorized local product development while the remaining Phase 0 staging/recovery checks are outstanding. Keep product prototypes local and synthetic until the relevant security, provider, and launch gates are met.
+- Complete staging E2E, backup/restore, rollback, privacy, and platform-integration checks before a customer beta, real advertiser account connection, or production publishing. These are release gates, not blockers for local UX work.
+- Treat the current product direction in `PROJECT.md` and accepted product ADRs as authoritative. Do not reintroduce clinic-only workflows or require a staff member in the normal campaign path.
 - Before coding, inspect relevant repository docs and state a plan with acceptance criteria. Keep changes small and reversible.
 - Use feature branches and pull requests after GitHub is connected; do not push directly to main.
 - Do not deploy to production except through the approved pipeline. Do not edit production servers or databases manually.
@@ -36,7 +38,8 @@
 
 ## Security and AI use
 - Never put API keys, passwords, tokens, or private credentials in source, Git history, issues, PRs, logs, or prompts. Use local environment variables or the deployment secret store. Never print key values.
-- Use synthetic data for hosted free-tier model experiments. Do not send clinic, patient, lead, account, or other real customer data to a trial/free model endpoint.
+- Use synthetic data for hosted free-tier model experiments. Do not send advertiser, lead, account, customer, patient, or other private data to a trial/free model endpoint.
 - NVIDIA Build/NIM hosted trial endpoints are for development, testing, and evaluation only. Do not use them to serve GrowthTwin end users.
+- The intended autopilot is user-authorized automation: the advertiser connects each account and sets hard spend, channel, schedule, and content boundaries. Routine campaigns should not need a GrowthTwin staff reviewer; pause and notify the advertiser when required information, policy confidence, permissions, or a configured limit is missing.
 - Check each model's license and each provider's terms independently. Keep the AI provider behind an application-level gateway/interface.
 - Estimate recurring and one-time costs before enabling a paid service. Use the project budget in PROJECT.md as a working cap; surface spending above the approval threshold for a user decision.

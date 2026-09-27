@@ -1,39 +1,37 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 20:06 (Europe/Istanbul)
+Last verified: 2026-09-27 20:34 (Europe/Istanbul), before the product-direction PR was opened.
 
 ## Goal and working rules
 
-- Complete Phase 0: establish and demonstrate a repeatable, safe development workflow before implementing GrowthTwin product features.
-- Product direction: an AI-assisted content, review, publishing, and analytics workflow for dental clinics in Türkiye.
-- Use synthetic data for hosted checks. Keep credentials and private data out of chat, Git, logs, and handoff files.
-- The only approved paid infrastructure is one Heroku Basic dyno plus one Essential-0 PostgreSQL database, about USD 12/month before taxes. Add no other paid services and delete staging after M4 acceptance.
-- Follow the usage-aware handoff protocol in `AGENTS.md` and this folder's `README.md`.
+- Product direction: a polished self-service ad website that carries a user's request through campaign planning, creative generation, validation, authorized publishing, and reporting with minimal effort.
+- Product is not restricted to dental clinics. Turkish small businesses and creators are recommended as an initial audience; the first pilot segment and publishing destination remain to validate.
+- The owner authorized local product development now. Routine campaigns should not need a GrowthTwin employee; advertisers must explicitly connect accounts and set hard content, schedule, and spend limits. Pause when a safe/authorized action is uncertain.
+- Use synthetic data in local/CI/staging; never store secrets or private user data in chat, Git, logs, or handoff files.
+- Only approved paid infrastructure: one Heroku Basic dyno plus one Essential-0 PostgreSQL database, observed near USD 12/month before tax. No add-ons, extra dynos, production hosting, or paid AI without a new decision.
+- Use `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md`, this file, then verify current Git/PR/CI facts before acting.
 
 ## Repository and review
 
-- Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; `main` is the default branch).
-- Last verified `main` commit: `a18e2fd`, the squash merge of documentation PR #18.
-- PR #17 merged as `f2973b6`; its required CI run `36334388490` and post-merge CI run `36334519381` passed. PR #18's required CI run `36334910789` and post-merge CI run `36335011202` also passed.
-- The PR adds a pinned Playwright browser test for anonymous redirect, login, synthetic profile save, persistence after reload, logout, and access restriction. Its staging runner prompts for credentials without saving them and is restricted to the approved HTTPS hostname.
-- The local browser test passed in the prior session using an in-memory SQLite test database. The CI run includes the browser test against its ephemeral PostgreSQL service.
-- No open PRs were listed immediately after PR #18 merged. The repository was clean on `main` at `a18e2fd` before this observation refresh.
-- The owner delegated routine merge decisions after review and successful required CI. Keep using feature branches and PRs; never push directly to `main`.
+- Repository: https://github.com/ugurkbcgl-hub/growthtwin; `main` is default and protected; changes go through PRs.
+- At the start of this work, `main` was `6aba41e27ef6a6ea6974697d2aa2577321595180`, clean, with no open PRs. Latest main CI run `36335898184` passed.
+- Current work branch: `product/autonomous-advertising-reorientation`, based on that `main`. It updates product, architecture, security, roadmap, and continuity docs to reflect the owner's new direction. PR was not yet open at this snapshot; recheck live status.
+- The owner previously authorized routine merges after review and successful required CI. Do not push directly to `main`.
 
-## Phase 0 status
+## Current product/workflow status
 
-- M2 local Django/PostgreSQL setup is recorded complete; local service and DPAPI secret store were not rechecked. M3 guardrails are complete.
-- M4 synthetic profile-edit demo is merged (PR #7). The Heroku dashboard's latest code deployment was `ac2f627d`; subsequent releases v6-v10 were config-var changes. Current `main` at `a18e2fd` is not deployed.
-- Heroku Resources currently show one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL add-on (~USD 0.007/hour), estimated at about USD 12/month. No other paid resource was listed.
-- A direct PowerShell GET to `/health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. Database readiness is confirmed; the endpoint did not report a deployment revision. An in-app browser request was blocked by the client (`ERR_BLOCKED_BY_CLIENT`), so browser-visible behavior remains unverified.
-- The staging browser E2E has not run. The app exposes no public signup or Django admin route, and a disposable account has not been provisioned. Do not place credentials in chat, CLI arguments, environment variables, logs, files, or PRs.
-- Backup/restore and controlled rollback have not been verified. Final M4 acceptance remains incomplete. No product workflows or AI provider calls are in scope.
+- Existing code remains a small synthetic profile-edit demo; no campaign product workflow has been implemented.
+- Django 5.2 LTS + PostgreSQL 18 remains the accepted one-app modular-monolith stack. Local development in the single checkout at `C:\Users\Public\Desktop\GrowthTwin` is now the immediate focus.
+- Workstation resources already available: Python 3.13.15, PostgreSQL 18.6, 31.7 GB RAM, RTX 3050 Laptop GPU with 6 GB VRAM, Ollama 0.34.4, and Qwen3 0.6B/1.7B/4B. Existing Qwen and NVIDIA tests are one-run synthetic dental examples; they show safety/JSON/latency weaknesses and do not select a production model.
+- NVIDIA Build/NIM remains evaluation-only with synthetic data; do not send private advertiser data or use it for end users.
+- Heroku app `growthtwin-stage-270927` is staging only. Last recorded dashboard observation showed one Basic web dyno and one Essential-0 database. Latest observed deployed revision was `ac2f627d`; current `main` was not deployed at that observation.
+
+## Remaining release-readiness work
+
+- Staging profile-edit E2E has not run; no disposable account is provisioned. A one-off dyno/account-provisioning action has not been approved.
+- Backup/restore, controlled rollback, and browser-visible health response remain unverified. These are gates before external beta or production, but do not block local synthetic-data UX work.
+- No real platform API destination, production AI provider, or production host has been selected.
 
 ## Next action
 
-Obtain a safe, approved path to provision and remove one disposable staging login within the existing resource limit, then run the staging E2E with synthetic profile values. The app has no public signup or Django admin route; a one-off dyno or new CLI credential may require additional approval.
-
-## Not rechecked
-
-- Browser-visible health response, staging E2E, and disposable-account cleanup.
-- Backup/restore, rollback, local PostgreSQL state, and NVIDIA account/model quotas.
+Open the product-direction documentation PR, review the required CI result, and merge it under the standing authorization; then build the Phase 1 local campaign-intake and campaign-status prototype with clearly labeled synthetic data and no external publishing calls.
