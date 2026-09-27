@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 19:25 (Europe/Istanbul)
+Last verified: 2026-09-27 19:29 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -15,8 +15,8 @@ Last verified: 2026-09-27 19:25 (Europe/Istanbul)
 - Repository: `https://github.com/ugurkbcgl-hub/growthtwin` (public).
 - Current branch: `m4/profile-edit-playwright-e2e`, created from `origin/main` at `6464c24`.
 - PR #17 is open against `main`: [test: add browser E2E for demo profile](https://github.com/ugurkbcgl-hub/growthtwin/pull/17).
-- PR head at creation: `3fd926c` (`test: add browser E2E for demo profile`). This handoff snapshot is being added after that implementation commit; verify the live PR head and branch status.
-- Required `Django system check` for PR #17 was pending at the last check (run `36333159110`). Do not claim CI passed. PR #3 and PR #15 are merged.
+- PR head at creation: `3fd926c` (`test: add browser E2E for demo profile`); handoff/fix commits may advance it, so verify the live PR head and branch status.
+- First required CI run `36333159110` failed because Chromium was installed after `python manage.py test`, which auto-discovered the browser test. The workflow order has now been corrected on this branch; verify the new CI run after push. Do not claim CI passed. PR #3 and PR #15 are merged.
 - Never push directly to `main`. Follow repository review and merge rules; do not merge PR #17 until its required checks pass and it has been reviewed.
 
 ## Phase 0 status and verified progress
@@ -28,11 +28,11 @@ Last verified: 2026-09-27 19:25 (Europe/Istanbul)
 - Local `python manage.py test e2e --settings=config.test_settings` passed (1 test). `ruff format --check .`, `ruff check .`, and `git diff --check` passed after the import-order fix. The local test emitted a non-failing warning that the staticfiles directory was absent.
 - Actual staging browser E2E has not run. It needs a disposable, least-privilege staging user. No Heroku CLI was available in this host's PATH; find a safe one-off provisioning path before asking the owner to perform terminal steps.
 - Backup/restore, controlled rollback, and final M4 report remain incomplete. No GrowthTwin product workflows or AI provider calls are in scope.
-- The Codex usage tool reported 97% used / 3% remaining. NVIDIA account/model quota remains unverified. Recheck current usage at the next session; preserve low-usage handoff rules.
+- The Codex usage tool reported 97% used / 3% remaining at the last check. NVIDIA account/model quota remains unverified. Recheck current usage at the next session; preserve low-usage handoff rules.
 
 ## Next action
 
-Check PR #17's required CI result and review it. Fix any failure; merge only after required CI passes and review is complete. Then resume the staging E2E with a disposable user, followed by backup/restore and rollback verification.
+Check PR #17's CI run after the browser-install ordering fix and review it. Fix any failure; merge only after required CI passes and review is complete. Then resume the staging E2E with a disposable user, followed by backup/restore and rollback verification.
 
 ## Recheck at the next session
 
