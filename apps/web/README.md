@@ -33,8 +33,20 @@ Windows DPAPI for the current Windows user. Then use
 `scripts\dev.ps1 runserver` to start the local development server. The helper
 loads the locally protected credentials only for the Django process.
 
-There are no custom clinic models, profile screens, publishing or analytics
-workflows, AI provider calls, or background workers in this Phase 0 shell.
+The Phase 0 demo contains one profile screen with data scoped to the signed-in
+demo user. It has no social publishing, analytics, AI provider calls, or
+background workers, and it must use synthetic data only.
+
+## Phase 0 demo
+
+After local database setup and migration, create a local login with
+`scripts/dev.ps1 createsuperuser`, then run `scripts/dev.ps1 runserver`. Open
+http://127.0.0.1:8000/demo/profile/ and sign in to edit that account’s demo
+profile. Each account sees only its own demo profile.
+
+For local demo tests, run
+`scripts/dev.ps1 test --settings=config.test_settings`. This uses an in-memory
+SQLite database; CI uses an ephemeral PostgreSQL service.
 
 ## Python quality checks
 
@@ -46,6 +58,7 @@ python -m ruff format --check .
 python -m ruff check .
 python -m pip_audit --local --skip-editable --progress-spinner off
 python -m build --sdist --wheel
+python scripts/verify_build_artifacts.py
 ```
 
 Ruff's formatting and lint rules are configured in `pyproject.toml`. To apply

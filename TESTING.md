@@ -5,13 +5,15 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 ## Before product features
 
 - Review documentation and architecture changes for consistency, secret leakage, and scope drift.
-- For repository changes, run only checks supported by the current repository. Do not claim an app test passed when there is no app yet.
-- CI checks Python formatting and linting and audits installed Python dependencies for known vulnerabilities. Add type checks, unit/integration tests, and build output as the application and their supporting tools are established.
+- For repository changes, run only checks supported by the current repository. Keep Phase 0 demo tests synthetic and separate from product acceptance coverage.
+- CI checks formatting, linting, dependency vulnerabilities, Python distribution builds, Django configuration, migration consistency, and focused demo behavior. Add type checks and broader tests as the application grows.
 
 ## Current CI baseline
 
 - `.github/workflows/ci.yml` runs for every pull request and for pushes to `main`, including documentation-only changes. It installs the Django application in editable mode with pinned development tooling on Python 3.13, checks formatting with `python -m ruff format --check .`, lints with `python -m ruff check .`, audits the installed Python dependencies with `python -m pip_audit --local --skip-editable --progress-spinner off`, builds source and wheel distributions with `python -m build --sdist --wheel`, and runs `python manage.py check` with non-secret placeholder settings.
-- These are formatting, static lint, dependency vulnerability, package build, and configuration/system checks. The Phase 0 shell has no product test suite, and this workflow does not exercise database-backed behavior or PostgreSQL integration. The dependency audit needs network access to query the vulnerability service. The build creates distribution artifacts under `apps/web/build/` and `apps/web/dist/`; Git ignores both paths.
+- These are formatting, static lint, dependency vulnerability, package build, and configuration/system checks. The current tests cover only the synthetic profile-edit demo. They do not exercise product workflows or external integrations. The dependency audit needs network access to query the vulnerability service. The build creates distribution artifacts under `apps/web/build/` and `apps/web/dist/`; Git ignores both paths.
+- The distribution verifier checks that both archive formats include the login and profile templates.
+- The job starts an ephemeral PostgreSQL 18.6 service with CI-only placeholder credentials, verifies migration consistency, and runs the Django test suite. GitHub destroys the service when the job ends. Local focused tests can use config.test_settings to run on an in-memory SQLite database without touching the restricted development database.
 - Branch protection requires the passing `Django system check` status from the GitHub Actions app and requires the PR branch to be up to date with `main`.
 
 ## Product verification layers

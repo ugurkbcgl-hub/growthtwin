@@ -13,6 +13,20 @@ jobs:
   django-check:
     name: Django system check
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_DB: growthtwin_ci
+          POSTGRES_USER: growthtwin_ci
+          POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U growthtwin_ci -d growthtwin_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     defaults:
       run:
         working-directory: apps/web
@@ -37,12 +51,34 @@ jobs:
       - name: Audit installed Python dependencies
         run: python -m pip_audit --local --skip-editable --progress-spinner off
 
-      - name: Build Python source and wheel distributions
-        run: python -m build --sdist --wheel
+      - name: Build and verify Python distributions
+        run: |
+          python -m build --sdist --wheel
+          python scripts/verify_build_artifacts.py
 
       - name: Run Django system check
         env:
           DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment
           POSTGRES_DB: growthtwin_ci
           POSTGRES_USER: growthtwin_ci
+          POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
+          POSTGRES_HOST: 127.0.0.1
         run: python manage.py check
+
+      - name: Check migrations are up to date
+        env:
+          DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment
+          POSTGRES_DB: growthtwin_ci
+          POSTGRES_USER: growthtwin_ci
+          POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
+          POSTGRES_HOST: 127.0.0.1
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Run Django tests
+        env:
+          DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment
+          POSTGRES_DB: growthtwin_ci
+          POSTGRES_USER: growthtwin_ci
+          POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
+          POSTGRES_HOST: 127.0.0.1
+        run: python manage.py test

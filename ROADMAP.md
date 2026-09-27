@@ -24,15 +24,15 @@ Status: complete — local Django/PostgreSQL workflow installed and verified; no
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: in progress — architecture/guardrail docs and Django module skeleton are merged; required CI checks Django configuration, Python formatting, linting, and dependency vulnerabilities. This M3 step adds a pinned Python distribution build check.
+Status: complete for the Phase 0 shell — architecture and guardrail docs are in place, and CI checks Django configuration, formatting, linting, dependency vulnerabilities, and Python distributions. Type-checking remains unselected until the application has enough code to benefit from it.
 - Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
 - Add only a small repository skeleton; do not create product services prematurely.
-- Add a dependency vulnerability audit and Python distribution build check to CI. Add type and unit/integration checks as their tooling and testable application behavior are established.
+- Dependency auditing and package builds run in CI. M4 adds focused Django tests for the synthetic demo; introduce type-checking tooling only when the Python surface area benefits from it.
 
 ## M4 — Demo application and deployment chain
-Status: pending
+Status: in progress — the synthetic profile-edit flow is being added and tested locally/in CI. Staging remains gated on an accepted provider and cost ceiling.
 - Build only a small demo profile-edit flow to validate the development factory.
-- Deploy the demo to staging; run its critical Playwright path.
+- Deploy the demo to staging after the provider and budget decision; run its critical Playwright path.
 - Verify health/readiness checks, logs, versioned deployment, backups, and rollback.
 
 ## M5 — Phase 0 final acceptance
