@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-27 19:49 (Europe/Istanbul)
+Last verified: 2026-09-27 20:06 (Europe/Istanbul)
 
 ## Goal and working rules
 
@@ -13,28 +13,27 @@ Last verified: 2026-09-27 19:49 (Europe/Istanbul)
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin (public; `main` is the default branch).
-- Last verified `main` commit: `f2973b6`, the squash merge of PR #17, `test: add browser E2E for demo profile`.
-- PR #17 required CI run `36334388490` passed. Post-merge main CI run `36334519381` also passed.
+- Last verified `main` commit: `a18e2fd`, the squash merge of documentation PR #18.
+- PR #17 merged as `f2973b6`; its required CI run `36334388490` and post-merge CI run `36334519381` passed. PR #18's required CI run `36334910789` and post-merge CI run `36335011202` also passed.
 - The PR adds a pinned Playwright browser test for anonymous redirect, login, synthetic profile save, persistence after reload, logout, and access restriction. Its staging runner prompts for credentials without saving them and is restricted to the approved HTTPS hostname.
 - The local browser test passed in the prior session using an in-memory SQLite test database. The CI run includes the browser test against its ephemeral PostgreSQL service.
-- No open PRs were listed immediately after PR #17 merged. The documentation refresh is being prepared on `docs/refresh-m4-status-after-pr17`.
+- No open PRs were listed immediately after PR #18 merged. The repository was clean on `main` at `a18e2fd` before this observation refresh.
 - The owner delegated routine merge decisions after review and successful required CI. Keep using feature branches and PRs; never push directly to `main`.
 
 ## Phase 0 status
 
 - M2 local Django/PostgreSQL setup is recorded complete; local service and DPAPI secret store were not rechecked. M3 guardrails are complete.
-- M4 synthetic profile-edit demo is merged (PR #7). The last recorded Heroku deployment was revision `ac2f627`; whether the app has deployed newer `main` commit `f2973b6` is unverified.
-- Heroku Resources previously showed one Basic web dyno and one Essential-0 PostgreSQL add-on, estimated at about USD 12/month. Current allocation has not been rechecked.
-- A direct PowerShell GET to `/health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. Database readiness is confirmed; the endpoint did not report a deployment revision. Browser-visible response has not been rechecked.
+- M4 synthetic profile-edit demo is merged (PR #7). The Heroku dashboard's latest code deployment was `ac2f627d`; subsequent releases v6-v10 were config-var changes. Current `main` at `a18e2fd` is not deployed.
+- Heroku Resources currently show one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL add-on (~USD 0.007/hour), estimated at about USD 12/month. No other paid resource was listed.
+- A direct PowerShell GET to `/health/?check=20260927-followup-01` returned HTTP 200 with `{"status": "ok", "version": "unknown"}`. Database readiness is confirmed; the endpoint did not report a deployment revision. An in-app browser request was blocked by the client (`ERR_BLOCKED_BY_CLIENT`), so browser-visible behavior remains unverified.
 - The staging browser E2E has not run. The app exposes no public signup or Django admin route, and a disposable account has not been provisioned. Do not place credentials in chat, CLI arguments, environment variables, logs, files, or PRs.
 - Backup/restore and controlled rollback have not been verified. Final M4 acceptance remains incomplete. No product workflows or AI provider calls are in scope.
 
 ## Next action
 
-Establish a safe way to provision and remove one disposable staging login within the approved resource limit, then run the existing staging E2E with synthetic profile values. If provisioning would require an additional paid dyno, obtain approval before doing it.
+Obtain a safe, approved path to provision and remove one disposable staging login within the existing resource limit, then run the staging E2E with synthetic profile values. The app has no public signup or Django admin route; a one-off dyno or new CLI credential may require additional approval.
 
 ## Not rechecked
 
-- Current Heroku dyno/database allocation and deployed release commit.
 - Browser-visible health response, staging E2E, and disposable-account cleanup.
 - Backup/restore, rollback, local PostgreSQL state, and NVIDIA account/model quotas.
