@@ -6,6 +6,13 @@ authorized and should use synthetic data. Domain module boundaries are
 documented under `growthtwin/modules/`; the campaign product workflow has not
 been implemented yet.
 
+The public `/` route is the first local product slice: it demonstrates brief
+intake, a campaign preview, and a synthetic report. The interaction runs in the
+browser only and does not call an AI provider, store the brief, connect an ad
+account, publish, or spend money. The page marks its preview and metrics as
+simulated. The server-side campaign workflow and persistence have not yet been
+implemented.
+
 ## Runtime prerequisites
 
 - Python 3.13 (the local runtime is 3.13.15).

@@ -5,7 +5,7 @@
 - Product direction was reset on 2026-09-27 at the owner's request: focus on the user-facing advertising website and its automated campaign journey.
 - Local product development is authorized. The existing Django/PostgreSQL foundation and CI remain in use.
 - The previous clinic-only Phase 0 demo is a foundation check, not the product itself. Staging browser E2E, backup/restore, and rollback remain unverified release-readiness tasks; they do not block local synthetic-data UX work.
-- Product code beyond the small synthetic profile demo has not yet been implemented.
+- The first public website slice is being built locally: responsive campaign brief, preview, simulated pause control, and sample report. It has no campaign persistence, AI call, platform connection, publication, or real metrics.
 - Current implementation stack: Django 5.2 LTS + PostgreSQL in one modular monolith (accepted in ADR-0002). No new stack, paid service, or production AI provider is selected.
 
 ## Product goal

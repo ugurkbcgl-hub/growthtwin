@@ -1,4 +1,4 @@
-"""Project URL configuration for the Phase 0 demo."""
+"""Project URL configuration for the public site and local demo."""
 
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
@@ -7,6 +7,7 @@ from config.views import health
 
 urlpatterns = [
     path("health/", health, name="health"),
+    path("", include("growthtwin.site.urls")),
     path(
         "accounts/login/",
         auth_views.LoginView.as_view(template_name="registration/login.html"),

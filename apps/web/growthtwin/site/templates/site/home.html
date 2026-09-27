@@ -1,0 +1,276 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f4ef">
+    <meta
+      name="description"
+      content="GrowthTwin, reklam kampanyanı brief'ten rapora kadar kolayca yönetmen için tasarlanıyor."
+    >
+    <title>GrowthTwin — Reklamın için daha kolay bir yol</title>
+    <link rel="stylesheet" href="{% static 'site/css/site.css' %}">
+    <script defer src="{% static 'site/js/site.js' %}"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="GrowthTwin ana sayfa">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 4.5a13.5 13.5 0 1 0 13.5 13.5H20v7h4.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="18" cy="18" r="3" fill="currentColor"/>
+          </svg>
+        </span>
+        <span>growth<span class="brand-light">twin</span></span>
+      </a>
+      <nav class="topnav" aria-label="Ana gezinme">
+        <a href="#nasil-calisir">Nasıl çalışır?</a>
+        <a href="#kontrol">Kontrol sende</a>
+      </nav>
+      <a class="topbar-cta" href="#kampanya-denemesi">
+        Akışı dene <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="main-content">
+      <section class="hero page-wrap" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Reklam işinin daha kolay hali</p>
+          <h1 id="hero-title">Fikrini anlat.<br><span>Kampanyan ilerlesin.</span></h1>
+          <p class="hero-intro">
+            Bir cümleyle başla. GrowthTwin, reklam fikrini planlamaya,
+            yaratıcı içeriğe ve sonuçları anlamaya giden tek bir akışa dönüştürür.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#kampanya-denemesi">
+              Kampanya akışını dene <span aria-hidden="true">↓</span>
+            </a>
+            <a class="button button-link" href="#nasil-calisir">Nasıl çalıştığını gör</a>
+          </div>
+          <div class="hero-footnote">
+            <span class="footnote-icon" aria-hidden="true">✳</span>
+            <p>Bütçe sınırı ve durdurma kontrolü her zaman sende.</p>
+          </div>
+        </div>
+
+        <div class="studio-wrap" id="kampanya-denemesi">
+          <div class="studio-glow" aria-hidden="true"></div>
+          <section class="studio-card" aria-labelledby="studio-title">
+            <div class="studio-topline">
+              <div class="studio-brand">
+                <span class="studio-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 17.5 9 12l3 3 7-8M14 7h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="micro-label">GROWTH TWIN STUDIO</p>
+                  <h2 id="studio-title">Yeni kampanya</h2>
+                </div>
+              </div>
+              <span class="demo-pill"><span></span> Ürün prototipi</span>
+            </div>
+
+            <div class="stepper" aria-label="Örnek akış: 3 adım">
+              <div class="stepper-labels">
+                <span id="step-label">01 <span>Brief</span></span>
+                <span id="step-count">1 / 3</span>
+              </div>
+              <div class="stepper-track"><span id="step-progress"></span></div>
+            </div>
+
+            <section class="flow-panel" id="brief-panel" aria-labelledby="brief-title">
+              <div class="panel-heading">
+                <p class="panel-kicker">Önce hedefin</p>
+                <h3 id="brief-title">Ne tanıtmak istiyorsun?</h3>
+                <p>Bir cümle yeter. Detayları ihtiyaç oldukça sorarız.</p>
+              </div>
+
+              <label class="field-label" for="campaign-brief">Kampanya fikrin</label>
+              <textarea
+                id="campaign-brief"
+                maxlength="280"
+                placeholder="Örn. Yeni açılan atölyem için daha fazla yerel müşteri bulmak istiyorum."
+                rows="3"
+              ></textarea>
+              <div class="field-meta">
+                <span>Ürününü, hedefini veya duyurunu anlat.</span>
+                <span id="brief-count">0 / 280</span>
+              </div>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="field-label" for="daily-limit">Günlük üst sınır</label>
+                  <div class="input-with-unit">
+                    <span aria-hidden="true">₺</span>
+                    <input id="daily-limit" type="number" min="100" max="100000" step="50" value="750" inputmode="numeric">
+                    <span class="input-unit">/ gün</span>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label class="field-label" for="campaign-days">Süre</label>
+                  <div class="select-wrap">
+                    <select id="campaign-days">
+                      <option value="7">7 gün</option>
+                      <option value="14">14 gün</option>
+                      <option value="30">30 gün</option>
+                    </select>
+                    <span aria-hidden="true">⌄</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="budget-note" aria-live="polite">
+                <span class="budget-icon" aria-hidden="true">⌁</span>
+                <p><strong>Örnek toplam sınır</strong><span id="budget-total">₺5.250</span></p>
+              </div>
+              <p class="simulation-note">Bu deneme hiçbir yere gönderilmez ve harcama yapmaz.</p>
+
+              <button class="button button-primary button-full" id="create-preview" type="button">
+                Örnek kampanyayı gör <span aria-hidden="true">→</span>
+              </button>
+              <p class="inline-error" id="brief-error" role="alert" hidden>Devam etmek için kısaca kampanya fikrini yaz.</p>
+            </section>
+
+            <section class="flow-panel" id="preview-panel" aria-labelledby="preview-title" hidden>
+              <div class="panel-heading panel-heading-row">
+                <div>
+                  <p class="panel-kicker">02 / Örnek önizleme</p>
+                  <h3 id="preview-title">Kampanya taslağın</h3>
+                </div>
+                <span class="status-pill">Simülasyon</span>
+              </div>
+              <div class="campaign-summary">
+                <span class="summary-icon" aria-hidden="true">✳</span>
+                <div>
+                  <span class="micro-label">HEDEFİN</span>
+                  <p id="preview-brief">Kampanya fikrin burada görünür.</p>
+                </div>
+              </div>
+              <div class="creative-preview">
+                <div class="creative-art" aria-hidden="true">
+                  <span class="creative-orbit orbit-one"></span>
+                  <span class="creative-orbit orbit-two"></span>
+                  <span class="creative-spark">✳</span>
+                  <span class="creative-caption">Fikrinden<br>kampanyaya.</span>
+                  <span class="creative-tag">ÖRNEK KREATİF</span>
+                </div>
+                <div class="creative-copy">
+                  <span class="micro-label">İÇERİK TASLAĞI</span>
+                  <p>GrowthTwin burada hedefinle uyumlu reklam metni ve görsel fikri hazırlayacak.</p>
+                </div>
+              </div>
+              <div class="preview-limits">
+                <span><small>GÜNLÜK ÜST SINIR</small><strong id="preview-limit">₺750</strong></span>
+                <span><small>SÜRE</small><strong id="preview-duration">7 gün</strong></span>
+                <span><small>TOPLAM SINIR</small><strong id="preview-total">₺5.250</strong></span>
+              </div>
+              <div class="automation-row">
+                <span class="automation-dot" id="automation-dot"></span>
+                <div class="automation-copy">
+                  <strong id="automation-state">Örnek akış etkin</strong>
+                  <span>Yayınlama ve harcama yok</span>
+                </div>
+                <button class="button button-secondary pause-button" id="toggle-pause" type="button" aria-pressed="false">Durdur</button>
+              </div>
+              <div class="panel-actions">
+                <button class="button button-secondary" id="edit-brief" type="button">← Düzenle</button>
+                <button class="button button-primary" id="show-report" type="button">Örnek rapor <span aria-hidden="true">→</span></button>
+              </div>
+              <p class="simulation-note">Örnek ekran; AI üretimi veya yayınlama çalışmıyor.</p>
+            </section>
+
+            <section class="flow-panel report-panel" id="report-panel" aria-labelledby="report-title" hidden>
+              <div class="panel-heading panel-heading-row">
+                <div>
+                  <p class="panel-kicker">03 / Sonuçları anla</p>
+                  <h3 id="report-title">Kampanyan nasıl gidiyor?</h3>
+                </div>
+                <span class="status-pill status-pill-soft">Örnek rapor</span>
+              </div>
+              <div class="report-context">
+                <span class="report-context-icon" aria-hidden="true">↗</span>
+                <div><strong id="report-brief">Kampanya fikrin</strong><span id="report-period">7 günlük örnek görünüm</span></div>
+              </div>
+              <div class="metric-grid">
+                <div class="metric-card"><span>Erişim</span><strong>1.284</strong><small>örnek kişi</small></div>
+                <div class="metric-card"><span>Tıklama</span><strong>64</strong><small>örnek tıklama</small></div>
+                <div class="metric-card metric-highlight"><span>Etkileşim</span><strong>4,9%</strong><small>örnek oran</small></div>
+              </div>
+              <div class="report-insight">
+                <span aria-hidden="true">✳</span>
+                <p>Gerçek GrowthTwin raporu, sonuçları sade bir dille açıklar ve sonraki adımı önerir.</p>
+              </div>
+              <p class="simulation-note">Bu metrikler sentetiktir; gerçek kampanyaya ait değildir.</p>
+              <button class="button button-secondary button-full" id="restart-flow" type="button">Yeni bir brief dene <span aria-hidden="true">↗</span></button>
+            </section>
+            <p class="flow-status" id="flow-status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+
+      <section class="how-section" id="nasil-calisir" aria-labelledby="how-title">
+        <div class="page-wrap">
+          <div class="section-intro">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Sade bir başlangıç</p>
+            <h2 id="how-title">Sen hedefi seç.<br><span>GrowthTwin akışı toparlasın.</span></h2>
+            <p>Tekrarlayan reklam işlerini tek yerde gör; ayrıntılarla boğulmadan süreci takip et.</p>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card">
+              <span class="step-number">01</span>
+              <div class="step-symbol step-symbol-lilac" aria-hidden="true">✳</div>
+              <h3>Ne istediğini anlat</h3>
+              <p>Kısa bir hedef ve temel bilgilerle başla. Eksik olanı GrowthTwin sorar.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-number">02</span>
+              <div class="step-symbol step-symbol-peach" aria-hidden="true">↗</div>
+              <h3>Kampanyanı gör</h3>
+              <p>İçerik, zamanlama ve bütçe sınırı aynı yerde, anlaşılır biçimde buluşur.</p>
+            </article>
+            <article class="step-card">
+              <span class="step-number">03</span>
+              <div class="step-symbol step-symbol-mint" aria-hidden="true">⌁</div>
+              <h3>Sonuçları takip et</h3>
+              <p>Yayınlama ve raporlama tek akışta ilerler; ne olduğunu kolayca anlarsın.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="control-section page-wrap" id="kontrol" aria-labelledby="control-title">
+        <div class="control-mark" aria-hidden="true">
+          <span class="control-ring ring-a"></span>
+          <span class="control-ring ring-b"></span>
+          <span class="control-center">G</span>
+        </div>
+        <div class="control-copy">
+          <p class="eyebrow eyebrow-light"><span class="eyebrow-dot"></span> Otomasyon, senin sınırlarınla</p>
+          <h2 id="control-title">Daha az uğraş.<br><span>Daha çok kontrol.</span></h2>
+          <p>Hesap erişimini, zamanlamayı ve harcama üst sınırını sen belirlersin. GrowthTwin günlük akışı senin adına yürütmek için tasarlanıyor.</p>
+          <div class="control-chips"><span>Harcama sınırı</span><span>Kolay durdurma</span><span>Açık durum bilgisi</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer page-wrap">
+      <a class="brand brand-footer" href="#top">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 4.5a13.5 13.5 0 1 0 13.5 13.5H20v7h4.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="18" cy="18" r="3" fill="currentColor"/>
+          </svg>
+        </span>
+        <span>growth<span class="brand-light">twin</span></span>
+      </a>
+      <p>GrowthTwin reklam operasyonunu kolaylaştırmak için tasarlanıyor.</p>
+      <span class="footer-prototype">Yerel ürün prototipi</span>
+    </footer>
+    <div class="prototype-banner" role="note">
+      Bu sayfa bir prototiptir. Hesap bağlama, gerçek yapay zekâ üretimi, yayınlama, harcama ve raporlama henüz çalışmaz.
+    </div>
+  </body>
+</html>
