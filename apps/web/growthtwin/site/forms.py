@@ -4,6 +4,7 @@ from django import forms
 
 
 class CampaignDraftForm(forms.Form):
+    campaign_id = forms.UUIDField(required=False, widget=forms.HiddenInput())
     brief = forms.CharField(
         label="Kampanya fikrin",
         max_length=280,

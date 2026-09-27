@@ -99,6 +99,10 @@
 
               <form method="post" action="{% url 'site:home' %}">
                 {% csrf_token %}
+                {{ form.campaign_id }}
+                {% for error in form.campaign_id.errors %}
+                  <p class="inline-error" role="alert">{{ error }}</p>
+                {% endfor %}
                 <label class="field-label" for="campaign-brief">Kampanya fikrin</label>
                 {{ form.brief }}
                 {% for error in form.brief.errors %}

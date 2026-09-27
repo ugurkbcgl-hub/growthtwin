@@ -1,5 +1,7 @@
 """Session-scoped, synthetic campaign drafts for the local product prototype."""
 
+import uuid
+
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models import Q
@@ -7,6 +9,8 @@ from django.db.models import Q
 
 class CampaignDraft(models.Model):
     """A temporary campaign brief owned by one anonymous browser session."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Status(models.TextChoices):
         DRAFT = "draft", "Taslak"
