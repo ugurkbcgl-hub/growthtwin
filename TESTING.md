@@ -14,6 +14,7 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 - These are formatting, static lint, dependency vulnerability, package build, and configuration/system checks. The current tests cover only the synthetic profile-edit demo. They do not exercise product workflows or external integrations. The dependency audit needs network access to query the vulnerability service. The build creates distribution artifacts under `apps/web/build/` and `apps/web/dist/`; Git ignores both paths.
 - The distribution verifier checks that both archive formats include the login and profile templates.
 - The job starts an ephemeral PostgreSQL 18.6 service with CI-only placeholder credentials, verifies migration consistency, and runs the Django test suite. GitHub destroys the service when the job ends. Local focused tests can use config.test_settings to run on an in-memory SQLite database without touching the restricted development database.
+- The same job installs the pinned Playwright Python package and Chromium before the standard Django test command discovers and runs the browser test in `apps/web/e2e` against the ephemeral PostgreSQL service. The test uses a generated local account and does not contact staging or require credentials. For local focused runs, `python manage.py test e2e --settings=config.test_settings` uses isolated SQLite.
 - Branch protection requires the passing `Django system check` status from the GitHub Actions app and requires the PR branch to be up to date with `main`.
 
 ## Product verification layers
@@ -33,3 +34,5 @@ Status: Phase 0 policy. Add automated checks alongside a chosen implementation s
 ## Phase 0 acceptance checks
 
 M4 should verify the synthetic demo profile-edit path, `GET /health/` database readiness and deployment version, backup/restore, and rollback. M5 should exercise a CI failure that blocks merge and a controlled rollback. Record actual commands, outcomes, and costs in the completion report.
+
+The staging browser runner is `python -m e2e.run_staging` from `apps/web`, after installing `.[e2e]` and Chromium. It prompts for a disposable regular test account and password without placing the password in command-line arguments, environment variables, logs, or files. Only run it against the approved staging hostname with synthetic values; delete the disposable account and its profile after the run.

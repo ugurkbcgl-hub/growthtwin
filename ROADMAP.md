@@ -33,7 +33,8 @@ Status: in progress — the synthetic profile-edit flow is merged and passed CI 
 - Provisioning complete: `growthtwin-stage-270927` has one Heroku Basic web dyno and one Essential-0 PostgreSQL database. Resources screen estimated about USD 12/month before taxes; no other paid resource was shown.
 - Deployment complete: connected GitHub repository `ugurkbcgl-hub/growthtwin`, branch `main`, revision `ac2f627` deployed on 2026-09-27. Heroku reported deployment and release phase success. App: https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/.
 - Health log check: a fresh `GET /health/?check=20260927-istanbul-01` returned HTTP 200 and 38 bytes in Heroku router/app logs. Browser-visible response verification remains unresolved because the tab retained a `400` page after a blocked navigation.
-- Next: add a focused Playwright E2E check for the synthetic profile-edit path, with a disposable staging test account and no credentials in source, chat, or logs.
+- A pinned Playwright browser test now covers the synthetic profile flow against an isolated local Django test server; the local run passed. PR #17 adds it to CI and provides a staging runner that prompts for a disposable account without saving its password.
+- Staging browser E2E remains pending: no disposable account has been provisioned, and the new PR's required CI check is pending. Verify login/CSRF/redirect behavior on the approved staging hostname after PR review and CI pass.
 - Then verify backup/restore and controlled rollback; record their actual results before M4 acceptance.
 - Shutdown plan: delete the app and database after M4 acceptance to end recurring charges.
 
@@ -47,5 +48,5 @@ Pricing and provider details were checked 2026-09-27: [Heroku pricing](https://w
 
 ## Current blockers
 
-- Phase 0 M4 acceptance remains incomplete: staging profile-edit E2E, backup/restore, rollback, and browser-visible health response confirmation.
+- Phase 0 M4 acceptance remains incomplete: merge PR #17 after review and CI pass, run staging profile-edit E2E with a disposable account, verify backup/restore and rollback, and confirm the browser-visible health response.
 - The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not been recorded; check the signed-in Build account before relying on them.
