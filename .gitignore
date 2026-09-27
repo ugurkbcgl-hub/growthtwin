@@ -5,3 +5,10 @@
 *.key
 secrets/
 models/
+.venv/
+*.egg-info/
+__pycache__/
+*.py[cod]
+*.sqlite3
+.ruff_cache/
+.coverage

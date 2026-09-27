@@ -5,24 +5,29 @@ Status: complete
 - Created a separate local Git workspace and project baseline docs.
 - Kept the synced project mirror and its sources/ files untouched.
 
-## M1 — Private source-of-truth repository
-Status: partially complete — private repository, authorized connection, initial push, `main` default branch, and issue template are in place.
-- Created the private GitHub repository `ugurkbcgl-hub/growthtwin` and pushed the baseline.
-- Use feature branches and pull requests as the working convention.
-- Enforced branch protection and required CI are pending: GitHub returned HTTP 403 because this private repository needs GitHub Pro for branch protection. Keep the repository private; do not change visibility to public to bypass this limit. Revisit the plan only after reviewing the recurring cost.
+## M1 — Public source-of-truth repository
+Status: mostly complete — repository, `main`, issue template, pull-request protections, and the required CI status check are in place.
+- Created `ugurkbcgl-hub/growthtwin` as a public repository at the user's request and pushed the baseline.
+- `main` is the default branch. Enforced branch protection requires pull requests, applies to administrators, blocks force-pushes and deletion, requires conversation resolution and linear history, and requires the passing `Django system check` from GitHub Actions on an up-to-date branch.
+- Use feature branches and pull requests for changes.
 
 ## M2 — Development environment and cost decision
-Status: pending
-- Decide whether WSL2 Ubuntu is a short-term bootstrap or a separate Linux development server is needed now.
-- Inventory Ubuntu, GPU passthrough, disk, and installed tools before installing anything.
+Status: complete — local Django/PostgreSQL workflow installed and verified; no paid services enabled.
+- Python 3.13.15 is installed in the current user's Windows environment. Keep the single Codex-managed checkout in place; do not create a second WSL checkout.
+- Ubuntu WSL2 is available for local Linux tooling if needed. WSL is version 2.6.1.0; the distro was stopped at inventory time.
+- Windows Node.js 24.11.1/npm 11.6.2 remain available for other tooling. PostgreSQL 18.6 and `psql` are installed locally; the `postgresql-x64-18` service is running on port 5432. Docker CLI was not found in the current session; Node is not needed for the accepted Django server stack.
+- `growthtwin` database and restricted `growthtwin_app` role were created. Django migrations and the Django system check passed.
+- Local database and Django secrets are protected for this Windows user with DPAPI outside the repository. No credential values are committed.
+- Ollama 0.34.4 and the earlier Qwen3 evaluation are recorded in AI_PROVIDERS.md; no more model sweeps are part of M2.
+- No paid infrastructure or recurring service has been enabled.
 - Estimate cloud costs and obtain a user decision before a single spend above USD 20 or any recurring service.
 - Keep monthly spending under the confirmed project cap.
 
 ## M3 — Repository and engineering guardrails
-Status: pending
-- Complete PROJECT.md, ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and ADR process.
-- Add a small repository skeleton only; do not create product services prematurely.
-- Add formatting, lint, type, unit/integration, security/dependency and build checks to CI.
+Status: in progress — architecture/guardrail docs and Django module skeleton added; the initial Django system-check workflow passes on PR #3 and is required by `main`.
+- Keep PROJECT.md aligned with the user's public-repository decision; complete ARCHITECTURE.md, SECURITY.md, TESTING.md, DEPLOYMENT.md, and the ADR process.
+- Add only a small repository skeleton; do not create product services prematurely.
+- Start CI with the existing Django shell check. Add formatting, lint, type, unit/integration, security/dependency, and build checks as their tooling and testable application behavior are established.
 
 ## M4 — Demo application and deployment chain
 Status: pending
@@ -38,6 +43,5 @@ Status: pending
 - Do not begin GrowthTwin product features or Phase 1 without the user's explicit go-ahead.
 
 ## Current blockers
-- `main` is not protected by GitHub because the current account plan does not allow branch protection on a private repository. CI checks have not been configured yet.
-- The NVIDIA Build API key in the supplied screenshot should be revoked and replaced before use. The replacement key must stay out of this repository and chat.
-- The account-specific NVIDIA model limits are not visible from the screenshot; check them in the signed-in Build account.
+- The replacement NVIDIA Build API key must stay out of this repository and chat. Account-level and per-model limits have not yet been recorded; check the signed-in Build account before relying on them.
+- The staging provider and recurring-cost ceiling remain open for M4.

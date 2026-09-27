@@ -2,7 +2,7 @@
 
 ## Status
 - Current phase: Phase 0, development factory.
-- Repository: local scaffold created; private GitHub remote not connected.
+- Repository: public GitHub repository `https://github.com/ugurkbcgl-hub/growthtwin` is connected at the user's request; `main` is the default branch. Branch protection requires PRs, blocks force-push/deletion, and requires the `Django system check` from GitHub Actions to pass on an up-to-date branch.
 - Product feature implementation: not started.
 - Project name is a codename and may change.
 
@@ -18,30 +18,28 @@ The first product scope described in the project reference is:
 Long video, Google Ads, full CRM, and production growth-graph functionality are later work.
 
 ## Phase 0 objective
-Build and demonstrate a repeatable development workflow before building the GrowthTwin product: private repository, persistent project docs, isolated development/staging/production configuration, CI, a small demo app, a staging deployment, E2E coverage, health checks, backup and a tested rollback path.
+Build and demonstrate a repeatable development workflow before building the GrowthTwin product: the public repository selected by the user, persistent project docs, isolated development/staging/production configuration, CI, a small demo app, a staging deployment, E2E coverage, health checks, backup and a tested rollback path.
 
-The reference specification describes a modular monolith with workers and a target architecture including Next.js, FastAPI, PostgreSQL/pgvector, Temporal, Redis, object storage, and an AI gateway. These are candidate decisions until recorded and accepted; do not create unnecessary services during Phase 0.
+The project owner accepted Django 5.2 LTS + PostgreSQL as the initial application stack in ADR-0002. The reference also discussed Next.js, FastAPI, pgvector, Temporal, Redis, object storage, and an AI gateway; do not add separate services or extensions until a feature requires them and the cost/architecture is reviewed.
 
 ## AI provider direction
 - NVIDIA Build/NIM's hosted free endpoints are a useful place to prototype and compare models. NVIDIA's trial terms restrict this access to evaluation/testing and exclude production use.
-- The shared screenshot exposed an API key. Treat that key as compromised: rotate it in NVIDIA Build before any further use. Do not store the old or replacement value here.
+- The user confirmed the API key exposed in the screenshot has been replaced. Keep the replacement secret out of chat and the repository.
 - Do not submit real clinic or patient data to free/trial endpoints. Use synthetic examples while evaluating.
-- A small local model through Ollama is a candidate for private, no-per-call-cost experiments. This workstation has 32 GB RAM and an RTX 3050 Laptop GPU with 6 GB VRAM; runtime and context memory still need to be measured.
+- A small local model through Ollama is a candidate for private, no-per-call-cost experiments. Initial Qwen3 runtime and VRAM measurements on this workstation are recorded in AI_PROVIDERS.md; no production model has been selected.
 - Do not select a production model or provider yet. Keep the integration behind an AI gateway so providers can change.
 
-## Workstation and tool inventory (2026-09-26)
+## Workstation and tool inventory (2026-09-27)
 - Host: Acer Nitro ANV15-51, Windows, 13th Gen Intel Core i5-13420H, 31.7 GB RAM.
-- NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to the host.
-- Ubuntu on WSL2 is present.
-- Git is present. GitHub CLI, Docker CLI, and Ollama were not found during the initial inventory.
+- NVIDIA GeForce RTX 3050 6 GB Laptop GPU is visible to Windows and WSL2.
+- Ubuntu is installed as a WSL2 distribution; WSL package version 2.6.1.0 was observed, and the distribution was stopped when checked.
+- Git is present. GitHub CLI and Git push to the configured remote work. Windows Node.js 24.11.1 and npm 11.6.2 are available. Python 3.13.15 is installed in the current user's Windows environment. PostgreSQL 18.6 and `psql` are installed locally; service `postgresql-x64-18` listens on port 5432. Docker CLI was not found in the current session.
+- Ollama 0.34.4 is installed; Qwen3 0.6B, 1.7B, and 4B fit on the GPU. See AI_PROVIDERS.md for the initial quality/latency comparison. No additional model tests are planned for this setup step.
 - The ChatGPT project mirror contains reference files but is not a Git repository. Its sources/ directory remains read-only.
 
 ## Budget and project constraints
 The project reference sets a Phase 0 working hard limit of USD 100/month, with a warning around USD 80/month and user approval for a single spend above USD 20. Treat these as project constraints to confirm against the user's current budget before purchasing or provisioning anything. Prefer the NVIDIA trial and local models for experiments; free API quotas and terms can change.
 
 ## Open decisions
-1. Which GitHub account/organization will own the private growthtwin repository, and how will this workspace get authorized access?
-2. Should initial development use the existing local WSL2 Ubuntu environment as a temporary bootstrap, or should we provision a separate Linux host immediately?
-3. Which free model/API should be the initial text-generation benchmark, and what exact account quota is visible in NVIDIA Build?
-4. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
-5. Which technical stack candidates from the reference should become accepted architecture decisions?
+1. What exact per-model NVIDIA Build limits and account quota are visible for future development evaluations? The key is already replaced; do not share the replacement key in chat or commit it. Recheck current limits before relying on them.
+2. What deployment provider and recurring-cost ceiling will be used for a Phase 0 staging environment?
