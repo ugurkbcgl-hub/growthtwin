@@ -43,15 +43,12 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
     headline = shorten(subject, width=80, placeholder="…")
     short_brief = shorten(brief_text, width=240, placeholder="…")
     audience_copy = (
-        f"{audience} için: {shorten(subject, width=190, placeholder='…')}"
+        f"{shorten(audience, width=70, placeholder='…')} için: "
+        f"{shorten(brief_text, width=160, placeholder='…')}"
         if audience
         else short_brief
     )
-    info_copy = (
-        f"{shorten(brand_context, width=190, placeholder='…')} hakkında detayları incele."
-        if brand_context
-        else short_brief
-    )
+    info_copy = short_brief
 
     return (
         CreativeVariant(
