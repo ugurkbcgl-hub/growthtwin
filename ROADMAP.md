@@ -76,8 +76,8 @@ Status: the initial product-experience slice is complete and merged to `main` at
 
 Staging browser E2E for the demo, backup/restore, controlled rollback, and final cost/CI recording remain incomplete. They are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.
 
-Session-scoped prototype drafts must remain synthetic until the invocation and
-cadence of expired-session cleanup are verified. Expired sessions cannot access
-their drafts, and `clearsessions` removes them, but no recurring invocation is
-configured in the repository. Do not infer a retention guarantee from session
-expiry alone.
+Session-scoped prototype drafts must remain synthetic. Heroku staging now has a
+daily `python manage.py clearsessions` job scheduled at 00:00 UTC through
+Heroku Scheduler. The first execution and actual one-off dyno cost remain
+unverified. Scheduler is best-effort; do not infer a real-data retention
+guarantee from session expiry or this schedule.
