@@ -46,9 +46,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 self.assertEqual(
                     page.evaluate("document.activeElement.id"), "brand-context"
                 )
-                brand_context.evaluate(
-                    "(field) => field.removeAttribute('maxlength')"
-                )
+                brand_context.evaluate("(field) => field.removeAttribute('maxlength')")
                 page.keyboard.type("Sentetik " * 40)
                 page.keyboard.press("Tab")
                 self.assertEqual(
