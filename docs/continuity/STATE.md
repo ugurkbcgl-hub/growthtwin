@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification before this handoff update: 2026-09-29 00:47 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `880999c` (handoff PR #67); the latest app and CI changes are in PR #66 (`eb4d686`). PR #65 CI `36486720468` and post-merge CI `36486952363`, PR #66 CI `36487628405` and post-merge CI `36487818391`, and handoff PR #67 post-merge CI `36488253449` passed. The working tree was clean with no open PRs.
+Last repository verification before this handoff update: 2026-09-29 00:54 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `5cd8491` (handoff PR #68); latest application code and E2E workflow are in PR #66 (`eb4d686`). PR #65 CI `36486720468` and post-merge CI `36486952363`, PR #66 CI `36487628405` and post-merge CI `36487818391`, PR #67 post-merge CI `36488253449`, and PR #68 post-merge CI `36488861944` passed. The working tree was clean with no open PRs.
 
 ## Goal and working rules
 
@@ -24,6 +24,7 @@ Last repository verification before this handoff update: 2026-09-29 00:47 (Europ
 - PR #65 (`b0a4d80`) fixed a 7px horizontal overflow caused by decorative studio glow at 390px and a 3px overflow at 1024px. A Chromium sweep at 320, 360, 390, 430, 600, 768, 820, 1024, 1030, and 1280px found no remaining horizontal overflow; manual 390px review covered brief, preview, and sample report. PR CI `36486720468` and post-merge CI `36486952363` passed.
 - PR #66 (`eb4d686`) added a mobile Chromium regression check for the brief → preview → sample report flow and made the E2E suite run explicitly in CI. The focused browser test passed locally; PR CI `36487628405` and post-merge CI `36487818391` passed.
 - Mobile browser review at 390px confirmed that an empty brief is stopped by the required field, the optional brand/audience disclosure opens with the keyboard, and budget limits accept 100 and 100,000 while rejecting 99 and 100,001. No further field-validation issue was observed; no code change was needed.
+- At 390px, all six campaign form controls have unique accessible labels, the brief exposes its required state, and the flow status is announced through a polite live region. No naming or status issue was observed in the brief step.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -36,4 +37,4 @@ Last repository verification before this handoff update: 2026-09-29 00:47 (Europ
 
 ## Next action
 
-Review keyboard navigation and screen-reader naming/status announcements in the mobile brief → preview → report journey. Fix only verifiable accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
+Review accessible names and state announcements for the mobile preview's creative editor, pause control, and sample report. Fix only verifiable accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
