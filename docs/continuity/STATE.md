@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification: 2026-09-29 01:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `e5c8dea` (PR #72); working tree clean, no open PRs. PR #72 CI `36492742189` and post-merge CI `36492925328` passed. The focused local mobile browser E2E also passed.
+Last repository verification: 2026-09-29 01:37 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `35c56e0` (PR #73); working tree clean, no open PRs. PR #73 CI `36493159093` and post-merge CI `36493316954` passed. PR #72 CI `36492742189` and post-merge CI `36492925328` passed; its focused local mobile browser E2E also passed.
 
 ## Goal and working rules
 
@@ -27,6 +27,7 @@ Last repository verification: 2026-09-29 01:33 (Europe/Istanbul). Repository: `h
 - At 390px, all six campaign form controls have unique accessible labels, the brief exposes its required state, and the flow status is announced through a polite live region. No naming or status issue was observed in the brief step.
 - The preview editor exposes labeled text fields and named save/regenerate actions; the report is a named region with a heading and readable metric labels and values. PR #70 (`bdc4ca1`) fixed the pause/resume button's conflicting action name and `aria-pressed` state, and added a browser check for its changing accessible name and polite pause announcement. Focused local browser E2E, PR CI `36490407579`, and post-merge CI `36490586669` passed.
 - PR #72 (`e5c8dea`) extended the mobile browser E2E to open a creative variant with the keyboard, verify its labeled field, save synthetic copy and check the status message and persisted value, then regenerate and check its status message. The focused local E2E passed; PR CI `36492742189` and post-merge CI `36492925328` passed. No accessibility behavior gap was found, so this change adds regression coverage only.
+- PR #73 (`35c56e0`) refreshed this handoff with PR #72's verified results and set the next action to review invalid creative-copy validation accessibility. PR CI `36493159093` and post-merge CI `36493316954` passed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
