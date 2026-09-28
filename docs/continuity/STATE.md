@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:56 (Europe/Istanbul). `main` is at `45ccdce1d72480f05ba1e8eeec920edac04c1147`; post-merge CI `36393973641` passed. PR #34 and issue #33 are complete. Current branch `feature/GT-035-target-audience` has PR #36 open against `main`; CI is running on code head `f151e20` and will rerun for this handoff update. Issue #35 tracks the audience slice.
+Last verified: 2026-09-28 11:00 (Europe/Istanbul). `main` is at `d3ab5f81373b64899f0f88303ee4cde14b75e003`; post-merge CI `36394551767` passed. PR #36 and issue #35 are complete. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -15,18 +15,16 @@ Last verified: 2026-09-28 10:56 (Europe/Istanbul). `main` is at `45ccdce1d72480f
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- PRs #23, #28, #27, #29, #31, #32, and #34 are merged. Original PR #25 auto-closed when its base branch was deleted; its changes landed through replacement PR #28.
-- PR #36: https://github.com/ugurkbcgl-hub/growthtwin/pull/36 — open against `main`; fresh required CI is running.
-- Issue #35 tracks PR #36. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
+- PRs #23, #28, #27, #29, #31, #32, #34, and #36 are merged. Original PR #25 auto-closed when its base branch was deleted; its changes landed through replacement PR #28.
+- Issue #35 is closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
 - No deployment or live campaign action occurred. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
 - The local prototype has a synthetic brief → preview → simulated pause → sample report flow.
-- Session-scoped UUID drafts persist brief, optional brand/product context, generic objective, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
-- PR #36 adds optional target-audience context within the collapsed details section, persists/restores it with the draft, and shows it in the synthetic preview. Empty input stays empty; no audience is inferred.
-- Full local Django suite passed (25 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before this handoff update. Required CI is the merge gate.
+- Session-scoped UUID drafts persist brief, optional brand/product context, generic objective, optional target audience, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
+- Full local Django suite passed (25 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed. PR #36 CI passed on final head `083df24` (`36394398757`); post-merge CI passed on `d3ab5f8` (`36394551767`).
 - No AI generation, provider, external account, publishing, real performance metric, new paid service, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
@@ -38,4 +36,4 @@ Last verified: 2026-09-28 10:56 (Europe/Istanbul). `main` is at `45ccdce1d72480f
 
 ## Next action
 
-Verify required CI on PR #36's latest head and review the final diff. Merge if every check passes and no issue is found; then choose the next small Phase 2 slice from `ROADMAP.md`.
+Review remaining Phase 2 items and select a narrow local slice that structures the campaign plan from the brief, selected objective, audience, brand context, and spend boundary. Keep it synthetic and prevent account connection, publication, and spend.
