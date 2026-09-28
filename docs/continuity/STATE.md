@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 12:48 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `971b8c8` (PR #45); required CI `36405418341` and post-merge CI `36405621064` passed. The handoff update PR is being prepared. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 13:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `8291995` (PR #46); required CI `36405873982` and post-merge CI `36406079806` passed. The session-retention documentation PR is being prepared. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -30,8 +30,9 @@ Last verified: 2026-09-28 12:48 (Europe/Istanbul). Repository: `https://github.c
 - Select the first advertiser workflow and destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
 - Session drafts are synthetic. Verify retention and deletion operations before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
+- The application denies reads after session expiry and tests `clearsessions` cascade deletion; no recurring cleanup invocation was found in the repository. Expired-row cleanup timing is unverified.
 - AI/provider selection and production data-processing terms remain undecided. Issue #2 was previously tracking NIM quota research; recheck its current status and provider terms before any NIM use.
 
 ## Next action
 
-Before adding a content-owned ORM entity, specify workspace ownership and a safe transition for retention, deletion, migration, and rollback from session-scoped prototypes. Keep all data synthetic and do not move persistence until those conditions are defined.
+Verify how expired-session cleanup will run on local/staging using approved existing resources, and define its cadence before any non-synthetic data. Keep drafts synthetic; do not add a paid scheduler or move persistence until workspace ownership and retention/deletion are defined.

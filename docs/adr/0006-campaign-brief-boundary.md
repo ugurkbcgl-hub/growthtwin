@@ -45,6 +45,12 @@ For now, `site` owns form/HTTP behavior and session-scoped synthetic
 content module must not import Django sessions, requests, or `site` models. No
 ORM model move or schema migration is part of this decision.
 
+The site refuses to read a draft when its owning session has expired. Django's
+`clearsessions` command removes expired session rows and cascades to drafts;
+tests cover that behavior. No recurring invocation is configured in this
+repository, so database cleanup timing is unverified. Do not store real
+advertiser data until retention and cleanup execution are defined and verified.
+
 When a persistent content entity is proposed, it must be owned by an explicit
 advertiser/workspace identity, not a browser session. Do not implement that
 entity until workspace ownership, retention/deletion, and migration/backfill
@@ -55,6 +61,8 @@ behavior are specified.
 - The brief and plan can be used without a browser request or database row.
 - The existing prototype remains session-scoped and synthetic; it is not ready
   for real advertiser data.
+- Session expiry blocks access but does not itself prove that expired rows are
+  promptly removed. Cleanup cadence is an explicit privacy/operations gate.
 - A later ORM extraction requires a deliberate data migration and ownership
   transition rather than a direct rename of `CampaignDraft`.
 - Workspace identity, retention duration, and real-data acceptance remain open.
@@ -64,5 +72,8 @@ behavior are specified.
 - Keep `CampaignBrief` and `CampaignPlan` free of persistence and HTTP concerns.
 - Preserve and verify session isolation, expiry cleanup, edit, and deletion in
   the site adapter.
+- Verify a cleanup invocation/cadence using approved existing infrastructure
+  before accepting non-synthetic data; do not assume the management command is
+  scheduled.
 - Before a content ORM entity or real advertiser data, decide workspace owner,
   retention/deletion policy, and migration/rollback approach.
