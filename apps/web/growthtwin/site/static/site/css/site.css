@@ -312,7 +312,7 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .creative-editor-heading .micro-label { margin: 0 0 3px; color: var(--purple); font-size: 8px; letter-spacing: .65px; }
 .creative-editor-heading h4 { margin: 0; color: #343542; font-size: 12px; font-weight: 710; }
 .creative-editor-heading .status-pill { padding: 4px 7px; font-size: 7px; }
-.creative-editor-note, .creative-stale-note { margin: 8px 0 10px; color: #858692; font-size: 8px; line-height: 1.55; }
+.creative-editor-note, .creative-stale-note { margin: 8px 0 10px; color: #626477; font-size: 12px; line-height: 1.55; }
 .creative-stale-note { padding: 8px; border-radius: 8px; background: #fff6e9; color: #8c663c; }
 .creative-success-note { margin: 8px 0 10px; padding: 8px; border-radius: 8px; background: #eaf5ee; color: #52836a; font-size: 8px; line-height: 1.5; }
 .creative-variants-form { display: grid; gap: 8px; }

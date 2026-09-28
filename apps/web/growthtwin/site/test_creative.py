@@ -1,9 +1,15 @@
 """Focused checks for provider-free creative copy fallbacks."""
 
-from django.test import SimpleTestCase
+from types import SimpleNamespace
+from unittest.mock import patch
+from uuid import UUID
+
+from django.test import RequestFactory, SimpleTestCase
 
 from growthtwin.modules.content.creative import draft_creative_variants
 from growthtwin.modules.content.planning import CampaignBrief
+from growthtwin.site.forms import CampaignDraftForm
+from growthtwin.site.views import render_campaign_home
 
 
 class CreativeFallbackTests(SimpleTestCase):
@@ -54,3 +60,26 @@ class CreativeFallbackTests(SimpleTestCase):
         self.assertTrue(
             audience_variant.body.startswith("Hafta sonu etkinliği arayanlar için:")
         )
+
+    def test_copy_editor_explains_unmodified_brief_fallback(self):
+        campaign = SimpleNamespace(
+            brief="Yeni seramik atölyemi tanıtmak istiyorum",
+            objective="",
+            get_objective_display=lambda: "",
+            target_audience="",
+            brand_context="",
+            daily_limit=750,
+            duration_days=7,
+            creative_variants=[],
+            creative_source_hash="",
+            pk=UUID("2f8697ba-ac40-43d3-878d-1470cc71f324"),
+        )
+        request = RequestFactory().get("/")
+        request.session = SimpleNamespace(session_key=None)
+
+        with patch("growthtwin.site.views.CampaignDraft.objects.none", return_value=[]):
+            response = render_campaign_home(request, CampaignDraftForm(), campaign)
+
+        self.assertContains(response, "brief’in aynen korunabilir")
+        self.assertContains(response, "yayına almadan önce düzenle")
+        self.assertContains(response, "bilgileri doğrula")
