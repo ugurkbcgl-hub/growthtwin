@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:45 (Europe/Istanbul). `main` is at `649b7d1d02839d99f1aaf0c6098efe18060175ed`; post-merge CI `36392736830` passed. PR #31 and its issue #30 are complete. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action was performed.
+Last verified: 2026-09-28 10:49 (Europe/Istanbul). `main` is at `72e3cbd34a0ae661a9c687f772be5176eb4dfb19`; post-merge CI `36393053256` passed. Current branch `feature/GT-033-campaign-objective` has PR #34 open against `main`; CI is running. Issue #33 tracks the objective slice. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -15,17 +15,16 @@ Last verified: 2026-09-28 10:45 (Europe/Istanbul). `main` is at `649b7d1d02839d9
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- `main` head: `649b7d1`; its post-merge CI passed (`36392736830`).
-- PRs #23, #28, #27, #29, and #31 are merged. Original PR #25 auto-closed when its base branch was deleted; its work was merged through replacement PR #28.
-- Issues #24, #26, and #30 are closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
+- PRs #23, #28, #27, #29, #31, and #32 are merged. PR #34: https://github.com/ugurkbcgl-hub/growthtwin/pull/34 — open; required CI is running on code head `e54e29a` and will be rerun for this handoff commit.
+- Issue #33 tracks the objective work; issue #2 (record NVIDIA NIM model quotas) remains open. Verify current provider terms before any NIM use.
 - No deployment or live campaign action occurred. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- The local prototype has a synthetic brief → preview → simulated pause → sample report flow.
-- Session-scoped UUID drafts persist the brief, optional brand/product context, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them; session cleanup deletes associated drafts.
-- Full local Django suite passed (23 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed. PR #31 CI passed on final head `d869a35` (`36392578801`); post-merge CI passed on `649b7d1` (`36392736830`).
+- Session-scoped UUID drafts persist the brief, optional brand/product context, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
+- PR #34 adds an optional generic campaign objective (awareness, site visits, leads, sales/bookings, local visits), stores it with the draft, restores it for edits, and displays it in the synthetic preview. Blank stays blank; no goal is inferred.
+- Full local Django suite passed (24 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before this continuity-only commit. Required CI is the merge gate.
 - No AI generation, provider, external account, publishing, real performance metric, new paid service, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
@@ -37,4 +36,4 @@ Last verified: 2026-09-28 10:45 (Europe/Istanbul). `main` is at `649b7d1d02839d9
 
 ## Next action
 
-Review the remaining Phase 2 roadmap items and select the next small, locally testable advertiser workflow slice. Keep it synthetic and ensure it cannot connect accounts, publish ads, or incur spend.
+Verify required CI on the latest PR #34 head and review its final diff. Merge if all checks pass and no issue is found; then select the next small Phase 2 workflow slice.
