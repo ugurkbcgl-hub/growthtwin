@@ -19,6 +19,7 @@
   const pauseButton = document.getElementById("toggle-pause");
   const stepNames = ["Brief", "Önizleme", "Örnek rapor"];
   let demoPaused = false;
+  let planEditTarget = "campaign-brief";
 
   const formatNumber = (value) =>
     new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 }).format(value);
@@ -81,6 +82,43 @@
       brandContext || "Henüz belirtilmedi";
     document.getElementById("plan-budget").textContent =
       `${formatLira(total)} toplam · ${formatLira(amount)} / gün · ${days} gün`;
+    const optionalInputs = [
+      {
+        value: objective,
+        fieldId: "campaign-objective",
+        label: "Kampanya amacı",
+        guidance: "Başarı senin için ne demek? Örneğin ziyaret, potansiyel müşteri veya satış.",
+      },
+      {
+        value: targetAudience,
+        fieldId: "target-audience",
+        label: "Hedef kitle",
+        guidance: "Ulaşmak istediğin kişileri kısaca tarif edebilirsin.",
+      },
+      {
+        value: brandContext,
+        fieldId: "brand-context",
+        label: "Marka veya teklif",
+        guidance: "Tanıtılan ürün, hizmet veya teklifi ekleyebilirsin.",
+      },
+    ];
+    const missingInputs = optionalInputs.filter(({ value }) => !value.trim());
+    const readinessTitle = document.getElementById("plan-readiness-title");
+    const readinessList = document.getElementById("plan-readiness-list");
+    readinessList.replaceChildren(
+      ...missingInputs.map(({ label, guidance }) => {
+        const item = document.createElement("li");
+        item.textContent = `${label}: ${guidance}`;
+        return item;
+      }),
+    );
+    readinessTitle.textContent = missingInputs.length
+      ? "İsteğe bağlı: planı netleştirebilecek bilgiler"
+      : "Temel plan bilgileri tamam";
+    planEditTarget = missingInputs[0]?.fieldId || "campaign-brief";
+    document.getElementById("edit-brief").textContent = missingInputs.length
+      ? "← Bilgileri gözden geçir"
+      : "← Planı düzenle";
     document.getElementById("report-brief").textContent = brief;
     document.getElementById("report-period").textContent = `${days} günlük örnek görünüm`;
     resetDemoAutomation();
@@ -92,7 +130,13 @@
   });
   dailyLimitInput.addEventListener("input", updateBudget);
   daysInput.addEventListener("change", updateBudget);
-  document.getElementById("edit-brief").addEventListener("click", () => showStep(1));
+  document.getElementById("edit-brief").addEventListener("click", () => {
+    showStep(1);
+    if (planEditTarget === "target-audience" || planEditTarget === "brand-context") {
+      document.querySelector(".optional-context").open = true;
+    }
+    document.getElementById(planEditTarget).focus();
+  });
   document.getElementById("show-report").addEventListener("click", () => showStep(3));
   pauseButton.addEventListener("click", () => {
     demoPaused = !demoPaused;
