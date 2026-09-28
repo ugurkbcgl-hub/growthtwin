@@ -74,49 +74,11 @@
     document.getElementById("preview-limit").textContent = formatLira(amount);
     document.getElementById("preview-duration").textContent = `${days} gün`;
     document.getElementById("preview-total").textContent = formatLira(total);
-    document.getElementById("plan-objective").textContent =
-      objective || "Brief’ten netleştirilecek";
-    document.getElementById("plan-audience").textContent =
-      targetAudience || "Henüz belirtilmedi";
-    document.getElementById("plan-brand").textContent =
-      brandContext || "Henüz belirtilmedi";
     document.getElementById("plan-budget").textContent =
       `${formatLira(total)} toplam · ${formatLira(amount)} / gün · ${days} gün`;
-    const optionalInputs = [
-      {
-        value: objective,
-        fieldId: "campaign-objective",
-        label: "Kampanya amacı",
-        guidance: "Başarı senin için ne demek? Örneğin ziyaret, potansiyel müşteri veya satış.",
-      },
-      {
-        value: targetAudience,
-        fieldId: "target-audience",
-        label: "Hedef kitle",
-        guidance: "Ulaşmak istediğin kişileri kısaca tarif edebilirsin.",
-      },
-      {
-        value: brandContext,
-        fieldId: "brand-context",
-        label: "Marka veya teklif",
-        guidance: "Tanıtılan ürün, hizmet veya teklifi ekleyebilirsin.",
-      },
-    ];
-    const missingInputs = optionalInputs.filter(({ value }) => !value.trim());
-    const readinessTitle = document.getElementById("plan-readiness-title");
-    const readinessList = document.getElementById("plan-readiness-list");
-    readinessList.replaceChildren(
-      ...missingInputs.map(({ label, guidance }) => {
-        const item = document.createElement("li");
-        item.textContent = `${label}: ${guidance}`;
-        return item;
-      }),
-    );
-    readinessTitle.textContent = missingInputs.length
-      ? "İsteğe bağlı: planı netleştirebilecek bilgiler"
-      : "Temel plan bilgileri tamam";
-    planEditTarget = missingInputs[0]?.fieldId || "campaign-brief";
-    document.getElementById("edit-brief").textContent = missingInputs.length
+    const needsReview = campaign.dataset.needsReview === "true";
+    planEditTarget = campaign.dataset.firstMissingField || "campaign-brief";
+    document.getElementById("edit-brief").textContent = needsReview
       ? "← Bilgileri gözden geçir"
       : "← Planı düzenle";
     document.getElementById("report-brief").textContent = brief;
