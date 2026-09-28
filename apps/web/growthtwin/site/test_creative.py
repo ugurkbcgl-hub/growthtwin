@@ -51,4 +51,6 @@ class CreativeFallbackTests(SimpleTestCase):
         audience_variant = next(
             variant for variant in variants if variant.key == "audience-focused"
         )
-        self.assertTrue(audience_variant.body.startswith("Hafta sonu etkinliği arayanlar için:"))
+        self.assertTrue(
+            audience_variant.body.startswith("Hafta sonu etkinliği arayanlar için:")
+        )
