@@ -50,7 +50,7 @@
     document.getElementById("automation-state").textContent = "Örnek akış etkin";
     document.querySelector(".automation-row").classList.remove("is-paused");
     pauseButton.textContent = "Durdur";
-    pauseButton.setAttribute("aria-pressed", "false");
+    pauseButton.setAttribute("aria-label", "Örnek akışı durdur");
   };
 
   const showSavedPreview = (campaign) => {
@@ -106,7 +106,10 @@
       demoPaused ? "Örnek akış duraklatıldı" : "Örnek akış etkin";
     document.querySelector(".automation-row").classList.toggle("is-paused", demoPaused);
     pauseButton.textContent = demoPaused ? "Devam ettir" : "Durdur";
-    pauseButton.setAttribute("aria-pressed", String(demoPaused));
+    pauseButton.setAttribute(
+      "aria-label",
+      demoPaused ? "Örnek akışı devam ettir" : "Örnek akışı durdur",
+    );
     flowStatus.textContent = demoPaused
       ? "Örnek akış duraklatıldı. Gerçek kampanya yok."
       : "Örnek akış yeniden etkin. Gerçek kampanya yok.";
