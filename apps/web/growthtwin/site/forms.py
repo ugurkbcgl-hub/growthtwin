@@ -37,6 +37,20 @@ class CampaignDraftForm(forms.Form):
             }
         ),
     )
+    target_audience = forms.CharField(
+        label="Hedef kitlen",
+        required=False,
+        max_length=240,
+        strip=True,
+        widget=forms.Textarea(
+            attrs={
+                "id": "target-audience",
+                "maxlength": "240",
+                "placeholder": "Örn. Hafta içi öğle yemeği arayan, yakındaki çalışanlar.",
+                "rows": "2",
+            }
+        ),
+    )
     objective = forms.ChoiceField(
         label="Kampanyadan ne bekliyorsun?",
         required=False,

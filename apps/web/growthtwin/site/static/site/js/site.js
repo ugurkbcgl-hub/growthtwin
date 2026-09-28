@@ -55,6 +55,7 @@
   const showSavedPreview = (campaign) => {
     const brief = campaign.dataset.brief;
     const brandContext = campaign.dataset.brandContext;
+    const targetAudience = campaign.dataset.targetAudience;
     const objective = campaign.dataset.objective;
     const amount = Number(campaign.dataset.dailyLimit);
     const days = Number(campaign.dataset.durationDays);
@@ -63,6 +64,9 @@
     const brandContextPreview = document.getElementById("preview-brand-context");
     brandContextPreview.textContent = brandContext;
     brandContextPreview.hidden = !brandContext;
+    const targetAudiencePreview = document.getElementById("preview-target-audience");
+    targetAudiencePreview.textContent = targetAudience ? `Kitle: ${targetAudience}` : "";
+    targetAudiencePreview.hidden = !targetAudience;
     const objectivePreview = document.getElementById("preview-objective");
     objectivePreview.textContent = objective ? `Hedef: ${objective}` : "";
     objectivePreview.hidden = !objective;

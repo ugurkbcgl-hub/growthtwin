@@ -62,6 +62,7 @@ def home(request):
 
             campaign.brief = form.cleaned_data["brief"]
             campaign.brand_context = form.cleaned_data["brand_context"]
+            campaign.target_audience = form.cleaned_data["target_audience"]
             campaign.objective = form.cleaned_data["objective"]
             campaign.daily_limit = form.cleaned_data["daily_limit"]
             campaign.duration_days = form.cleaned_data["duration_days"]
@@ -69,6 +70,7 @@ def home(request):
                 update_fields=(
                     "brief",
                     "brand_context",
+                    "target_audience",
                     "objective",
                     "daily_limit",
                     "duration_days",
@@ -84,6 +86,7 @@ def home(request):
                 session=session,
                 brief=form.cleaned_data["brief"],
                 brand_context=form.cleaned_data["brand_context"],
+                target_audience=form.cleaned_data["target_audience"],
                 objective=form.cleaned_data["objective"],
                 daily_limit=form.cleaned_data["daily_limit"],
                 duration_days=form.cleaned_data["duration_days"],
@@ -112,6 +115,7 @@ def home(request):
                 "campaign_id": campaign.pk,
                 "brief": campaign.brief,
                 "brand_context": campaign.brand_context,
+                "target_audience": campaign.target_audience,
                 "objective": campaign.objective,
                 "daily_limit": campaign.daily_limit,
                 "duration_days": campaign.duration_days,
