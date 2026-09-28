@@ -5,7 +5,7 @@
 - Product direction was clarified on 2026-09-27 at the owner's request: Türkiye is the target market, and the product is for people and organizations that want to advertise. Dental clinics are one example, not the product boundary.
 - Local product development is authorized. The existing Django/PostgreSQL foundation and CI remain in use.
 - The previous clinic-only Phase 0 demo is a foundation check, not the product itself. Staging browser E2E, backup/restore, and rollback remain unverified release-readiness tasks; they do not block local synthetic-data UX work.
-- The first public website slice is merged to `main`: responsive campaign brief, preview, simulated pause control, and sample report. It has no campaign persistence, AI call, platform connection, publication, or real metrics.
+- The first public website slice is merged to `main`: responsive campaign brief, preview, simulated pause control, and sample report. Synthetic drafts are persisted to PostgreSQL for the lifetime of an anonymous browser session and can be listed, resumed, edited, or deleted. The content module now exposes persistence-free `CampaignBrief` and `CampaignPlan` values; the session-owned ORM adapter remains in `site` under [ADR-0006](docs/adr/0006-campaign-brief-boundary.md). There is no AI call, platform connection, publication, or real metrics.
 - Current implementation stack: Django 5.2 LTS + PostgreSQL in one modular monolith (accepted in ADR-0002). No new stack, paid service, or production AI provider is selected.
 
 ## Product goal

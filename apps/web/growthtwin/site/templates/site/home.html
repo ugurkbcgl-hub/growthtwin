@@ -75,14 +75,14 @@
             {% if campaign %}
               <div
                 id="saved-campaign"
-                data-brief="{{ campaign.brief }}"
-                data-brand-context="{{ campaign.brand_context }}"
-                data-target-audience="{{ campaign.target_audience }}"
-                data-objective="{{ campaign.get_objective_display }}"
+                data-brief="{{ plan.brief.text }}"
+                data-brand-context="{{ plan.brief.brand_context }}"
+                data-target-audience="{{ plan.brief.target_audience }}"
+                data-objective="{{ plan.brief.objective_label }}"
                 data-daily-limit="{{ campaign.daily_limit }}"
                 data-duration-days="{{ campaign.duration_days }}"
-                data-first-missing-field="{{ plan.first_missing_field }}"
-                data-needs-review="{{ plan.missing_inputs|yesno:'true,false' }}"
+                data-first-missing-field="{{ plan.brief.first_missing_field }}"
+                data-needs-review="{{ plan.brief.missing_inputs|yesno:'true,false' }}"
                 hidden
               ></div>
             {% endif %}
@@ -203,15 +203,15 @@
                 </div>
                 <h4 id="plan-summary-title">Kampanya çerçevesi</h4>
                 <dl class="plan-summary-list">
-                  <div><dt>Amaç</dt><dd id="plan-objective">{{ plan.objective_summary|default:"Brief’ten netleştirilecek" }}</dd></div>
-                  <div><dt>Kitle</dt><dd id="plan-audience">{{ plan.audience_summary|default:"Henüz belirtilmedi" }}</dd></div>
-                  <div><dt>Marka / teklif</dt><dd id="plan-brand">{{ plan.brand_summary|default:"Henüz belirtilmedi" }}</dd></div>
+                  <div><dt>Amaç</dt><dd id="plan-objective">{{ plan.brief.objective_summary|default:"Brief’ten netleştirilecek" }}</dd></div>
+                  <div><dt>Kitle</dt><dd id="plan-audience">{{ plan.brief.audience_summary|default:"Henüz belirtilmedi" }}</dd></div>
+                  <div><dt>Marka / teklif</dt><dd id="plan-brand">{{ plan.brief.brand_summary|default:"Henüz belirtilmedi" }}</dd></div>
                   <div><dt>Bütçe sınırı</dt><dd id="plan-budget">{% if plan %}₺{{ plan.total_limit }} toplam · ₺{{ plan.daily_limit }} / gün · {{ plan.duration_days }} gün{% else %}₺5.250 toplam · ₺750 / gün · 7 gün{% endif %}</dd></div>
                 </dl>
                 <div class="plan-readiness" aria-live="polite">
-                  <strong id="plan-readiness-title">{% if plan.missing_inputs %}İsteğe bağlı: planı netleştirebilecek bilgiler{% else %}Temel plan bilgileri tamam{% endif %}</strong>
+                  <strong id="plan-readiness-title">{% if plan.brief.missing_inputs %}İsteğe bağlı: planı netleştirebilecek bilgiler{% else %}Temel plan bilgileri tamam{% endif %}</strong>
                   <ul id="plan-readiness-list">
-                    {% for missing_input in plan.missing_inputs %}
+                    {% for missing_input in plan.brief.missing_inputs %}
                       <li>{{ missing_input.label }}: {{ missing_input.guidance }}</li>
                     {% endfor %}
                   </ul>

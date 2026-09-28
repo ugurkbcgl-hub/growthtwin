@@ -17,3 +17,4 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0003 — Heroku Phase 0 staging](0003-heroku-phase-0-staging.md) — Accepted
 - [0004 — Self-service advertising autopilot](0004-self-service-advertising-autopilot.md) — Accepted
 - [0005 — Türkiye-first advertising platform for all advertiser types](0005-turkey-first-advertising-platform.md) — Accepted
+- [0006 — Campaign brief ownership and first data boundary](0006-campaign-brief-boundary.md) — Accepted
