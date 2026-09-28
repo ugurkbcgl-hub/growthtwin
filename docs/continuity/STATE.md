@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 23:26 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `a978014` (PR #58). Required PR CI `36478847264` and post-merge CI `36479049872` passed. The working tree is clean and there are no open PRs.
+Last verified: 2026-09-29 00:06 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `52e93e3` (PR #60). Required PR CI `36483491236` and post-merge CI `36483681415` passed. The working tree was clean and there were no open PRs before this handoff update.
 
 ## Goal and working rules
 
@@ -19,6 +19,7 @@ Last verified: 2026-09-28 23:26 (Europe/Istanbul). Repository: `https://github.c
 - Manual local browser review with synthetic campaign data verified layout, editing, save feedback, regeneration feedback, and saved-value persistence. A missing local migration was applied during that review; local Ruff was unavailable, while CI formatting/lint passed.
 - PR #56 (`f799426`) stopped the audience-focused variant from appending “Detayları incele” to the brief when no audience is given; the CTA remains separate. Three focused local tests passed, and the browser confirmed the no-brand/no-audience brief stays unchanged in the audience- and information-focused bodies. Required CI `36474994196` and post-merge CI `36475232546` passed.
 - PR #58 (`a978014`) clarified that these are synthetic, editable starting points; when brand or audience context is missing, the brief may be shown unchanged and should be edited and checked before publication. The note is more readable. Four focused local tests and browser review passed. A database-backed local test was unavailable because the local PostgreSQL role cannot create test databases; the focused UI test uses no database, and CI ran the full Django suite. Required CI `36478847264` and post-merge CI `36479049872` passed.
+- Comparing five synthetic inputs found that the audience- and information-focused variants could omit the offer when both brand and audience were supplied. PR #60 (`52e93e3`) keeps the brief content in those bodies, includes a shortened audience in the audience-focused body, and keeps the brand in the headline. Five focused local tests and the full CI suite passed; required CI `36483491236` and post-merge CI `36483681415` passed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -31,4 +32,4 @@ Last verified: 2026-09-28 23:26 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Compare several synthetic brief phrasings and their deterministic variants to identify any specific, safe wording transformation worth adding. Preserve the user's meaning and avoid inventing claims; otherwise keep the brief unchanged and clearly label it as an editable starting point. Add only focused tests and review the result in the local browser. Do not use external AI or real advertiser data, and do not check Heroku Scheduler before 2026-10-01.
+Review length edge cases with longer synthetic briefs, brands, and audiences. Confirm the 240-character copy fields retain the essential offer and audience rather than truncating one away; adjust only if focused examples reveal information loss. Keep all text provider-free, add focused tests, and review the rendered result. Do not use real advertiser data or check Heroku Scheduler before 2026-10-01.
