@@ -29,13 +29,49 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     brief.get_attribute("id"),
                 )
 
-                brief.fill("Sentetik örnek: hafta sonu seramik atölyesi için tanıtım")
-                page.get_by_text("Marka veya ürün bilgisi ekle").click()
+                page.keyboard.type(
+                    "Sentetik örnek: hafta sonu seramik atölyesi için tanıtım"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "campaign-objective"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.tagName"), "SUMMARY"
+                )
+                page.keyboard.press("Space")
+                page.keyboard.press("Tab")
                 brand_context = page.locator("#brand-context")
-                brand_context.evaluate("(field) => field.removeAttribute('maxlength')")
-                brand_context.fill("Sentetik " * 40)
-                page.get_by_role("button", name="Örnek kampanyayı gör").click()
-                page.wait_for_load_state("domcontentloaded")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "brand-context"
+                )
+                brand_context.evaluate(
+                    "(field) => field.removeAttribute('maxlength')"
+                )
+                page.keyboard.type("Sentetik " * 40)
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "target-audience"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "daily-limit"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "campaign-days"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "create-preview"
+                )
+                self.assertGreater(len(brand_context.input_value()), 320)
+                with page.expect_response(
+                    lambda response: response.request.method == "POST"
+                ) as invalid_response:
+                    page.keyboard.press("Enter")
+                self.assertEqual(invalid_response.value.status, 200)
                 self.assertIsNotNone(
                     page.locator(".optional-context").get_attribute("open")
                 )
@@ -51,9 +87,25 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     brand_context.get_attribute("id"),
                 )
 
-                brief.fill("Sentetik örnek: hafta sonu seramik atölyesi için tanıtım")
-                brand_context.fill("Sentetik seramik atölyesi")
-                page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.keyboard.press("Control+A")
+                page.keyboard.type("Sentetik seramik atölyesi")
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "target-audience"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "daily-limit"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "campaign-days"
+                )
+                page.keyboard.press("Tab")
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"), "create-preview"
+                )
+                page.keyboard.press("Enter")
                 page.wait_for_url("**campaign=*")
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
                 self.assert_no_horizontal_overflow(page)
