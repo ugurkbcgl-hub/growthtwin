@@ -61,6 +61,28 @@ class CreativeFallbackTests(SimpleTestCase):
             audience_variant.body.startswith("Hafta sonu etkinliği arayanlar için:")
         )
 
+    def test_brand_and_audience_do_not_hide_the_offer_from_copy(self):
+        brief = CampaignBrief(
+            text="Ekşi mayalı ekmeklerimizi tanıtmak istiyorum.",
+            objective="",
+            objective_label="",
+            target_audience="Yakındaki çalışanlar",
+            brand_context="Mahalle fırını",
+        )
+
+        variants = draft_creative_variants(brief)
+
+        audience_variant = next(
+            variant for variant in variants if variant.key == "audience-focused"
+        )
+        info_variant = next(
+            variant for variant in variants if variant.key == "information-focused"
+        )
+        self.assertIn("Yakındaki çalışanlar için:", audience_variant.body)
+        self.assertIn("Ekşi mayalı ekmeklerimizi", audience_variant.body)
+        self.assertEqual(info_variant.body, brief.text)
+        self.assertEqual(info_variant.headline, "Mahalle fırını hakkında")
+
     def test_copy_editor_explains_unmodified_brief_fallback(self):
         campaign = SimpleNamespace(
             brief="Yeni seramik atölyemi tanıtmak istiyorum",
