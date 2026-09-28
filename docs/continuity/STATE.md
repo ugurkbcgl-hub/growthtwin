@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 22:54 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `f799426` (PR #56). Required PR CI `36474994196` and post-merge CI `36475232546` passed. The working tree is clean and there are no open PRs.
+Last verified: 2026-09-28 23:26 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `a978014` (PR #58). Required PR CI `36478847264` and post-merge CI `36479049872` passed. The working tree is clean and there are no open PRs.
 
 ## Goal and working rules
 
@@ -18,6 +18,7 @@ Last verified: 2026-09-28 22:54 (Europe/Istanbul). Repository: `https://github.c
 - PR #54 (`a9be467`) improved the information-focused fallback when brand context is absent. Required CI `36472843404` and post-merge CI `36473065414` passed.
 - Manual local browser review with synthetic campaign data verified layout, editing, save feedback, regeneration feedback, and saved-value persistence. A missing local migration was applied during that review; local Ruff was unavailable, while CI formatting/lint passed.
 - PR #56 (`f799426`) stopped the audience-focused variant from appending “Detayları incele” to the brief when no audience is given; the CTA remains separate. Three focused local tests passed, and the browser confirmed the no-brand/no-audience brief stays unchanged in the audience- and information-focused bodies. Required CI `36474994196` and post-merge CI `36475232546` passed.
+- PR #58 (`a978014`) clarified that these are synthetic, editable starting points; when brand or audience context is missing, the brief may be shown unchanged and should be edited and checked before publication. The note is more readable. Four focused local tests and browser review passed. A database-backed local test was unavailable because the local PostgreSQL role cannot create test databases; the focused UI test uses no database, and CI ran the full Django suite. Required CI `36478847264` and post-merge CI `36479049872` passed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -30,4 +31,4 @@ Last verified: 2026-09-28 22:54 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Review no-brand/no-audience copy using several synthetic briefs, including request phrasing such as “tanıtmak istiyorum”. The current deterministic variants can repeat that request verbatim. Decide whether a narrow, claim-safe wording cleanup can preserve meaning naturally; if the brief cannot be safely transformed, keep it clearly labeled as an editable starting point. Add focused tests and inspect the resulting copy in the local browser. Do not use external AI or real advertiser data, and do not check Heroku Scheduler before 2026-10-01.
+Compare several synthetic brief phrasings and their deterministic variants to identify any specific, safe wording transformation worth adding. Preserve the user's meaning and avoid inventing claims; otherwise keep the brief unchanged and clearly label it as an editable starting point. Add only focused tests and review the result in the local browser. Do not use external AI or real advertiser data, and do not check Heroku Scheduler before 2026-10-01.
