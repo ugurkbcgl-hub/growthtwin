@@ -16,6 +16,7 @@ class CampaignDraftFlowTests(TestCase):
         self.url = reverse("site:home")
         self.valid_data = {
             "brief": "Sentetik yerel mağaza tanıtımı",
+            "brand_context": "Mahalle fırını; ekşi mayalı ekmek",
             "daily_limit": "750",
             "duration_days": "14",
         }
@@ -26,6 +27,7 @@ class CampaignDraftFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         draft = CampaignDraft.objects.get()
         self.assertEqual(draft.brief, self.valid_data["brief"])
+        self.assertEqual(draft.brand_context, self.valid_data["brand_context"])
         self.assertEqual(draft.daily_limit, 750)
         self.assertEqual(draft.duration_days, 14)
         self.assertEqual(draft.total_limit, 10500)
@@ -34,6 +36,9 @@ class CampaignDraftFlowTests(TestCase):
         preview = self.client.get(response.url)
         self.assertContains(preview, 'id="saved-campaign"')
         self.assertContains(preview, "Sentetik yerel mağaza tanıtımı")
+        self.assertContains(
+            preview, 'data-brand-context="Mahalle fırını; ekşi mayalı ekmek"'
+        )
         self.assertContains(preview, 'data-daily-limit="750"')
         self.assertContains(preview, 'data-duration-days="14"')
 
@@ -44,6 +49,7 @@ class CampaignDraftFlowTests(TestCase):
             **self.valid_data,
             "campaign_id": str(draft.pk),
             "brief": "Sentetik güncellenmiş tanıtım",
+            "brand_context": "Yerel atölye; seramik dersleri",
             "daily_limit": "1250",
             "duration_days": "30",
         }
@@ -53,6 +59,7 @@ class CampaignDraftFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         draft.refresh_from_db()
         self.assertEqual(draft.brief, "Sentetik güncellenmiş tanıtım")
+        self.assertEqual(draft.brand_context, "Yerel atölye; seramik dersleri")
         self.assertEqual(draft.daily_limit, 1250)
         self.assertEqual(draft.duration_days, 30)
         self.assertEqual(CampaignDraft.objects.count(), 1)
@@ -93,6 +100,14 @@ class CampaignDraftFlowTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertIn(field, response.context["form"].errors)
                 self.assertFalse(CampaignDraft.objects.exists())
+
+    def test_optional_brand_context_can_be_left_empty(self):
+        response = self.client.post(
+            self.url, {**self.valid_data, "brand_context": "   "}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(CampaignDraft.objects.get().brand_context, "")
 
     def test_draft_cannot_be_read_from_a_different_session(self):
         response = self.client.post(self.url, self.valid_data)
@@ -177,6 +192,7 @@ class CampaignDraftFlowTests(TestCase):
         resumed = self.client.get(self.url, {"campaign": str(first.pk)})
         self.assertContains(resumed, 'id="saved-campaign"')
         self.assertContains(resumed, first.brief)
+        self.assertContains(resumed, first.brand_context)
         self.assertEqual(CampaignDraft.objects.count(), 2)
 
     def test_empty_session_has_no_draft_list_or_server_session(self):

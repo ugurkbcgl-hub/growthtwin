@@ -21,6 +21,20 @@ class CampaignDraftForm(forms.Form):
         ),
         error_messages={"required": "Kısaca kampanya fikrini yaz."},
     )
+    brand_context = forms.CharField(
+        label="Marka ve ürün hakkında",
+        required=False,
+        max_length=320,
+        strip=True,
+        widget=forms.Textarea(
+            attrs={
+                "id": "brand-context",
+                "maxlength": "320",
+                "placeholder": "Örn. Mahalle fırını; günlük ekşi mayalı ekmek ve kahvaltı kutuları sunuyor.",
+                "rows": "2",
+            }
+        ),
+    )
     daily_limit = forms.IntegerField(
         label="Günlük üst sınır",
         min_value=100,

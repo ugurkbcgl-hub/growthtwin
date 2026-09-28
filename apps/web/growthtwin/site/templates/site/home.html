@@ -76,6 +76,7 @@
               <div
                 id="saved-campaign"
                 data-brief="{{ campaign.brief }}"
+                data-brand-context="{{ campaign.brand_context }}"
                 data-daily-limit="{{ campaign.daily_limit }}"
                 data-duration-days="{{ campaign.duration_days }}"
                 hidden
@@ -112,6 +113,16 @@
                   <span>Ürününü, hedefini veya duyurunu anlat.</span>
                   <span id="brief-count">0 / 280</span>
                 </div>
+
+                <details class="optional-context">
+                  <summary>Marka veya ürün bilgisi ekle <span>İsteğe bağlı</span></summary>
+                  <label class="field-label" for="brand-context">Marka ve ürün hakkında</label>
+                  {{ form.brand_context }}
+                  {% for error in form.brand_context.errors %}
+                    <p class="inline-error" role="alert">{{ error }}</p>
+                  {% endfor %}
+                  <p class="field-hint">Ürününü, hizmetini veya markanı kısaca anlat. Gizli bilgi ekleme.</p>
+                </details>
 
                 <div class="form-row">
                   <div class="form-field">
@@ -162,6 +173,7 @@
                 <div>
                   <span class="micro-label">HEDEFİN</span>
                   <p id="preview-brief">Kampanya fikrin burada görünür.</p>
+                  <p class="campaign-brand-context" id="preview-brand-context" hidden></p>
                 </div>
               </div>
               <div class="creative-preview">

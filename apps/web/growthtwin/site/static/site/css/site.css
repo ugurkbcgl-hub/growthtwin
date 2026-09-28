@@ -248,6 +248,15 @@ textarea {
 
 textarea::placeholder { color: #a4a4ae; }
 textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px rgb(98 89 220 / 9%); outline: 0; }
+.optional-context { margin-top: 15px; padding: 11px 12px; border: 1px solid #eeedf2; border-radius: 10px; background: #fbfaff; }
+.optional-context summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #444654; cursor: pointer; font-size: 10px; font-weight: 660; list-style: none; }
+.optional-context summary::-webkit-details-marker { display: none; }
+.optional-context summary::after { content: "+"; margin-left: auto; color: var(--accent); font-size: 15px; }
+.optional-context[open] summary::after { content: "−"; }
+.optional-context summary span { color: #898a96; font-size: 9px; font-weight: 500; }
+.optional-context .field-label { margin-top: 12px; }
+.optional-context textarea { min-height: 62px; }
+.field-hint { margin: 6px 0 0; color: #898a96; font-size: 9px; line-height: 1.5; }
 .field-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; color: #9b9ba5; font-size: 9px; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 19px; }
@@ -274,6 +283,7 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .summary-icon { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border-radius: 8px; background: #eceaff; color: var(--purple); font-size: 12px; }
 .campaign-summary .micro-label { display: block; margin: 1px 0 3px; }
 .campaign-summary p { display: -webkit-box; margin: 0; overflow: hidden; color: #4f505d; font-size: 10px; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.campaign-summary .campaign-brand-context { margin-top: 4px; color: #777887; font-size: 9px; }
 
 .creative-preview { display: grid; grid-template-columns: .88fr 1fr; gap: 12px; align-items: center; }
 .creative-art { position: relative; display: flex; min-height: 126px; align-items: flex-end; overflow: hidden; padding: 13px; border-radius: 12px; background: linear-gradient(145deg, #bbb1f2 0%, #796de1 54%, #5345b6 100%); color: white; }
