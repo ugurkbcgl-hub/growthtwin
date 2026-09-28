@@ -233,6 +233,31 @@
                 </form>
               {% endif %}
             </section>
+            {% if drafts and not campaign %}
+              <section class="saved-drafts" aria-labelledby="saved-drafts-title">
+                <div class="panel-heading">
+                  <p class="panel-kicker">Bu tarayıcı oturumunda</p>
+                  <h3 id="saved-drafts-title">Kaydedilmiş taslakların</h3>
+                </div>
+                <ul class="saved-drafts-list">
+                  {% for draft in drafts %}
+                    <li class="saved-draft-item">
+                      <div class="saved-draft-copy">
+                        <strong>{{ draft.brief }}</strong>
+                        <span>₺{{ draft.daily_limit }} / gün · {{ draft.duration_days }} gün</span>
+                      </div>
+                      <div class="saved-draft-actions">
+                        <a class="button button-secondary" href="?campaign={{ draft.pk }}">Devam et</a>
+                        <form method="post" action="{% url 'site:delete-campaign' draft.pk %}">
+                          {% csrf_token %}
+                          <button class="button button-secondary" type="submit" aria-label="Taslağı sil: {{ draft.brief }}">Sil</button>
+                        </form>
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </section>
+            {% endif %}
             <p class="flow-status" id="flow-status" aria-live="polite"></p>
           </section>
         </div>

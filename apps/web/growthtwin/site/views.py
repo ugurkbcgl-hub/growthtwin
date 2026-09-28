@@ -5,16 +5,30 @@ from uuid import UUID
 from django.contrib.sessions.models import Session
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from growthtwin.site.forms import CampaignDraftForm
 from growthtwin.site.models import CampaignDraft
 
 
+def active_session_key(request):
+    """Return the browser session key only while its server record is valid."""
+    session_key = request.session.session_key
+    if session_key is None:
+        return None
+
+    is_active = Session.objects.filter(
+        pk=session_key,
+        expire_date__gt=timezone.now(),
+    ).exists()
+    return session_key if is_active else None
+
+
 @require_POST
 def delete_campaign(request, campaign_id):
     """Discard a synthetic draft only from its owning browser session."""
-    session_key = request.session.session_key
+    session_key = active_session_key(request)
     if session_key is None:
         return redirect("site:home")
 
@@ -34,7 +48,7 @@ def home(request):
 
     if request.method == "POST" and form.is_valid():
         campaign_id = form.cleaned_data["campaign_id"]
-        session_key = request.session.session_key
+        session_key = active_session_key(request)
         if campaign_id is not None:
             if session_key is None:
                 return redirect("site:home")
@@ -70,7 +84,7 @@ def home(request):
         except (TypeError, ValueError):
             return redirect("site:home")
 
-        session_key = request.session.session_key
+        session_key = active_session_key(request)
         if session_key is None:
             return redirect("site:home")
 
@@ -90,8 +104,15 @@ def home(request):
             }
         )
 
+    session_key = active_session_key(request)
+    drafts = (
+        CampaignDraft.objects.filter(session_id=session_key)
+        if session_key is not None
+        else CampaignDraft.objects.none()
+    )
+
     return render(
         request,
         "site/home.html",
-        {"campaign": campaign, "form": form},
+        {"campaign": campaign, "drafts": drafts, "form": form},
     )

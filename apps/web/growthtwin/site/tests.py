@@ -160,3 +160,73 @@ class CampaignDraftFlowTests(TestCase):
 
         self.assertRedirects(response, self.url)
         self.assertTrue(CampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_session_sees_its_drafts_and_can_resume_one(self):
+        self.client.post(self.url, self.valid_data)
+        first = CampaignDraft.objects.get()
+        self.client.post(
+            self.url,
+            {**self.valid_data, "brief": "İkinci sentetik kampanya"},
+        )
+
+        listing = self.client.get(self.url)
+        self.assertContains(listing, "Kaydedilmiş taslakların")
+        self.assertContains(listing, first.brief)
+        self.assertContains(listing, "İkinci sentetik kampanya")
+
+        resumed = self.client.get(self.url, {"campaign": str(first.pk)})
+        self.assertContains(resumed, 'id="saved-campaign"')
+        self.assertContains(resumed, first.brief)
+        self.assertEqual(CampaignDraft.objects.count(), 2)
+
+    def test_empty_session_has_no_draft_list_or_server_session(self):
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, "Kaydedilmiş taslakların")
+        self.assertFalse(Session.objects.exists())
+
+    def test_session_draft_list_does_not_expose_other_sessions(self):
+        response = self.client.post(self.url, self.valid_data)
+        draft = CampaignDraft.objects.get()
+        other_client = self.client_class()
+
+        listing = other_client.get(self.url)
+        resume = other_client.get(response.url)
+
+        self.assertNotContains(listing, "Kaydedilmiş taslakların")
+        self.assertNotContains(listing, draft.brief)
+        self.assertRedirects(resume, self.url)
+
+    def test_expired_but_uncleared_session_cannot_read_or_delete_draft(self):
+        self.client.post(self.url, self.valid_data)
+        draft = CampaignDraft.objects.get()
+        session = Session.objects.get(pk=draft.session_id)
+        session.expire_date = timezone.now() - timedelta(seconds=1)
+        session.save(update_fields=("expire_date",))
+
+        listing = self.client.get(self.url)
+        resume = self.client.get(self.url, {"campaign": str(draft.pk)})
+        delete = self.client.post(reverse("site:delete-campaign", args=(draft.pk,)))
+
+        self.assertNotContains(listing, "Kaydedilmiş taslakların")
+        self.assertRedirects(resume, self.url)
+        self.assertRedirects(delete, self.url)
+        self.assertTrue(CampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_expired_session_can_start_a_fresh_draft_session(self):
+        self.client.post(self.url, self.valid_data)
+        expired_draft = CampaignDraft.objects.get()
+        expired_session_key = expired_draft.session_id
+        session = Session.objects.get(pk=expired_session_key)
+        session.expire_date = timezone.now() - timedelta(seconds=1)
+        session.save(update_fields=("expire_date",))
+
+        response = self.client.post(
+            self.url,
+            {**self.valid_data, "brief": "Yeni oturum sentetik taslağı"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        fresh_draft = CampaignDraft.objects.exclude(pk=expired_draft.pk).get()
+        self.assertNotEqual(fresh_draft.session_id, expired_session_key)
+        self.assertEqual(fresh_draft.brief, "Yeni oturum sentetik taslağı")
