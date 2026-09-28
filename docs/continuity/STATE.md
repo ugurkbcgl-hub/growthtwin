@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 15:53 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `a3e1d22` (PR #52); required PR CI `36424389194` and post-merge CI `36424605181` passed, including Django tests and migration checks. The working tree was clean after merge; there were no open PRs at the last check.
+Last verified: 2026-09-28 22:34 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `a9be467` (PR #54); required PR CI `36472843404` and post-merge CI `36473065414` passed. Both ran Django tests and migration checks. The working tree was clean after merge; there were no open PRs before this handoff update.
 
 ## Goal and working rules
 
@@ -14,20 +14,22 @@ Last verified: 2026-09-28 15:53 (Europe/Istanbul). Repository: `https://github.c
 ## Current product state
 
 - Local prototype demonstrates synthetic brief → preview → simulated pause → sample report. Drafts remain session-scoped and synthetic.
-- The preview organizes user inputs into a plan summary and indicates missing details. It does not select an advertising channel, create a connected account, publish, or show real metrics.
-- PR #51 (`15fda3a`) corrected the README and roadmap to reflect the actual product prototype. Required CI `36422821769` and post-merge CI `36423011388` passed.
-- PR #52 (`a3e1d22`) added three deterministic, editable copy starting points from the saved brief, brand/product context, and optional audience. Changes save only to the session draft; stale copy is indicated after source changes. No AI provider, account integration, publishing, or spend is involved. Required CI `36424389194` and post-merge CI `36424605181` passed, including Django tests, migration checks, formatting/lint, and build checks.
-- A manual browser visual review of the new copy editor has not been performed. Local tests were not separately run; CI ran the Django test suite.
+- The preview organizes user inputs into a plan summary and indicates missing details. It does not select an advertising channel, connect an account, publish, or show real metrics.
+- PR #51 (`15fda3a`) corrected stale README and roadmap status. Required CI `36422821769` and post-merge CI `36423011388` passed.
+- PR #52 (`a3e1d22`) added three deterministic, editable copy starting points from the saved brief, brand/product context, and optional audience. Changes save only to the session draft; stale copy is indicated after source changes. No AI, account integration, publishing, or spend. Required CI `36424389194` and post-merge CI `36424605181` passed.
+- PR #54 (`a9be467`) improved the information-focused fallback when brand context is absent. It now uses a neutral “Daha fazla bilgi” headline and preserves the brief instead of appending an awkward “hakkında”. Required CI `36472843404` and post-merge CI `36473065414` passed.
+- Manual local browser review with synthetic campaign data verified layout, editing, save feedback, regeneration feedback, and saved-value persistence. A local browser POST first returned 500 because migration `site.0005_campaigndraft_creative_variants` had not been applied; the local database was migrated, then the flow succeeded. No tests were run locally; CI ran the Django suite. Local Ruff was unavailable in the checked virtual environment; CI formatting/lint passed.
+- Browser review also confirmed that copy with no brand context can still sound like the advertiser's request rather than polished ad copy. The other fallback angles need review before treating them as ad-ready.
 
 ## Open decisions and gates
 
 - Select the first advertiser workflow and destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
-- Session drafts are synthetic. Verify retention and deletion operations before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
-- The Heroku Scheduler runs `python manage.py clearsessions` daily at 00:00 UTC. Its first scheduled execution and actual billed one-off dyno usage have not been verified. Per user's instruction, defer checking this scheduled run until 2026-10-01 or later. Keep staging data synthetic; this best-effort cadence is not a retention guarantee.
-- The prior Heroku Resources estimate was about USD 12/month; actual usage has not been verified. Heroku CLI was unavailable at the last check.
+- Session drafts are synthetic. Verify retention/deletion before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
+- Heroku Scheduler runs `python manage.py clearsessions` daily at 00:00 UTC. Its first scheduled execution and actual billed one-off dyno usage have not been verified. Per user instruction, defer checking the scheduled run until 2026-10-01 or later. Keep staging data synthetic; this best-effort cadence is not a retention guarantee.
+- The prior Heroku Resources estimate was about USD 12/month; actual usage remains unverified. Heroku CLI was unavailable at the last check.
 - AI/provider selection and production data-processing terms remain undecided. Recheck provider terms and any tracked research issue before using an external provider.
 
 ## Next action
 
-Manually review the editable creative-copy flow in the local browser using synthetic campaign data. Fix any usability or display issues found; then select the next narrow local product slice. Do not check the deferred Heroku scheduled run before 2026-10-01.
+Review and improve the other no-brand/no-audience copy fallbacks so they remain natural and useful while preserving the advertiser's meaning and adding no factual claims. Keep the change local, synthetic, and provider-free; then verify the revised variants in the browser and CI. Do not check the deferred Heroku scheduled run before 2026-10-01.
