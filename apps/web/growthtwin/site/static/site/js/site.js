@@ -122,4 +122,12 @@
   } else {
     showStep(1);
   }
+  const firstInvalidField = document.querySelector(
+    '[aria-invalid="true"][autofocus]',
+  );
+  if (firstInvalidField) {
+    const focusFirstInvalidField = () => firstInvalidField.focus();
+    window.addEventListener("load", focusFirstInvalidField, { once: true });
+    focusFirstInvalidField();
+  }
 })();
