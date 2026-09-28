@@ -1,9 +1,10 @@
 # Domain module boundaries
 
-These packages are placeholders only. Keep the first application as one Django
-deployment while keeping domain responsibilities separate. Local product
-implementation is authorized; no campaign models, persistence behavior,
-provider clients, or cross-module imports are defined yet.
+Keep the first application as one Django deployment while keeping domain
+responsibilities separate. Local product implementation is authorized. The
+`content` module currently contains a provider-neutral, non-persistent campaign
+plan value object; session-scoped prototype persistence remains in `site`.
+Provider clients and cross-module persistence contracts are not defined yet.
 
 - `workspaces`: advertiser identity, membership, roles, and tenant context.
 - `content`: brand facts, campaign briefs, creative drafts, versions, and asset metadata.

@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from growthtwin.modules.content.planning import CampaignPlan
 from growthtwin.site.forms import CampaignDraftForm
 from growthtwin.site.models import CampaignDraft
 
@@ -128,9 +129,22 @@ def home(request):
         if session_key is not None
         else CampaignDraft.objects.none()
     )
+    plan = (
+        CampaignPlan(
+            brief=campaign.brief,
+            objective=campaign.objective,
+            objective_label=campaign.get_objective_display(),
+            target_audience=campaign.target_audience,
+            brand_context=campaign.brand_context,
+            daily_limit=campaign.daily_limit,
+            duration_days=campaign.duration_days,
+        )
+        if campaign is not None
+        else None
+    )
 
     return render(
         request,
         "site/home.html",
-        {"campaign": campaign, "drafts": drafts, "form": form},
+        {"campaign": campaign, "drafts": drafts, "form": form, "plan": plan},
     )
