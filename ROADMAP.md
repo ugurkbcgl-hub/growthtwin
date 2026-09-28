@@ -8,17 +8,17 @@ The product should remove routine GrowthTwin-operator work after an advertiser e
 
 ## Existing foundation — in place for local product work
 
-- Public GitHub repository, protected `main`, pull-request workflow, and CI are active. Verified `main` is `d79082d`; no open PRs at the start of issue #22; CI run `36339595216` passed.
+- Public GitHub repository, protected `main`, pull-request workflow, and CI are active. Use pull requests for repository changes and verify live branch/PR status before acting.
 - Django 5.2 LTS + PostgreSQL 18 is the accepted local stack and is already scaffolded under `apps/web`.
 - CI checks Django configuration, formatting, linting, dependency vulnerabilities, package builds, migrations, and focused tests. A synthetic profile edit E2E exists locally and in CI.
 - Local browser E2E and GitHub-hosted CI provide the initial feedback loop. Keep local UI work on synthetic data.
-- Heroku staging has one approved Basic web dyno and one Essential-0 PostgreSQL database (about USD 12/month before tax); the deployed app is still the synthetic demo. Current `main` is not yet deployed.
+- Heroku staging has an approved Basic web dyno, Essential-0 PostgreSQL, and Standard Free Scheduler. The Scheduler runs synthetic session cleanup daily at 00:00 UTC; first execution and actual one-off dyno cost remain unverified. The deployed app is for synthetic staging only.
 
 ## Phase 1 — Product experience prototype
 
 **Goal:** demonstrate a clear, low-effort paid-advertising journey for a user in Türkiye without waiting for external APIs, paid infrastructure, or a production model.
 
-Status: the initial product-experience slice is complete and merged to `main` at `d79082d`; PR #21 and its required CI completed successfully. It is a synthetic brief → preview → simulated pause → sample-report flow, not a connected ad platform. The bullets below record its validated scope; Phase 2 is the next implementation phase.
+Status: the initial product-experience slice is in place. The public route saves synthetic campaign briefs as session-scoped drafts, derives a plan summary, and demonstrates preview, simulated pause, and sample report. It has no generated ad creative, AI provider call, connected account, publishing, or real metrics. The next local step is a clearly synthetic, editable ad-creative draft from the saved brief; durable advertiser/workspace persistence remains deferred until ownership and retention decisions are defined.
 
 - Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
 - Let any advertiser in the Türkiye target market describe a goal with a short plain-language brief, then ask only for essential missing details such as audience, destination, timing, and maximum spend.
