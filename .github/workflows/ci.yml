@@ -110,3 +110,12 @@ jobs:
           POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
           POSTGRES_HOST: 127.0.0.1
         run: python manage.py test
+
+      - name: Run browser end-to-end tests
+        env:
+          DJANGO_SECRET_KEY: ci-only-placeholder-not-for-deployment
+          POSTGRES_DB: growthtwin_ci
+          POSTGRES_USER: growthtwin_ci
+          POSTGRES_PASSWORD: growthtwin-ci-only-placeholder-not-for-deployment
+          POSTGRES_HOST: 127.0.0.1
+        run: python manage.py test e2e
