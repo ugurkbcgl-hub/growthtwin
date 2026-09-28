@@ -2,6 +2,7 @@
 
 from django import forms
 
+from growthtwin.modules.content.creative import CreativeVariant
 from growthtwin.site.models import CampaignObjective
 
 
@@ -77,3 +78,52 @@ class CampaignDraftForm(forms.Form):
         initial=7,
         widget=forms.Select(attrs={"id": "campaign-days"}),
     )
+
+
+class CreativeVariantsForm(forms.Form):
+    """Validate editable text fields while preserving variant metadata."""
+
+    def __init__(self, *args, variants, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.variants = [
+            variant.as_record() if isinstance(variant, CreativeVariant) else variant
+            for variant in variants
+        ]
+        for index, variant in enumerate(self.variants):
+            self.fields[f"headline_{index}"] = forms.CharField(
+                label="Başlık",
+                max_length=80,
+                widget=forms.TextInput(attrs={"maxlength": "80"}),
+                initial=variant["headline"],
+            )
+            self.fields[f"body_{index}"] = forms.CharField(
+                label="Reklam metni",
+                max_length=240,
+                widget=forms.Textarea(attrs={"maxlength": "240", "rows": "3"}),
+                initial=variant["body"],
+            )
+            self.fields[f"call_to_action_{index}"] = forms.CharField(
+                label="Eylem metni",
+                max_length=48,
+                widget=forms.TextInput(attrs={"maxlength": "48"}),
+                initial=variant["call_to_action"],
+            )
+
+    def cleaned_variants(self):
+        """Return validated copy fields alongside their stable angle labels."""
+        if not self.is_valid():
+            raise ValueError("Creative variant fields must be valid before saving.")
+
+        return [
+            {
+                **{
+                    key: variant[key]
+                    for key in ("key", "angle")
+                    if key in variant
+                },
+                "headline": self.cleaned_data[f"headline_{index}"],
+                "body": self.cleaned_data[f"body_{index}"],
+                "call_to_action": self.cleaned_data[f"call_to_action_{index}"],
+            }
+            for index, variant in enumerate(self.variants)
+        ]

@@ -42,6 +42,8 @@ class CampaignDraft(models.Model):
     status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.DRAFT
     )
+    creative_variants = models.JSONField(blank=True, default=list)
+    creative_source_hash = models.CharField(max_length=64, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
