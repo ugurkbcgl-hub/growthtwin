@@ -300,6 +300,15 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .pause-button { min-height: 30px !important; padding-inline: 10px !important; font-size: 8px !important; }
 .panel-actions { gap: 10px; margin-top: 13px; }
 .panel-actions .button { min-height: 40px; padding-inline: 12px; font-size: 10px; }
+.saved-drafts { margin-top: 20px; padding-top: 17px; border-top: 1px solid #eeedf2; }
+.saved-drafts .panel-heading { margin-bottom: 10px; }
+.saved-drafts-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.saved-draft-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border: 1px solid #eeedf2; border-radius: 10px; background: #fff; }
+.saved-draft-copy { display: grid; min-width: 0; gap: 4px; }
+.saved-draft-copy strong { overflow: hidden; color: var(--ink); font-size: 11px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.saved-draft-copy span { color: var(--muted); font-size: 10px; }
+.saved-draft-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+.saved-draft-actions .button { min-height: 34px; padding-inline: 10px; font-size: 10px; }
 .flow-panel > .simulation-note { margin-top: 9px; }
 
 .report-context { display: flex; align-items: center; gap: 10px; margin: 18px 0 15px; }
@@ -433,6 +442,8 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
   .preview-limits small { font-size: 6px; }
   .preview-limits strong { font-size: 9px; }
   .panel-actions .button { padding-inline: 9px; font-size: 9px; }
+  .saved-draft-item { align-items: flex-start; flex-direction: column; }
+  .saved-draft-actions { width: 100%; justify-content: flex-end; }
   .metric-card { padding: 9px 7px; }
   .metric-card strong { font-size: 17px; }
   .how-section { padding: 60px 0 64px; }
