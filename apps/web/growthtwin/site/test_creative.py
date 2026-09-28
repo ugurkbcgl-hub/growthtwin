@@ -83,6 +83,50 @@ class CreativeFallbackTests(SimpleTestCase):
         self.assertEqual(info_variant.body, brief.text)
         self.assertEqual(info_variant.headline, "Mahalle fırını hakkında")
 
+    def test_long_brief_preserves_its_ending_within_copy_limits(self):
+        opening = "Yeni sezon kampanyamız için ayrıntılı bilgilendirme "
+        ending = "yalnızca bu hafta sonu geçerli özel tanışma fiyatı"
+        brief = CampaignBrief(
+            text=f"{opening}{'açıklama ' * 24}{ending}",
+            objective="",
+            objective_label="",
+            target_audience="",
+            brand_context="",
+        )
+
+        variants = draft_creative_variants(brief)
+
+        for variant in variants:
+            with self.subTest(variant=variant.key):
+                self.assertLessEqual(len(variant.body), 240)
+                self.assertIn("Yeni sezon kampanyamız", variant.body)
+                self.assertIn("özel tanışma fiyatı", variant.body)
+
+    def test_long_brand_and_audience_keep_ending_context(self):
+        audience = "şehir merkezinde yaşayan ve çalışan " * 4
+        brand = "Mahallede hizmet veren yerel işletme " * 3
+        brief = CampaignBrief(
+            text=f"{'detaylı tanıtım bilgisi ' * 12}hafta sonu kahvaltı kutusu",
+            objective="",
+            objective_label="",
+            target_audience=f"{audience}erken saatlerde alışveriş yapanlar",
+            brand_context=f"{brand}Günlük taze kahvaltı kutusu",
+        )
+
+        variants = draft_creative_variants(brief)
+        audience_variant = next(
+            variant for variant in variants if variant.key == "audience-focused"
+        )
+        info_variant = next(
+            variant for variant in variants if variant.key == "information-focused"
+        )
+
+        self.assertLessEqual(len(audience_variant.body), 240)
+        self.assertIn("erken saatlerde alışveriş yapanlar", audience_variant.body)
+        self.assertIn("kahvaltı kutusu", audience_variant.body)
+        self.assertLessEqual(len(info_variant.headline), 80)
+        self.assertIn("Günlük taze kahvaltı kutusu", info_variant.headline)
+
     def test_copy_editor_explains_unmodified_brief_fallback(self):
         campaign = SimpleNamespace(
             brief="Yeni seramik atölyemi tanıtmak istiyorum",
