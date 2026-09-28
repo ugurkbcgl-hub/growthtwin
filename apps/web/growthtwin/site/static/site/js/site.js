@@ -122,4 +122,5 @@
   } else {
     showStep(1);
   }
+  document.querySelector('[aria-invalid="true"][autofocus]')?.focus();
 })();
