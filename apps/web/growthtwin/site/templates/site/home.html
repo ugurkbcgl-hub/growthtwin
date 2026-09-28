@@ -77,6 +77,7 @@
                 id="saved-campaign"
                 data-brief="{{ campaign.brief }}"
                 data-brand-context="{{ campaign.brand_context }}"
+                data-objective="{{ campaign.get_objective_display }}"
                 data-daily-limit="{{ campaign.daily_limit }}"
                 data-duration-days="{{ campaign.duration_days }}"
                 hidden
@@ -112,6 +113,14 @@
                 <div class="field-meta">
                   <span>Ürününü, hedefini veya duyurunu anlat.</span>
                   <span id="brief-count">0 / 280</span>
+                </div>
+
+                <div class="objective-field">
+                  <label class="field-label" for="campaign-objective">Kampanyadan ne bekliyorsun? <span>İsteğe bağlı</span></label>
+                  {{ form.objective }}
+                  {% for error in form.objective.errors %}
+                    <p class="inline-error" role="alert">{{ error }}</p>
+                  {% endfor %}
                 </div>
 
                 <details class="optional-context">
@@ -174,6 +183,7 @@
                   <span class="micro-label">HEDEFİN</span>
                   <p id="preview-brief">Kampanya fikrin burada görünür.</p>
                   <p class="campaign-brand-context" id="preview-brand-context" hidden></p>
+                  <p class="campaign-objective" id="preview-objective" hidden></p>
                 </div>
               </div>
               <div class="creative-preview">

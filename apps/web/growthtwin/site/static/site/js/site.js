@@ -55,6 +55,7 @@
   const showSavedPreview = (campaign) => {
     const brief = campaign.dataset.brief;
     const brandContext = campaign.dataset.brandContext;
+    const objective = campaign.dataset.objective;
     const amount = Number(campaign.dataset.dailyLimit);
     const days = Number(campaign.dataset.durationDays);
     const total = amount * days;
@@ -62,6 +63,9 @@
     const brandContextPreview = document.getElementById("preview-brand-context");
     brandContextPreview.textContent = brandContext;
     brandContextPreview.hidden = !brandContext;
+    const objectivePreview = document.getElementById("preview-objective");
+    objectivePreview.textContent = objective ? `Hedef: ${objective}` : "";
+    objectivePreview.hidden = !objective;
     document.getElementById("preview-limit").textContent = formatLira(amount);
     document.getElementById("preview-duration").textContent = `${days} gün`;
     document.getElementById("preview-total").textContent = formatLira(total);
