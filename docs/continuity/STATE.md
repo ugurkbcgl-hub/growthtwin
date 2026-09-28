@@ -1,35 +1,33 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 22:34 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `a9be467` (PR #54); required PR CI `36472843404` and post-merge CI `36473065414` passed. Both ran Django tests and migration checks. The working tree was clean after merge; there were no open PRs before this handoff update.
+Last verified: 2026-09-28 22:54 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `f799426` (PR #56). Required PR CI `36474994196` and post-merge CI `36475232546` passed. The working tree is clean and there are no open PRs.
 
 ## Goal and working rules
 
 - Türkiye is the target market. GrowthTwin serves people and organizations that want to advertise; clinics are one example. Omneky is a long-term breadth benchmark, not a first-release parity promise.
-- Validate one advertiser workflow and one publishing destination before broad channel coverage. The first workflow, destination, and review/autonomy defaults remain undecided.
+- Local synthetic-data product development is authorized. Keep using the existing Django/PostgreSQL app and CI; use branches and PRs, never push directly to `main`.
 - Advertisers must authorize connected accounts and define enforceable spend, schedule, and content limits before live actions. Pause when information or permission is unclear.
 - Keep local, CI, and staging examples synthetic. Do not expose secrets or private advertiser data.
-- Approved staging is limited to the existing Heroku Basic dyno, Essential-0 PostgreSQL, and Standard Free Scheduler. Prior Resources estimate was near USD 12/month; actual usage remains unverified. Do not add paid services or enable live publishing/spend without authorization.
-- Use feature branches and PRs; never push directly to `main`. The owner authorized merging reviewed PRs when required CI passes.
+- Do not add paid services or enable live publishing/spend without authorization. Heroku Scheduler run review was deferred until 2026-10-01 or later; do not inspect it earlier.
 
 ## Current product state
 
 - Local prototype demonstrates synthetic brief → preview → simulated pause → sample report. Drafts remain session-scoped and synthetic.
-- The preview organizes user inputs into a plan summary and indicates missing details. It does not select an advertising channel, connect an account, publish, or show real metrics.
 - PR #51 (`15fda3a`) corrected stale README and roadmap status. Required CI `36422821769` and post-merge CI `36423011388` passed.
-- PR #52 (`a3e1d22`) added three deterministic, editable copy starting points from the saved brief, brand/product context, and optional audience. Changes save only to the session draft; stale copy is indicated after source changes. No AI, account integration, publishing, or spend. Required CI `36424389194` and post-merge CI `36424605181` passed.
-- PR #54 (`a9be467`) improved the information-focused fallback when brand context is absent. It now uses a neutral “Daha fazla bilgi” headline and preserves the brief instead of appending an awkward “hakkında”. Required CI `36472843404` and post-merge CI `36473065414` passed.
-- Manual local browser review with synthetic campaign data verified layout, editing, save feedback, regeneration feedback, and saved-value persistence. A local browser POST first returned 500 because migration `site.0005_campaigndraft_creative_variants` had not been applied; the local database was migrated, then the flow succeeded. No tests were run locally; CI ran the Django suite. Local Ruff was unavailable in the checked virtual environment; CI formatting/lint passed.
-- Browser review also confirmed that copy with no brand context can still sound like the advertiser's request rather than polished ad copy. The other fallback angles need review before treating them as ad-ready.
+- PR #52 (`a3e1d22`) added three deterministic, editable copy starting points from the saved brief, brand/product context, and optional audience. No AI, account integration, publishing, or spend. Required CI `36424389194` and post-merge CI `36424605181` passed.
+- PR #54 (`a9be467`) improved the information-focused fallback when brand context is absent. Required CI `36472843404` and post-merge CI `36473065414` passed.
+- Manual local browser review with synthetic campaign data verified layout, editing, save feedback, regeneration feedback, and saved-value persistence. A missing local migration was applied during that review; local Ruff was unavailable, while CI formatting/lint passed.
+- PR #56 (`f799426`) stopped the audience-focused variant from appending “Detayları incele” to the brief when no audience is given; the CTA remains separate. Three focused local tests passed, and the browser confirmed the no-brand/no-audience brief stays unchanged in the audience- and information-focused bodies. Required CI `36474994196` and post-merge CI `36475232546` passed.
+- Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
 
-- Select the first advertiser workflow and destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
+- Select the first advertiser workflow and publishing destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
 - Session drafts are synthetic. Verify retention/deletion before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
-- Heroku Scheduler runs `python manage.py clearsessions` daily at 00:00 UTC. Its first scheduled execution and actual billed one-off dyno usage have not been verified. Per user instruction, defer checking the scheduled run until 2026-10-01 or later. Keep staging data synthetic; this best-effort cadence is not a retention guarantee.
-- The prior Heroku Resources estimate was about USD 12/month; actual usage remains unverified. Heroku CLI was unavailable at the last check.
-- AI/provider selection and production data-processing terms remain undecided. Recheck provider terms and any tracked research issue before using an external provider.
+- Heroku Scheduler's first scheduled execution and actual billed one-off dyno usage remain unverified. Keep staging data synthetic; the best-effort cleanup cadence is not a retention guarantee. Do not inspect the scheduled run before 2026-10-01.
+- AI/provider selection and production data-processing terms remain undecided. Recheck provider terms before using an external provider.
 
 ## Next action
 
-Review and improve the other no-brand/no-audience copy fallbacks so they remain natural and useful while preserving the advertiser's meaning and adding no factual claims. Keep the change local, synthetic, and provider-free; then verify the revised variants in the browser and CI. Do not check the deferred Heroku scheduled run before 2026-10-01.
+Review no-brand/no-audience copy using several synthetic briefs, including request phrasing such as “tanıtmak istiyorum”. The current deterministic variants can repeat that request verbatim. Decide whether a narrow, claim-safe wording cleanup can preserve meaning naturally; if the brief cannot be safely transformed, keep it clearly labeled as an editable starting point. Add focused tests and inspect the resulting copy in the local browser. Do not use external AI or real advertiser data, and do not check Heroku Scheduler before 2026-10-01.
