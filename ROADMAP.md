@@ -2,13 +2,13 @@
 
 ## Direction reset — 2026-09-27
 
-The owner asked to refocus GrowthTwin on the actual self-service advertising website. The product vision is now an end-to-end campaign autopilot for individuals, creators, and businesses; the earlier dental-clinic-only content workflow is a possible pilot cohort, not the product boundary. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), and accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md).
+The owner clarified that Türkiye is the target market and GrowthTwin should serve anyone who wants to advertise. Dental clinics, creators, and small businesses are examples, not product boundaries. Omneky is a long-term capability benchmark for ad creation, campaign launch, unified reporting, and bounded optimization. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md), and [ADR-0005](docs/adr/0005-turkey-first-advertising-platform.md).
 
-The product should remove routine operator work after an advertiser gives a brief, connects an account, and sets explicit limits. The system must pause and notify the advertiser when it cannot safely proceed. Current work prioritizes the real website and local synthetic-data development; it does not authorize production publishing, real ad spend, or additional paid infrastructure.
+The product should remove routine GrowthTwin-operator work after an advertiser explains a goal, authorizes an account, and sets explicit limits. Routine work may run within those boundaries; the system must pause and notify the advertiser when it cannot safely proceed. Omneky-style multi-channel breadth is a long-term target, not the first-release scope. Current work prioritizes the local website and synthetic-data development; it does not authorize production publishing, real ad spend, or additional paid infrastructure.
 
 ## Existing foundation — in place for local product work
 
-- Public GitHub repository, protected `main`, pull-request workflow, and CI are active. Latest verified `main` is `6aba41e`; no open PRs; CI run `36335898184` passed.
+- Public GitHub repository, protected `main`, pull-request workflow, and CI are active. Verified `main` is `d79082d`; no open PRs at the start of issue #22; CI run `36339595216` passed.
 - Django 5.2 LTS + PostgreSQL 18 is the accepted local stack and is already scaffolded under `apps/web`.
 - CI checks Django configuration, formatting, linting, dependency vulnerabilities, package builds, migrations, and focused tests. A synthetic profile edit E2E exists locally and in CI.
 - Local browser E2E and GitHub-hosted CI provide the initial feedback loop. Keep local UI work on synthetic data.
@@ -16,13 +16,14 @@ The product should remove routine operator work after an advertiser gives a brie
 
 ## Phase 1 — Product experience prototype
 
-**Goal:** demonstrate the simplest complete user experience without waiting for external APIs, paid infrastructure, or a production model.
+**Goal:** demonstrate a clear, low-effort paid-advertising journey for a user in Türkiye without waiting for external APIs, paid infrastructure, or a production model.
 
-Status: in progress — the public page and client-side synthetic brief → preview → sample-report flow are implemented on `product/campaign-experience-prototype`; PR and CI status must be checked live.
+Status: the initial product-experience slice is complete and merged to `main` at `d79082d`; PR #21 and its required CI completed successfully. It is a synthetic brief → preview → simulated pause → sample-report flow, not a connected ad platform. The bullets below record its validated scope; Phase 2 is the next implementation phase.
 
 - Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
-- Let a user describe an advertising goal with a short plain-language brief, then progressively ask only for essential missing details such as destination, timing, and maximum spend.
-- Show a believable campaign lifecycle with synthetic example output: request received, plan prepared, creative preview, destination/schedule, and performance summary. Label mock publishing and metrics clearly.
+- Let any advertiser in the Türkiye target market describe a goal with a short plain-language brief, then ask only for essential missing details such as audience, destination, timing, and maximum spend.
+- Demonstrate brand/offer intake, a campaign plan, and on-brand ad concepts in a simple experience.
+- Show a believable lifecycle with synthetic output: request received, plan prepared, creative preview, destination/schedule, simulated publication, and performance summary. Label mock publishing and metrics clearly.
 - Keep editing, current status, spend boundary, and pause/stop visible. Do not hard-code clinic fields.
 - **Acceptance:** a new visitor can understand the offer; a synthetic advertiser can move through brief → campaign preview → mock result without staff help; the layout works on mobile and desktop; no external account, AI provider, or publishing API is called.
 
@@ -30,17 +31,17 @@ Status: in progress — the public page and client-side synthetic brief → prev
 
 **Goal:** connect the website to deterministic campaign records and evaluate draft generation without creating external side effects.
 
-- Model advertiser/workspace, brand facts, campaign brief, versioned creatives, destinations, user-defined caps, and status history.
+- Model advertiser/workspace, brand facts and assets, campaign brief, versioned multi-format ad creatives, destinations, user-defined caps, and status history.
 - Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.
 - Add quality checks for missing/unsupported claims, format constraints, and budget/schedule completeness. A rejected or ambiguous output stays paused.
 - Verify tenant isolation, schema validation, retry/idempotency behavior, and the campaign user journey.
-- **Acceptance:** the local end-to-end path saves a campaign, produces or safely rejects a structured draft, explains its state, and cannot publish or incur ad spend.
+- **Acceptance:** the local end-to-end path saves a campaign, produces or safely rejects structured ad drafts, explains its state, and cannot publish or incur ad spend.
 
 ## Phase 3 — First publishing and reporting integration
 
 **Goal:** prove one authorized destination before expanding channel coverage.
 
-- Choose the first platform only after checking current API access, app review, supported campaign/creative formats, authorization requirements, reporting coverage, and maintenance cost.
+- Choose the first paid-ad platform only after checking access and eligibility in Türkiye, app review, supported campaign/creative formats, authorization requirements, reporting coverage, policy constraints, and maintenance cost.
 - Build OAuth/account connection and revocation, narrow scopes, a test/sandbox path, immutable action records, safe retries, and a user-visible emergency stop.
 - Require explicit advertiser authorization and a hard platform-enforced spend boundary. Never let a model modify a cap or directly invoke a publishing API.
 - Import performance data and present plain-language results. Do not imply that automated optimization is supported until the API and safe bounds are verified.
@@ -53,12 +54,22 @@ Status: in progress — the public page and client-side synthetic brief → prev
 - Finish staging E2E, backup/restore, rollback, deployment-revision health reporting, and a tested CI merge gate.
 - Review platform approvals, privacy notice/consent, model/provider data terms, data deletion/export, retention, OAuth token handling, accessibility, monitoring, and incident procedures.
 - Estimate production hosting and AI costs; ask the owner before any new recurring service or advertiser campaign-spend feature is enabled.
-- Start with the owners' existing business contacts as an optional cohort; broaden only after observed usability and quality evidence.
+- Select a small pilot cohort from the Türkiye market after the first workflow is validated; clinics may be included but are not the exclusive target.
 - **Acceptance:** a documented pilot run stays within the approved service budget and advertiser caps, can be stopped and recovered, and produces a useful report with no unreviewed safety failures.
+
+## Phase 5 — Omnichannel capability expansion
+
+**Goal:** expand toward the Omneky capability benchmark after one complete channel is validated and the product has evidence from real user workflows.
+
+- Add channels one at a time after verifying Türkiye-specific API access, platform approval, formats, reporting, policy obligations, and operating costs.
+- Expand ad production and editing across image, short-form video, and other supported formats; make creative variations and review tools easy to use.
+- Add cross-channel and creative-level analytics, plain-language insights, and explainable recommendations.
+- Add A/B testing and bounded optimization only where the platform supports reliable measurements and advertiser-defined guardrails.
+- **Acceptance:** every supported channel and optimization action has tested authorization, spend/schedule limits, traceable state changes, idempotent retries, stop/revoke behavior, and understandable reporting. Unsupported or uncertain actions remain paused.
 
 ## Deferred until evidence supports them
 
-- More ad platforms, multiple vertical-specific workflows, native mobile clients, organic-content calendars, long-form video generation, full CRM, vector search, microservices, a separate queue service, and automatic multi-channel budget optimization.
+- Broad simultaneous channel coverage, vertical-specific workflow depth, native mobile clients, organic-content calendars, long-form video generation, full CRM, vector search, microservices, a separate queue service, and automatic cross-channel budget allocation.
 - Production AI/provider selection and production hosting.
 
 ## Existing Phase 0 tasks retained as gates

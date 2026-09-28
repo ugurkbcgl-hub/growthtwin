@@ -2,26 +2,28 @@
 
 ## Current status
 
-- Product direction was reset on 2026-09-27 at the owner's request: focus on the user-facing advertising website and its automated campaign journey.
+- Product direction was clarified on 2026-09-27 at the owner's request: Türkiye is the target market, and the product is for people and organizations that want to advertise. Dental clinics are one example, not the product boundary.
 - Local product development is authorized. The existing Django/PostgreSQL foundation and CI remain in use.
 - The previous clinic-only Phase 0 demo is a foundation check, not the product itself. Staging browser E2E, backup/restore, and rollback remain unverified release-readiness tasks; they do not block local synthetic-data UX work.
-- The first public website slice is being built locally: responsive campaign brief, preview, simulated pause control, and sample report. It has no campaign persistence, AI call, platform connection, publication, or real metrics.
+- The first public website slice is merged to `main`: responsive campaign brief, preview, simulated pause control, and sample report. It has no campaign persistence, AI call, platform connection, publication, or real metrics.
 - Current implementation stack: Django 5.2 LTS + PostgreSQL in one modular monolith (accepted in ADR-0002). No new stack, paid service, or production AI provider is selected.
 
 ## Product goal
 
-Build a polished, low-effort, self-service website that lets an individual, creator, or business request a digital advertising campaign in plain language and have GrowthTwin carry the routine work from brief intake through creative production, safe checks, publishing, performance reporting, and permitted follow-up optimization.
+Build a polished, low-effort, self-service advertising platform for the Türkiye market. It should be useful to anyone who wants to advertise: individuals, creators, small and large businesses, and organizations across industries. Dental clinics are one possible customer example, not a special product boundary.
 
-The normal campaign path should not require a GrowthTwin employee or agency operator. The advertiser starts the request, connects the selected account, and defines the allowed channel, schedule, content boundaries, and spend ceiling. After that setup, routine work can run automatically inside those limits. If the request is missing essential facts, the destination rejects it, a safety check fails, or a configured limit is reached, the system pauses that campaign and explains the next step to the advertiser.
+GrowthTwin's long-term capability benchmark is an integrated, AI-assisted advertising workflow: understand the advertiser's brand and offer; turn a plain-language goal into a campaign plan; generate and refine platform-ready copy, image, and video ads; launch approved campaigns through connected ad accounts; report results across channels; and recommend or perform bounded improvements based on measured performance. Omneky is a product capability reference for this breadth, not a commitment to copy every feature or channel in the first release. Public vendor feature claims do not establish GrowthTwin's access to those platforms, API eligibility in Türkiye, or feature parity.
 
-For this project, "advertising" means digital campaign assets and their destination-platform launch and measurement. An organic-post calendar is a possible adjacent feature; it must not dilute the campaign-first MVP.
+The normal path should not require a GrowthTwin employee or agency operator. The advertiser supplies essential facts, authorizes each selected destination, and sets explicit content, schedule, and spend boundaries. Routine work may proceed autonomously only within those permissions and enforceable limits. When facts, authorization, policy confidence, provider state, or a limit is missing or uncertain, the campaign pauses and the user receives a clear explanation. The exact default review mode and first-release autonomy settings remain open decisions.
+
+For this project, "advertising" means paid digital advertising campaigns and their creative, launch, measurement, and bounded optimization. Organic social-post scheduling is outside the initial product scope unless later evidence justifies it.
 
 ## Users and first market
 
-- Product vision: do not hard-code GrowthTwin to dental clinics or a single industry. The campaign and brand model should work for different kinds of advertisers.
-- Practical first audience: independent creators and Turkish small businesses, where a small business can reuse the account, brand, and campaign tools.
-- The founders' existing dental-clinic contacts remain useful as an optional first pilot cohort, not as the product's only supported customer type.
-- Keep the first usable release narrow: one validated advertiser workflow and one publishing destination can prove the end-to-end value. The first destination and exact pilot segment remain open until API feasibility and user feedback are checked.
+- Target market: Türkiye. The product is for people and organizations in Türkiye that want to run paid digital advertising, across industries and advertiser sizes.
+- Do not hard-code GrowthTwin to dental clinics, creators, e-commerce, or a single vertical. Shared campaign, brand, and account workflows should support different advertiser types.
+- Dental clinics, creators, and small businesses are examples of potential users. None is currently selected as the exclusive first segment.
+- Keep the first usable release narrow: validate one campaign workflow and one publishing destination before broad channel coverage. The initial campaign type, pilot cohort, and destination remain open until user discovery and platform/API feasibility are checked.
 
 ## User experience principles
 
@@ -33,12 +35,12 @@ For this project, "advertising" means digital campaign assets and their destinat
 
 ## Campaign lifecycle
 
-1. Capture a short goal/offer brief and the advertiser's brand facts and assets.
-2. Turn the brief into a structured campaign plan with audience, objective, destination format, timing, and a cost boundary.
-3. Generate copy and creative drafts; validate required fields, brand constraints, destination formats, factual claims, and platform rules.
-4. Publish or schedule through an authorized platform connection only when the account, permissions, content checks, and user-defined budget/schedule limits allow it.
-5. Collect results, explain them in plain language, and make follow-up changes only inside the advertiser's configured autonomy and spend limits.
-6. Pause with an understandable message when confidence, policy, platform access, or budget is insufficient. Log all external actions and make them traceable.
+1. Learn the advertiser's brand, offer, assets, audience, and goal from a short guided intake.
+2. Turn the goal into a structured campaign plan with objective, audience, channel, placements, timing, and spend boundaries.
+3. Generate and refine platform-ready copy, image, video, and variants; validate claims, brand rules, destination formats, and platform policies.
+4. Launch or schedule only through an explicitly authorized ad-account connection and within user-defined spend and schedule limits.
+5. Collect and explain performance by campaign, channel, and creative; recommend or make follow-up changes only within the advertiser's configured autonomy and caps.
+6. Pause with an understandable message when information, confidence, permissions, platform access, or budget is insufficient. Record external actions so they are traceable.
 
 AI may propose and transform campaign material; deterministic application rules enforce authorization, budget caps, valid states, idempotency, and external-action boundaries. Never let a model call a publishing API or increase spend outside these controls.
 
@@ -70,8 +72,12 @@ AI may propose and transform campaign material; deterministic application rules 
 
 ## Open decisions to resolve before real publishing
 
-1. Choose and validate the first advertiser segment and campaign type through the product prototype and pilot feedback.
-2. Compare platform API access, review/approval requirements, supported formats, reporting coverage, and ongoing maintenance before selecting the first publishing destination.
-3. Define the exact user-controlled autonomy settings, account consent, budget caps, and stop conditions before enabling automatic spend or publication.
+1. Choose and validate the first campaign workflow and pilot cohort within the Türkiye-wide advertiser market.
+2. Compare platform API access in Türkiye, app review, account permissions, supported formats, reporting coverage, policy constraints, and maintenance before selecting the first publishing destination.
+3. Define default review mode, opt-in autonomy, account consent, enforceable spend caps, and stop conditions before enabling live publication or spend.
 4. Select production AI/data-processing terms and cost only after representative evaluations and a privacy review.
 5. Decide pricing and any recurring production infrastructure after the first end-to-end pilot workflow is understood.
+
+## Omneky capability reference
+
+The owner selected Omneky as a long-term capability benchmark for ad creation, connected campaign launch, cross-channel performance reporting, and bounded optimization. Its current public product pages are a reference, not independent verification or a GrowthTwin feature commitment. Recheck current capabilities and Türkiye-specific platform/API access when selecting an implementation target. Sources: [Omneky](https://www.omneky.com/) and [Campaign Launcher](https://www.omneky.com/campaign-launcher), checked 2026-09-27.
