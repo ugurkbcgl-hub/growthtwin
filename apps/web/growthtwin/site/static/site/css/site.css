@@ -301,6 +301,10 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .plan-summary-list > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; padding: 7px 0; border-top: 1px solid #f1f0f5; }
 .plan-summary-list dt { color: #858692; font-size: 9px; }
 .plan-summary-list dd { margin: 0; color: #464754; font-size: 9px; font-weight: 600; overflow-wrap: anywhere; }
+.plan-readiness { margin-top: 9px; padding: 9px; border-radius: 9px; background: #f8f7fc; }
+.plan-readiness strong { color: #5c55a8; font-size: 9px; font-weight: 680; }
+.plan-readiness ul { display: grid; gap: 5px; margin: 6px 0 0; padding-left: 15px; color: #777887; font-size: 8px; line-height: 1.45; }
+.plan-readiness ul:empty { display: none; }
 .plan-summary-note { margin: 8px 0 0; color: #8b8c98; font-size: 8px; line-height: 1.5; }
 
 .creative-preview { display: grid; grid-template-columns: .88fr 1fr; gap: 12px; align-items: center; }

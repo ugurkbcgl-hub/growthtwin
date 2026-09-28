@@ -206,6 +206,10 @@
                   <div><dt>Marka / teklif</dt><dd id="plan-brand">{{ campaign.brand_context|default:"Henüz belirtilmedi" }}</dd></div>
                   <div><dt>Bütçe sınırı</dt><dd id="plan-budget">{% if campaign %}₺{{ campaign.total_limit }} toplam · ₺{{ campaign.daily_limit }} / gün · {{ campaign.duration_days }} gün{% else %}₺5.250 toplam · ₺750 / gün · 7 gün{% endif %}</dd></div>
                 </dl>
+                <div class="plan-readiness" aria-live="polite">
+                  <strong id="plan-readiness-title">Taslağı netleştirebilirsin</strong>
+                  <ul id="plan-readiness-list"></ul>
+                </div>
                 <p class="plan-summary-note">Hedef kanal ve reklam biçimi henüz seçilmedi. Bu, girdilerini düzenleyen bir taslaktır; reklam üretmez veya yayınlamaz.</p>
               </section>
               <div class="creative-preview">
@@ -235,7 +239,7 @@
                 <button class="button button-secondary pause-button" id="toggle-pause" type="button" aria-pressed="false">Durdur</button>
               </div>
               <div class="panel-actions">
-                <button class="button button-secondary" id="edit-brief" type="button">← Düzenle</button>
+                <button class="button button-secondary" id="edit-brief" type="button">← Planı düzenle</button>
                 <button class="button button-primary" id="show-report" type="button">Örnek rapor <span aria-hidden="true">→</span></button>
               </div>
               {% if campaign %}
