@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 09:27 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI run `36346656517` passed. PR #25 is open at `338814289c0b8bab203dac78a6342face4709fa4`; required CI run `36386452999` passed. A state-only refresh will trigger another check; verify it on the new head.
+Last verified: 2026-09-28 09:50 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI `36346656517` passed. PR #25 is open at `ed04010f5af3ccf08d95f13c9d24cb28c9f953fb`; required CI `36386658561` passed. PR #27 is open at `a3c97308d8139945c77f3205ec6b007c44c45484`; required CI `36388301334` passed. The state refresh will create another PR #27 head; verify CI on it.
 
 ## Goal and working rules
 
@@ -14,27 +14,27 @@ Last verified: 2026-09-28 09:27 (Europe/Istanbul). PR #23 is open at `68c1a2bc02
 
 ## Repository and review
 
-- Repository: https://github.com/ugurkbcgl-hub/growthtwin. Use feature branches and PRs; do not push directly to `main`.
-- PR #23: https://github.com/ugurkbcgl-hub/growthtwin/pull/23 — open, base `main`, head `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`, required CI run `36346656517` passed.
-- Issue #24 tracks session-scoped synthetic campaign drafts, UUID identifiers, in-session edits, deletion, isolation, and cleanup.
-- PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `338814289c0b8bab203dac78a6342face4709fa4`, base `feature/GT-022-turkey-advertising-roadmap`; required CI run `36386452999` passed. It is stacked on PR #23; retarget it to `main` after #23 merges.
-- No PR has been merged or deployed as part of this work.
+- Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
+- PR #23: https://github.com/ugurkbcgl-hub/growthtwin/pull/23 — open, base `main`, head `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`, required CI `36346656517` passed.
+- Issue #24 / PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `ed04010f5af3ccf08d95f13c9d24cb28c9f953fb`, base `feature/GT-022-turkey-advertising-roadmap`, required CI `36386658561` passed. #25 is stacked on #23.
+- Issue #26 / PR #27: https://github.com/ugurkbcgl-hub/growthtwin/pull/27 — open, head `a3c97308d8139945c77f3205ec6b007c44c45484`, base `feature/GT-024-session-campaign-drafts`, required CI `36388301334` passed. #27 is stacked on #25.
+- No PR was merged and no deployment was performed.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- Phase 1's website prototype is merged to `main`: synthetic brief → preview → simulated pause → sample report. PR #25 adds the first Phase 2 persistence slice; it adds no AI generation, account connection, publication, ad spend, or real metrics.
-- PR #25 stores only the brief, daily cap, and duration in a UUID-keyed draft linked to the anonymous Django session. The owner session can restore and edit the same draft, discard it with a CSRF-protected POST, and cannot act on drafts owned by another session. GET does not delete. Django session cleanup deletes linked drafts. The UI warns to use synthetic input only.
-- Local verification on the latest code head: all 17 Django tests passed with SQLite test settings; `makemigrations --check --dry-run` reported no changes; Ruff format/lint, `node --check`, and `git diff --check` passed. Required CI passed on code head `9767d6e` and later documentation head `3388142`.
-- No AI provider, ad destination, live account connection, publishing, advertiser spend, new paid service, or deployment was added.
+- Phase 1's website prototype is on `main`: synthetic brief → preview → simulated pause → sample report. PRs #25/#27 extend Phase 2 with persisted synthetic drafts and a same-session return flow; no AI generation, account connection, publication, ad spend, or real metrics is added.
+- Drafts use UUID identifiers and belong to anonymous Django sessions. The owning active session can list, resume, edit, and discard them. Other or expired sessions cannot read or change drafts; empty visits do not create sessions. Django cleanup cascades drafts when it removes sessions. The UI labels the data as synthetic.
+- Local verification on the current feature code: all 22 Django tests passed with SQLite test settings; Ruff format/lint, JavaScript syntax, and `git diff --check` passed. CI passed on code head `a3c9730`.
+- No AI provider, publishing destination, paid service, live account, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
 
-- Choose the first advertiser workflow/pilot cohort and ad destination only after discovery and review of current Türkiye API eligibility, approval, policy, and reporting.
+- Choose the first advertiser workflow/pilot cohort and ad destination only after discovery and review of Türkiye API eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
-- The prototype stores briefs in the PostgreSQL-backed session-linked draft table. Use synthetic data only; a hosted cleanup schedule for expired sessions has not been verified. Define retention and deletion operations before real advertiser data is accepted.
-- Production AI/data-processing providers and pricing remain undecided. Staging E2E, backup/restore, and controlled rollback remain unverified gates before external beta/production, not blockers for local synthetic UX work.
+- Drafts contain only synthetic data for now. A hosted schedule for clearing expired Django sessions remains unverified; establish retention/deletion operations before accepting real advertiser data.
+- Production AI/data-processing providers and pricing remain undecided. Staging E2E, backup/restore, and controlled rollback remain unverified gates before beta/production, not blockers for local synthetic UX work.
 
 ## Next action
 
-Verify CI triggered by this state refresh. Keep PR #25 open while PR #23 is open; after #23 merges, retarget #25 to `main` and verify required CI again. Do not merge without an explicit owner request.
+Verify CI triggered by this state refresh. Keep all PRs open: after #23 merges, retarget #25 to `main`; after #25 merges, retarget #27 to `main`. Verify required CI at each new head. Do not merge without an explicit owner request.
