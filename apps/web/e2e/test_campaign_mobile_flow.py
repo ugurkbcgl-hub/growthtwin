@@ -70,6 +70,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 ) as invalid_response:
                     page.keyboard.press("Enter")
                 self.assertEqual(invalid_response.value.status, 200)
+                page.wait_for_load_state("domcontentloaded")
                 self.assertIsNotNone(
                     page.locator(".optional-context").get_attribute("open")
                 )
