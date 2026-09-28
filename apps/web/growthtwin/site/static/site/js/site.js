@@ -73,6 +73,14 @@
     document.getElementById("preview-limit").textContent = formatLira(amount);
     document.getElementById("preview-duration").textContent = `${days} gün`;
     document.getElementById("preview-total").textContent = formatLira(total);
+    document.getElementById("plan-objective").textContent =
+      objective || "Brief’ten netleştirilecek";
+    document.getElementById("plan-audience").textContent =
+      targetAudience || "Henüz belirtilmedi";
+    document.getElementById("plan-brand").textContent =
+      brandContext || "Henüz belirtilmedi";
+    document.getElementById("plan-budget").textContent =
+      `${formatLira(total)} toplam · ${formatLira(amount)} / gün · ${days} gün`;
     document.getElementById("report-brief").textContent = brief;
     document.getElementById("report-period").textContent = `${days} günlük örnek görünüm`;
     resetDemoAutomation();
