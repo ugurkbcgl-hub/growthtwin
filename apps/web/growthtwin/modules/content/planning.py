@@ -13,20 +13,14 @@ class MissingPlanInput:
 
 
 @dataclass(frozen=True)
-class CampaignPlan:
-    """An immutable, non-persistent view of a campaign draft."""
+class CampaignBrief:
+    """Advertiser intent and context, independent of storage or HTTP."""
 
-    brief: str
+    text: str
     objective: str
     objective_label: str
     target_audience: str
     brand_context: str
-    daily_limit: int
-    duration_days: int
-
-    @property
-    def total_limit(self) -> int:
-        return self.daily_limit * self.duration_days
 
     @property
     def objective_summary(self) -> str:
@@ -75,3 +69,16 @@ class CampaignPlan:
     @property
     def first_missing_field(self) -> str:
         return self.missing_inputs[0].field_id if self.missing_inputs else ""
+
+
+@dataclass(frozen=True)
+class CampaignPlan:
+    """An immutable, non-persistent plan derived from a brief and limits."""
+
+    brief: CampaignBrief
+    daily_limit: int
+    duration_days: int
+
+    @property
+    def total_limit(self) -> int:
+        return self.daily_limit * self.duration_days

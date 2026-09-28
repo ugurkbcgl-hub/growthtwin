@@ -2,9 +2,12 @@
 
 Keep the first application as one Django deployment while keeping domain
 responsibilities separate. Local product implementation is authorized. The
-`content` module currently contains a provider-neutral, non-persistent campaign
-plan value object; session-scoped prototype persistence remains in `site`.
-Provider clients and cross-module persistence contracts are not defined yet.
+`content` contains provider-neutral, persistence-free `CampaignBrief` and
+`CampaignPlan` values. Session-scoped synthetic prototype persistence remains
+in `site`; see [ADR-0006](../../../../docs/adr/0006-campaign-brief-boundary.md)
+for the ownership boundary and conditions required before adding a content ORM
+entity. Provider clients and cross-module persistence contracts are not defined
+yet.
 
 - `workspaces`: advertiser identity, membership, roles, and tenant context.
 - `content`: brand facts, campaign briefs, creative drafts, versions, and asset metadata.
