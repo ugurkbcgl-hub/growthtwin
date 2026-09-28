@@ -57,13 +57,14 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 page.get_by_role("button", name="Metinleri kaydet").click()
                 page.wait_for_url("**creative=saved")
                 self.assertEqual(
-                    page.get_by_role("status").filter(
-                        has_text="Metin değişikliklerin kaydedildi."
-                    ).count(),
+                    page.get_by_role("status")
+                    .filter(has_text="Metin değişikliklerin kaydedildi.")
+                    .count(),
                     1,
                 )
                 self.assertEqual(
-                    page.locator(".creative-variant").nth(0)
+                    page.locator(".creative-variant")
+                    .nth(0)
                     .get_by_label("Başlık")
                     .input_value(),
                     "Sentetik düzenlenmiş reklam başlığı",
@@ -74,9 +75,9 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 ).click()
                 page.wait_for_url("**creative=regenerated")
                 self.assertEqual(
-                    page.get_by_role("status").filter(
-                        has_text="Brief’inden yeni metin önerileri hazırlandı."
-                    ).count(),
+                    page.get_by_role("status")
+                    .filter(has_text="Brief’inden yeni metin önerileri hazırlandı.")
+                    .count(),
                     1,
                 )
 
