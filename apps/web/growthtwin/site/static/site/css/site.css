@@ -415,6 +415,7 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
   .hero { grid-template-columns: minmax(0, .85fr) minmax(385px, 1fr); gap: 38px; }
   h1 { font-size: clamp(45px, 5.5vw, 60px); letter-spacing: -3.6px; }
   .studio-card { padding-inline: 23px; }
+  .studio-glow { inset-inline-end: 0; }
   .control-section { padding-inline: 45px; }
 }
 
