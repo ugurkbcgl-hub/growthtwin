@@ -6,4 +6,11 @@ from growthtwin.site import views
 
 app_name = "site"
 
-urlpatterns = [path("", views.home, name="home")]
+urlpatterns = [
+    path("", views.home, name="home"),
+    path(
+        "drafts/<uuid:campaign_id>/delete/",
+        views.delete_campaign,
+        name="delete-campaign",
+    ),
+]

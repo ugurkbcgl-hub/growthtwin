@@ -72,6 +72,15 @@
               </div>
               <span class="demo-pill"><span></span> Ürün prototipi</span>
             </div>
+            {% if campaign %}
+              <div
+                id="saved-campaign"
+                data-brief="{{ campaign.brief }}"
+                data-daily-limit="{{ campaign.daily_limit }}"
+                data-duration-days="{{ campaign.duration_days }}"
+                hidden
+              ></div>
+            {% endif %}
 
             <div class="stepper" aria-label="Örnek akış: 3 adım">
               <div class="stepper-labels">
@@ -88,50 +97,56 @@
                 <p>Bir cümle yeter. Detayları ihtiyaç oldukça sorarız.</p>
               </div>
 
-              <label class="field-label" for="campaign-brief">Kampanya fikrin</label>
-              <textarea
-                id="campaign-brief"
-                maxlength="280"
-                placeholder="Örn. Yeni açılan atölyem için daha fazla yerel müşteri bulmak istiyorum."
-                rows="3"
-              ></textarea>
-              <div class="field-meta">
-                <span>Ürününü, hedefini veya duyurunu anlat.</span>
-                <span id="brief-count">0 / 280</span>
-              </div>
+              <form method="post" action="{% url 'site:home' %}">
+                {% csrf_token %}
+                {{ form.campaign_id }}
+                {% for error in form.campaign_id.errors %}
+                  <p class="inline-error" role="alert">{{ error }}</p>
+                {% endfor %}
+                <label class="field-label" for="campaign-brief">Kampanya fikrin</label>
+                {{ form.brief }}
+                {% for error in form.brief.errors %}
+                  <p class="inline-error" role="alert">{{ error }}</p>
+                {% endfor %}
+                <div class="field-meta">
+                  <span>Ürününü, hedefini veya duyurunu anlat.</span>
+                  <span id="brief-count">0 / 280</span>
+                </div>
 
-              <div class="form-row">
-                <div class="form-field">
-                  <label class="field-label" for="daily-limit">Günlük üst sınır</label>
-                  <div class="input-with-unit">
-                    <span aria-hidden="true">₺</span>
-                    <input id="daily-limit" type="number" min="100" max="100000" step="50" value="750" inputmode="numeric">
-                    <span class="input-unit">/ gün</span>
+                <div class="form-row">
+                  <div class="form-field">
+                    <label class="field-label" for="daily-limit">Günlük üst sınır</label>
+                    <div class="input-with-unit">
+                      <span aria-hidden="true">₺</span>
+                      {{ form.daily_limit }}
+                      <span class="input-unit">/ gün</span>
+                    </div>
+                    {% for error in form.daily_limit.errors %}
+                      <p class="inline-error" role="alert">{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                  <div class="form-field">
+                    <label class="field-label" for="campaign-days">Süre</label>
+                    <div class="select-wrap">
+                      {{ form.duration_days }}
+                      <span aria-hidden="true">⌄</span>
+                    </div>
+                    {% for error in form.duration_days.errors %}
+                      <p class="inline-error" role="alert">{{ error }}</p>
+                    {% endfor %}
                   </div>
                 </div>
-                <div class="form-field">
-                  <label class="field-label" for="campaign-days">Süre</label>
-                  <div class="select-wrap">
-                    <select id="campaign-days">
-                      <option value="7">7 gün</option>
-                      <option value="14">14 gün</option>
-                      <option value="30">30 gün</option>
-                    </select>
-                    <span aria-hidden="true">⌄</span>
-                  </div>
+
+                <div class="budget-note" aria-live="polite">
+                  <span class="budget-icon" aria-hidden="true">⌁</span>
+                  <p><strong>Örnek toplam sınır</strong><span id="budget-total">₺5.250</span></p>
                 </div>
-              </div>
+                <p class="simulation-note">Sentetik bilgi kullan; gerçek hasta, müşteri veya gizli bilgi girme. Taslak bu tarayıcı oturumunda saklanır ve oturum temizlendiğinde silinir. Hiçbir yere gönderilmez, harcama yapmaz.</p>
 
-              <div class="budget-note" aria-live="polite">
-                <span class="budget-icon" aria-hidden="true">⌁</span>
-                <p><strong>Örnek toplam sınır</strong><span id="budget-total">₺5.250</span></p>
-              </div>
-              <p class="simulation-note">Bu deneme hiçbir yere gönderilmez ve harcama yapmaz.</p>
-
-              <button class="button button-primary button-full" id="create-preview" type="button">
-                Örnek kampanyayı gör <span aria-hidden="true">→</span>
-              </button>
-              <p class="inline-error" id="brief-error" role="alert" hidden>Devam etmek için kısaca kampanya fikrini yaz.</p>
+                <button class="button button-primary button-full" id="create-preview" type="submit">
+                  Örnek kampanyayı gör <span aria-hidden="true">→</span>
+                </button>
+              </form>
             </section>
 
             <section class="flow-panel" id="preview-panel" aria-labelledby="preview-title" hidden>
@@ -179,6 +194,12 @@
                 <button class="button button-secondary" id="edit-brief" type="button">← Düzenle</button>
                 <button class="button button-primary" id="show-report" type="button">Örnek rapor <span aria-hidden="true">→</span></button>
               </div>
+              {% if campaign %}
+                <form method="post" action="{% url 'site:delete-campaign' campaign.pk %}">
+                  {% csrf_token %}
+                  <button class="button button-secondary button-full" type="submit">Bu taslağı sil</button>
+                </form>
+              {% endif %}
               <p class="simulation-note">Örnek ekran; AI üretimi veya yayınlama çalışmıyor.</p>
             </section>
 
@@ -204,7 +225,13 @@
                 <p>Gerçek GrowthTwin raporu, sonuçları sade bir dille açıklar ve sonraki adımı önerir.</p>
               </div>
               <p class="simulation-note">Bu metrikler sentetiktir; gerçek kampanyaya ait değildir.</p>
-              <button class="button button-secondary button-full" id="restart-flow" type="button">Yeni bir brief dene <span aria-hidden="true">↗</span></button>
+              <a class="button button-secondary button-full" id="restart-flow" href="{% url 'site:home' %}">Yeni bir brief dene <span aria-hidden="true">↗</span></a>
+              {% if campaign %}
+                <form method="post" action="{% url 'site:delete-campaign' campaign.pk %}">
+                  {% csrf_token %}
+                  <button class="button button-secondary button-full" type="submit">Bu taslağı sil</button>
+                </form>
+              {% endif %}
             </section>
             <p class="flow-status" id="flow-status" aria-live="polite"></p>
           </section>

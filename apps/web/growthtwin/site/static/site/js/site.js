@@ -4,7 +4,6 @@
   const daysInput = document.getElementById("campaign-days");
   const briefCount = document.getElementById("brief-count");
   const budgetTotal = document.getElementById("budget-total");
-  const briefError = document.getElementById("brief-error");
   const flowStatus = document.getElementById("flow-status");
 
   if (!briefInput || !dailyLimitInput || !daysInput) return;
@@ -53,19 +52,10 @@
     pauseButton.setAttribute("aria-pressed", "false");
   };
 
-  const createPreview = () => {
-    const brief = briefInput.value.trim();
-    briefError.hidden = true;
-
-    if (!brief) {
-      briefError.hidden = false;
-      briefInput.focus();
-      return;
-    }
-    if (!dailyLimitInput.reportValidity()) return;
-
-    const amount = Number(dailyLimitInput.value);
-    const days = Number(daysInput.value);
+  const showSavedPreview = (campaign) => {
+    const brief = campaign.dataset.brief;
+    const amount = Number(campaign.dataset.dailyLimit);
+    const days = Number(campaign.dataset.durationDays);
     const total = amount * days;
     document.getElementById("preview-brief").textContent = brief;
     document.getElementById("preview-limit").textContent = formatLira(amount);
@@ -79,11 +69,9 @@
 
   briefInput.addEventListener("input", () => {
     briefCount.textContent = `${briefInput.value.length} / 280`;
-    briefError.hidden = true;
   });
   dailyLimitInput.addEventListener("input", updateBudget);
   daysInput.addEventListener("change", updateBudget);
-  document.getElementById("create-preview").addEventListener("click", createPreview);
   document.getElementById("edit-brief").addEventListener("click", () => showStep(1));
   document.getElementById("show-report").addEventListener("click", () => showStep(3));
   pauseButton.addEventListener("click", () => {
@@ -97,14 +85,12 @@
       ? "Örnek akış duraklatıldı. Gerçek kampanya yok."
       : "Örnek akış yeniden etkin. Gerçek kampanya yok.";
   });
-  document.getElementById("restart-flow").addEventListener("click", () => {
-    briefInput.value = "";
-    briefCount.textContent = "0 / 280";
-    briefError.hidden = true;
-    resetDemoAutomation();
-    showStep(1);
-    briefInput.focus();
-  });
-
+  briefCount.textContent = `${briefInput.value.length} / 280`;
   updateBudget();
+  const savedCampaign = document.getElementById("saved-campaign");
+  if (savedCampaign) {
+    showSavedPreview(savedCampaign);
+  } else {
+    showStep(1);
+  }
 })();
