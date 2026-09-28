@@ -1,39 +1,31 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 11:00 (Europe/Istanbul). `main` is at `d3ab5f81373b64899f0f88303ee4cde14b75e003`; post-merge CI `36394551767` passed. PR #36 and issue #35 are complete. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action occurred.
+Last verified: 2026-09-28 11:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `891584efa71f9e2aeb64d79ab53959fba2637a19`; PR #38 required CI `36398373004` and post-merge CI `36398568486` passed. Working tree was clean and no open PRs were listed. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
-- Target market: Türkiye; GrowthTwin serves people and organizations that want to advertise. Dental clinics are one example, not the product boundary.
-- Omneky is a long-term capability benchmark for advertiser/brand intake, multi-format creative, connected campaign launch, unified reporting, and bounded optimization—not a first-release parity commitment.
-- Validate one advertiser workflow and one publishing destination before broad channel coverage. The initial workflow, platform, and review/autonomy defaults remain open.
-- Routine work should not require a GrowthTwin employee. Advertisers authorize accounts and set enforceable spend, schedule, and content limits; pause on uncertainty.
-- Use synthetic data in local, CI, and staging. Keep secrets and private advertiser data out of chat, source, logs, and handoff files.
-- Only approved paid infrastructure is the existing Heroku Basic dyno plus Essential-0 PostgreSQL at about USD 12/month before tax. Do not add paid services, live publishing, or advertiser spend without authorization.
-- Read `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md`, and this file in order; then recheck Git, PR, and CI state.
+- Türkiye is the target market. GrowthTwin serves people and organizations that want to advertise; clinics are one example. Omneky is a long-term breadth benchmark, not a first-release parity promise.
+- Validate one advertiser workflow and one publishing destination before broad channel coverage. The first workflow, destination, and review/autonomy defaults remain undecided.
+- Advertisers must authorize connected accounts and define enforceable spend, schedule, and content limits before live actions. Pause when information or permission is unclear.
+- Keep local, CI, and staging examples synthetic. Do not expose secrets or private advertiser data.
+- Only previously approved paid infrastructure is the existing Heroku Basic dyno plus Essential-0 PostgreSQL, about USD 12/month before tax. Do not add paid services or enable live publishing/spend without authorization.
+- Use feature branches and PRs; never push directly to `main`. The owner has authorized merging reviewed PRs when required CI passes.
 
-## Repository and review
+## Current product state
 
-- Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- PRs #23, #28, #27, #29, #31, #32, #34, and #36 are merged. Original PR #25 auto-closed when its base branch was deleted; its changes landed through replacement PR #28.
-- Issue #35 is closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
-- No deployment or live campaign action occurred. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
+- The public local prototype demonstrates synthetic brief → preview → simulated pause → sample report.
+- Session-scoped drafts can be created, listed, resumed, edited, and discarded. They store brief, optional brand/product context, optional generic campaign objective, optional audience, daily spend boundary, and duration.
+- The preview now organizes those inputs into a campaign-plan summary and calculates the total limit. Missing objective, audience, and brand context are marked as unspecified. It explicitly says no channel or creative format has been selected and no ad is generated or published.
+- PR #38 merged as `891584e`; required CI `36398373004` and post-merge CI `36398568486` passed. The workflow included Django tests, system checks, migration consistency, static checks, and the Heroku build checks. Local visual/browser verification was not performed in this step.
+- No AI call, external account, publishing, real metric, advertiser spend, new paid service, or deployment was added.
 
-## Product and implementation status
+## Open decisions and gates
 
-- Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- The local prototype has a synthetic brief → preview → simulated pause → sample report flow.
-- Session-scoped UUID drafts persist brief, optional brand/product context, generic objective, optional target audience, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
-- Full local Django suite passed (25 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed. PR #36 CI passed on final head `083df24` (`36394398757`); post-merge CI passed on `d3ab5f8` (`36394551767`).
-- No AI generation, provider, external account, publishing, real performance metric, new paid service, advertiser spend, or deployment was added.
-
-## Open decisions and risks
-
-- Choose the first advertiser workflow/pilot cohort and ad destination only after discovery and review of Türkiye API eligibility, approval, policy, and reporting.
+- Select the first advertiser workflow and destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
-- Drafts currently contain synthetic data only. A hosted schedule for clearing expired Django sessions remains unverified; establish retention/deletion operations before accepting real advertiser data.
-- Production AI/data-processing providers and pricing remain undecided. Staging E2E, backup/restore, and controlled rollback remain unverified gates before beta/production, not blockers for local synthetic UX work.
+- Session drafts are synthetic. Verify retention and deletion operations before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
+- AI/provider selection and production data-processing terms remain undecided. Issue #2 was previously tracking NIM quota research; recheck its current status and provider terms before any NIM use.
 
 ## Next action
 
-Review remaining Phase 2 items and select a narrow local slice that structures the campaign plan from the brief, selected objective, audience, brand context, and spend boundary. Keep it synthetic and prevent account connection, publication, and spend.
+Add a deterministic, non-blocking plan-readiness explanation that identifies which high-impact campaign inputs are still unspecified and lets the advertiser improve them without inventing a destination or creative. Keep this local and synthetic; do not add AI, account connection, publishing, or spend.
