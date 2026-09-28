@@ -30,6 +30,7 @@ class CampaignDraft(models.Model):
     )
     brief = models.CharField(max_length=280)
     brand_context = models.CharField(max_length=320, blank=True, default="")
+    target_audience = models.CharField(max_length=240, blank=True, default="")
     objective = models.CharField(
         max_length=20,
         choices=CampaignObjective.choices,
