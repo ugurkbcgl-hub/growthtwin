@@ -19,6 +19,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     "Sentetik örnek: hafta sonu seramik atölyesi için tanıtım"
                 )
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.wait_for_url("**campaign=*")
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
                 self.assert_no_horizontal_overflow(page)
 
