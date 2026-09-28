@@ -45,7 +45,7 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
     audience_copy = (
         f"{audience} için: {shorten(subject, width=190, placeholder='…')}"
         if audience
-        else f"{short_brief} Detayları incele."
+        else short_brief
     )
     info_copy = (
         f"{shorten(brand_context, width=190, placeholder='…')} hakkında detayları incele."
