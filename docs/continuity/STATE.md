@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 11:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `891584efa71f9e2aeb64d79ab53959fba2637a19`; PR #38 required CI `36398373004` and post-merge CI `36398568486` passed. Working tree was clean and no open PRs were listed. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 11:52 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `ec53d8b` (PR #40); required CI `36399557024` and post-merge CI `36399737745` passed. Working tree was clean and no open PRs were listed. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -16,7 +16,9 @@ Last verified: 2026-09-28 11:40 (Europe/Istanbul). Repository: `https://github.c
 - The public local prototype demonstrates synthetic brief → preview → simulated pause → sample report.
 - Session-scoped drafts can be created, listed, resumed, edited, and discarded. They store brief, optional brand/product context, optional generic campaign objective, optional audience, daily spend boundary, and duration.
 - The preview now organizes those inputs into a campaign-plan summary and calculates the total limit. Missing objective, audience, and brand context are marked as unspecified. It explicitly says no channel or creative format has been selected and no ad is generated or published.
+- The preview gives deterministic, non-blocking prompts for missing objective, audience, and brand/offer information. “Review information” returns to the existing form, opens the optional fields when needed, and focuses the first unspecified item. The advertiser can leave all prompts unanswered.
 - PR #38 merged as `891584e`; required CI `36398373004` and post-merge CI `36398568486` passed. The workflow included Django tests, system checks, migration consistency, static checks, and the Heroku build checks. Local visual/browser verification was not performed in this step.
+- PR #40 merged as `ec53d8b`; required CI `36399557024` and post-merge CI `36399737745` passed. Local visual/browser verification was not performed in this step.
 - No AI call, external account, publishing, real metric, advertiser spend, new paid service, or deployment was added.
 
 ## Open decisions and gates
@@ -28,4 +30,4 @@ Last verified: 2026-09-28 11:40 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Add a deterministic, non-blocking plan-readiness explanation that identifies which high-impact campaign inputs are still unspecified and lets the advertiser improve them without inventing a destination or creative. Keep this local and synthetic; do not add AI, account connection, publishing, or spend.
+Review the current campaign-draft fields against the Phase 2 domain goals and define the smallest next local data-model slice, keeping it session-scoped and synthetic. Do not add AI, choose a publishing platform, connect accounts, publish, or spend.
