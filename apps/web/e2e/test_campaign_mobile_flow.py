@@ -23,9 +23,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
                 self.assert_no_horizontal_overflow(page)
 
-                pause_button = page.get_by_role(
-                    "button", name="Örnek akışı durdur"
-                )
+                pause_button = page.get_by_role("button", name="Örnek akışı durdur")
                 self.assertNotIn("pressed", pause_button.aria_snapshot())
                 pause_button.click()
                 resume_button = page.get_by_role(
