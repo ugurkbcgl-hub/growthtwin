@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:16 (Europe/Istanbul). PR #23 merged to `main` as `a27fa25cae37c3dbccac0c67ab0c2b96b9daf346`; its post-merge CI passed (`36390088871`). Replacement PR #28 (the original #25 was auto-closed when its base branch was deleted) merged to `main` as `c20cc6cdd955966ff62fe27b0e9561658fba7dbb`; CI passed on head `42cba7902d5e969a60ea8e944f220ea3ced0fd6c` (`36390382434`). PR #27 is open and now targets `main`. Its prior head `a4309ba9012d33dfaec9793f3905d8c1c229bdc3` passed CI (`36390474453`); this history reconciliation needs fresh CI before merge.
+Last verified: 2026-09-28 10:20 (Europe/Istanbul). `main` is at `2ebc5c2b74d734d2ec96dbf4c2789772df31459d`; post-merge CI `36390932652` passed. PR #23 (product direction), replacement PR #28 (session-scoped synthetic draft persistence; original #25 was auto-closed when its base branch was deleted), and PR #27 (session draft library) are merged. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action was performed.
 
 ## Goal and working rules
 
@@ -15,26 +15,27 @@ Last verified: 2026-09-28 10:16 (Europe/Istanbul). PR #23 merged to `main` as `a
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- PR #23 merged; post-merge CI passed on `main` at `a27fa25`.
-- PR #25 was auto-closed when its base branch was deleted. Replacement PR #28 merged to `main` at `c20cc6c`; its fresh required CI passed.
-- PR #27: https://github.com/ugurkbcgl-hub/growthtwin/pull/27 — open, retargeted to `main`; current merge reconciliation awaits fresh CI.
-- The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
+- `main` head: `2ebc5c2`; post-merge CI run `36390932652` passed.
+- PR #23 merged at `a27fa25`; post-merge CI passed at run `36390088871`.
+- The original PR #25 was auto-closed when its base branch was deleted. Replacement PR #28 merged at `c20cc6c`; required CI passed on its reconciled head `42cba79` (run `36390382434`), and post-merge CI passed (run `36390668094`).
+- PR #27 merged at `2ebc5c2`; required CI passed on final head `bae0bcd` (run `36390786447`), and post-merge CI passed (run `36390932652`).
+- No PR is currently open. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- Phase 1's website prototype is on `main`: synthetic brief → preview → simulated pause → sample report. PR #28 added session-scoped synthetic campaign draft persistence; PR #27 adds listing/reopening and stricter expired-session access checks. No AI generation, account connection, publication, ad spend, or real metrics is included.
-- Drafts use UUID identifiers and belong to anonymous Django sessions. The owner session can list, resume, edit, and discard drafts. Other or expired sessions cannot access them; empty visits do not create sessions. Django cleanup cascades drafts when it removes sessions. The UI labels data synthetic.
-- Local verification on feature code: 22 Django tests passed with SQLite test settings; Ruff format/lint, JavaScript syntax, and `git diff --check` passed. CI passed for PR #28 and for PR #27's preceding head; fresh CI is required after this history reconciliation.
+- Phase 1's website prototype is on `main`: synthetic brief → preview → simulated pause → sample report.
+- The local Phase 2 slice persists validated campaign briefs, daily caps, and durations as UUID drafts owned by an anonymous Django session. Users can resume, edit, list, and discard their own drafts. Empty visits do not create sessions; other and expired sessions cannot list, read, update, or delete drafts. Session cleanup cascades draft records.
+- All 22 Django tests passed locally with SQLite test settings; Ruff format/lint, JavaScript syntax, and `git diff --check` passed. Required CI and post-merge CI passed on the merged revisions.
 - No AI provider, publishing destination, paid service, live account, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
 
 - Choose the first advertiser workflow/pilot cohort and ad destination only after discovery and review of Türkiye API eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
-- Drafts contain only synthetic data for now. A hosted schedule for clearing expired Django sessions remains unverified; establish retention/deletion operations before accepting real advertiser data.
+- Drafts currently contain synthetic data only. A hosted schedule for clearing expired Django sessions remains unverified; establish retention/deletion operations before accepting real advertiser data.
 - Production AI/data-processing providers and pricing remain undecided. Staging E2E, backup/restore, and controlled rollback remain unverified gates before beta/production, not blockers for local synthetic UX work.
 
 ## Next action
 
-Verify fresh required CI on PR #27's current head. If it passes and the final diff remains clean, merge it to `main` and verify post-merge CI.
+Review the remaining Phase 2 roadmap items and select the next small, locally testable advertiser workflow slice. Keep it synthetic and ensure it cannot connect accounts, publish ads, or incur spend.
