@@ -23,6 +23,24 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
                 self.assert_no_horizontal_overflow(page)
 
+                pause_button = page.get_by_role("button", name="Örnek akışı durdur")
+                self.assertNotIn("pressed", pause_button.aria_snapshot())
+                pause_button.click()
+                resume_button = page.get_by_role(
+                    "button", name="Örnek akışı devam ettir"
+                )
+                self.assertNotIn("pressed", resume_button.aria_snapshot())
+                self.assertEqual(
+                    page.locator("#flow-status").inner_text(),
+                    "Örnek akış duraklatıldı. Gerçek kampanya yok.",
+                )
+                self.assertEqual(
+                    page.locator("#flow-status").get_attribute("aria-live"),
+                    "polite",
+                )
+                self.assert_no_horizontal_overflow(page)
+                resume_button.click()
+
                 page.get_by_role("button", name="Örnek rapor").click()
                 self.assertEqual(page.locator("#step-count").inner_text(), "3 / 3")
                 self.assert_no_horizontal_overflow(page)
