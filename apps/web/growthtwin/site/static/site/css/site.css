@@ -316,7 +316,7 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .orbit-two { top: 58px; right: 22px; width: 7px; height: 7px; background: #e6e1ff; }
 .creative-spark { position: absolute; top: 10px; left: 14px; color: #ffcfb3; font-size: 21px; }
 .creative-caption { position: relative; z-index: 2; font-size: 17px; font-weight: 670; line-height: 1.12; letter-spacing: -.6px; }
-.creative-tag { position: absolute; right: 9px; bottom: 10px; padding: 4px 6px; border: 1px solid rgb(255 255 255 / 48%); border-radius: 99px; background: rgb(49 40 116 / 20%); font-size: 6px; font-weight: 700; letter-spacing: .6px; }
+.creative-tag { position: absolute; top: 10px; right: 9px; padding: 4px 6px; border: 1px solid rgb(255 255 255 / 48%); border-radius: 99px; background: rgb(49 40 116 / 30%); font-size: 6px; font-weight: 700; letter-spacing: .6px; }
 .creative-copy .micro-label { display: block; margin-bottom: 6px; }
 .creative-copy p { margin: 0; color: #696a77; font-size: 10px; line-height: 1.65; }
 .preview-limits { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 13px; padding: 11px 0; border-top: 1px solid #f0eff4; border-bottom: 1px solid #f0eff4; }
