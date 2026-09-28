@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification before this handoff update: 2026-09-29 00:22 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `81e45c6` (handoff PR #63); the latest application code commit was `af83c57` (PR #62). PR #62 CI `36484889021`, post-merge CI `36485086542`, and handoff PR #63 post-merge CI `36485509804` passed. The working tree was clean with no open PRs.
+Last repository verification before this handoff update: 2026-09-29 00:43 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `eb4d686` (PR #66); mobile overflow fix PR #65 is `b0a4d80`. PR #65 CI `36486720468` and post-merge CI `36486952363`, plus PR #66 CI `36487628405` and post-merge CI `36487818391`, passed. The working tree was clean with no open PRs.
 
 ## Goal and working rules
 
@@ -20,7 +20,9 @@ Last repository verification before this handoff update: 2026-09-29 00:22 (Europ
 - PR #56 (`f799426`) stopped the audience-focused variant from appending “Detayları incele” to the brief when no audience is given; the CTA remains separate. Three focused local tests passed, and the browser confirmed the no-brand/no-audience brief stays unchanged in the audience- and information-focused bodies. Required CI `36474994196` and post-merge CI `36475232546` passed.
 - PR #58 (`a978014`) clarified that these are synthetic, editable starting points; when brand or audience context is missing, the brief may be shown unchanged and should be edited and checked before publication. The note is more readable. Four focused local tests and browser review passed. A database-backed local test was unavailable because the local PostgreSQL role cannot create test databases; the focused UI test uses no database, and CI ran the full Django suite. Required CI `36478847264` and post-merge CI `36479049872` passed.
 - Comparing five synthetic inputs found that the audience- and information-focused variants could omit the offer when both brand and audience were supplied. PR #60 (`52e93e3`) keeps the brief content in those bodies, includes a shortened audience in the audience-focused body, and keeps the brand in the headline. Five focused local tests and the full CI suite passed; required CI `36483491236` and post-merge CI `36483681415` passed.
-- Long synthetic briefs exposed that simple end truncation could remove an offer or audience detail placed near the end. PR #62 (`af83c57`) keeps beginning and ending context in bounded headline/body fields; seven focused local tests, PR CI `36484889021`, and post-merge CI `36485086542` passed. The currently open local preview was inspected for its provider-free disclosure and saved-draft layout, but long-input values were not entered through the browser.
+- Long synthetic briefs exposed that simple end truncation could remove an offer or audience detail placed near the end. PR #62 (`af83c57`) keeps beginning and ending context in bounded headline/body fields; seven focused local tests and browser inspection at 390px confirmed offer, audience, and brand-tail details remain in bounded fields. PR CI `36484889021` and post-merge CI `36485086542` passed.
+- PR #65 (`b0a4d80`) fixed a 7px horizontal overflow caused by decorative studio glow at 390px and a 3px overflow at 1024px. A Chromium sweep at 320, 360, 390, 430, 600, 768, 820, 1024, 1030, and 1280px found no remaining horizontal overflow; manual 390px review covered brief, preview, and sample report. PR CI `36486720468` and post-merge CI `36486952363` passed.
+- PR #66 (`eb4d686`) added a mobile Chromium regression check for the brief → preview → sample report flow and made the E2E suite run explicitly in CI. The focused browser test passed locally; PR CI `36487628405` and post-merge CI `36487818391` passed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -33,4 +35,4 @@ Last repository verification before this handoff update: 2026-09-29 00:22 (Europ
 
 ## Next action
 
-Review the Phase 1 first-visit campaign journey on a narrow viewport, from brief entry through synthetic preview and sample report. Fix only usability gaps observed against the roadmap acceptance criteria; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
+Review keyboard and required-field behavior in the mobile campaign brief form, including empty submission and access to optional brand/audience fields. Fix only observed usability or accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
