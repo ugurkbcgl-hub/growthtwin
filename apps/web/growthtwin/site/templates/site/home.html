@@ -194,6 +194,12 @@
                 <button class="button button-secondary" id="edit-brief" type="button">← Düzenle</button>
                 <button class="button button-primary" id="show-report" type="button">Örnek rapor <span aria-hidden="true">→</span></button>
               </div>
+              {% if campaign %}
+                <form method="post" action="{% url 'site:delete-campaign' campaign.pk %}">
+                  {% csrf_token %}
+                  <button class="button button-secondary button-full" type="submit">Bu taslağı sil</button>
+                </form>
+              {% endif %}
               <p class="simulation-note">Örnek ekran; AI üretimi veya yayınlama çalışmıyor.</p>
             </section>
 
@@ -220,6 +226,12 @@
               </div>
               <p class="simulation-note">Bu metrikler sentetiktir; gerçek kampanyaya ait değildir.</p>
               <a class="button button-secondary button-full" id="restart-flow" href="{% url 'site:home' %}">Yeni bir brief dene <span aria-hidden="true">↗</span></a>
+              {% if campaign %}
+                <form method="post" action="{% url 'site:delete-campaign' campaign.pk %}">
+                  {% csrf_token %}
+                  <button class="button button-secondary button-full" type="submit">Bu taslağı sil</button>
+                </form>
+              {% endif %}
             </section>
             <p class="flow-status" id="flow-status" aria-live="polite"></p>
           </section>

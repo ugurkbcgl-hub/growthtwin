@@ -5,9 +5,24 @@ from uuid import UUID
 from django.contrib.sessions.models import Session
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 from growthtwin.site.forms import CampaignDraftForm
 from growthtwin.site.models import CampaignDraft
+
+
+@require_POST
+def delete_campaign(request, campaign_id):
+    """Discard a synthetic draft only from its owning browser session."""
+    session_key = request.session.session_key
+    if session_key is None:
+        return redirect("site:home")
+
+    CampaignDraft.objects.filter(
+        pk=campaign_id,
+        session_id=session_key,
+    ).delete()
+    return redirect("site:home")
 
 
 def home(request):

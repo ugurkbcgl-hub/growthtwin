@@ -132,3 +132,31 @@ class CampaignDraftFlowTests(TestCase):
         call_command("clearsessions")
 
         self.assertFalse(CampaignDraft.objects.exists())
+
+    def test_owner_can_discard_draft_with_post(self):
+        self.client.post(self.url, self.valid_data)
+        draft = CampaignDraft.objects.get()
+
+        response = self.client.post(reverse("site:delete-campaign", args=(draft.pk,)))
+
+        self.assertRedirects(response, self.url)
+        self.assertFalse(CampaignDraft.objects.exists())
+
+    def test_get_does_not_discard_draft(self):
+        self.client.post(self.url, self.valid_data)
+        draft = CampaignDraft.objects.get()
+
+        response = self.client.get(reverse("site:delete-campaign", args=(draft.pk,)))
+
+        self.assertEqual(response.status_code, 405)
+        self.assertTrue(CampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_other_session_cannot_discard_draft(self):
+        self.client.post(self.url, self.valid_data)
+        draft = CampaignDraft.objects.get()
+        other_client = self.client_class()
+
+        response = other_client.post(reverse("site:delete-campaign", args=(draft.pk,)))
+
+        self.assertRedirects(response, self.url)
+        self.assertTrue(CampaignDraft.objects.filter(pk=draft.pk).exists())
