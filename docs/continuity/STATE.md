@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 09:25 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI run `36346656517` passed. PR #25 is open at `c617d9904038a5cf72a401d282d03e824de9ba55`; required CI run `36386245609` passed. This state refresh adds a commit; verify CI on the resulting PR #25 head.
+Last verified: 2026-09-28 09:27 (Europe/Istanbul). PR #23 is open at `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`; required CI run `36346656517` passed. PR #25 is open at `338814289c0b8bab203dac78a6342face4709fa4`; required CI run `36386452999` passed. A state-only refresh will trigger another check; verify it on the new head.
 
 ## Goal and working rules
 
@@ -17,7 +17,7 @@ Last verified: 2026-09-28 09:25 (Europe/Istanbul). PR #23 is open at `68c1a2bc02
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Use feature branches and PRs; do not push directly to `main`.
 - PR #23: https://github.com/ugurkbcgl-hub/growthtwin/pull/23 — open, base `main`, head `68c1a2bc02f6e13070f4af90cedb6c3de22e0e82`, required CI run `36346656517` passed.
 - Issue #24 tracks session-scoped synthetic campaign drafts, UUID identifiers, in-session edits, deletion, isolation, and cleanup.
-- PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `c617d9904038a5cf72a401d282d03e824de9ba55`, base `feature/GT-022-turkey-advertising-roadmap`; required CI run `36386245609` passed. It is stacked on PR #23; retarget it to `main` after #23 merges.
+- PR #25: https://github.com/ugurkbcgl-hub/growthtwin/pull/25 — open, head `338814289c0b8bab203dac78a6342face4709fa4`, base `feature/GT-022-turkey-advertising-roadmap`; required CI run `36386452999` passed. It is stacked on PR #23; retarget it to `main` after #23 merges.
 - No PR has been merged or deployed as part of this work.
 
 ## Product and implementation status
@@ -25,7 +25,7 @@ Last verified: 2026-09-28 09:25 (Europe/Istanbul). PR #23 is open at `68c1a2bc02
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
 - Phase 1's website prototype is merged to `main`: synthetic brief → preview → simulated pause → sample report. PR #25 adds the first Phase 2 persistence slice; it adds no AI generation, account connection, publication, ad spend, or real metrics.
 - PR #25 stores only the brief, daily cap, and duration in a UUID-keyed draft linked to the anonymous Django session. The owner session can restore and edit the same draft, discard it with a CSRF-protected POST, and cannot act on drafts owned by another session. GET does not delete. Django session cleanup deletes linked drafts. The UI warns to use synthetic input only.
-- Local verification on the code head: all 17 Django tests passed with SQLite test settings; `makemigrations --check --dry-run` reported no changes; Ruff format/lint, `node --check`, and `git diff --check` passed. Required PR CI passed on code head `9767d6e`; the later state-only commit also passed CI.
+- Local verification on the latest code head: all 17 Django tests passed with SQLite test settings; `makemigrations --check --dry-run` reported no changes; Ruff format/lint, `node --check`, and `git diff --check` passed. Required CI passed on code head `9767d6e` and later documentation head `3388142`.
 - No AI provider, ad destination, live account connection, publishing, advertiser spend, new paid service, or deployment was added.
 
 ## Open decisions and risks
