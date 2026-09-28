@@ -90,6 +90,22 @@ def render_campaign_home(request, form, campaign, creative_form=None):
         if creative_form is not None
         else []
     )
+    first_invalid_field = True
+    for item in creative_fields:
+        item["has_errors"] = False
+        for field_name in ("headline", "body", "call_to_action"):
+            field = item[field_name]
+            if field.errors:
+                item["has_errors"] = True
+                field.field.widget.attrs.update(
+                    {
+                        "aria-describedby": f"{field.id_for_label}-error",
+                        "aria-invalid": "true",
+                    }
+                )
+                if first_invalid_field:
+                    field.field.widget.attrs["autofocus"] = True
+                    first_invalid_field = False
     creative_is_stale = bool(
         campaign is not None
         and campaign.creative_source_hash
