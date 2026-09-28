@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification before this handoff update: 2026-09-29 01:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `bdc4ca1` (PR #70). PR #70 CI `36490407579` and post-merge CI `36490586669` passed; earlier responsive flow PRs #65–66 also passed CI and post-merge CI. The working tree was clean with no open PRs.
+Last repository verification: 2026-09-29 01:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `e5c8dea` (PR #72); working tree clean, no open PRs. PR #72 CI `36492742189` and post-merge CI `36492925328` passed. The focused local mobile browser E2E also passed.
 
 ## Goal and working rules
 
@@ -26,6 +26,7 @@ Last repository verification before this handoff update: 2026-09-29 01:10 (Europ
 - Mobile browser review at 390px confirmed that an empty brief is stopped by the required field, the optional brand/audience disclosure opens with the keyboard, and budget limits accept 100 and 100,000 while rejecting 99 and 100,001. No further field-validation issue was observed; no code change was needed.
 - At 390px, all six campaign form controls have unique accessible labels, the brief exposes its required state, and the flow status is announced through a polite live region. No naming or status issue was observed in the brief step.
 - The preview editor exposes labeled text fields and named save/regenerate actions; the report is a named region with a heading and readable metric labels and values. PR #70 (`bdc4ca1`) fixed the pause/resume button's conflicting action name and `aria-pressed` state, and added a browser check for its changing accessible name and polite pause announcement. Focused local browser E2E, PR CI `36490407579`, and post-merge CI `36490586669` passed.
+- PR #72 (`e5c8dea`) extended the mobile browser E2E to open a creative variant with the keyboard, verify its labeled field, save synthetic copy and check the status message and persisted value, then regenerate and check its status message. The focused local E2E passed; PR CI `36492742189` and post-merge CI `36492925328` passed. No accessibility behavior gap was found, so this change adds regression coverage only.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -38,4 +39,4 @@ Last repository verification before this handoff update: 2026-09-29 01:10 (Europ
 
 ## Next action
 
-Review keyboard access to the creative-variant disclosures and the screen-reader announcements after saving or regenerating copy. Fix only verifiable accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
+Review keyboard access, field labels, validation errors, and screen-reader feedback when invalid creative copy is submitted. Fix only verifiable accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
