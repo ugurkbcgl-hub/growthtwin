@@ -18,7 +18,7 @@ The product should remove routine GrowthTwin-operator work after an advertiser e
 
 **Goal:** demonstrate a clear, low-effort paid-advertising journey for a user in Türkiye without waiting for external APIs, paid infrastructure, or a production model.
 
-Status: the initial product-experience slice is in place. The public route saves synthetic campaign briefs as session-scoped drafts, derives a plan summary, and demonstrates preview, simulated pause, and sample report. It has no generated ad creative, AI provider call, connected account, publishing, or real metrics. The next local step is a clearly synthetic, editable ad-creative draft from the saved brief; durable advertiser/workspace persistence remains deferred until ownership and retention decisions are defined.
+Status: the first local product slice saves synthetic campaign briefs as session-scoped drafts, derives a plan summary, and demonstrates preview, simulated pause, and sample report. Its first copywriting increment provides three deterministic, editable text starting points using only supplied context; it does not call an AI provider. There is no connected account, publishing, or real metrics. Durable advertiser/workspace persistence remains deferred until ownership and retention decisions are defined.
 
 - Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
 - Let any advertiser in the Türkiye target market describe a goal with a short plain-language brief, then ask only for essential missing details such as audience, destination, timing, and maximum spend.

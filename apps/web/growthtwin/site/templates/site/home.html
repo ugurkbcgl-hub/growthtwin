@@ -216,21 +216,56 @@
                     {% endfor %}
                   </ul>
                 </div>
-                <p class="plan-summary-note">Hedef kanal ve reklam biçimi henüz seçilmedi. Bu, girdilerini düzenleyen bir taslaktır; reklam üretmez veya yayınlamaz.</p>
+                <p class="plan-summary-note">Hedef kanal henüz seçilmedi. Aşağıdaki metin başlangıç önerilerini düzenleyebilirsin; bu taslak yayınlanmaz.</p>
               </section>
-              <div class="creative-preview">
-                <div class="creative-art" aria-hidden="true">
-                  <span class="creative-orbit orbit-one"></span>
-                  <span class="creative-orbit orbit-two"></span>
-                  <span class="creative-spark">✳</span>
-                  <span class="creative-caption">Fikrinden<br>kampanyaya.</span>
-                  <span class="creative-tag">ÖRNEK KREATİF</span>
+              {% if campaign %}
+              <section class="creative-editor" aria-labelledby="creative-editor-title">
+                <div class="creative-editor-heading">
+                  <div>
+                    <p class="micro-label">METİN TASLAKLARI</p>
+                    <h4 id="creative-editor-title">Üç başlangıç fikri</h4>
+                  </div>
+                  <span class="status-pill status-pill-soft">Sentetik öneri</span>
                 </div>
-                <div class="creative-copy">
-                  <span class="micro-label">İÇERİK TASLAĞI</span>
-                  <p>GrowthTwin burada hedefinle uyumlu reklam metni ve görsel fikri hazırlayacak.</p>
-                </div>
-              </div>
+                <p class="creative-editor-note">Öneriler yalnızca verdiğin brief, teklif ve kitle bilgilerini kullanır. AI üretimi değildir; özellik veya sonuç iddiası eklemez. Düzenleyip kaydedebilirsin.</p>
+                {% if creative_notice == "saved" %}
+                  <p class="creative-success-note" role="status">Metin değişikliklerin kaydedildi.</p>
+                {% elif creative_notice == "regenerated" %}
+                  <p class="creative-success-note" role="status">Brief’inden yeni metin önerileri hazırlandı.</p>
+                {% endif %}
+                {% if creative_is_stale %}
+                  <p class="creative-stale-note" role="status">Brief veya teklif bilgisi değişti. Metinleri yeni bilgilere göre güncellemek için önerileri yenile.</p>
+                {% endif %}
+                <form method="post" action="{% url 'site:save-creatives' campaign.pk %}" class="creative-variants-form">
+                  {% csrf_token %}
+                  {% for item in creative_fields %}
+                    <details class="creative-variant" {% if forloop.first %}open{% endif %}>
+                      <summary>{{ item.variant.angle }}</summary>
+                      <div class="creative-field">
+                        <label for="{{ item.headline.id_for_label }}">{{ item.headline.label }}</label>
+                        {{ item.headline }}
+                        {% for error in item.headline.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                      </div>
+                      <div class="creative-field">
+                        <label for="{{ item.body.id_for_label }}">{{ item.body.label }}</label>
+                        {{ item.body }}
+                        {% for error in item.body.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                      </div>
+                      <div class="creative-field">
+                        <label for="{{ item.call_to_action.id_for_label }}">{{ item.call_to_action.label }}</label>
+                        {{ item.call_to_action }}
+                        {% for error in item.call_to_action.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                      </div>
+                    </details>
+                  {% endfor %}
+                  <button class="button button-primary button-full" type="submit" name="action" value="save">Metinleri kaydet</button>
+                </form>
+              <form method="post" action="{% url 'site:save-creatives' campaign.pk %}" class="creative-regenerate-form">
+                  {% csrf_token %}
+                  <button class="button button-secondary button-full" type="submit" name="action" value="regenerate">Brief’ten yeni öneriler oluştur</button>
+              </form>
+              </section>
+              {% endif %}
               <div class="preview-limits">
                 <span><small>GÜNLÜK ÜST SINIR</small><strong id="preview-limit">₺750</strong></span>
                 <span><small>SÜRE</small><strong id="preview-duration">7 gün</strong></span>

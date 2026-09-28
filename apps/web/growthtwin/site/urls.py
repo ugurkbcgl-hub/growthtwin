@@ -13,4 +13,9 @@ urlpatterns = [
         views.delete_campaign,
         name="delete-campaign",
     ),
+    path(
+        "drafts/<uuid:campaign_id>/creatives/",
+        views.save_creatives,
+        name="save-creatives",
+    ),
 ]
