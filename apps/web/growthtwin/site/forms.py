@@ -116,11 +116,7 @@ class CreativeVariantsForm(forms.Form):
 
         return [
             {
-                **{
-                    key: variant[key]
-                    for key in ("key", "angle")
-                    if key in variant
-                },
+                **{key: variant[key] for key in ("key", "angle") if key in variant},
                 "headline": self.cleaned_data[f"headline_{index}"],
                 "body": self.cleaned_data[f"body_{index}"],
                 "call_to_action": self.cleaned_data[f"call_to_action_{index}"],

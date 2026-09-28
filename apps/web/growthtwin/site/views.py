@@ -153,9 +153,7 @@ def save_creatives(request, campaign_id):
         if not campaign.creative_source_hash:
             campaign.creative_source_hash = source_fingerprint(brief)
         campaign.save(update_fields=("creative_variants", "creative_source_hash"))
-        return redirect(
-            f"{reverse('site:home')}?campaign={campaign.pk}&creative=saved"
-        )
+        return redirect(f"{reverse('site:home')}?campaign={campaign.pk}&creative=saved")
 
     campaign_form = CampaignDraftForm(
         initial={
