@@ -36,7 +36,8 @@ def source_fingerprint(brief: CampaignBrief) -> str:
 
 def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]:
     """Format advertiser-provided text into conservative, editable examples."""
-    subject = " ".join((brief.brand_context or brief.text).split())
+    brand_context = " ".join(brief.brand_context.split())
+    subject = brand_context or " ".join(brief.text.split())
     brief_text = " ".join(brief.text.split())
     audience = " ".join(brief.target_audience.split())
     headline = shorten(subject, width=80, placeholder="…")
@@ -47,7 +48,9 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
         else f"{short_brief} Detayları incele."
     )
     info_copy = (
-        f"{shorten(subject, width=190, placeholder='…')} hakkında detayları incele."
+        f"{shorten(brand_context, width=190, placeholder='…')} hakkında detayları incele."
+        if brand_context
+        else short_brief
     )
 
     return (
@@ -68,7 +71,11 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
         CreativeVariant(
             key="information-focused",
             angle="Bilgi odağı",
-            headline=shorten(f"{subject} hakkında", width=80, placeholder="…"),
+            headline=(
+                shorten(f"{brand_context} hakkında", width=80, placeholder="…")
+                if brand_context
+                else "Daha fazla bilgi"
+            ),
             body=shorten(info_copy, width=240, placeholder="…"),
             call_to_action="Bilgi al",
         ),
