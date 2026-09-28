@@ -17,6 +17,7 @@ class CampaignDraftFlowTests(TestCase):
         self.valid_data = {
             "brief": "Sentetik yerel mağaza tanıtımı",
             "brand_context": "Mahalle fırını; ekşi mayalı ekmek",
+            "objective": "leads",
             "daily_limit": "750",
             "duration_days": "14",
         }
@@ -28,6 +29,7 @@ class CampaignDraftFlowTests(TestCase):
         draft = CampaignDraft.objects.get()
         self.assertEqual(draft.brief, self.valid_data["brief"])
         self.assertEqual(draft.brand_context, self.valid_data["brand_context"])
+        self.assertEqual(draft.objective, self.valid_data["objective"])
         self.assertEqual(draft.daily_limit, 750)
         self.assertEqual(draft.duration_days, 14)
         self.assertEqual(draft.total_limit, 10500)
@@ -39,6 +41,7 @@ class CampaignDraftFlowTests(TestCase):
         self.assertContains(
             preview, 'data-brand-context="Mahalle fırını; ekşi mayalı ekmek"'
         )
+        self.assertContains(preview, 'data-objective="Potansiyel müşteri bulmak"')
         self.assertContains(preview, 'data-daily-limit="750"')
         self.assertContains(preview, 'data-duration-days="14"')
 
@@ -50,6 +53,7 @@ class CampaignDraftFlowTests(TestCase):
             "campaign_id": str(draft.pk),
             "brief": "Sentetik güncellenmiş tanıtım",
             "brand_context": "Yerel atölye; seramik dersleri",
+            "objective": "sales",
             "daily_limit": "1250",
             "duration_days": "30",
         }
@@ -60,6 +64,7 @@ class CampaignDraftFlowTests(TestCase):
         draft.refresh_from_db()
         self.assertEqual(draft.brief, "Sentetik güncellenmiş tanıtım")
         self.assertEqual(draft.brand_context, "Yerel atölye; seramik dersleri")
+        self.assertEqual(draft.objective, "sales")
         self.assertEqual(draft.daily_limit, 1250)
         self.assertEqual(draft.duration_days, 30)
         self.assertEqual(CampaignDraft.objects.count(), 1)
@@ -91,6 +96,7 @@ class CampaignDraftFlowTests(TestCase):
             ({**self.valid_data, "daily_limit": "99"}, "daily_limit"),
             ({**self.valid_data, "daily_limit": "100001"}, "daily_limit"),
             ({**self.valid_data, "duration_days": "21"}, "duration_days"),
+            ({**self.valid_data, "objective": "invented"}, "objective"),
         )
 
         for data, field in invalid_submissions:
@@ -108,6 +114,12 @@ class CampaignDraftFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(CampaignDraft.objects.get().brand_context, "")
+
+    def test_optional_objective_can_be_left_empty(self):
+        response = self.client.post(self.url, {**self.valid_data, "objective": ""})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(CampaignDraft.objects.get().objective, "")
 
     def test_draft_cannot_be_read_from_a_different_session(self):
         response = self.client.post(self.url, self.valid_data)
@@ -193,6 +205,7 @@ class CampaignDraftFlowTests(TestCase):
         self.assertContains(resumed, 'id="saved-campaign"')
         self.assertContains(resumed, first.brief)
         self.assertContains(resumed, first.brand_context)
+        self.assertContains(resumed, 'data-objective="Potansiyel müşteri bulmak"')
         self.assertEqual(CampaignDraft.objects.count(), 2)
 
     def test_empty_session_has_no_draft_list_or_server_session(self):

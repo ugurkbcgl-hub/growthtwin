@@ -2,6 +2,8 @@
 
 from django import forms
 
+from growthtwin.site.models import CampaignObjective
+
 
 class CampaignDraftForm(forms.Form):
     campaign_id = forms.UUIDField(required=False, widget=forms.HiddenInput())
@@ -34,6 +36,12 @@ class CampaignDraftForm(forms.Form):
                 "rows": "2",
             }
         ),
+    )
+    objective = forms.ChoiceField(
+        label="Kampanyadan ne bekliyorsun?",
+        required=False,
+        choices=(("", "Şimdilik seçmek istemiyorum"), *CampaignObjective.choices),
+        widget=forms.Select(attrs={"id": "campaign-objective"}),
     )
     daily_limit = forms.IntegerField(
         label="Günlük üst sınır",
