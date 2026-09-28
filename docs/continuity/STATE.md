@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification before this handoff update: 2026-09-29 00:43 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `eb4d686` (PR #66); mobile overflow fix PR #65 is `b0a4d80`. PR #65 CI `36486720468` and post-merge CI `36486952363`, plus PR #66 CI `36487628405` and post-merge CI `36487818391`, passed. The working tree was clean with no open PRs.
+Last repository verification before this handoff update: 2026-09-29 00:47 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `880999c` (handoff PR #67); the latest app and CI changes are in PR #66 (`eb4d686`). PR #65 CI `36486720468` and post-merge CI `36486952363`, PR #66 CI `36487628405` and post-merge CI `36487818391`, and handoff PR #67 post-merge CI `36488253449` passed. The working tree was clean with no open PRs.
 
 ## Goal and working rules
 
@@ -23,6 +23,7 @@ Last repository verification before this handoff update: 2026-09-29 00:43 (Europ
 - Long synthetic briefs exposed that simple end truncation could remove an offer or audience detail placed near the end. PR #62 (`af83c57`) keeps beginning and ending context in bounded headline/body fields; seven focused local tests and browser inspection at 390px confirmed offer, audience, and brand-tail details remain in bounded fields. PR CI `36484889021` and post-merge CI `36485086542` passed.
 - PR #65 (`b0a4d80`) fixed a 7px horizontal overflow caused by decorative studio glow at 390px and a 3px overflow at 1024px. A Chromium sweep at 320, 360, 390, 430, 600, 768, 820, 1024, 1030, and 1280px found no remaining horizontal overflow; manual 390px review covered brief, preview, and sample report. PR CI `36486720468` and post-merge CI `36486952363` passed.
 - PR #66 (`eb4d686`) added a mobile Chromium regression check for the brief → preview → sample report flow and made the E2E suite run explicitly in CI. The focused browser test passed locally; PR CI `36487628405` and post-merge CI `36487818391` passed.
+- Mobile browser review at 390px confirmed that an empty brief is stopped by the required field, the optional brand/audience disclosure opens with the keyboard, and budget limits accept 100 and 100,000 while rejecting 99 and 100,001. No further field-validation issue was observed; no code change was needed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -35,4 +36,4 @@ Last repository verification before this handoff update: 2026-09-29 00:43 (Europ
 
 ## Next action
 
-Review keyboard and required-field behavior in the mobile campaign brief form, including empty submission and access to optional brand/audience fields. Fix only observed usability or accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
+Review keyboard navigation and screen-reader naming/status announcements in the mobile brief → preview → report journey. Fix only verifiable accessibility gaps; keep all data synthetic and do not check Heroku Scheduler before 2026-10-01.
