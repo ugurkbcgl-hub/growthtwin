@@ -36,7 +36,9 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 brand_context.fill("Sentetik " * 40)
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_load_state("domcontentloaded")
-                self.assertIsNotNone(page.locator(".optional-context").get_attribute("open"))
+                self.assertIsNotNone(
+                    page.locator(".optional-context").get_attribute("open")
+                )
                 self.assertEqual(brand_context.get_attribute("aria-invalid"), "true")
                 brand_error_id = brand_context.get_attribute("aria-describedby")
                 self.assertEqual(
