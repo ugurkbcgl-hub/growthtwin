@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:36 (Europe/Istanbul). `main` is at `e310fe3a874e72b6aee18cb447694271699b9e7e`; post-merge CI `36391321451` passed. Current branch is `feature/GT-030-brand-context`; PR #31 is open against `main` at code commit `2f93f7f`; its required CI is running. Worktree was clean before this handoff update.
+Last verified: 2026-09-28 10:45 (Europe/Istanbul). `main` is at `649b7d1d02839d99f1aaf0c6098efe18060175ed`; post-merge CI `36392736830` passed. PR #31 and its issue #30 are complete. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action was performed.
 
 ## Goal and working rules
 
@@ -15,17 +15,18 @@ Last verified: 2026-09-28 10:36 (Europe/Istanbul). `main` is at `e310fe3a874e72b
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- PRs #23, #28, #27, and #29 are merged; no deployment or live campaign action occurred.
-- Issue #30 tracks optional brand/product context. PR #31: https://github.com/ugurkbcgl-hub/growthtwin/pull/31 — open, based on `main`, CI running on the feature commit.
-- The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
+- `main` head: `649b7d1`; its post-merge CI passed (`36392736830`).
+- PRs #23, #28, #27, #29, and #31 are merged. Original PR #25 auto-closed when its base branch was deleted; its work was merged through replacement PR #28.
+- Issues #24, #26, and #30 are closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
+- No deployment or live campaign action occurred. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- The local prototype has a synthetic brief → preview → simulated pause → sample report flow. Session-scoped UUID drafts persist brief, daily limit, and duration; the owner can list, resume, edit, and discard. Other and expired sessions cannot access drafts.
-- PR #31 adds a bounded optional brand/product context field to a draft, restores it for editing, and displays it as plain text in the synthetic preview. No AI generation, external account, publication, real metric, or spend is involved.
-- Full local Django suite passed (23 tests) using SQLite test settings. Migration check, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before the continuity-only commit; required PR CI remains the merge gate.
-- Issues #24 and #26 are closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open and unrelated to this local UI slice; verify current provider terms before any NIM use.
+- The local prototype has a synthetic brief → preview → simulated pause → sample report flow.
+- Session-scoped UUID drafts persist the brief, optional brand/product context, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them; session cleanup deletes associated drafts.
+- Full local Django suite passed (23 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed. PR #31 CI passed on final head `d869a35` (`36392578801`); post-merge CI passed on `649b7d1` (`36392736830`).
+- No AI generation, provider, external account, publishing, real performance metric, new paid service, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
 
@@ -36,4 +37,4 @@ Last verified: 2026-09-28 10:36 (Europe/Istanbul). `main` is at `e310fe3a874e72b
 
 ## Next action
 
-Verify required CI on the latest PR #31 head, review the final diff, and merge only if CI passes and no issue is found. Then select the next small Phase 2 slice from `ROADMAP.md`.
+Review the remaining Phase 2 roadmap items and select the next small, locally testable advertiser workflow slice. Keep it synthetic and ensure it cannot connect accounts, publish ads, or incur spend.
