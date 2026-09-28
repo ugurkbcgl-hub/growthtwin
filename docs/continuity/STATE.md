@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:49 (Europe/Istanbul). `main` is at `72e3cbd34a0ae661a9c687f772be5176eb4dfb19`; post-merge CI `36393053256` passed. Current branch `feature/GT-033-campaign-objective` has PR #34 open against `main`; CI is running. Issue #33 tracks the objective slice. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 10:56 (Europe/Istanbul). `main` is at `45ccdce1d72480f05ba1e8eeec920edac04c1147`; post-merge CI `36393973641` passed. PR #34 and issue #33 are complete. Current branch `feature/GT-035-target-audience` has PR #36 open against `main`; CI is running on code head `f151e20` and will rerun for this handoff update. Issue #35 tracks the audience slice.
 
 ## Goal and working rules
 
@@ -15,16 +15,18 @@ Last verified: 2026-09-28 10:49 (Europe/Istanbul). `main` is at `72e3cbd34a0ae66
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- PRs #23, #28, #27, #29, #31, and #32 are merged. PR #34: https://github.com/ugurkbcgl-hub/growthtwin/pull/34 — open; required CI is running on code head `e54e29a` and will be rerun for this handoff commit.
-- Issue #33 tracks the objective work; issue #2 (record NVIDIA NIM model quotas) remains open. Verify current provider terms before any NIM use.
+- PRs #23, #28, #27, #29, #31, #32, and #34 are merged. Original PR #25 auto-closed when its base branch was deleted; its changes landed through replacement PR #28.
+- PR #36: https://github.com/ugurkbcgl-hub/growthtwin/pull/36 — open against `main`; fresh required CI is running.
+- Issue #35 tracks PR #36. Issue #2 (record NVIDIA NIM model quotas) remains open; verify current provider terms before any NIM use.
 - No deployment or live campaign action occurred. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- Session-scoped UUID drafts persist the brief, optional brand/product context, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
-- PR #34 adds an optional generic campaign objective (awareness, site visits, leads, sales/bookings, local visits), stores it with the draft, restores it for edits, and displays it in the synthetic preview. Blank stays blank; no goal is inferred.
-- Full local Django suite passed (24 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before this continuity-only commit. Required CI is the merge gate.
+- The local prototype has a synthetic brief → preview → simulated pause → sample report flow.
+- Session-scoped UUID drafts persist brief, optional brand/product context, generic objective, daily limit, and duration. The owner can list, resume, edit, and discard drafts. Other and expired sessions cannot access them.
+- PR #36 adds optional target-audience context within the collapsed details section, persists/restores it with the draft, and shows it in the synthetic preview. Empty input stays empty; no audience is inferred.
+- Full local Django suite passed (25 tests) using SQLite test settings. Migration consistency, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before this handoff update. Required CI is the merge gate.
 - No AI generation, provider, external account, publishing, real performance metric, new paid service, advertiser spend, or deployment was added.
 
 ## Open decisions and risks
@@ -36,4 +38,4 @@ Last verified: 2026-09-28 10:49 (Europe/Istanbul). `main` is at `72e3cbd34a0ae66
 
 ## Next action
 
-Verify required CI on the latest PR #34 head and review its final diff. Merge if all checks pass and no issue is found; then select the next small Phase 2 workflow slice.
+Verify required CI on PR #36's latest head and review the final diff. Merge if every check passes and no issue is found; then choose the next small Phase 2 slice from `ROADMAP.md`.
