@@ -61,9 +61,12 @@ def home(request):
                 return redirect("site:home")
 
             campaign.brief = form.cleaned_data["brief"]
+            campaign.brand_context = form.cleaned_data["brand_context"]
             campaign.daily_limit = form.cleaned_data["daily_limit"]
             campaign.duration_days = form.cleaned_data["duration_days"]
-            campaign.save(update_fields=("brief", "daily_limit", "duration_days"))
+            campaign.save(
+                update_fields=("brief", "brand_context", "daily_limit", "duration_days")
+            )
         else:
             if session_key is None:
                 request.session.create()
@@ -73,6 +76,7 @@ def home(request):
             campaign = CampaignDraft.objects.create(
                 session=session,
                 brief=form.cleaned_data["brief"],
+                brand_context=form.cleaned_data["brand_context"],
                 daily_limit=form.cleaned_data["daily_limit"],
                 duration_days=form.cleaned_data["duration_days"],
             )
@@ -99,6 +103,7 @@ def home(request):
             initial={
                 "campaign_id": campaign.pk,
                 "brief": campaign.brief,
+                "brand_context": campaign.brand_context,
                 "daily_limit": campaign.daily_limit,
                 "duration_days": campaign.duration_days,
             }

@@ -21,6 +21,7 @@ class CampaignDraft(models.Model):
         related_name="campaign_drafts",
     )
     brief = models.CharField(max_length=280)
+    brand_context = models.CharField(max_length=320, blank=True, default="")
     daily_limit = models.PositiveIntegerField()
     duration_days = models.PositiveSmallIntegerField()
     status = models.CharField(
