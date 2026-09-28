@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 00:19 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `af83c57` (PR #62); PR CI `36484889021` and post-merge CI `36485086542` passed. The working tree is clean and there are no open PRs.
+Last repository verification before this handoff update: 2026-09-29 00:22 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At that check, `main` was `81e45c6` (handoff PR #63); the latest application code commit was `af83c57` (PR #62). PR #62 CI `36484889021`, post-merge CI `36485086542`, and handoff PR #63 post-merge CI `36485509804` passed. The working tree was clean with no open PRs.
 
 ## Goal and working rules
 
