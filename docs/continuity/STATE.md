@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 14:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `ec54fb4` (PR #47); required CI `36408228584` and post-merge CI `36408396224` passed. The staging-cleanup findings and approval boundary are being recorded. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 14:50 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. At verification, `main` was `98a2163` (PR #49); PR #49 required CI `36417732589` and post-merge CI `36417902593` passed. The working tree was clean and there were no open PRs. Staging Scheduler was provisioned and its daily cleanup job was visible; the first run and actual one-off dyno cost remain unverified.
 
 ## Goal and working rules
 
@@ -8,7 +8,7 @@ Last verified: 2026-09-28 14:10 (Europe/Istanbul). Repository: `https://github.c
 - Validate one advertiser workflow and one publishing destination before broad channel coverage. The first workflow, destination, and review/autonomy defaults remain undecided.
 - Advertisers must authorize connected accounts and define enforceable spend, schedule, and content limits before live actions. Pause when information or permission is unclear.
 - Keep local, CI, and staging examples synthetic. Do not expose secrets or private advertiser data.
-- Only previously approved paid infrastructure is the existing Heroku Basic dyno plus Essential-0 PostgreSQL, about USD 12/month before tax. Do not add paid services or enable live publishing/spend without authorization.
+- Only approved staging infrastructure is the Heroku Basic dyno plus Essential-0 PostgreSQL and the Standard Free Scheduler add-on. The Resources page showed an estimate near USD 12/month; task dyno usage is billed and actual usage has not been observed. Do not add paid services or enable live publishing/spend without authorization.
 - Use feature branches and PRs; never push directly to `main`. The owner has authorized merging reviewed PRs when required CI passes.
 
 ## Current product state
@@ -30,12 +30,11 @@ Last verified: 2026-09-28 14:10 (Europe/Istanbul). Repository: `https://github.c
 - Select the first advertiser workflow and destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
 - Session drafts are synthetic. Verify retention and deletion operations before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
-- The application denies reads after session expiry and tests `clearsessions` cascade deletion; no recurring cleanup invocation was found in the repository. Expired-row cleanup timing is unverified.
-- Live read-only inspection found no GrowthTwin Windows scheduled task or Heroku Scheduler add-on. Staging Resources showed the existing Basic web dyno and Essential-0 Postgres only. Heroku CLI is unavailable locally.
-- Heroku Scheduler is documented as a free add-on but its one-off dyno runtime is billed and jobs may be missed. A daily `clearsessions` job is a candidate for synthetic staging cleanup only; it remains unconfigured pending confirmation of the variable charge.
-- Candidate command/time: `python manage.py clearsessions` daily at 00:00 UTC (03:00 Istanbul), with Basic dyno if selectable. This remains an unverified proposal; no resource or job was created.
+- The application denies reads after session expiry and tests `clearsessions` cascade deletion. Heroku Scheduler now runs `python manage.py clearsessions` daily at 00:00 UTC (03:00 Europe/Istanbul) on Basic; the dashboard showed Last Run `Never` and next due 2026-09-29 00:00 UTC.
+- Scheduler is Standard Free, but its one-off dyno runtime is billed and executions can be missed. The first scheduled execution and actual billed usage remain unverified; keep staging data synthetic and do not treat this as a retention guarantee.
+- The initial Heroku Resources estimate after setup remained about USD 12/month; recheck usage after the first run. Heroku CLI is unavailable locally.
 - AI/provider selection and production data-processing terms remain undecided. Issue #2 was previously tracking NIM quota research; recheck its current status and provider terms before any NIM use.
 
 ## Next action
 
-Obtain explicit action-time authorization before provisioning the free Heroku Scheduler add-on and its variable one-off dyno usage for the proposed daily synthetic-staging cleanup. If authorized, configure it and verify one run. Keep real advertiser data blocked because best-effort scheduling is not a retention guarantee.
+After the scheduled 2026-09-29 00:00 UTC execution, verify the job result and actual one-off dyno usage in Heroku. Keep all staging data synthetic; Scheduler's best-effort cadence is not a real-data retention guarantee.
