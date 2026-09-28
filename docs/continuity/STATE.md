@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 13:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `8291995` (PR #46); required CI `36405873982` and post-merge CI `36406079806` passed. The session-retention documentation PR is being prepared. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 14:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `ec54fb4` (PR #47); required CI `36408228584` and post-merge CI `36408396224` passed. The staging-cleanup findings and approval boundary are being recorded. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -31,8 +31,11 @@ Last verified: 2026-09-28 13:10 (Europe/Istanbul). Repository: `https://github.c
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
 - Session drafts are synthetic. Verify retention and deletion operations before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
 - The application denies reads after session expiry and tests `clearsessions` cascade deletion; no recurring cleanup invocation was found in the repository. Expired-row cleanup timing is unverified.
+- Live read-only inspection found no GrowthTwin Windows scheduled task or Heroku Scheduler add-on. Staging Resources showed the existing Basic web dyno and Essential-0 Postgres only. Heroku CLI is unavailable locally.
+- Heroku Scheduler is documented as a free add-on but its one-off dyno runtime is billed and jobs may be missed. A daily `clearsessions` job is a candidate for synthetic staging cleanup only; it remains unconfigured pending confirmation of the variable charge.
+- Candidate command/time: `python manage.py clearsessions` daily at 00:00 UTC (03:00 Istanbul), with Basic dyno if selectable. This remains an unverified proposal; no resource or job was created.
 - AI/provider selection and production data-processing terms remain undecided. Issue #2 was previously tracking NIM quota research; recheck its current status and provider terms before any NIM use.
 
 ## Next action
 
-Verify how expired-session cleanup will run on local/staging using approved existing resources, and define its cadence before any non-synthetic data. Keep drafts synthetic; do not add a paid scheduler or move persistence until workspace ownership and retention/deletion are defined.
+Obtain explicit action-time authorization before provisioning the free Heroku Scheduler add-on and its variable one-off dyno usage for the proposed daily synthetic-staging cleanup. If authorized, configure it and verify one run. Keep real advertiser data blocked because best-effort scheduling is not a retention guarantee.
