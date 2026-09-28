@@ -239,22 +239,22 @@
                 <form method="post" action="{% url 'site:save-creatives' campaign.pk %}" class="creative-variants-form">
                   {% csrf_token %}
                   {% for item in creative_fields %}
-                    <details class="creative-variant" {% if forloop.first %}open{% endif %}>
+                    <details class="creative-variant" {% if forloop.first or item.has_errors %}open{% endif %}>
                       <summary>{{ item.variant.angle }}</summary>
                       <div class="creative-field">
                         <label for="{{ item.headline.id_for_label }}">{{ item.headline.label }}</label>
                         {{ item.headline }}
-                        {% for error in item.headline.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                        {% for error in item.headline.errors %}<p class="inline-error" id="{{ item.headline.id_for_label }}-error" role="alert">{{ error }}</p>{% endfor %}
                       </div>
                       <div class="creative-field">
                         <label for="{{ item.body.id_for_label }}">{{ item.body.label }}</label>
                         {{ item.body }}
-                        {% for error in item.body.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                        {% for error in item.body.errors %}<p class="inline-error" id="{{ item.body.id_for_label }}-error" role="alert">{{ error }}</p>{% endfor %}
                       </div>
                       <div class="creative-field">
                         <label for="{{ item.call_to_action.id_for_label }}">{{ item.call_to_action.label }}</label>
                         {{ item.call_to_action }}
-                        {% for error in item.call_to_action.errors %}<p class="inline-error" role="alert">{{ error }}</p>{% endfor %}
+                        {% for error in item.call_to_action.errors %}<p class="inline-error" id="{{ item.call_to_action.id_for_label }}-error" role="alert">{{ error }}</p>{% endfor %}
                       </div>
                     </details>
                   {% endfor %}

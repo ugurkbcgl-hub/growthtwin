@@ -70,6 +70,33 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     "Sentetik düzenlenmiş reklam başlığı",
                 )
 
+                third_variant = page.locator(".creative-variant").nth(2)
+                page.evaluate(
+                    """() => document
+                        .querySelectorAll(".creative-variants-form [required], " +
+                                          ".creative-variants-form [maxlength]")
+                        .forEach((field) => {
+                          field.removeAttribute("required");
+                          field.removeAttribute("maxlength");
+                        })"""
+                )
+                invalid_headline = third_variant.get_by_label("Başlık")
+                invalid_headline.evaluate("(field) => { field.value = ''; }")
+                page.get_by_role("button", name="Metinleri kaydet").click()
+                page.wait_for_load_state("domcontentloaded")
+                self.assertIsNotNone(third_variant.get_attribute("open"))
+                self.assertEqual(invalid_headline.get_attribute("aria-invalid"), "true")
+                error_id = invalid_headline.get_attribute("aria-describedby")
+                self.assertEqual(
+                    error_id,
+                    f"{invalid_headline.get_attribute('id')}-error",
+                )
+                self.assertTrue(page.locator(f"#{error_id}").inner_text())
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"),
+                    invalid_headline.get_attribute("id"),
+                )
+
                 page.get_by_role(
                     "button", name="Brief’ten yeni öneriler oluştur"
                 ).click()
