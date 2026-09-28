@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 10:20 (Europe/Istanbul). `main` is at `2ebc5c2b74d734d2ec96dbf4c2789772df31459d`; post-merge CI `36390932652` passed. PR #23 (product direction), replacement PR #28 (session-scoped synthetic draft persistence; original #25 was auto-closed when its base branch was deleted), and PR #27 (session draft library) are merged. No open PRs or uncommitted changes were present at this verification. No deployment or live campaign action was performed.
+Last verified: 2026-09-28 10:36 (Europe/Istanbul). `main` is at `e310fe3a874e72b6aee18cb447694271699b9e7e`; post-merge CI `36391321451` passed. Current branch is `feature/GT-030-brand-context`; PR #31 is open against `main` at code commit `2f93f7f`; its required CI is running. Worktree was clean before this handoff update.
 
 ## Goal and working rules
 
@@ -15,19 +15,17 @@ Last verified: 2026-09-28 10:20 (Europe/Istanbul). `main` is at `2ebc5c2b74d734d
 ## Repository and review
 
 - Repository: https://github.com/ugurkbcgl-hub/growthtwin. Worktree: `C:\Users\Public\Desktop\GrowthTwin`; feature branches and PRs only, no direct `main` pushes.
-- `main` head: `2ebc5c2`; post-merge CI run `36390932652` passed.
-- PR #23 merged at `a27fa25`; post-merge CI passed at run `36390088871`.
-- The original PR #25 was auto-closed when its base branch was deleted. Replacement PR #28 merged at `c20cc6c`; required CI passed on its reconciled head `42cba79` (run `36390382434`), and post-merge CI passed (run `36390668094`).
-- PR #27 merged at `2ebc5c2`; required CI passed on final head `bae0bcd` (run `36390786447`), and post-merge CI passed (run `36390932652`).
-- No PR is currently open. The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
+- PRs #23, #28, #27, and #29 are merged; no deployment or live campaign action occurred.
+- Issue #30 tracks optional brand/product context. PR #31: https://github.com/ugurkbcgl-hub/growthtwin/pull/31 — open, based on `main`, CI running on the feature commit.
+- The owner authorizes merging reviewed PRs without asking again when required CI passes. Never push directly to `main`.
 
 ## Product and implementation status
 
 - Product direction is recorded in `PROJECT.md`, `ROADMAP.md`, and accepted ADR-0005: Türkiye-wide advertiser market, clinics as one example, Omneky as a long-term benchmark.
-- Phase 1's website prototype is on `main`: synthetic brief → preview → simulated pause → sample report.
-- The local Phase 2 slice persists validated campaign briefs, daily caps, and durations as UUID drafts owned by an anonymous Django session. Users can resume, edit, list, and discard their own drafts. Empty visits do not create sessions; other and expired sessions cannot list, read, update, or delete drafts. Session cleanup cascades draft records.
-- All 22 Django tests passed locally with SQLite test settings; Ruff format/lint, JavaScript syntax, and `git diff --check` passed. Required CI and post-merge CI passed on the merged revisions.
-- No AI provider, publishing destination, paid service, live account, advertiser spend, or deployment was added.
+- The local prototype has a synthetic brief → preview → simulated pause → sample report flow. Session-scoped UUID drafts persist brief, daily limit, and duration; the owner can list, resume, edit, and discard. Other and expired sessions cannot access drafts.
+- PR #31 adds a bounded optional brand/product context field to a draft, restores it for editing, and displays it as plain text in the synthetic preview. No AI generation, external account, publication, real metric, or spend is involved.
+- Full local Django suite passed (23 tests) using SQLite test settings. Migration check, Ruff format/lint, JavaScript syntax, and `git diff --check` passed before the continuity-only commit; required PR CI remains the merge gate.
+- Issues #24 and #26 are closed as completed. Issue #2 (record NVIDIA NIM model quotas) remains open and unrelated to this local UI slice; verify current provider terms before any NIM use.
 
 ## Open decisions and risks
 
@@ -38,4 +36,4 @@ Last verified: 2026-09-28 10:20 (Europe/Istanbul). `main` is at `2ebc5c2b74d734d
 
 ## Next action
 
-Review the remaining Phase 2 roadmap items and select the next small, locally testable advertiser workflow slice. Keep it synthetic and ensure it cannot connect accounts, publish ads, or incur spend.
+Verify required CI on the latest PR #31 head, review the final diff, and merge only if CI passes and no issue is found. Then select the next small Phase 2 slice from `ROADMAP.md`.
