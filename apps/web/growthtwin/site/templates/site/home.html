@@ -194,6 +194,20 @@
                   <p class="campaign-objective" id="preview-objective" hidden></p>
                 </div>
               </div>
+              <section class="plan-summary" aria-labelledby="plan-summary-title">
+                <div class="plan-summary-heading">
+                  <span class="micro-label">PLAN ÖZETİ · TASLAK</span>
+                  <span class="status-pill status-pill-soft">Bilgilerine göre</span>
+                </div>
+                <h4 id="plan-summary-title">Kampanya çerçevesi</h4>
+                <dl class="plan-summary-list">
+                  <div><dt>Amaç</dt><dd id="plan-objective">{% if campaign.objective %}{{ campaign.get_objective_display }}{% else %}Brief’ten netleştirilecek{% endif %}</dd></div>
+                  <div><dt>Kitle</dt><dd id="plan-audience">{{ campaign.target_audience|default:"Henüz belirtilmedi" }}</dd></div>
+                  <div><dt>Marka / teklif</dt><dd id="plan-brand">{{ campaign.brand_context|default:"Henüz belirtilmedi" }}</dd></div>
+                  <div><dt>Bütçe sınırı</dt><dd id="plan-budget">{% if campaign %}₺{{ campaign.total_limit }} toplam · ₺{{ campaign.daily_limit }} / gün · {{ campaign.duration_days }} gün{% else %}₺5.250 toplam · ₺750 / gün · 7 gün{% endif %}</dd></div>
+                </dl>
+                <p class="plan-summary-note">Hedef kanal ve reklam biçimi henüz seçilmedi. Bu, girdilerini düzenleyen bir taslaktır; reklam üretmez veya yayınlamaz.</p>
+              </section>
               <div class="creative-preview">
                 <div class="creative-art" aria-hidden="true">
                   <span class="creative-orbit orbit-one"></span>

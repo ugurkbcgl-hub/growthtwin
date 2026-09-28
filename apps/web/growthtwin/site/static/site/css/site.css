@@ -292,6 +292,17 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .campaign-summary .campaign-target-audience { margin-top: 4px; color: #777887; font-size: 9px; }
 .campaign-summary .campaign-objective { margin-top: 4px; color: #6259dc; font-size: 9px; }
 
+.plan-summary { margin: 0 0 14px; padding: 13px; border: 1px solid #eeecf8; border-radius: 12px; background: #fff; }
+.plan-summary-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.plan-summary-heading .micro-label { color: var(--purple); font-size: 8px; letter-spacing: .65px; }
+.plan-summary-heading .status-pill { padding: 4px 7px; font-size: 7px; }
+.plan-summary h4 { margin: 9px 0 8px; color: #343542; font-size: 12px; font-weight: 710; }
+.plan-summary-list { display: grid; gap: 0; margin: 0; }
+.plan-summary-list > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; padding: 7px 0; border-top: 1px solid #f1f0f5; }
+.plan-summary-list dt { color: #858692; font-size: 9px; }
+.plan-summary-list dd { margin: 0; color: #464754; font-size: 9px; font-weight: 600; overflow-wrap: anywhere; }
+.plan-summary-note { margin: 8px 0 0; color: #8b8c98; font-size: 8px; line-height: 1.5; }
+
 .creative-preview { display: grid; grid-template-columns: .88fr 1fr; gap: 12px; align-items: center; }
 .creative-art { position: relative; display: flex; min-height: 126px; align-items: flex-end; overflow: hidden; padding: 13px; border-radius: 12px; background: linear-gradient(145deg, #bbb1f2 0%, #796de1 54%, #5345b6 100%); color: white; }
 .creative-art::before { position: absolute; top: -38px; right: -11px; width: 126px; height: 126px; border: 1px solid rgb(255 255 255 / 45%); border-radius: 50%; content: ""; }
