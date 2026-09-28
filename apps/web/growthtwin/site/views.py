@@ -64,6 +64,19 @@ def creative_records(campaign, brief):
 
 def render_campaign_home(request, form, campaign, creative_form=None):
     """Render the shared campaign page and its optional creative editor."""
+    first_invalid_form_field = True
+    for field in form.visible_fields():
+        if field.errors:
+            field.field.widget.attrs.update(
+                {
+                    "aria-describedby": f"{field.id_for_label}-error",
+                    "aria-invalid": "true",
+                }
+            )
+            if first_invalid_form_field:
+                field.field.widget.attrs["autofocus"] = True
+                first_invalid_form_field = False
+
     brief = campaign_brief(campaign) if campaign is not None else None
     plan = (
         CampaignPlan(

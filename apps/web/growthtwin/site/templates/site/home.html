@@ -111,7 +111,7 @@
                 <label class="field-label" for="campaign-brief">Kampanya fikrin</label>
                 {{ form.brief }}
                 {% for error in form.brief.errors %}
-                  <p class="inline-error" role="alert">{{ error }}</p>
+                  <p class="inline-error" id="{{ form.brief.id_for_label }}-error" role="alert">{{ error }}</p>
                 {% endfor %}
                 <div class="field-meta">
                   <span>Ürününü, hedefini veya duyurunu anlat.</span>
@@ -122,22 +122,22 @@
                   <label class="field-label" for="campaign-objective">Kampanyadan ne bekliyorsun? <span>İsteğe bağlı</span></label>
                   {{ form.objective }}
                   {% for error in form.objective.errors %}
-                    <p class="inline-error" role="alert">{{ error }}</p>
+                    <p class="inline-error" id="{{ form.objective.id_for_label }}-error" role="alert">{{ error }}</p>
                   {% endfor %}
                 </div>
 
-                <details class="optional-context">
+                <details class="optional-context" {% if form.brand_context.errors or form.target_audience.errors %}open{% endif %}>
                   <summary>Marka veya ürün bilgisi ekle <span>İsteğe bağlı</span></summary>
                   <label class="field-label" for="brand-context">Marka ve ürün hakkında</label>
                   {{ form.brand_context }}
                   {% for error in form.brand_context.errors %}
-                    <p class="inline-error" role="alert">{{ error }}</p>
+                    <p class="inline-error" id="{{ form.brand_context.id_for_label }}-error" role="alert">{{ error }}</p>
                   {% endfor %}
                   <p class="field-hint">Ürününü, hizmetini veya markanı kısaca anlat. Gizli bilgi ekleme.</p>
                   <label class="field-label" for="target-audience">Kime ulaşmak istiyorsun?</label>
                   {{ form.target_audience }}
                   {% for error in form.target_audience.errors %}
-                    <p class="inline-error" role="alert">{{ error }}</p>
+                    <p class="inline-error" id="{{ form.target_audience.id_for_label }}-error" role="alert">{{ error }}</p>
                   {% endfor %}
                   <p class="field-hint">Henüz emin değilsen boş bırakabilirsin.</p>
                 </details>
@@ -151,7 +151,7 @@
                       <span class="input-unit">/ gün</span>
                     </div>
                     {% for error in form.daily_limit.errors %}
-                      <p class="inline-error" role="alert">{{ error }}</p>
+                      <p class="inline-error" id="{{ form.daily_limit.id_for_label }}-error" role="alert">{{ error }}</p>
                     {% endfor %}
                   </div>
                   <div class="form-field">
@@ -161,7 +161,7 @@
                       <span aria-hidden="true">⌄</span>
                     </div>
                     {% for error in form.duration_days.errors %}
-                      <p class="inline-error" role="alert">{{ error }}</p>
+                      <p class="inline-error" id="{{ form.duration_days.id_for_label }}-error" role="alert">{{ error }}</p>
                     {% endfor %}
                   </div>
                 </div>

@@ -15,9 +15,42 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 page.goto(self.live_server_url)
 
                 self.assert_no_horizontal_overflow(page)
-                page.locator("#campaign-brief").fill(
-                    "Sentetik örnek: hafta sonu seramik atölyesi için tanıtım"
+                brief = page.locator("#campaign-brief")
+                brief.evaluate("(field) => field.removeAttribute('required')")
+                brief.fill("")
+                page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.wait_for_load_state("domcontentloaded")
+                self.assertEqual(brief.get_attribute("aria-invalid"), "true")
+                brief_error_id = brief.get_attribute("aria-describedby")
+                self.assertEqual(brief_error_id, f"{brief.get_attribute('id')}-error")
+                self.assertTrue(page.locator(f"#{brief_error_id}").inner_text())
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"),
+                    brief.get_attribute("id"),
                 )
+
+                brief.fill("Sentetik örnek: hafta sonu seramik atölyesi için tanıtım")
+                page.get_by_text("Marka veya ürün bilgisi ekle").click()
+                brand_context = page.locator("#brand-context")
+                brand_context.evaluate("(field) => field.removeAttribute('maxlength')")
+                brand_context.fill("Sentetik " * 40)
+                page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.wait_for_load_state("domcontentloaded")
+                self.assertIsNotNone(page.locator(".optional-context").get_attribute("open"))
+                self.assertEqual(brand_context.get_attribute("aria-invalid"), "true")
+                brand_error_id = brand_context.get_attribute("aria-describedby")
+                self.assertEqual(
+                    brand_error_id,
+                    f"{brand_context.get_attribute('id')}-error",
+                )
+                self.assertTrue(page.locator(f"#{brand_error_id}").inner_text())
+                self.assertEqual(
+                    page.evaluate("document.activeElement.id"),
+                    brand_context.get_attribute("id"),
+                )
+
+                brief.fill("Sentetik örnek: hafta sonu seramik atölyesi için tanıtım")
+                brand_context.fill("Sentetik seramik atölyesi")
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_url("**campaign=*")
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
