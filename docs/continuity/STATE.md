@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-28 12:35 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `d0b640f` (PR #43); required CI `36404084608` and post-merge CI `36404256264` passed. The documentation handoff PR is being prepared. No deployment, external account connection, or live campaign action occurred.
+Last verified: 2026-09-28 12:48 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is at `971b8c8` (PR #45); required CI `36405418341` and post-merge CI `36405621064` passed. The handoff update PR is being prepared. No deployment, external account connection, or live campaign action occurred.
 
 ## Goal and working rules
 
@@ -21,6 +21,8 @@ Last verified: 2026-09-28 12:35 (Europe/Istanbul). Repository: `https://github.c
 - PR #40 merged as `ec53d8b`; required CI `36399557024` and post-merge CI `36399737745` passed. Local visual/browser verification was not performed in this step.
 - PR #42 merged as `742f6b4`; the preview label overlap was corrected. The local browser visual review used synthetic session data.
 - PR #43 merged as `d0b640f`; required CI `36404084608` and post-merge CI `36404256264` passed. Added an immutable, provider-neutral `CampaignPlan` value object derived from the existing session draft. The object calculates the total limit and optional missing inputs; the server-rendered plan/readiness now uses it. No database migration or new persistence behavior was added.
+- PR #44 merged as `a50f18b`; required CI `36404513585` and post-merge CI `36404676554` passed. Refreshed the prior handoff.
+- PR #45 merged as `971b8c8`; required CI `36405418341` and post-merge CI `36405621064` passed. Added a persistence-free `CampaignBrief` value and made `CampaignPlan` derive from that brief plus budget/duration inputs. ADR-0006 keeps session-bound synthetic ORM persistence in `site`; future content persistence requires explicit workspace ownership, retention/deletion, and migration/rollback design. No schema migration was added.
 - No AI call, external account, publishing, real metric, advertiser spend, new paid service, or deployment was added.
 
 ## Open decisions and gates
@@ -32,4 +34,4 @@ Last verified: 2026-09-28 12:35 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Define the boundary and acceptance criteria for a persistent `CampaignBrief` domain entity before moving any ORM persistence out of `site`. Keep the prototype synthetic and session-scoped; do not introduce AI, platform selection, account connections, publishing, or spend.
+Before adding a content-owned ORM entity, specify workspace ownership and a safe transition for retention, deletion, migration, and rollback from session-scoped prototypes. Keep all data synthetic and do not move persistence until those conditions are defined.
