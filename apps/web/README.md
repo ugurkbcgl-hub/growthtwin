@@ -1,17 +1,19 @@
 # GrowthTwin web application
 
-This folder contains the Django application shell and the old synthetic profile
-demo used to check the development workflow. Local campaign UX work is now
-authorized and should use synthetic data. Domain module boundaries are
-documented under `growthtwin/modules/`; the campaign product workflow has not
-been implemented yet.
+This folder contains the Django application, a legacy synthetic profile demo,
+and the first local campaign-experience slice. Local product work is authorized
+with synthetic data. Domain module boundaries are documented under
+`growthtwin/modules/`.
 
-The public `/` route is the first local product slice: it demonstrates brief
-intake, a campaign preview, and a synthetic report. The interaction runs in the
-browser only and does not call an AI provider, store the brief, connect an ad
-account, publish, or spend money. The page marks its preview and metrics as
-simulated. The server-side campaign workflow and persistence have not yet been
-implemented.
+The public `/` route collects a campaign brief, optional brand and audience
+details, and a proposed budget and duration. Django saves synthetic campaign
+drafts in PostgreSQL, scoped to the anonymous browser session; the owner can
+list, resume, edit, or delete those drafts. A provider-neutral `CampaignBrief`
+and derived `CampaignPlan` summarize the request and highlight missing inputs.
+The page also demonstrates a clearly simulated pause and sample report. It does
+not generate ad creative, call an AI provider, connect an ad account, publish,
+or spend money. The session-scoped draft is a prototype boundary, not a durable
+advertiser/workspace data model; see [ADR-0006](../../docs/adr/0006-campaign-brief-boundary.md).
 
 ## Runtime prerequisites
 
