@@ -71,6 +71,10 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     page.keyboard.press("Enter")
                 self.assertEqual(invalid_response.value.status, 200)
                 page.wait_for_load_state("domcontentloaded")
+                page.wait_for_function(
+                    "document.activeElement.id === 'brand-context'",
+                    timeout=3000,
+                )
                 self.assertIsNotNone(
                     page.locator(".optional-context").get_attribute("open")
                 )
