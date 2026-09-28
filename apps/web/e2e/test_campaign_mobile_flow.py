@@ -41,6 +41,46 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 self.assert_no_horizontal_overflow(page)
                 resume_button.click()
 
+                variants = page.locator(".creative-variant")
+                second_variant = variants.nth(1)
+                second_summary = second_variant.locator("summary")
+                second_summary.focus()
+                page.keyboard.press("Enter")
+                self.assertIsNotNone(second_variant.get_attribute("open"))
+                self.assertEqual(
+                    second_variant.get_by_label("Başlık").count(),
+                    1,
+                )
+
+                first_headline = variants.nth(0).get_by_label("Başlık")
+                first_headline.fill("Sentetik düzenlenmiş reklam başlığı")
+                page.get_by_role("button", name="Metinleri kaydet").click()
+                page.wait_for_url("**creative=saved")
+                self.assertEqual(
+                    page.get_by_role("status")
+                    .filter(has_text="Metin değişikliklerin kaydedildi.")
+                    .count(),
+                    1,
+                )
+                self.assertEqual(
+                    page.locator(".creative-variant")
+                    .nth(0)
+                    .get_by_label("Başlık")
+                    .input_value(),
+                    "Sentetik düzenlenmiş reklam başlığı",
+                )
+
+                page.get_by_role(
+                    "button", name="Brief’ten yeni öneriler oluştur"
+                ).click()
+                page.wait_for_url("**creative=regenerated")
+                self.assertEqual(
+                    page.get_by_role("status")
+                    .filter(has_text="Brief’inden yeni metin önerileri hazırlandı.")
+                    .count(),
+                    1,
+                )
+
                 page.get_by_role("button", name="Örnek rapor").click()
                 self.assertEqual(page.locator("#step-count").inner_text(), "3 / 3")
                 self.assert_no_horizontal_overflow(page)
