@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification: 2026-09-29 02:12 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `d282277` (PR #77); working tree clean, no open PRs. PR #77 CI `36496415009` and post-merge CI `36496565902` passed. The focused local mobile browser E2E passed.
+Last repository verification: 2026-09-29 02:31 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `0735aa5` (PR #79); working tree clean, no open PRs. PR #79 CI `36498106247` and post-merge CI `36498250268` passed. The focused local mobile browser E2E passed.
 
 ## Goal and working rules
 
@@ -30,6 +30,7 @@ Last repository verification: 2026-09-29 02:12 (Europe/Istanbul). Repository: `h
 - PR #73 (`35c56e0`) refreshed this handoff with PR #72's verified results and set the next action to review invalid creative-copy validation accessibility. PR CI `36493159093` and post-merge CI `36493316954` passed.
 - PR #75 (`577de64`) opened creative variants containing validation errors, connected each invalid field to its error text, and focused the first invalid field after the server response. Its mobile E2E covers the closed-variant invalid-submission case using synthetic content. Local focused E2E, PR CI `36495232468`, and post-merge CI `36495382212` passed.
 - PR #77 (`d282277`) associates campaign brief form errors with fields, marks invalid controls, focuses the first invalid visible field, and opens the optional brand/audience disclosure when it contains errors. The mobile E2E covers synthetic invalid brief and overlong optional brand submissions; focused local E2E, PR CI `36496415009`, and post-merge CI `36496565902` passed.
+- PR #79 (`0735aa5`) extends the mobile E2E with keyboard-only correction after invalid submissions: Tab navigation, Space to open optional details, returning focus to the invalid field, and Enter to reach preview. A load-event focus fallback was needed for consistent Chromium behavior. Focused local E2E, PR CI `36498106247`, and post-merge CI `36498250268` passed.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -42,4 +43,4 @@ Last repository verification: 2026-09-29 02:12 (Europe/Istanbul). Repository: `h
 
 ## Next action
 
-Run a keyboard-only pass through brief correction after validation errors and transition to the preview; fix only reproduced focus-order or disclosure issues, keep data synthetic, and do not check Heroku Scheduler before 2026-10-01.
+Review server-side validation accessibility for the daily budget and duration controls using synthetic invalid values; fix only reproduced focus, error-association, or announcement gaps, and do not check Heroku Scheduler before 2026-10-01.
