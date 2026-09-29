@@ -121,7 +121,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed research (2026-09-29):** Google Ads Search remains a technical candidate for Türkiye based on documented `TR` targeting and the current country-restrictions list. The official API access levels, SaaS permissible-use review, payment-country dependencies, report capabilities, and test-account limits are recorded in the [feasibility note](docs/product/google-ads-search-turkiye-api-feasibility.md). GrowthTwin's own production access, external-client approval, Turkish account onboarding, forecasts, and legal/policy readiness remain unverified. No account or live API was used.
 
-**Next research slice:** map Türkiye advertising, consumer-protection, personal-data, and sector-specific requirements that affect a self-service Google Search campaign and any lead flow. Use current primary legal/regulatory sources, separate confirmed rules from legal questions requiring qualified review, and keep real data and live campaigns out of scope.
+**Completed initial legal/product landscape (2026-09-29):** mapped official sources for ad-claim substantiation, online consumer checkout, commercial email/SMS/call follow-up, KVKK notice/consent and international transfers, and the current health-sector advertising rules. Product gates and unresolved legal questions are in the [Türkiye readiness map](docs/product/turkiye-advertising-privacy-readiness.md). This is not a complete legal review; no real data, payment or live campaign was enabled.
+
+**Next research slice:** build the dated sector-and-channel eligibility matrix for the first Google Search workflow, starting with the selected unregulated local-service example and identifying restricted or unsupported categories. Check both current Turkish sector rules and Google Ads policies. Use the matrix to define the product's fail-closed allow/restrict/stop behavior; do not treat legal research as API approval or campaign authorization.
 
 ## Phase 3 — First publishing and reporting integration
 
