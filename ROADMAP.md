@@ -61,7 +61,9 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **Completed:** PR #115 adds browser end-to-end coverage for the authenticated synthetic workspace path, including mobile layout, owner isolation and bounded draft changes. PR and post-merge CI passed.
 
-**In progress on `feat/workspace-login-experience`:** replace the stale Phase 0 login screen with a Turkish, accessible sign-in page that explains the synthetic-only scope, preserves the requested return path, and keeps public registration closed.
+**Completed:** PR #116 replaces the stale Phase 0 login screen with a Turkish, accessible sign-in page that explains the synthetic-only scope, preserves the requested return path, and keeps public registration closed. PR and post-merge CI passed.
+
+**In progress on `feat/synthetic-budget-pacing`:** show the campaign's equal-allocation daily planning average, clearly separated from a platform spend limit or performance forecast. Keep the forecast and keyword states unavailable until an authorized source exists.
 
 ## Phase 2 — Local campaign vertical slice
 
@@ -69,7 +71,7 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **First gate:** establish the workspace owner and campaign/brand data lifecycle before adding durable content records. See the [current system gap analysis](docs/product/current-system-gap-analysis.md) for the implementation inventory and dependencies. For this synthetic-only prototype, workspace ownership is tied to an authenticated user, anonymous session drafts are never backfilled automatically, and no real advertiser data is accepted. Do not invent a universal retention period; set purpose- and data-category-specific limits before real data. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).
 
-Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scoping tests are merged in PR #102. ADR-0008 defines the first synthetic flow. PR #110 connects a new campaign draft model to Workspace, PR #111 verifies isolation, PR #112 adds the provider-free Search draft plan, PR #113 adds the authenticated fixed-sample list/preview, PR #114 adds owner-scoped bounded setting changes and removal, and PR #115 adds browser E2E coverage. The current branch improves sign-in UX. The anonymous public draft path remains separate. All campaign records remain synthetic-only.
+Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scoping tests are merged in PR #102. ADR-0008 defines the first synthetic flow. PR #110 connects a new campaign draft model to Workspace, PR #111 verifies isolation, PR #112 adds the provider-free Search draft plan, PR #113 adds the authenticated fixed-sample list/preview, PR #114 adds owner-scoped bounded setting changes and removal, PR #115 adds browser E2E coverage, and PR #116 improves the sign-in experience. The current branch adds transparent arithmetic pacing to the plan. The anonymous public draft path remains separate. All campaign records remain synthetic-only.
 
 - Model advertiser/workspace, brand facts and assets, campaign brief, versioned multi-format ad creatives, destinations, user-defined caps, and status history.
 - Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.

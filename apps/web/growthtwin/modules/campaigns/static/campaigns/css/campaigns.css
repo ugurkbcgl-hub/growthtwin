@@ -129,6 +129,7 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .notice p:last-child { margin-bottom: 0; }
 .notice-muted { border-color: var(--line); background: #f0f1ed; color: var(--ink); }
 .notice-muted h2 { margin-bottom: .75rem; }
+.pacing-note { margin: .75rem 0 0; color: var(--muted); font-size: .92rem; }
 
 .campaign-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1rem; }
 .campaign-card { display: block; padding: 1.25rem; color: var(--ink); text-decoration: none; }
