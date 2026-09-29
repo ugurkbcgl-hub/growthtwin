@@ -1,10 +1,10 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 23:35 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 23:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `f055225` after PR #155. PR #155 merged at 2026-09-29 20:03 UTC; its required Django system check `36623355195` and post-merge CI `36623646892` passed. PR #156 (`docs/report-visual-review-status`) has passed required CI `36626690808`; recheck its merge state before acting. Latest verified local branch is `docs/report-visual-review-status`.
+- `origin/main` is `9763b6a` after PR #156 (`docs/report-visual-review-status`), merged at 2026-09-29 20:32 UTC. Its required CI `36626690808` passed. PR #157 (`docs/report-visual-review-completion`) is open with CI `36627581597` successful; its source commit is `953fa64` before this handoff correction. Current local branch: `docs/report-visual-review-completion`.
 - PR #154 required CI `36622723566` and post-merge CI `36622985685` passed. PR #155 refreshed continuity after #154. The authenticated report remains disconnected and synthetic; no local tests were run during manual visual inspection.
 - Manual visual review is complete using a narrow ~596 px view and a ~1265 px desktop view on an isolated `localhost` fixture. Planned dates, no observed period, unknown freshness, and all six unavailable metrics were legible at both sizes; no horizontal overflow was visible. On desktop the metric cards form three columns; on the narrow view the summary stacks and cards adapt to available width. No product code changed.
 - The earlier browser session showed two synthetic drafts. Their active server-side session and two associated records remain in the local PostgreSQL database, but the browser's current session no longer lists them after the isolated review login changed the `127.0.0.1` session cookie. No project-database draft deletion was performed. Do not expose or manually copy session-cookie values; determine whether there is a supported, safe recovery path before claiming the drafts are accessible again.
