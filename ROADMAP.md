@@ -117,7 +117,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #154:** separate planned campaign dates, actually observed reporting dates, and freshness status in the report summary. Until a verified source is connected, show no observed period and freshness as unknown. No SLO guarantee or live adapter was added. Required PR CI `36622723566` and post-merge CI `36622985685` passed.
 
-**Next synthetic foundation slice:** manually inspect the report's empty state at desktop and mobile widths, then continue the next report contract item without implying connected data.
+**Completed manual review (2026-09-29):** inspected the authenticated report empty state at a narrow ~596 px viewport and a ~1265 px desktop viewport using isolated synthetic data. Planned dates, absent observed period, unknown freshness, and six unavailable metrics remained legible; no horizontal overflow was visible. No code or live integration changed. The prior anonymous browser session no longer exposes two still-stored synthetic drafts; see [continuity state](docs/continuity/STATE.md).
+
+**Next research slice:** verify Google Ads Search suitability for Türkiye and GrowthTwin's SaaS/API access constraints using current official primary sources. Record reporting capabilities and evidence gaps before any account connection or live adapter work; research only, with no real account or advertiser data.
 
 ## Phase 3 — First publishing and reporting integration
 
