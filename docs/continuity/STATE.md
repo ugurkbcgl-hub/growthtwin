@@ -1,30 +1,28 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 16:49 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 17:12 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `751e6dd0c5aeff6c69e3590980a9b7d844f9dbfa`; PR #122 is merged. Required PR CI `36576865860` and post-merge main CI `36577137802` passed. No open PR was listed after the merge.
-- Current branch `docs/post-policy-current-state`, PR [#123](https://github.com/ugurkbcgl-hub/growthtwin/pull/123) open. It updates the project, architecture, roadmap, gap analysis, and handoff snapshot for PR #122. Required CI run `36577941774` was in progress at verification.
-- PR #122 adds a pure synthetic action-policy evaluator and ten focused tests. Local Django system check, policy tests, Ruff lint/format, and post-merge full Django and browser E2E CI passed. Local campaign integration tests could not create their PostgreSQL test database because the local role lacks that privilege.
+- Baseline: clean `main` at `6602b95cd6042f6a34a4067f68c54e90f9db7f7d` (`docs: refresh policy implementation status (#123)`). PR #123 is merged; no PRs were open at verification.
+- PR #123 required CI `36578045837` and post-merge main CI `36578334751` succeeded.
+- This handoff refresh is being prepared on feature branch `docs/low-usage-handoff-20260929-cycle2`; recheck its PR and CI live before acting.
 
 ## Product and safety context
 
-- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. Omneky is a long-term capability benchmark, not a first-release scope promise.
-- Local synthetic-data product development is authorized. Real advertiser/customer/lead data must wait for the readiness gate and separate owner decision. Do not connect live accounts, publish, charge, or spend.
-- The authenticated campaign workspace creates a fixed synthetic example. Public registration, user uploads, persistent asset records, AI provider calls, account connections, live forecasts, publication, and payment are not implemented.
-- ADR-0008 selects a synthetic city-service quote/contact flow, Google Search as a technical candidate, and the advertiser's own site. ADR-0009 sets future file-safety boundaries. Neither establishes demand, API eligibility, legal readiness, pricing, or permission to publish.
-- PR #122 checks caller-supplied evidence and always leaves live dispatch unauthorized. It does not authenticate evidence, reserve spend, prove freshness, or persist an audit record.
-- Keep the Django/PostgreSQL monolith and approved Heroku staging footprint; add no paid resources. Staging E2E, backup/restore, and rollback remain release-readiness gates; Scheduler one-off cost remains unverified.
-- Use feature branches/PRs, never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
+- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. The long-term capability reference is not a first-release scope promise.
+- The accepted architecture is a Django 5.2/PostgreSQL modular monolith. Use feature branches and PRs; never push directly to `main`.
+- The authenticated workspace currently uses fixed synthetic campaign examples. Its policy evaluator is a pure, fail-closed contract over caller-supplied, untrusted evidence; it cannot authorize live dispatch. There is no live account connection, publication, payment, advertiser spend, or real advertiser data.
+- Keep examples synthetic. Do not add paid services, connect real accounts, publish, spend, or deploy production without the required authorization and release gates. Trial AI endpoints are synthetic evaluation only.
+- The existing Heroku staging footprint is within the previously approved budget. The scheduled session cleanup ran once successfully, but its actual one-off dyno cost and any real-data retention guarantee remain unverified.
 
-## Open risks
+## Verified work and unresolved gates
 
-- Real-data readiness: secure file handling, privacy/retention, data recipients, provider terms, platform/API approvals, token controls, audit/stop/revoke, backup/restore and rollback remain incomplete.
-- Credit costs, TRY/tax/payment pricing, ad service fees, lead delivery, performance guarantees and production AI/provider remain undecided or unverified.
-- Google forecasts and keyword ideas remain unavailable until eligible authorized sources are connected and verified.
-- Before live policy use, design trusted evidence provenance, policy versioning, durable audit, concurrent budget reservation, and stop/revoke enforcement. The current evaluator is only a local synthetic contract.
+- PRs #120–#122 added pure future asset-workflow transitions, tests, and a synthetic campaign action-policy contract. They perform no file/provider operations or live publishing. PRs and post-merge CI passed.
+- PR #123 refreshed policy implementation documentation. Its PR and post-merge CI passed.
+- Staging browser E2E, backup/restore, rollback, privacy/platform readiness, and final cost recording remain outstanding release gates. First workflow demand, API eligibility, production AI/data terms, pricing, and live-action controls remain undecided or unverified.
+- The roadmap's next code candidate is untrusted policy-evidence source/observation-time metadata. This handoff's instruction bars starting product features before Phase 0 completion; defer implementation until that gate is cleared.
 
 ## Next action
 
-Check CI for PR #123 after its latest commit and merge after review and required CI pass. Then add a small synthetic-only metadata contract for policy evidence source and observation time; keep it explicitly untrusted and disconnected from live dispatch.
+Do a read-only review of the existing staging browser E2E setup and Phase 0 checklist: identify the concrete prerequisites and verification steps for closing that gate using only already-approved resources. Record any verified gap in the roadmap/handoff; do not add paid resources or start product-feature implementation.
