@@ -79,7 +79,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 - Verify tenant isolation, schema validation, retry/idempotency behavior, and the campaign user journey.
 - **Acceptance:** the local end-to-end path saves a campaign, produces or safely rejects structured ad drafts, explains its state, and cannot publish or incur ad spend.
 
-**Next implementation boundary:** prepare the storage/provider-independent asset intake and processing contract (ownership, rights/AI consent, quarantine, scan, extraction, provenance, failure and deletion states) using synthetic-only fixtures. Do not accept uploaded customer files or start persistence/storage until the privacy, retention, parser isolation, malware scanning, deletion and tenant-isolation requirements are demonstrably met and the owner separately opens the real-data gate.
+**Asset boundary decided:** [ADR-0009](docs/adr/0009-asset-intake-processing-boundary.md) defines contract-first handling of future customer files. It keeps ownership, rights declaration, task permission and AI-provider permission separate; requires quarantine, scanning, provenance, fail-closed states and complete deletion; and explicitly does not authorize upload, persistence, storage, parsing, or AI calls.
+
+**Next:** define pure, storage/provider-independent asset workflow types and transitions using synthetic examples. Then review illegal-transition behavior before considering isolated local file handling. Keep user upload, durable persistence, and real data closed.
 
 ## Phase 3 — First publishing and reporting integration
 

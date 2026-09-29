@@ -18,3 +18,6 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0004 — Self-service advertising autopilot](0004-self-service-advertising-autopilot.md) — Accepted
 - [0005 — Türkiye-first advertising platform for all advertiser types](0005-turkey-first-advertising-platform.md) — Accepted
 - [0006 — Campaign brief ownership and first data boundary](0006-campaign-brief-boundary.md) — Accepted
+- [0007 — Workspace ownership and campaign data lifecycle](0007-workspace-ownership-and-retention.md) — Accepted
+- [0008 — First synthetic campaign workflow and channel candidate](0008-first-mvp-google-search-leads.md) — Accepted
+- [0009 — Asset intake and processing boundary](0009-asset-intake-processing-boundary.md) — Accepted for contract design and synthetic-only local development
