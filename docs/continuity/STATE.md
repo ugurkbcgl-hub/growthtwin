@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification: 2026-09-29 08:07 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. Starting point was clean `main` at `6481b13` (PR #80); PR #80 is merged and its CI passed. Current documentation branch: `docs/verify-scheduler-first-run`; changes are pending review. No open PRs were found before this branch. Heroku Scheduler dashboard and logs were read on 2026-09-29; see verified result below.
+Last repository verification: 2026-09-29 08:51 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. Starting point was clean `main` at `fea3152` (PR #81); PR #81 is merged and its PR and post-merge CI passed. Current branch: `fix/budget-duration-validation-accessibility`; focused E2E coverage is pending review. The repository was clean and had no open PRs before this branch.
 
 ## Goal and working rules
 
@@ -31,6 +31,7 @@ Last repository verification: 2026-09-29 08:07 (Europe/Istanbul). Repository: `h
 - PR #75 (`577de64`) opened creative variants containing validation errors, connected each invalid field to its error text, and focused the first invalid field after the server response. Its mobile E2E covers the closed-variant invalid-submission case using synthetic content. Local focused E2E, PR CI `36495232468`, and post-merge CI `36495382212` passed.
 - PR #77 (`d282277`) associates campaign brief form errors with fields, marks invalid controls, focuses the first invalid visible field, and opens the optional brand/audience disclosure when it contains errors. The mobile E2E covers synthetic invalid brief and overlong optional brand submissions; focused local E2E, PR CI `36496415009`, and post-merge CI `36496565902` passed.
 - PR #79 (`0735aa5`) extends the mobile E2E with keyboard-only correction after invalid submissions: Tab navigation, Space to open optional details, returning focus to the invalid field, and Enter to reach preview. A load-event focus fallback was needed for consistent Chromium behavior. Focused local E2E, PR CI `36498106247`, and post-merge CI `36498250268` passed.
+- Budget and duration server-side validation review used synthetic out-of-range budgets (99 and 100001) and an unsupported duration (21 days). Each error was connected to its field and focus moved to that invalid field; no product behavior fix was needed. PR `fix/budget-duration-validation-accessibility` adds a mobile E2E regression check. The focused local browser test passed using in-memory SQLite. Local Ruff was unavailable in the environment; required CI remains pending.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -43,4 +44,4 @@ Last repository verification: 2026-09-29 08:07 (Europe/Istanbul). Repository: `h
 
 ## Next action
 
-Review server-side validation accessibility for the daily budget and duration controls using synthetic invalid values; fix only reproduced focus, error-association, or announcement gaps.
+Review the brief-to-preview experience against the product goal: check whether daily and total budget boundaries, selected duration, and the simulated nature of preview/results are clear without extra explanation; fix only demonstrated comprehension or accessibility gaps using synthetic examples.
