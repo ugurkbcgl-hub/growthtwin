@@ -28,6 +28,7 @@ class WorkspaceCampaignDraft(models.Model):
         related_name="campaign_drafts",
     )
     name = models.CharField(max_length=120)
+    brand_name = models.CharField(max_length=120, blank=True, default="")
     objective = models.CharField(
         max_length=32,
         choices=Objective.choices,

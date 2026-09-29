@@ -92,5 +92,6 @@ verified for Türkiye.
 - [Google Ads API access levels](https://developers.google.com/google-ads/api/docs/api-policy/access-levels)
 - [Google Ads test accounts](https://developers.google.com/google-ads/api/docs/best-practices/test-accounts)
 - [Google Ads average daily budget and overdelivery](https://support.google.com/google-ads/answer/1704424?hl=en)
+- [Responsive Search Ad asset requirements](https://support.google.com/google-ads/answer/7684791?hl=en)
 - [Meta Marketing API official collection](https://www.postman.com/meta/facebook-marketing-api/documentation/0zr4mes/facebook-marketing-api-mapi)
 - [Meta permissions reference](https://developers.facebook.com/docs/permissions/reference/)

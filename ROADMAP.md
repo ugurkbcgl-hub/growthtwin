@@ -51,7 +51,9 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **Decision:** the project owner delegated product and sequencing decisions. ADR-0008 selects a synthetic Ankara city-service quote/contact workflow, Google Search as the first technical channel candidate, the advertiser's own site as destination, no raw lead custody in GrowthTwin, and a fake-only adapter boundary. This is a prototype scope decision; user-demand validation, API access approval, forecasts, real-data/legal review, fees and live spend remain open gates.
 
-**Next work:** implement the smallest workspace-owned synthetic campaign draft and owner-scoped application service. Keep the anonymous `site.CampaignDraft` path unchanged. Do not create account connection, upload, payment, AI provider or publishing side effects; defer workspace UI until the first flow and data lifecycle are validated.
+**Completed:** PR #110 adds the workspace-owned synthetic campaign draft and owner-scoped services; PR #111 adds focused tenant-isolation/input validation tests. The anonymous `site.CampaignDraft` path remains separate.
+
+**Next work:** derive a provider-free Google Search text draft from campaign inputs, preserving field provenance and enforcing current RSA text limits. When Keyword Planner or performance sources are not authorized/available, return explicit `unavailable` states without numbers. Keep this planning path local; it cannot publish or spend.
 
 ## Phase 2 — Local campaign vertical slice
 
@@ -59,7 +61,7 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **First gate:** establish the workspace owner and campaign/brand data lifecycle before adding durable content records. See the [current system gap analysis](docs/product/current-system-gap-analysis.md) for the implementation inventory and dependencies. For this synthetic-only prototype, workspace ownership is tied to an authenticated user, anonymous session drafts are never backfilled automatically, and no real advertiser data is accepted. Do not invent a universal retention period; set purpose- and data-category-specific limits before real data. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).
 
-Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scoping tests are merged in PR #102. ADR-0008 now defines the first synthetic flow. The next slice may connect a new campaign draft model to Workspace through server-side owner-scoped services, but must not connect the existing anonymous draft path or build account/workspace UI yet. The existing model and all new campaign records remain synthetic-only.
+Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scoping tests are merged in PR #102. ADR-0008 defines the first synthetic flow. PR #110 connects a new campaign draft model to Workspace through server-side owner-scoped services, and PR #111 verifies isolation. The anonymous draft path remains separate; the new model is not wired to an authenticated campaign UI. All campaign records remain synthetic-only.
 
 - Model advertiser/workspace, brand facts and assets, campaign brief, versioned multi-format ad creatives, destinations, user-defined caps, and status history.
 - Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.
