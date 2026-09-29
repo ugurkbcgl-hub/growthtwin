@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('campaigns', '0003_workspacecampaigndraft_creative_versions'),
+        ("campaigns", "0003_workspacecampaigndraft_creative_versions"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='workspacecampaigndraft',
-            name='preferred_creative_key',
-            field=models.CharField(blank=True, default='', max_length=64),
+            model_name="workspacecampaigndraft",
+            name="preferred_creative_key",
+            field=models.CharField(blank=True, default="", max_length=64),
         ),
         migrations.AddField(
-            model_name='workspacecampaigndraft',
-            name='preferred_creative_version',
+            model_name="workspacecampaigndraft",
+            name="preferred_creative_version",
             field=models.PositiveIntegerField(blank=True, null=True),
         ),
     ]
