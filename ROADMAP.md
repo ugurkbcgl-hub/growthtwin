@@ -95,7 +95,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #133:** let the campaign owner choose one current copy variant as the preferred draft. Store the selection against the current version, hide it when source inputs change, clear it when a new version is generated, and label it as an informational review preference. No approval or publication action is implied. See [ADR-0014](docs/adr/0014-workspace-creative-preference.md). The workflow remains synthetic and provider-free.
 
-**In progress on `feat/workspace-report-empty-state`:** give each authenticated workspace campaign a report page with reach, impressions, clicks, other interactions, contact requests, and media spend. Mark values unavailable until a verified channel source exists; show source and update status, with no fabricated metrics. Keep this distinct from the public prototype's simulated sample report. See [ADR-0015](docs/adr/0015-authenticated-campaign-report-empty-state.md).
+**Completed in PR #135:** give each authenticated workspace campaign a report page with reach, impressions, clicks, other interactions, contact requests, and media spend. Mark values unavailable until a verified channel source exists; show source and update status, with no fabricated metrics. Keep this distinct from the public prototype's simulated sample report. See [ADR-0015](docs/adr/0015-authenticated-campaign-report-empty-state.md).
+
+**Next synthetic foundation slice:** define a provider-neutral report metric contract that keeps unavailable data distinct from a real zero and carries metric window, currency where relevant, source, and observation time. Test it with synthetic values only; do not connect platforms or fabricate live results.
 
 ## Phase 3 — First publishing and reporting integration
 
