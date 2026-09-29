@@ -1,6 +1,6 @@
 # Google Ads Search reporting metric mapping (research only)
 
-**Verified:** 2026-09-29 (Europe/Istanbul), against Google Ads API v25 official documentation.
+**Verified:** 2026-09-29 (Europe/Istanbul), against Google Ads API v25 and current Google Ads Help official documentation.
 **Scope:** map the currently selected synthetic Search workflow to possible source fields. This is a documentation exercise, not confirmation of GrowthTwin API access, account eligibility, or permission to connect an account.
 
 ## Candidate mapping
@@ -17,9 +17,11 @@
 ## Period, attribution, and missing data
 
 - Read the reporting timezone from `customer.time_zone`. Google describes it as the customer's local timezone ID. Do not replace it with the browser's timezone. The report's planned campaign period remains distinct from an observed reporting period.
-- Google Ads conversion reporting can be delayed. Its reporting guide states that conversion data is not available instantly and reports may omit rows when all selected metrics are zero. Therefore, an absent row is not evidence of a zero. A future adapter needs source-confirmed completeness before it may record a real zero.
+- Use an explicit, finite reporting date range for a date-segmented query. Google Ads may omit a date row when that date has no metrics; it also omits segmented rows when every selected metric is zero. A metric filter such as `metrics.impressions > 0` deliberately removes zero rows. Therefore, absence of a row is not evidence of a zero. Only a returned zero or a separately documented complete aggregate for the exact campaign, metric, and period can support a real zero. If the query/filter/coverage cannot establish completeness, report unavailable/partial.
 - Preserve conversion-action identity and the account's attribution settings/window with any conversion result. Do not silently equate different actions, models, or windows, or call a conversion a delivered contact request.
-- These docs do not establish a universal freshness threshold. Verify source-specific update behavior before setting one. Missing, partial, delayed, unsupported, and stale data must not be rendered as zero.
+- Apply freshness by metric family, not one report-wide timeout. Google Ads Help currently describes clicks, impressions, and cost as generally subject to a one-hour data-freshness SLO, while noting temporary delays; conversion freshness varies with conversion type and attribution model. Google also says reporting values can be adjusted days later (for example invalid-traffic removal, late conversions, or billing adjustments). These are platform guidance, not a per-row timestamp or a guarantee that a specific row is final.
+- Keep the local retrieval timestamp separate from the source data's reporting-period coverage and freshness. A retrieval time alone says when the report was fetched, not how current or complete its underlying measurements are. The future adapter must identify the metric family, query range/filters/segments, successful pagination/response completion, account timezone, fetch time, and a documented source freshness rule before marking an observation complete/current. If source coverage cannot be established, preserve the `partial` or `stale` unavailable reason rather than substituting zero.
+- This evidence does not establish GrowthTwin's API access, an individual account's availability, or a universal freshness threshold. Missing, partial, delayed, unsupported, and stale data must not be rendered as zero.
 
 ## Findings for the first Search report
 
@@ -27,7 +29,7 @@
 2. Reach is not currently supported for Search by the documented `unique_users` campaign-type restrictions.
 3. `interactions` is not an independent “other interactions” count for text Search ads; don't show it alongside clicks as if it were additive.
 4. Conversion metrics need an explicit, reviewed conversion action and attribution metadata. They do not independently verify lead delivery or lead quality.
-5. Keep unsupported and not-yet-connected categories distinguishable in the product's future status model. The current two-state metric contract does not yet encode all reasons a value is unavailable.
+5. Keep unsupported, not-yet-connected, partial, and stale categories distinct. ADR-0018 defines the provider-neutral unavailable-reason contract; this mapping explains source-specific evidence that a future adapter must satisfy before it can produce a value.
 
 No API request or account access was made. No customer data, credentials, campaign performance, or forecast was used. This mapping does not verify API developer-token level, production approval, Türkiye account eligibility, or account consent. Recheck the versioned official field references before implementing an adapter.
 
@@ -39,3 +41,7 @@ No API request or account access was made. No customer data, credentials, campai
 - [Google Ads API conversion reporting](https://developers.google.com/google-ads/api/docs/conversions/reporting) — conversion-action reporting, delayed data, and zero-only rows.
 - [Google Ads API conversion setup](https://developers.google.com/google-ads/api/docs/conversions/getting-started) — conversion tracking prerequisites and action-specific configuration.
 - [Google Ads API v25 Metrics reference](https://developers.google.com/google-ads/api/reference/rpc/v25/Metrics) — canonical v25 metric descriptions and restrictions.
+- [Google Ads API zero metrics](https://developers.google.com/google-ads/api/docs/reporting/zero-metrics) — zero rows omitted in segmented reports when all selected metrics are zero, including date segments with no metrics.
+- [Google Ads API segmentation](https://developers.google.com/google-ads/api/docs/reporting/segmentation) — date segment constraints and finite date-range requirements.
+- [Google Ads API data retrieval guidance](https://developers.google.com/google-ads/api/docs/productionize/manage-data-efficiently) — report frequency should follow Google's data-freshness guidance.
+- [Google Ads Help: data freshness](https://support.google.com/google-ads/answer/2544985) — metric-family-specific freshness guidance, one-hour SLO for most clicks/impressions/cost reporting, variability for conversions, and retroactive adjustments.

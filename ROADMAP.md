@@ -107,7 +107,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #143:** extend the provider-neutral report contract with explicit `not_connected`, `unsupported`, `partial`, and `stale` reasons, reason-specific provenance requirements, and metric-level user-facing explanations. A source-confirmed zero remains an available numeric zero. Required PR CI `36602784613` and post-merge CI `36603066285` passed. No provider, account, persistence, or real data was added. See [ADR-0018](docs/adr/0018-explicit-unavailable-report-metric-reasons.md).
 
-**Next synthetic foundation slice:** define when source report rows and timestamps are complete and fresh enough to support a value, especially where Google Ads omits rows when selected metrics are all zero. Keep the rules source-specific and evidence-backed; do not implement an adapter or account connection until the relevant access and readiness gates are met.
+**Current research slice (PR pending):** document source-specific zero-row completeness and freshness rules for the Google Search candidate. Official guidance confirms that segmented all-zero rows and dates with no metrics can be omitted, common metrics have different update guidance from conversions, and historical values can be adjusted later. Retrieval time must remain distinct from metric coverage/freshness; an absent row cannot become zero without independent completeness evidence. No adapter or account connection is implemented. See the [Google Search mapping](docs/product/google-search-report-metric-mapping.md).
+
+**Next synthetic foundation slice:** translate those research requirements into a provider-free report observation/coverage contract and tests that prevent an absent row or fetch timestamp alone from implying a complete, fresh zero. Do not add a platform adapter or account connection.
 
 ## Phase 3 — First publishing and reporting integration
 
