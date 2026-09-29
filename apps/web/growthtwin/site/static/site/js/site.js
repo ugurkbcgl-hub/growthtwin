@@ -119,6 +119,9 @@
   const savedCampaign = document.getElementById("saved-campaign");
   if (savedCampaign) {
     showSavedPreview(savedCampaign);
+    document
+      .getElementById("kampanya-denemesi")
+      .scrollIntoView({ block: "start", behavior: "instant" });
   } else {
     showStep(1);
   }
