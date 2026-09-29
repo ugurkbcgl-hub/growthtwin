@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification: 2026-09-29 08:56 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. PR #82 (`849467f`) is merged; its required CI and post-merge CI both passed. Current documentation branch: `docs/validation-accessibility-handoff`; changes are pending review. The working tree was clean on `main` and there were no open PRs before this docs update.
+Last repository verification: 2026-09-29 09:04 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. PR #83 (`c6630ea`) is merged; its required CI and post-merge CI both passed. Current documentation branch: `docs/preview-clarity-review`; this review note is pending review. Starting point was clean `main` with no open PRs.
 
 ## Goal and working rules
 
@@ -32,6 +32,7 @@ Last repository verification: 2026-09-29 08:56 (Europe/Istanbul). Repository: `h
 - PR #77 (`d282277`) associates campaign brief form errors with fields, marks invalid controls, focuses the first invalid visible field, and opens the optional brand/audience disclosure when it contains errors. The mobile E2E covers synthetic invalid brief and overlong optional brand submissions; focused local E2E, PR CI `36496415009`, and post-merge CI `36496565902` passed.
 - PR #79 (`0735aa5`) extends the mobile E2E with keyboard-only correction after invalid submissions: Tab navigation, Space to open optional details, returning focus to the invalid field, and Enter to reach preview. A load-event focus fallback was needed for consistent Chromium behavior. Focused local E2E, PR CI `36498106247`, and post-merge CI `36498250268` passed.
 - Budget and duration server-side validation review used synthetic out-of-range budgets (99 and 100001) and an unsupported duration (21 days). Each error was connected to its field and focus moved to that invalid field; no product behavior fix was needed. PR #82 (`849467f`) adds a mobile E2E regression check. The focused local browser test passed using in-memory SQLite. Local Ruff was unavailable; PR CI `36528220737` and post-merge CI `36528406419` passed, including formatting, lint, Django tests, and browser E2E.
+- Source review of the brief-to-preview copy found daily cap, duration, and sample total separately labeled; the preview repeats the daily and total caps and says publishing and spend do not occur. The report labels its figures as synthetic. No copy or behavior defect was demonstrated. Visual hierarchy was not verified because browser navigation was blocked in this session; no alternate browser automation was used.
 - Copy remains deterministic and provider-free. It is an editable starting point, not an AI-generated or publish-ready ad.
 
 ## Open decisions and gates
@@ -44,4 +45,4 @@ Last repository verification: 2026-09-29 08:56 (Europe/Istanbul). Repository: `h
 
 ## Next action
 
-Review the brief-to-preview experience against the product goal: check whether daily and total budget boundaries, selected duration, and the simulated nature of preview/results are clear without extra explanation; fix only demonstrated comprehension or accessibility gaps using synthetic examples.
+Review the saved-draft list and resume/edit flow against the self-service product goal: ensure a user can tell which synthetic draft they are editing and that changes remain drafts without publishing or spend; fix only demonstrated comprehension, ownership, or accessibility gaps.
