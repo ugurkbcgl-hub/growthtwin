@@ -29,3 +29,4 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0015 — Authenticated campaign report without a data source](0015-authenticated-campaign-report-empty-state.md) — Accepted for local synthetic-data development only
 - [0016 — Provider-neutral campaign report metric contract](0016-campaign-report-metric-contract.md) — Accepted for local synthetic-data development only
 - [0017 — Provider-neutral campaign report metric semantics](0017-campaign-report-metric-semantics.md) — Accepted for local design and synthetic-data development only
+- [Google Search report metric mapping](../product/google-search-report-metric-mapping.md) — Official-source research only; no API access or connection
