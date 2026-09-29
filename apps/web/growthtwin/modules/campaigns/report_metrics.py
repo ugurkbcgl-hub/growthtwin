@@ -44,7 +44,7 @@ class CampaignReportMetric:
     label: str
     status: MetricStatus
     unit: MetricUnit
-    window: ReportingWindow
+    window: ReportingWindow | None
     value: int | Decimal | None = None
     currency: str | None = None
     source: str | None = None
@@ -57,6 +57,8 @@ class CampaignReportMetric:
             raise ValueError("Metric unit must be explicit.")
         if not self.key.strip() or not self.label.strip():
             raise ValueError("Metric key and label are required.")
+        if self.window is not None and not isinstance(self.window, ReportingWindow):
+            raise ValueError("Reporting window must use the report window type.")
         if self.unit is MetricUnit.CURRENCY:
             if (
                 not self.currency
@@ -82,6 +84,8 @@ class CampaignReportMetric:
             raise ValueError(
                 "Available metrics require a numeric value, including zero."
             )
+        if self.window is None:
+            raise ValueError("Available metrics require a reporting window.")
         if isinstance(self.value, bool) or not isinstance(self.value, (int, Decimal)):
             raise ValueError("Metric value must be an integer or Decimal.")
         if isinstance(self.value, Decimal) and not self.value.is_finite():
@@ -96,3 +100,29 @@ class CampaignReportMetric:
             raise ValueError(
                 "Available metrics require a timezone-aware observation time."
             )
+
+
+def unavailable_campaign_report_metrics(
+    *, window: ReportingWindow | None, currency: str
+) -> tuple[CampaignReportMetric, ...]:
+    """Build the current report categories without inventing measurements."""
+
+    categories = (
+        ("reach", "Erişim", MetricUnit.COUNT),
+        ("impressions", "Gösterimler", MetricUnit.COUNT),
+        ("clicks", "Tıklamalar", MetricUnit.COUNT),
+        ("interactions", "Diğer etkileşimler", MetricUnit.COUNT),
+        ("contact_requests", "İletişim talepleri", MetricUnit.COUNT),
+        ("media_spend", "Medya harcaması", MetricUnit.CURRENCY),
+    )
+    return tuple(
+        CampaignReportMetric(
+            key=key,
+            label=label,
+            status=MetricStatus.UNAVAILABLE,
+            unit=unit,
+            window=window,
+            currency=currency if unit is MetricUnit.CURRENCY else None,
+        )
+        for key, label, unit in categories
+    )

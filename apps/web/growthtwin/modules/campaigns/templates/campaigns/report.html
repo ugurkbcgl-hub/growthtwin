@@ -18,8 +18,15 @@
       <div class="report-metrics">
         {% for metric in report_metrics %}
           <article class="summary-card report-metric">
-            <h3>{{ metric }}</h3>
-            <p>Henüz veri yok</p>
+            <h3>{{ metric.label }}</h3>
+            {% if metric.status == "unavailable" %}
+              <p>Henüz veri yok</p>
+            {% else %}
+              <p>{{ metric.value }}{% if metric.currency %} {{ metric.currency }}{% endif %}</p>
+            {% endif %}
+            {% if metric.window %}
+              <p class="pacing-note">Dönem: {{ metric.window.start }} – {{ metric.window.end }}</p>
+            {% endif %}
           </article>
         {% endfor %}
       </div>

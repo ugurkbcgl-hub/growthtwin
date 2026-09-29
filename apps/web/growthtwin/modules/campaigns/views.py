@@ -17,6 +17,10 @@ from growthtwin.modules.campaigns.forms import (
 )
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
+from growthtwin.modules.campaigns.report_metrics import (
+    ReportingWindow,
+    unavailable_campaign_report_metrics,
+)
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     creative_source_hash_for_draft,
@@ -176,18 +180,19 @@ def campaign_report(request, draft_id):
         WorkspaceCampaignDraft.objects.owned_by(request.user),
         pk=draft_id,
     )
+    report_window = (
+        ReportingWindow(draft.flight_start, draft.flight_end)
+        if draft.flight_start and draft.flight_end
+        else None
+    )
     return render(
         request,
         "campaigns/report.html",
         {
             "draft": draft,
-            "report_metrics": (
-                "Erişim",
-                "Gösterimler",
-                "Tıklamalar",
-                "Diğer etkileşimler",
-                "İletişim talepleri",
-                "Medya harcaması",
+            "report_metrics": unavailable_campaign_report_metrics(
+                window=report_window,
+                currency=draft.currency,
             ),
         },
     )

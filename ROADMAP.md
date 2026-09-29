@@ -99,7 +99,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #138:** define a provider-neutral report metric contract that distinguishes unavailable data from a real zero and carries reporting window, unit/currency, source, and timezone-aware observation time. Focused tests use synthetic fixtures only. The contract is persistence-free and does not connect platforms or fabricate live results. See [ADR-0016](docs/adr/0016-campaign-report-metric-contract.md).
 
-**Next synthetic foundation slice:** adapt the authenticated report shell to render typed metric contract values while keeping the current data-unavailable state and no-source explanation. Continue to use synthetic values only; do not connect platforms or imply live reporting.
+**Next synthetic foundation slice:** define provider-neutral meanings for the six report categories, including attribution boundaries, reporting windows, and freshness/unknown-data handling. Keep this as a synthetic contract/design task; do not connect platforms or imply live reporting.
 
 ## Phase 3 — First publishing and reporting integration
 
