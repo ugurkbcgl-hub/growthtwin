@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 22:30 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 22:37 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `c059c1e` after PR #151. PR #149 required/post-merge CI `36617325319`/`36617630617` passed. PR #150 required/post-merge CI `36618254042`/`36618532218` passed. PR #151 required CI `36619100149` and post-merge CI `36619387519` passed at 2026-09-29 22:30 Europe/Istanbul.
-- Current branch: `docs/report-source-freshness-evidence`, based on merged `main`; updates the Google Search evidence mapping and records the cautious timestamp finding. PR not yet opened.
-- PR #151 changed documentation only; `git diff --check` and required PR CI passed. PR #150 local validation and required/post-merge CI passed.
+- `main` is `415973a` after PR #152. PR #150 required/post-merge CI `36618254042`/`36618532218` and PR #151 required/post-merge CI `36619100149`/`36619387519` passed. PR #152 required CI `36619787628` and post-merge CI `36620109320` passed at 2026-09-29 22:36 Europe/Istanbul.
+- Current branch: `docs/report-evidence-handoff`, based on merged `main`; updates the handoff to mark PR #152 and its CI complete, and records the next report-presentation task.
+- PR #152 documents a cautious Google source timestamp evidence gap; docs-only `git diff --check`, required CI, and post-merge CI passed. No app code changed in PRs #151–#152.
 
 ## Product and safety context
 
@@ -25,4 +25,4 @@ Last verified: 2026-09-29 22:30 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Finish and review the source freshness evidence note, open its documentation PR, and wait for required CI. Preserve the evidence-gap qualification and do not add a live adapter or treat an SLO as a guarantee.
+Define how the report presents observed period and freshness evidence separately, including `freshness_unknown`, without presenting an SLO as a delivery guarantee. Keep the next work local and synthetic; do not add a live adapter.
