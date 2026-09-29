@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 16:37 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 16:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
 - `main` is `4ff0cb3233fdddd08be1ba510ad79efc2246374f`; PR #121 is merged. Required CI `36574998136` and post-merge main CI `36575264802` passed. No open PR was listed at the time of verification.
-- Current feature branch: `feat/synthetic-action-policy-contracts`. It adds pure fail-closed policy checks for synthetic action review, ten focused tests, ADR-0010, and status corrections in the project/architecture/roadmap/gap-analysis documents. The PR has not yet been opened.
+- Current feature branch: `feat/synthetic-action-policy-contracts`, PR [#122](https://github.com/ugurkbcgl-hub/growthtwin/pull/122) open. It adds pure fail-closed policy checks for synthetic action review, ten focused tests, ADR-0010, and status corrections in the project/architecture/roadmap/gap-analysis documents. CI run `36576729888` was in progress at verification.
 - Local checks: Django system check passed; all ten new policy tests passed; Ruff lint and formatting passed for the approvals package and Django settings.
 - The campaign test suite was attempted but PostgreSQL denied creation of its test database. No application secret was exposed. The focused policy suite does not require a database.
 
@@ -28,4 +28,4 @@ Last verified: 2026-09-29 16:37 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Finish local review/format validation of `feat/synthetic-action-policy-contracts`, open a PR, and merge only after source review and required CI pass. Keep all external actions disabled.
+Check CI for PR #122 after its latest commit, review the final diff, and merge only when required checks pass. Keep all external actions disabled.
