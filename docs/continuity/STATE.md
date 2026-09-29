@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 09:17 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 09:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Snapshot baseline: clean `main` at `ef9d1c5` (PR #85), merged with required CI successful. No open PRs were found at the start of this work.
-- Current branch: `fix/identify-saved-campaign-drafts`; changes and focused review are pending PR creation.
-- Main CI run `36529877471` for PR #85 completed successfully.
+- Snapshot baseline: clean `main` at `6f4c602` (PR #86), merged with required CI successful. No open PRs were found after the merge.
+- PR #86 (`74a659d`) and post-merge main CI run `36530563389` passed.
+- Current branch: `docs/saved-draft-review-handoff`; this continuity update is pending review.
 
 ## Product and safety context
 
@@ -19,7 +19,7 @@ Last verified: 2026-09-29 09:17 (Europe/Istanbul). Repository: `https://github.c
 
 - The scheduled Heroku `clearsessions` job's first run at 2026-09-29 00:00 UTC exited successfully. Its actual one-off dyno cost is unverified; Scheduler is best-effort and does not establish a real-data retention guarantee.
 - Source review confirmed that the brief/preview labels daily and total sample limits and describes the flow as non-publishing; report figures are labeled synthetic. Visual hierarchy was not verified in the prior review.
-- Review found the saved-draft list showed only the brief, daily amount, and duration, so two drafts with the same brief/limits but different brand, audience, or objective were difficult to tell apart. The list now shows those differentiating details, total limit, and creation time. A focused Django test with two similar synthetic drafts passed. The local server is listening at `127.0.0.1:8002`; browser navigation was blocked in this session, so the rendered visual result was not inspected. PR CI is pending.
+- Review found the saved-draft list showed only the brief, daily amount, and duration, so two drafts with the same brief/limits but different brand, audience, or objective were difficult to tell apart. PR #86 now shows those differentiating details, total limit, and creation time. Its focused Django test with two similar synthetic drafts passed; PR CI `36530405593` and post-merge CI `36530563389` also passed. The local server is listening at `127.0.0.1:8002`; app security blocked browser automation from refreshing/navigating to the local site, so the rendered visual result was not inspected. The user can refresh the local URL directly in the browser.
 - Staging browser E2E, backup/restore, rollback, and final cost/CI recording remain gates before an external beta or production. First advertiser workflow/destination, live-action consent and autonomy rules, and production AI/data terms remain undecided.
 
 ## Next action
