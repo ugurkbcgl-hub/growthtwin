@@ -93,7 +93,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #131:** bring the provider-free creative-variant workflow into the authenticated workspace campaign path. Versions are owner-scoped; brief/brand/city changes hide stale copy, while budget/schedule changes leave it current. The anonymous demo remains separate and no external AI/provider call was added.
 
-**In progress on `feat/workspace-creative-preference`:** let the campaign owner choose one current copy variant as the preferred draft. Store the selection against the current version, hide it when source inputs change, clear it when a new version is generated, and label it as an informational review preference. No approval or publication action is implied. See [ADR-0014](docs/adr/0014-workspace-creative-preference.md). Do not introduce free-text advertiser input, provider calls, or external actions.
+**Completed in PR #133:** let the campaign owner choose one current copy variant as the preferred draft. Store the selection against the current version, hide it when source inputs change, clear it when a new version is generated, and label it as an informational review preference. No approval or publication action is implied. See [ADR-0014](docs/adr/0014-workspace-creative-preference.md). The workflow remains synthetic and provider-free.
+
+**Next synthetic UX slice:** define an authenticated campaign report view that explains delivery, media spend, interactions, and leads while clearly showing these figures as unavailable until a verified channel integration exists. Do not invent sample performance results, forecasts, or guarantees. Keep the existing report demo separate and disclose simulated data wherever it appears.
 
 ## Phase 3 — First publishing and reporting integration
 
