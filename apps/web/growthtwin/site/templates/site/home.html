@@ -95,6 +95,10 @@
               <div class="stepper-track"><span id="step-progress"></span></div>
             </div>
 
+            {% if draft_notice == "deleted" %}
+              <p class="creative-success-note" role="status">Taslak silindi ve bu oturumdan kaldırıldı.</p>
+            {% endif %}
+
             <section class="flow-panel" id="brief-panel" aria-labelledby="brief-title">
               <div class="panel-heading">
                 <p class="panel-kicker">Önce hedefin</p>
@@ -170,7 +174,7 @@
                   <span class="budget-icon" aria-hidden="true">⌁</span>
                   <p><strong>Örnek toplam sınır</strong><span id="budget-total">₺5.250</span></p>
                 </div>
-                <p class="simulation-note">Sentetik bilgi kullan; gerçek hasta, müşteri veya gizli bilgi girme. Taslak bu tarayıcı oturumunda saklanır ve oturum temizlendiğinde silinir. Hiçbir yere gönderilmez, harcama yapmaz.</p>
+                <p class="simulation-note">Bu geçici taslak bu tarayıcıdaki oturumuna bağlıdır; site verilerini temizler veya oturum süresi dolarsa tekrar erişemezsin. Kalıcı olarak saklanmaz. Gerçek hasta, müşteri ya da gizli bilgi kullanma; hiçbir yere gönderilmez, harcama yapmaz.</p>
 
                 <button class="button button-primary button-full" id="create-preview" type="submit">
                   Örnek kampanyayı gör <span aria-hidden="true">→</span>
