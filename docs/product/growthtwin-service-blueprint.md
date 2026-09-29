@@ -5,6 +5,21 @@
 **Güncelleme:** 2026-09-29 (Europe/Istanbul)  
 **Ürün amacı:** Türkiye'de reklam vermek isteyen birey ve kuruluşların reklam ihtiyacını anlamaktan içerik üretimi/iyileştirmesine, kampanya kurulumuna, yayına, performans raporuna ve güvenli optimizasyona kadar işini tek ve kolay kullanılan bir web ürününde tamamlaması.
 
+## İlk dar ürün dilimi için karar (2026-09-29)
+
+Kullanıcının karar yetkisini devretmesi üzerine, aşağıdaki seçim yerel sentetik ürün geliştirmesi için kabul edilmiştir; gerçek hesap/API erişimi, veri işleme, ödeme, reklam yayını veya reklam bütçesi izni değildir. Ayrıntılı teknik kapsam [ADR-0008](../adr/0008-first-mvp-google-search-leads.md) içindedir.
+
+- **İlk senaryo:** Şehir içinde hizmet veren, düzenlemeye tabi olmayan bir işletmenin teklif/iletişim talebi toplaması. Prototip örneği sentetik Ankara ev bakım/onarım işletmesidir. Türkiye'de herkesin reklam verebilmesi uzun vadeli ürün hedefidir; bu tek workflow pazar veya sektör sınırı değildir.
+- **İlk kanal adayı:** Google Ads Search. Kullanıcıların mevcut arama niyetiyle yerel hizmet araması, şehir/bölge hedeflemesi, Search kampanyasının API ile yönetilebilmesi ve keyword-plan forecast metrikleri bu akışa doğrudan uyar. Platformun GrowthTwin API kullanım izni henüz yoktur; Google Ads API test hesapları gerçek reklam sunmaz ve canlı metrik üretmez.
+- **İlk dönüşüm yolu:** Reklamverenin kendi web sitesine tıklama. Lead formu, ham lead içe aktarma, CRM/e-posta/SMS teslimi ilk dilimde yoktur. Başarı, ancak reklamveren web sitesinde uygun şekilde kurulmuş dönüşüm ölçümü varsa Google'ın toplu dönüşüm metriğiyle gösterilir. Ölçüm yoksa lead sayısı hesaplanamaz; tahmin edilmez.
+- **İlk içerik:** GrowthTwin üretimi düzenlenebilir metin başlık/açıklama ve arama terimi grupları. Müşteri dosya yükleme, görsel/video üretimi, kredi tahsilatı ve ücretli AI sağlayıcısı sonraki adımlardır; sentetik sahte veriden öteye geçmez.
+- **İlk bütçe kuralı:** yalnız tarih aralığı belirli kampanya toplam bütçesi adayı. Google Ads Search bunu destekler. Günlük ortalama bütçede günlük limitin iki katına kadar aşım olabildiğinden günlük ortalama bütçe, kullanıcının katı toplam tavanının yerine gösterilmez. Canlı yayından önce API/hesapta toplam sınırın ve kampanya dışı hesap harcamasının kontrol edilebilirliği doğrulanmalıdır.
+- **İlk ölçüm:** Kaynak ve zaman damgasıyla arama gösterimi, tıklama ve maliyet forecast'i; kampanya sonrası gerçek gösterim/tıklama/maliyet ve erişilebiliyorsa toplu dönüşüm. Forecast satış/lead garantisi değildir. Herhangi bir metrik kaynağı yoksa “hesaplanamıyor” gösterilir.
+- **Sıralama:** Google Search ilk teknik aday; Meta ikinci kanal adayı (görsel erişim/yaratıcı çeşitlilik güçlü, ancak diğer işletmelerin hesaplarını yönetmek ve lead verisi okumak Meta erişim/inceleme şartlarına bağlı); TikTok üçüncü araştırma adayı (kısa video/kreatif testi için, Türkiye özelindeki GrowthTwin API ve lead sync yolu kanıtlanana kadar). Bu sıralama resmî API erişimi sağlandı anlamına gelmez.
+- **Canlılık sınırı:** ilk yerel dikey dilimde yalnız sentetik campaign kayıtları ve bir sahte Google adapter'ı kullanılacak. Henüz adapter uygulanmış değil. Üretim API'si, gerçek müşteri/lead verisi, reklam hesabı, ödeme, publish veya harcama yoktur. Gerçek kanala geçiş blueprint'in readiness gate'i ve ayrı açık karara tabidir.
+
+Bu öneri, Türkiye'ye özgü hukuki inceleme, ürün pazar doğrulaması, hesap/API onayı veya ticari fiyat kararı değildir. İlgili resmî teknik kaynaklar: [Google Search kampanyaları](https://developers.google.com/google-ads/api/docs/campaigns/search-campaigns/getting-started), [şehir/bölge hedefleme](https://developers.google.com/google-ads/api/docs/targeting/location-targeting), [keyword forecast](https://developers.google.com/google-ads/api/docs/keyword-planning/generate-forecast-metrics), [tarih aralıklı kampanya bütçesi](https://developers.google.com/google-ads/api/docs/campaigns/budgets/overview), [API erişim seviyeleri](https://developers.google.com/google-ads/api/docs/api-policy/access-levels), [test hesapları](https://developers.google.com/google-ads/api/docs/best-practices/test-accounts), [Google bütçe aşımı](https://support.google.com/google-ads/answer/1704424?hl=en), [Meta Marketing API koleksiyonu](https://www.postman.com/meta/facebook-marketing-api/documentation/0zr4mes/facebook-marketing-api-mapi) ve [Meta lead izin referansı](https://developers.facebook.com/docs/permissions/reference/).
+
 ## 1. Ürün vaadi ve çalışma ilkeleri
 
 GrowthTwin, sadece reklam metni yazan bir araç veya reklam ajansını taklit eden bir sohbet botu olmayacak. Hedef; yaratıcı üretim, medya planlama, kanal hesabı ve kampanya işlemleri, ölçüm ve öğrenme döngüsünü tek bir müşteri deneyiminde birleştiren bir reklam platformudur. Omneky uzun vadeli kabiliyet karşılaştırma noktasıdır; bütün rakip özellikleri veya her kanalı ilk sürüme alma taahhüdü değildir.
@@ -298,7 +313,7 @@ Bu kapıdan önce mevcut yerel ürün prototipi kullanılabilir, ancak yalnız s
 
 ## 13. Aşamalı yol haritası ve kabul ölçütleri
 
-### Aşama A — Blueprint ve karar defteri (şimdi)
+### Aşama A — Blueprint ve karar defteri (ilk workflow kararı alındı; kalan iş kanıt toplamak)
 
 - Müşteri/ürün kapsamı, hesap türü, ilk kullanıcı görüşmeleri/segment kanıtı.
 - Tek başlangıç hizmeti, kampanya amacı, içerik modları (GrowthTwin üretimi/kendi materyali) ve ilk lead hedefi.
@@ -306,7 +321,7 @@ Bu kapıdan önce mevcut yerel ürün prototipi kullanılabilir, ancak yalnız s
 - Basit/pro deneyim, ana akış çizimi, düşük-fidelity wireframe ve hesaplayıcı fiyat/forecast mantığı.
 - Üretim kredi tüketimi için model/araç ve cost benchmark; fiyat/bonus/iade karar defteri.
 - Uyum matrisi, veri akış haritası, gerçek-data gate ve belirsizlik kaydı.
-- **Kabul:** Owner açık ürün kararlarını onaylar; ilk MVP dar ama son ürüne gelişebilir; bilinmeyenler sorumlu/kanıt/sonraki adımla kayıtlı.
+- **Kabul:** İlk senaryo/kanal adayı/lead yolu sentetik yerel dilim için ADR-0008 ile belirlendi. Açık kalan API erişimi, gerçek kullanıcı talebi, data/legal, forecast hesabı ve fiyat başlıkları canlıya geçiş öncesi doğrulanır; seçim bunların tamamlandığı anlamına gelmez.
 
 ### Aşama B — Sentetik tasarım doğrulama
 

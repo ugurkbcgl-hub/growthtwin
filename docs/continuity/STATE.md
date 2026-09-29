@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 13:46 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 14:37 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Main is `8cd4705260fd041dc8d053868566d9b78ec1f59e`; PR #108 (`docs: assess current system against product plan`) is merged. Its required PR CI run `36557310231` passed. Post-merge main CI run `36557534411` was in progress at this snapshot; verify its final status before relying on it. No open PR was present after merge.
-- Current working branch `docs/system-gap-handoff-sync` is a documentation-only follow-up to make this handoff reflect the just-merged PR and active main CI. Recheck live PR and CI status before repository actions.
+- Main at session start was `ceb0989ba6b44d56d5df91a81a4d9796ba8cca9b`; PR #109 (handoff sync) and #108 (system gap analysis) are merged. Main CI runs `36557534411` and `36557842942` passed. No open PR was present at session start.
+- Current branch is `feat/first-search-campaign-foundation`, based on that main. It has uncommitted ADR, blueprint/project/roadmap updates and a workspace-owned synthetic campaign-draft model/migration plus owner-scoped application services. Changes are not yet committed or submitted; verify PR/CI after opening.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -19,6 +19,7 @@ Last verified: 2026-09-29 13:46 (Europe/Istanbul). Repository: `https://github.c
 - Use feature branches and PRs; never push directly to `main`. Successful PRs may be merged under the owner's standing authorization after local review and required CI passes. No new paid service or production provider is approved by this planning work.
 - Existing Heroku staging and Scheduler observations, outstanding backup/restore, rollback and staging E2E gates are recorded in `PROJECT.md` and `ROADMAP.md`; staging remains synthetic-only.
 - Current implementation inventory: [docs/product/current-system-gap-analysis.md](../product/current-system-gap-analysis.md). Local synthetic prototype and PR CI are ready for development, but there is no user-to-workspace campaign ownership, customer document/assets pipeline, credit/fee ledger, enforceable campaign policy, provider integration, lead routing, or real analytics. Do not represent the logical architecture as implemented.
+- ADR-0008 selects a local synthetic first workflow: city-based, non-regulated service quote/contact campaign; Google Search candidate; advertiser-owned website; no raw lead custody in GrowthTwin. It does not establish customer demand, API approval, real-data/legal readiness, final prices, production model or live-publishing permission.
 
 ## Recent verified work
 
@@ -27,7 +28,8 @@ Last verified: 2026-09-29 13:46 (Europe/Istanbul). Repository: `https://github.c
 - Official Commerce Ministry information reviewed includes advertising rule changes effective 2026-08-01 concerning targeted ads, AI-generated ad characters/digital likeness, minors, influencers and substantiation. KVKK cross-border data transfer and IYS commercial message obligations are identified for counsel-led workflow analysis. This is a planning scan, not legal advice or approval.
 - Documentation-only `git diff --check` passed on PR #105. Application CI passed on GitHub. No local application tests were run for the documentation change.
 - PR #108 merged the source-reviewed code-to-plan gap assessment, clarified logical architecture versus implemented coverage in `ARCHITECTURE.md`, and linked the assessment and sequencing in `ROADMAP.md`. Findings were based on main `60f3971`; no application code or external service was changed. Required PR CI passed; no local app tests were run.
+- Current branch records platform source findings and the first synthetic workflow in ADR-0008 and the service blueprint; it adds a separate Workspace-owned campaign draft with owner-scoped services. The anonymous `site.CampaignDraft` remains unchanged; there is no UI/API endpoint or external provider call. Local `git diff --check`, Ruff formatting/lint, Django system check, and `makemigrations --check --dry-run` passed. Application tests have not been run locally.
 
 ## Next action
 
-Verify post-merge main CI for `8cd4705`. Then continue Phase 1.5: compare Google/Meta (and TikTok if relevant) for one synthetic city service-lead scenario, disclose evidence/cost/access uncertainty, and present the first-release workflow for owner selection. Only after that selection should the smallest synthetic-only workspace-authorization and campaign-persistence contracts begin. Keep real data, account connections, publishing, and spend blocked.
+Review this branch diff, run `git diff --check`, commit and open a PR; review the actual changed files and wait for required CI. Merge only if review and CI pass. Then continue the synthetic-only campaign vertical slice, adding focused owner-isolation coverage before any campaign UI. Keep real data, customer uploads, AI provider calls, account connections, publishing, payments and spend blocked.
