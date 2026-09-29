@@ -74,7 +74,9 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 self.assertIn(
                     "Rapor verisi henüz bağlı değil", page.locator("body").inner_text()
                 )
-                self.assertEqual(page.get_by_text("Henüz veri yok").count(), 6)
+                self.assertEqual(
+                    page.get_by_text("Veri kaynağı bağlı değil").count(), 6
+                )
                 self.assertEqual(
                     page.get_by_text("Planlanan kampanya dönemi:", exact=False).count(),
                     6,

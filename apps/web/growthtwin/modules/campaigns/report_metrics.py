@@ -13,6 +13,15 @@ class MetricStatus(StrEnum):
     UNAVAILABLE = "unavailable"
 
 
+class MetricUnavailableReason(StrEnum):
+    """Why an unavailable metric must not be interpreted as zero."""
+
+    NOT_CONNECTED = "not_connected"
+    UNSUPPORTED = "unsupported"
+    PARTIAL = "partial"
+    STALE = "stale"
+
+
 class MetricUnit(StrEnum):
     """Supported measurement kinds for the first reporting contract."""
 
@@ -45,6 +54,7 @@ class CampaignReportMetric:
     status: MetricStatus
     unit: MetricUnit
     window: ReportingWindow | None
+    unavailable_reason: MetricUnavailableReason | None = None
     value: int | Decimal | None = None
     currency: str | None = None
     source: str | None = None
@@ -55,6 +65,10 @@ class CampaignReportMetric:
             raise ValueError("Metric status must be explicit.")
         if not isinstance(self.unit, MetricUnit):
             raise ValueError("Metric unit must be explicit.")
+        if self.unavailable_reason is not None and not isinstance(
+            self.unavailable_reason, MetricUnavailableReason
+        ):
+            raise ValueError("Unavailable reason must be explicit.")
         if not self.key.strip() or not self.label.strip():
             raise ValueError("Metric key and label are required.")
         if self.window is not None and not isinstance(self.window, ReportingWindow):
@@ -74,12 +88,40 @@ class CampaignReportMetric:
             raise ValueError("Count metrics cannot specify a currency.")
 
         if self.status is MetricStatus.UNAVAILABLE:
-            if any(
-                item is not None for item in (self.value, self.source, self.observed_at)
-            ):
-                raise ValueError("Unavailable metrics cannot contain observed data.")
+            if self.value is not None:
+                raise ValueError("Unavailable metrics cannot contain a numeric value.")
+            if self.unavailable_reason is None:
+                raise ValueError("Unavailable metrics require an explicit reason.")
+            if self.unavailable_reason is MetricUnavailableReason.NOT_CONNECTED:
+                if self.source is not None or self.observed_at is not None:
+                    raise ValueError(
+                        "Not-connected metrics cannot contain source observations."
+                    )
+            elif self.unavailable_reason is MetricUnavailableReason.UNSUPPORTED:
+                if not self.source or not self.source.strip():
+                    raise ValueError("Unsupported metrics require the channel source.")
+                if self.observed_at is not None:
+                    raise ValueError(
+                        "Unsupported metrics cannot claim an observation time."
+                    )
+            else:
+                if not self.source or not self.source.strip():
+                    raise ValueError("Partial or stale metrics require a data source.")
+                if self.window is None:
+                    raise ValueError(
+                        "Partial or stale metrics require a reporting window."
+                    )
+                if (
+                    not isinstance(self.observed_at, datetime)
+                    or self.observed_at.utcoffset() is None
+                ):
+                    raise ValueError(
+                        "Partial or stale metrics require an aware observation time."
+                    )
             return
 
+        if self.unavailable_reason is not None:
+            raise ValueError("Available metrics cannot have an unavailable reason.")
         if self.value is None:
             raise ValueError(
                 "Available metrics require a numeric value, including zero."
@@ -96,10 +138,24 @@ class CampaignReportMetric:
             raise ValueError("Count metrics require an integer value.")
         if not self.source or not self.source.strip():
             raise ValueError("Available metrics require a data source.")
-        if self.observed_at is None or self.observed_at.utcoffset() is None:
+        if (
+            not isinstance(self.observed_at, datetime)
+            or self.observed_at.utcoffset() is None
+        ):
             raise ValueError(
                 "Available metrics require a timezone-aware observation time."
             )
+
+    @property
+    def unavailable_message(self) -> str:
+        """Short user-facing explanation for an unavailable metric."""
+
+        return {
+            MetricUnavailableReason.NOT_CONNECTED: "Veri kaynağı bağlı değil",
+            MetricUnavailableReason.UNSUPPORTED: "Bu kanal bu metriği desteklemiyor",
+            MetricUnavailableReason.PARTIAL: "Dönem verisi kısmi",
+            MetricUnavailableReason.STALE: "Kaynak verisi güncel değil",
+        }.get(self.unavailable_reason, "Henüz veri yok")
 
 
 def unavailable_campaign_report_metrics(
@@ -122,6 +178,7 @@ def unavailable_campaign_report_metrics(
             status=MetricStatus.UNAVAILABLE,
             unit=unit,
             window=window,
+            unavailable_reason=MetricUnavailableReason.NOT_CONNECTED,
             currency=currency if unit is MetricUnit.CURRENCY else None,
         )
         for key, label, unit in categories

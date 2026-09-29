@@ -8,6 +8,7 @@ from django.test import SimpleTestCase
 from growthtwin.modules.campaigns.report_metrics import (
     CampaignReportMetric,
     MetricStatus,
+    MetricUnavailableReason,
     MetricUnit,
     ReportingWindow,
 )
@@ -34,6 +35,7 @@ class CampaignReportMetricTests(SimpleTestCase):
             status=MetricStatus.UNAVAILABLE,
             unit=MetricUnit.COUNT,
             window=self.window,
+            unavailable_reason=MetricUnavailableReason.NOT_CONNECTED,
         )
 
         self.assertEqual(observed_zero.value, 0)
@@ -73,6 +75,7 @@ class CampaignReportMetricTests(SimpleTestCase):
             ("value", None),
             ("source", None),
             ("observed_at", datetime(2026, 10, 1)),
+            ("observed_at", "2026-10-01T00:00:00Z"),
         ):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 CampaignReportMetric(**(required | {field: value}))
@@ -84,10 +87,78 @@ class CampaignReportMetricTests(SimpleTestCase):
             "status": MetricStatus.UNAVAILABLE,
             "unit": MetricUnit.COUNT,
             "window": self.window,
+            "unavailable_reason": MetricUnavailableReason.NOT_CONNECTED,
         }
         for field, value in (("value", 0), ("source", "fixture")):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 CampaignReportMetric(**(required | {field: value}))
+
+    def test_unavailable_reasons_have_specific_provenance_requirements(self):
+        required = {
+            "key": "reach",
+            "label": "Reach",
+            "status": MetricStatus.UNAVAILABLE,
+            "unit": MetricUnit.COUNT,
+            "window": self.window,
+        }
+        cases = (
+            (
+                MetricUnavailableReason.UNSUPPORTED,
+                {"source": "google-ads"},
+                "Bu kanal bu metriği desteklemiyor",
+            ),
+            (
+                MetricUnavailableReason.PARTIAL,
+                {
+                    "source": "google-ads",
+                    "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+                },
+                "Dönem verisi kısmi",
+            ),
+            (
+                MetricUnavailableReason.STALE,
+                {
+                    "source": "google-ads",
+                    "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+                },
+                "Kaynak verisi güncel değil",
+            ),
+        )
+        for reason, provenance, message in cases:
+            with self.subTest(reason=reason):
+                metric = CampaignReportMetric(
+                    **(required | {"unavailable_reason": reason} | provenance)
+                )
+                self.assertIsNone(metric.value)
+                self.assertEqual(metric.unavailable_message, message)
+
+    def test_partial_or_stale_metric_requires_window_source_and_observation_time(self):
+        required = {
+            "key": "clicks",
+            "label": "Clicks",
+            "status": MetricStatus.UNAVAILABLE,
+            "unit": MetricUnit.COUNT,
+            "window": None,
+            "unavailable_reason": MetricUnavailableReason.PARTIAL,
+            "source": "google-ads",
+            "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+        }
+        with self.assertRaises(ValueError):
+            CampaignReportMetric(**required)
+
+    def test_available_metric_cannot_have_unavailable_reason(self):
+        with self.assertRaises(ValueError):
+            CampaignReportMetric(
+                key="clicks",
+                label="Clicks",
+                status=MetricStatus.AVAILABLE,
+                unit=MetricUnit.COUNT,
+                window=self.window,
+                value=0,
+                source="fixture",
+                observed_at=datetime(2026, 10, 1, tzinfo=timezone.utc),
+                unavailable_reason=MetricUnavailableReason.NOT_CONNECTED,
+            )
 
     def test_invalid_values_and_currency_are_rejected(self):
         required = {
