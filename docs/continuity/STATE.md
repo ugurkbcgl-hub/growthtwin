@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 16:48 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 16:49 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
 - `main` is `751e6dd0c5aeff6c69e3590980a9b7d844f9dbfa`; PR #122 is merged. Required PR CI `36576865860` and post-merge main CI `36577137802` passed. No open PR was listed after the merge.
-- The current branch `docs/post-policy-current-state` updates the project, architecture, roadmap, gap analysis, and handoff snapshot for PR #122. The PR has not yet been opened.
+- Current branch `docs/post-policy-current-state`, PR [#123](https://github.com/ugurkbcgl-hub/growthtwin/pull/123) open. It updates the project, architecture, roadmap, gap analysis, and handoff snapshot for PR #122. Required CI run `36577941774` was in progress at verification.
 - PR #122 adds a pure synthetic action-policy evaluator and ten focused tests. Local Django system check, policy tests, Ruff lint/format, and post-merge full Django and browser E2E CI passed. Local campaign integration tests could not create their PostgreSQL test database because the local role lacks that privilege.
 
 ## Product and safety context
@@ -27,4 +27,4 @@ Last verified: 2026-09-29 16:48 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Open and merge the current documentation correction after review and required CI pass. Then add a small synthetic-only metadata contract for policy evidence source and observation time; keep it explicitly untrusted and disconnected from live dispatch.
+Check CI for PR #123 after its latest commit and merge after review and required CI pass. Then add a small synthetic-only metadata contract for policy evidence source and observation time; keep it explicitly untrusted and disconnected from live dispatch.
