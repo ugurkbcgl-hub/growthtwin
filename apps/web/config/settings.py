@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "growthtwin.apps.GrowthTwinConfig",
+    "growthtwin.modules.workspaces.apps.WorkspacesConfig",
     "growthtwin.site.apps.SiteConfig",
     "growthtwin.demo.apps.DemoConfig",
 ]
