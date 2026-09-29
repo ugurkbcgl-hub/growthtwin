@@ -38,7 +38,10 @@ omitted row or a recent fetch as a confirmed zero could fabricate a result.
    not a provider SLO or guarantee.
 5. A partial unavailable metric must carry an observation that is not complete
    for its period. A stale unavailable metric carries a complete last
-   observation and a rule evaluation that classifies it as stale.
+   observation and a rule evaluation that classifies it as stale. A complete
+   observation with missing/invalid freshness evidence may use the explicit
+   `freshness_unknown` unavailable reason; it remains distinct from `partial`
+   and `stale`.
 6. Observation scope, completion flags, source timestamps, and rule identity are
    caller-supplied evidence. They are useful for deterministic contracts and
    synthetic tests, but do not authenticate a provider, account, query,

@@ -20,6 +20,7 @@ class MetricUnavailableReason(StrEnum):
     UNSUPPORTED = "unsupported"
     PARTIAL = "partial"
     STALE = "stale"
+    FRESHNESS_UNKNOWN = "freshness_unknown"
 
 
 class MetricUnit(StrEnum):
@@ -272,7 +273,7 @@ class CampaignReportMetric:
                     )
                 if self.observation is None:
                     raise ValueError(
-                        "Partial or stale metrics require retrieval evidence."
+                        "Partial or unavailable-freshness metrics require observation evidence."
                     )
                 if self.observation.requested_window != self.window:
                     raise ValueError("Observation window must match the metric window.")
@@ -292,11 +293,16 @@ class CampaignReportMetric:
                 else:
                     if not is_complete:
                         raise ValueError(
-                            "Stale metrics require a complete observed metric row."
+                            "Stale or unknown-freshness metrics require a complete observed metric row."
                         )
-                    if self.observation.freshness is not MetricFreshness.STALE:
+                    expected_freshness = (
+                        MetricFreshness.STALE
+                        if self.unavailable_reason is MetricUnavailableReason.STALE
+                        else MetricFreshness.UNKNOWN
+                    )
+                    if self.observation.freshness is not expected_freshness:
                         raise ValueError(
-                            "Stale metrics require a stale freshness classification."
+                            "Unavailable freshness reason must match its observation."
                         )
             return
 
@@ -343,6 +349,7 @@ class CampaignReportMetric:
             MetricUnavailableReason.UNSUPPORTED: "Bu kanal bu metriği desteklemiyor",
             MetricUnavailableReason.PARTIAL: "Dönem verisi kısmi",
             MetricUnavailableReason.STALE: "Kaynak verisi güncel değil",
+            MetricUnavailableReason.FRESHNESS_UNKNOWN: "Kaynak verisinin güncelliği doğrulanamıyor",
         }.get(self.unavailable_reason, "Henüz veri yok")
 
 

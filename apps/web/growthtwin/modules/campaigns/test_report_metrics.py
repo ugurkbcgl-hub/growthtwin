@@ -258,6 +258,19 @@ class CampaignReportMetricTests(SimpleTestCase):
                 },
                 "Kaynak verisi güncel değil",
             ),
+            (
+                MetricUnavailableReason.FRESHNESS_UNKNOWN,
+                {
+                    "source": "synthetic-report-fixture",
+                    "observation": self.observation(
+                        metric_family="reach",
+                        source_data_as_of=None,
+                        freshness=MetricFreshness.UNKNOWN,
+                        freshness_rule=None,
+                    ),
+                },
+                "Kaynak verisinin güncelliği doğrulanamıyor",
+            ),
         )
         for reason, provenance, message in cases:
             with self.subTest(reason=reason):
