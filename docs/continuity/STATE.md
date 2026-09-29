@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 10:08 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 10:22 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Snapshot baseline: clean `main` at `c7e87a9` (PR #92), merged with required CI successful. No open PRs were found after the merge.
-- PR #92 CI run `36534540580` and post-merge main CI run `36534724665` passed. PR #91 CI run `36533520983` and post-merge run `36533706721` also passed.
-- Current branch: `docs/session-draft-handoff-20260929`; this continuity update is pending review.
+- Snapshot baseline: clean `main` at `3f82858` (PR #94), merged with required CI successful. No open PRs were found after the merge.
+- PR #94 CI run `36535823031` and post-merge main CI run `36536032118` passed. PR #93 CI run `36534974826` and post-merge run `36535151868` also passed.
+- Current branch: `docs/creative-overwrite-handoff-20260929`; this continuity update is pending review.
 
 ## Product and safety context
 
@@ -25,8 +25,9 @@ Last verified: 2026-09-29 10:08 (Europe/Istanbul). Repository: `https://github.c
 - The remaining first-visit checks were reviewed against the current template, form, planning module, and browser E2E: copy is industry-neutral, brand/audience/objective intake is optional, brief/budget/duration are validated, safety labels say no publication/spend and prohibit real data, and mobile keyboard/error feedback plus report navigation are covered. No additional demonstrated gap was found. Visual inspection in the open desktop browser remains unavailable due to the app security block; local server continues listening at `127.0.0.1:8002`.
 - A source review of deterministic creative suggestions found they format only supplied brief, brand, and audience text with generic calls to action; existing focused tests cover missing inputs and avoiding invented "best" or "free" claims. The pause/report path labels the action, period, metrics, and results as examples; pause feedback says there is no real campaign. PR #89 CI and post-merge CI passed the existing Django and browser E2E suites. No additional gap requiring a change was found.
 - The session-lifetime review found the brief only said the draft is tied to a browser session, and draft deletion had no success feedback. PR #92 now explains that clearing site data or session expiry removes access, confirms successful deletion with an accessible status message, and extends the mobile browser journey to assert deletion. PR #92 and post-merge CI passed. The local server remains available at `127.0.0.1:8002`; visual browser inspection remains blocked by app security.
+- The creative-regeneration review found the action replaced manually edited saved and unsaved copy without saying so. PR #94 adds an adjacent replacement warning associated with the action for assistive technology and a mobile E2E path covering edit → change brief → see warning → regenerate. PR and post-merge CI passed. Visual browser inspection remains blocked by app security.
 - Staging browser E2E, backup/restore, rollback, and final cost/CI recording remain gates before an external beta or production. First advertiser workflow/destination, live-action consent and autonomy rules, and production AI/data terms remain undecided.
 
 ## Next action
 
-Review what happens to manually edited ad text after the advertiser changes the brief and requests refreshed suggestions; make any overwrite consequences clear and prevent silent loss of saved edits.
+Review the campaign-plan summary and editable copy with two distinct synthetic advertiser briefs to find assumptions a user could mistake for supplied facts; change only demonstrated issues and keep outputs labeled as examples.
