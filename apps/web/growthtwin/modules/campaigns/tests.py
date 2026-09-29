@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.test import TestCase
 
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
+from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     get_campaign_draft_for_owner,
@@ -28,6 +29,7 @@ class CampaignDraftOwnershipTests(TestCase):
     def draft_values(self):
         return {
             "name": "Synthetic home repair search campaign",
+            "brand_name": "Başkent Ev Bakım",
             "brief": "Offer repair estimates in Ankara.",
             "target_city": "Ankara",
             "destination_url": "https://example.test/repair",
@@ -107,3 +109,52 @@ class CampaignDraftOwnershipTests(TestCase):
             )
 
         self.assertFalse(WorkspaceCampaignDraft.objects.exists())
+
+    def test_search_plan_formats_source_text_within_platform_limits(self):
+        draft = create_campaign_draft_for_owner(
+            owner=self.owner,
+            workspace_id=self.workspace.pk,
+            **self.draft_values(),
+        )
+
+        plan = build_google_search_campaign_plan(draft)
+
+        self.assertEqual(len(plan.headlines), 3)
+        self.assertEqual(len(plan.descriptions), 2)
+        self.assertEqual(plan.media_budget_minor, 500_000)
+        self.assertEqual(plan.currency, "TRY")
+        self.assertEqual(plan.target_city, "Ankara")
+        self.assertTrue(all(len(asset.text) <= 30 for asset in plan.headlines))
+        self.assertTrue(all(len(asset.text) <= 90 for asset in plan.descriptions))
+        self.assertTrue(all(asset.source_fields for asset in plan.headlines))
+        self.assertTrue(all(asset.source_fields for asset in plan.descriptions))
+        self.assertTrue(plan.ready_for_review)
+
+    def test_search_plan_never_invents_forecasts_or_enables_publication(self):
+        draft = create_campaign_draft_for_owner(
+            owner=self.owner,
+            workspace_id=self.workspace.pk,
+            **self.draft_values(),
+        )
+
+        plan = build_google_search_campaign_plan(draft)
+
+        self.assertEqual(plan.forecast_status, "unavailable")
+        self.assertEqual(plan.keyword_ideas_status, "unavailable")
+        self.assertFalse(hasattr(plan, "forecast_metrics"))
+        self.assertFalse(plan.publication_enabled)
+
+    def test_search_plan_explains_missing_required_inputs(self):
+        draft = create_campaign_draft_for_owner(
+            owner=self.owner,
+            workspace_id=self.workspace.pk,
+            **(self.draft_values() | {"brand_name": "", "destination_url": ""}),
+        )
+
+        plan = build_google_search_campaign_plan(draft)
+
+        self.assertFalse(plan.ready_for_review)
+        self.assertTrue(
+            any("İşletme veya marka" in item for item in plan.missing_requirements)
+        )
+        self.assertTrue(any("web sitesi" in item for item in plan.missing_requirements))
