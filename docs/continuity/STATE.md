@@ -1,10 +1,10 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 23:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 23:45 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `origin/main` is `9763b6a` after PR #156 (`docs/report-visual-review-status`), merged at 2026-09-29 20:32 UTC. Its required CI `36626690808` passed. PR #157 (`docs/report-visual-review-completion`) is open with CI `36627581597` successful; its source commit is `953fa64` before this handoff correction. Current local branch: `docs/report-visual-review-completion`.
+- `origin/main` is `11aecd3` after PR #157 (`docs/report-visual-review-completion`), merged at 2026-09-29 20:43 UTC. Its required CI `36628090078` passed. Post-merge CI `36628363795` is in progress as of 2026-09-29 20:45 UTC. Current local branch: `research/google-ads-search-turkiye`, created from that main commit.
 - PR #154 required CI `36622723566` and post-merge CI `36622985685` passed. PR #155 refreshed continuity after #154. The authenticated report remains disconnected and synthetic; no local tests were run during manual visual inspection.
 - Manual visual review is complete using a narrow ~596 px view and a ~1265 px desktop view on an isolated `localhost` fixture. Planned dates, no observed period, unknown freshness, and all six unavailable metrics were legible at both sizes; no horizontal overflow was visible. On desktop the metric cards form three columns; on the narrow view the summary stacks and cards adapt to available width. No product code changed.
 - The earlier browser session showed two synthetic drafts. Their active server-side session and two associated records remain in the local PostgreSQL database, but the browser's current session no longer lists them after the isolated review login changed the `127.0.0.1` session cookie. No project-database draft deletion was performed. Do not expose or manually copy session-cookie values; determine whether there is a supported, safe recovery path before claiming the drafts are accessible again.
@@ -26,4 +26,4 @@ Last verified: 2026-09-29 23:40 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Research Google Ads Search's current Türkiye suitability and SaaS/API access requirements from official primary sources; record verified account/API approval constraints, reporting coverage, and unresolved evidence gaps. Keep the work research-only: no account connection, live adapter, advertiser data, or campaign action. The two earlier synthetic drafts remain stored under an active server-side session but are not visible in the current browser session; do not expose or copy session-cookie values, and do not claim the drafts are restored.
+Review and submit the official-source Google Ads Search feasibility note for Türkiye, then begin the next roadmap slice on Türkiye advertising, consumer, privacy, and sector policy requirements. Keep the work research-only; no real account, advertiser data, lead flow, or campaign action. The two earlier synthetic drafts remain stored under an active server-side session but are not visible in the current browser session; do not expose or copy session-cookie values, and do not claim the drafts are restored.

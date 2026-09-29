@@ -119,7 +119,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed manual review (2026-09-29):** inspected the authenticated report empty state at a narrow ~596 px viewport and a ~1265 px desktop viewport using isolated synthetic data. Planned dates, absent observed period, unknown freshness, and six unavailable metrics remained legible; no horizontal overflow was visible. No code or live integration changed. The prior anonymous browser session no longer exposes two still-stored synthetic drafts; see [continuity state](docs/continuity/STATE.md).
 
-**Next research slice:** verify Google Ads Search suitability for Türkiye and GrowthTwin's SaaS/API access constraints using current official primary sources. Record reporting capabilities and evidence gaps before any account connection or live adapter work; research only, with no real account or advertiser data.
+**Completed research (2026-09-29):** Google Ads Search remains a technical candidate for Türkiye based on documented `TR` targeting and the current country-restrictions list. The official API access levels, SaaS permissible-use review, payment-country dependencies, report capabilities, and test-account limits are recorded in the [feasibility note](docs/product/google-ads-search-turkiye-api-feasibility.md). GrowthTwin's own production access, external-client approval, Turkish account onboarding, forecasts, and legal/policy readiness remain unverified. No account or live API was used.
+
+**Next research slice:** map Türkiye advertising, consumer-protection, personal-data, and sector-specific requirements that affect a self-service Google Search campaign and any lead flow. Use current primary legal/regulatory sources, separate confirmed rules from legal questions requiring qualified review, and keep real data and live campaigns out of scope.
 
 ## Phase 3 — First publishing and reporting integration
 
