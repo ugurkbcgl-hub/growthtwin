@@ -54,6 +54,13 @@ def _format_budget(minor_units):
     return f"{number_format(amount, decimal_pos=2, force_grouping=True)} TRY"
 
 
+def _format_daily_average(minor_units):
+    if minor_units is None:
+        return None
+    amount = minor_units / 100
+    return f"{number_format(amount, decimal_pos=2, force_grouping=True)} TRY"
+
+
 @login_required
 def campaign_list(request):
     """Show only the current user's workspace campaign drafts."""
@@ -113,13 +120,17 @@ def campaign_detail(request, draft_id):
         ),
         pk=draft_id,
     )
+    plan = build_google_search_campaign_plan(draft)
     return render(
         request,
         "campaigns/detail.html",
         {
             "draft": draft,
-            "plan": build_google_search_campaign_plan(draft),
+            "plan": plan,
             "budget_display": _format_budget(draft.media_budget_minor),
+            "daily_average_display": _format_daily_average(
+                plan.daily_media_average_minor
+            ),
         },
     )
 

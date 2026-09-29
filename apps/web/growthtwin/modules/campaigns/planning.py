@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal
 from typing import Literal
 
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
@@ -27,6 +28,7 @@ class GoogleSearchCampaignPlan:
     target_city: str
     final_url: str
     media_budget_minor: int
+    daily_media_average_minor: Decimal | None
     currency: str
     flight_start: date | None
     flight_end: date | None
@@ -139,11 +141,21 @@ def build_google_search_campaign_plan(
             "En az iki farklı açıklama taslağı için daha fazla girdi gerekli."
         )
 
+    pacing_days = (
+        (draft.flight_end - draft.flight_start).days
+        if draft.flight_start and draft.flight_end
+        else 0
+    )
+    daily_media_average_minor = (
+        Decimal(draft.media_budget_minor) / pacing_days if pacing_days > 0 else None
+    )
+
     return GoogleSearchCampaignPlan(
         campaign_draft_id=draft.pk,
         target_city=city,
         final_url=draft.destination_url,
         media_budget_minor=draft.media_budget_minor,
+        daily_media_average_minor=daily_media_average_minor,
         currency=draft.currency,
         flight_start=draft.flight_start,
         flight_end=draft.flight_end,
