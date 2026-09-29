@@ -132,6 +132,54 @@ Her aday aynı puanlama (1–5) ve kaynak ekiyle karşılaştırılmalı; puans�
 
 Seçim ağırlıklarını kullanıcı araştırması sonrası ayarla. API erişimi mümkün değilse adayı ilk canlı destinasyon yapma. Kanal bağlantısı yokken hesaplayıcı gerçek platform tahmini yerine sentetik prototip/varsayımlı senaryo olarak açıkça etiketlenmeli.
 
+### 6.3 Öncelikli kanal karşılaştırması (araştırma, nihai seçim değil)
+
+Pazar payı/erişim üstünlüğü sıralaması yapılmadı: yerel reklamverenden kullanım, CPM/CPC, dönüşüm maliyeti, lead kalitesi veya platforma göre müşteri sayısı verisi toplanmadı. Self-serve ülke listesi ve dokümandaki özellikler Türkiye'de ekonomik olduklarını veya GrowthTwin API'sine açık olduklarını tek başına kanıtlamaz. Bu nedenle sahte 1–5 puan yerine kanıt ve eksik kanıt yazılır.
+
+| Kanal | Sektörden bağımsız ürün işi | Türkiye/erişim kanıtı | API, tahmin ve ölçüm kanıtı | Öncelik ve karar eşiği |
+|---|---|---|---|---|
+| **Google Ads / Search ve YouTube** | Search ile çözüm/ürün arama niyetini; YouTube ile video/erişim hedefini karşılamak | Türkiye hedeflemesi mevcut. API Test erişimi yalnız test hesaplarında; Explorer/Basic/Standard ve permissible-use izinleri kademeli. Standard başvurusu uygulama incelemesi içerir. | Kampanya ölçümleri raporlanabilir. YouTube/Video Partners ReachPlanService özel allowlist, temsilci ve veri lisansı ister; Search tahmini ile video erişim tahmini aynı API/ürün değildir. | **P0 — ilk API fizibilite kontrolü.** Test erişimi, üretim token/izin, Search reporting/keyword planning, şehir hedefi ve müşterilere tool-as-a-service yetkisini doğrula. Arama niyeti ölçülebilirliği güçlü bir ürün hipotezi; tahmin kapsamı/erişimi açık. |
+| **Meta Ads (Facebook/Instagram/Reels/Lead Ads)** | Görsel/video üretip sosyal yerleşimlerde deneme; yerleşik lead formu veya website dönüşümü | Meta'nın ürün sayfası Facebook/Instagram Reels ve Advantage yerleşimlerini gösteriyor. Bu taramada Türkiye hesap ülkesi/faturalama uygunluğu ve GrowthTwin entegrasyon izni resmi kaynaklarla kapanmadı. | Marketing API Access Tier/app review şartları 2026'da değişti. Türkiye için lead retrieval izni, tahmin endpoint'i ve rapor kapsamı bu taramada doğrulanmadı. | **P0 — ülke ve izin kanıtını hemen ara.** Business portfolio, app review/Marketing API Access Tier, gerekli permission ve Ads Insights/Lead Ads/yayın akışını test hesabında doğrula. Görsel üretim/lead senaryosuna ürün uyumu yüksek olabilir; API kapısı hâlâ açık. |
+| **TikTok Ads** | Kısa video hook/format varyantı ve kontrollü deney; erişim, trafik, lead veya dönüşüm | Türkiye self-serve Business Center reklam hesabı açma listesinde. Hedef lokasyon/yerleşim kayıtlı hesabın ülkesine ve kampanya özelliğine bağlı. | API for Business dokümanları campaign/creative/audience, lead retrieval/webhook ve raporlama desteğini tarif ediyor. GrowthTwin developer app/izin onayı Türkiye için doğrulanmış değil. Yerleşik split test tek değişkenli; en az 7 gün öneriliyor. | **P1 — kreatif test alternatifi.** App/API erişimi, test hesabı, Türkçe creative specs, lead/report API ve TR placement uygunluğunu doğrula. Video üretim maliyeti ve müşteri talebi kanıtlanmadan ilk hizmet vaadi yapma. |
+| **X Ads** | Seçilmiş topluluk/konu çevresinde metin, görsel ve video kampanyası/test | Self-serve reklamveren hesabı ülkeleri arasında Türkiye var. Hesap doğrulama, reklam kalite politikası, içerik/dil ve hassas sektör koşulları geçerli. | Ads Manager A/B testi görsel/video/metin/CTA varyantlarını ve Bayesian “win chance” raporunu destekliyor. Ads API feature erişimi ve SaaS izin kapsamı bu taramada doğrulanmadı. | **P2 — segmente bağlı.** Ads API access, Türkçe/sensitive category kuralları, ölçüm/faturalama ve kullanıcı talebi araştırılmalı. İlk genel MVP için seçme gerekçesi henüz yok. |
+| **LinkedIn Ads** | B2B hizmet, şirket/karar verici ve profesyonel kitleye lead | Campaign Manager self-serve ürün; konum ve mesleki nitelik hedefleri sunuyor. Türkiye hesap/billing ayrıntısı bu turda ayrıca belgelenmedi. | Marketing API vetted program; API ve Marketing Data için developer/app vetting ve privacy/security review gerekir. Campaign/Lead Gen Forms/Lead Sync izin kapsamı başvuruya göre doğrulanmalı. | **P1 sadece B2B senaryosu seçilirse; aksi P2.** Türkiye audience büyüklüğü, API onayı, Lead Sync ve maliyet/lead kalite araştırılmadan genel ürüne alma. |
+
+#### İnceleme sırası ve dar MVP hipotezi
+
+1. **İlk iki aday:** Google Search ve Meta'yı aynı “Türkiye'deki bir hizmet işletmesi, seçtiği şehirde teklif/randevu talebi almak istiyor” *sektörsüz sentetik akışında* karşılaştır. Bu, dikey seçimi değildir; brief → mesaj/creative → yerel hedef → ölçülebilir lead → teslim → rapor döngüsünü inceleyen örnektir. Google Search aktif arama niyetini, Meta görsel kreatif/yerleşik lead formunu sınayan hipotezler olur. Gerçek kullanıcı/API kanıtı olmadan seçim yapılmış sayılmaz.
+2. **Creative test alternatifi:** TikTok'u aynı örnek için video varyantı ve test seçeneği olarak kıyasla; gerekli Marketing API yetkisi ve ülke/placement doğrulanırsa değerlendirmeye al.
+3. **Özel segmentler:** B2B talebi doğrulanırsa LinkedIn'i Google ile tekrar puanla; X'i müşteri segmenti/ürün araştırması bunu desteklerse ekle.
+4. **Daha sonraki araştırma:** Snapchat, Pinterest, Microsoft, Yandex ve yerel yayıncı/marketplace ağı için Türkiye reklamveren uygunluğu + partner/API + hedef/rapor + gerçek müşteri talebi kanıtı gerekir.
+
+Bu sıra “Türkiye'de en yaygın/başarılı kanal” iddiası değildir. Son seçim öncesinde (a) API/izin ve test kanıtı, (b) aynı hedef/bütçe ile platformların kendi planner/forecast çıktısı ve metric definitions, (c) müşteri segmenti kullanım araştırması, (d) lead teslimi/kalite ve maliyet ölçümü gerekir.
+
+### 6.4 Tek karşılaştırma senaryosu: şehir bazlı hizmet talebi
+
+**Senaryo:** dikey/kişi adı uydurulmayan sentetik profil: “Türkiye'deki bir hizmet işletmesi, seçtiği şehirde yeni müşteri/teklif talebi istiyor.” Bu senaryo sağlık, finans veya başka kontrollü bir dikey seçmez; ilk müşteri segmenti araştırmayla belirlenir.
+
+- Amaç: nitelikli talep/lead (platform conversion event'i henüz seçilmedi).
+- Bölge: kullanıcı şehir seçer; ilgili hesap/ülke için gerçek location targeting API ile doğrulanır.
+- Dönem: örnek 14 gün, yalnızca hesaplayıcı tasarım parametresi.
+- Sentetik brüt medya bütçesi: **5.000 TRY**, örnek dağılım Google Search **3.000 TRY**, Meta **2.000 TRY**. Oran strateji önerisi veya piyasa benchmark'ı değildir.
+- Ortalama günlük dağılım: Google 3.000 / 14 = **214,29 TRY/gün**; Meta 2.000 / 14 = **142,86 TRY/gün**. Gerçek platform harcaması günlük sabit tutarla aynı olmayabilir; platformun günlük/ömür boyu tavanları ayrıca görünmelidir.
+- Tahmin: seçilen hesap/şehir için güvenilir forecast kaynağı bağlanmadığından erişim, gösterim, tıklama, CPC/CPM, lead ve dönüşüm değerleri **HESAPLANMIYOR**. Kullanıcıya sahte sayılar/placeholder verilmez.
+- GrowthTwin hizmet bedeli **S** (fiyat kararı açık); üretim tüketimi **K kredi** (iş başına kredi maliyeti açık). GrowthTwin bedeli = `S + credit_price(K)`. Medya bütçesi buna dahil değildir.
+- Toplam örnek nakit: platformlara ayrı ödenecek medya **5.000 TRY** + GrowthTwin `S` + `K` üretim kredisinin bedeli + ödeme/kur/vergi kalemleri (henüz tarifelenmedi). Kim tahsil eder, hangi para birimi ve hangi tarihte gösterilir, ayrı ödeme kararıdır.
+- Satın almadan önce kullanıcı kanal ekler/çıkarır, bütçe oranını değiştirir, senaryoyu kaydeder ve raporu dışa aktarır; hesap bağlama, ödeme veya yayın oluşmaz.
+
+#### Hesaplayıcı gösterim kuralı
+
+Kanalın resmi tahmin API/planlayıcısı erişilebilir ve bu kullanıma yetkiliyse, tahminin yanında ülke/hesap/hedef/format/tarih, veri tarihi, metrik tanımı ve varsayım gösterilir. Aksi durumda sadece yöntemi açıklayan taslak bulunur. Geçmiş kampanya verisi ancak kullanıcı izni ve yeterli örneklemle, tarih/hesap bağlamı belirtilerek kullanılabilir.
+
+```text
+gösterim tahmini = medya bütçesi ÷ varsayılan/ölçülen CPM × 1.000
+tıklama tahmini = gösterim tahmini × varsayılan/ölçülen CTR
+lead tahmini = tıklama tahmini × varsayılan/ölçülen landing-page conversion rate
+lead maliyeti = ilgili medya payı ÷ gerçekleşen veya açıkça tahmin olan lead adedi
+```
+
+CPM, CTR ve dönüşüm oranı kaynak/tarih/güven bilgisi olmadan sayı üretmez. Platformlar arası tekil erişim, kanal erişimlerini toplamakla elde edilmiş gibi sunulmaz.
+
 ## 7. Medya hesaplayıcısı ve raporlama gereksinimi
 
 ### Girdiler
@@ -338,15 +386,22 @@ Resmi/primary kaynaklar 2026-09-29 tarihinde incelendi; ilgili platform, API, me
 - [TikTok — Türkiye dâhil self-serve Ads Account oluşturma bölgeleri](https://ads.tiktok.com/resources/help/article/available-countries-and-regions-for-ad-account-creation-in-bc?lang=en)
 - [TikTok — hesap ülkesi ve reklam yerleşim/hedef konum eşleşmesi](https://ads.tiktok.com/help/article/placements-available-locations?lang=tr)
 - [TikTok — lokasyon hedefleme sınırlamaları](https://ads.tiktok.com/help/article/location-targeting)
+- [TikTok API for Business — campaign creation, lead generation ve reporting use cases](https://business-api.tiktok.com/portal)
+- [TikTok — API for Business / Marketing API capability overview](https://ads.tiktok.com/resources/help/article/marketing-api?lang=tr)
 - [X Ads — self-serve reklamveren uygun ülkeleri (Türkiye listede)](https://help.x.com/en/business-and-advertising/about-eligibility-for-x-ads)
 - [X — A/B test özellikleri ve metodolojisi](https://business.x.com/en/help/campaign-measurement-and-analytics/ab-testing)
+- [Google Ads API — access levels, application reviews and permissible use](https://developers.google.com/google-ads/api/docs/api-policy/access-levels)
+- [Google Ads API — campaign reporting](https://developers.google.com/google-ads/api/docs/reporting/overview)
+- [Google Ads API — campaign types, budgets and targeting](https://developers.google.com/google-ads/api/docs/campaigns/overview)
 - [LinkedIn — Marketing API şartları ve ön onay/vetting](https://www.linkedin.com/legal/l/marketing-api-terms)
 - [LinkedIn — Ads API başvuru inceleme süreci](https://www.linkedin.com/help/linkedin/answer/a524477)
+- [LinkedIn — Campaign Manager ad account/campaign/targeting/reporting overview](https://www.linkedin.com/help/linkedin/answer/a420420/campaign-manager-overview?lang=en)
 - [Google Ads API — YouTube/Video Partners reach forecasting, allowlist gereği](https://developers.google.com/google-ads/api/docs/reach-forecasting)
 - [Google Ads API — ReachPlanService tahmin kapsamı](https://developers.google.com/google-ads/api/docs/reach-forecasting/concepts)
 - [Google Ads API — ReachPlanService özel erişimi](https://developers.google.com/google-ads/api/docs/reach-forecasting/authentication)
 - [Google Ads — coğrafi hedefleme](https://support.google.com/google-ads/answer/10835274?hl=en)
 - [Meta Developers — Marketing API Access Tier ve 2026 app-review koşulu değişikliği](https://developers.meta.com/blog/updates-to-ads-management-standard-access-feature/)
+- [Meta for Business — Facebook/Instagram Reels placements and creative testing](https://www.facebook.com/business/ads/facebook-instagram-reels-ads)
 
 ### Deney ve kreatif varyantı
 
