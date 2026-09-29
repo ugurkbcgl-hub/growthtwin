@@ -1,34 +1,35 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 15:58 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 16:05 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `d65acc2f4614f5b1004b90cfb8a8f503f28289ae`; PR #117 is merged. Required PR CI `36571112986` and post-merge main CI `36571373689` passed. No open implementation PR is known.
-- The main checkout was clean when this documentation branch `docs/asset-ingestion-next-step` was created. This branch only refreshes project/roadmap/gap-analysis continuity after PR #117. It has not yet been committed or opened as a PR.
-- PR #116 localized and improved the login journey. PR #117 added an equal-allocation daily planning average to the fixed synthetic Search campaign. Details and prior milestones are in `PROJECT.md` and `ROADMAP.md`.
+- `main` is `c3b8ef1bd57bd18331ffc1cb1ca8d7fd683abb67`; PR #118 is merged. Its required CI `36571926602` and post-merge main CI `36572212096` passed. No open PR is known.
+- Current branch `docs/secure-asset-intake-contract` is based on main. It adds ADR-0009 and updates the asset-safety implementation order in the roadmap, project brief, ADR index, and this state file. The changes are not yet committed or submitted as a PR.
+- PR #117's synthetic daily budget pacing and its PR/main CI passed. Earlier campaign/workspace milestones are in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
 
 - GrowthTwin is for people and organizations in Türkiye who want to advertise; clinics are one possible sector. Omneky is a long-term capability benchmark, not a first-release scope promise.
-- Local product development is authorized, but real advertiser/customer/lead data must wait until the readiness gate and a separate owner decision. Keep local, CI, and staging data synthetic; do not connect real accounts, publish, charge or spend.
-- The authenticated campaign workspace creates only a fixed synthetic example. No public registration, uploads, AI provider calls, account connections, live forecasts, publication, or payment exist.
-- ADR-0008 selects a synthetic city-service quote/contact flow, Google Search as a technical candidate, and advertiser-owned website destination. It does not prove demand, API eligibility, forecast availability, final prices, legal readiness or permission to publish.
-- Keep the Django/PostgreSQL monolith and approved Heroku staging footprint. Do not add paid resources. Staging E2E, backup/restore, and rollback remain release-readiness gates; actual Scheduler one-off cost remains unverified.
-- Use feature branches and PRs, never push directly to `main`. The owner has authorized merging successful PRs after local review and required CI pass.
+- Local synthetic-data product development is authorized. Real advertiser/customer/lead data must wait until the readiness gate and a separate owner decision. Do not connect real accounts, publish, charge, or spend.
+- The authenticated campaign workspace creates only a fixed synthetic example. Public registration, user uploads, AI provider calls, account connections, live forecasts, publication, and payment are not implemented.
+- ADR-0008 selects a synthetic city-service quote/contact flow, Google Search as a technical candidate, and the advertiser's own site. It does not prove demand, API eligibility, forecast availability, final prices, legal readiness, or publishing permission.
+- ADR-0009 sets a contract-first boundary for future user files. It does not authorize upload, durable file storage, parsing, or AI processing. Keep the Django/PostgreSQL monolith and approved Heroku staging footprint; do not add paid resources.
+- Staging E2E, backup/restore, and rollback remain release-readiness gates; actual Scheduler one-off cost remains unverified. Use feature branches/PRs; never push directly to main. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
 
 ## Recent verified work
 
-- PR #113 adds the authenticated fixed-sample campaign list and preview; #114 adds owner-scoped bounded synthetic settings and confirmed deletion; #115 adds browser E2E for mobile owner flow and tenant isolation.
-- PR #116 adds Turkish accessible sign-in, preserves the intended return path, keeps public registration closed, and makes account entry visible on mobile. Its PR and post-merge CI passed.
-- PR #117 displays total synthetic media budget, dates, and the equal-allocation daily average. It labels this as arithmetic planning, not a platform daily limit or performance forecast. Its PR and post-merge CI passed.
+- PRs #113–#115 established the authenticated fixed-sample campaign workspace, bounded owner-scoped synthetic changes, and browser E2E tenant/mobile checks.
+- PR #116 improved the Turkish accessible sign-in, return path, and mobile account entry while keeping public registration closed.
+- PR #117 added a clearly labeled equal-allocation daily planning average without presenting a platform limit or a performance forecast.
+- PR #118 updated project continuity and recorded the next asset safety boundary. PR and post-merge CI passed.
 
-## Open risks and decisions
+## Open risks
 
-- Real-data readiness: secure file ingestion, privacy/retention, data recipients, production provider terms, platform/API approvals, token controls, audit/stop/revoke, backup/restore and rollback remain incomplete.
+- Real-data readiness: secure file handling, privacy/retention, data recipients, provider terms, platform/API approvals, token controls, audit/stop/revoke, backup/restore and rollback remain incomplete.
 - Credit costs, TRY/tax/payment pricing, ad service fees, lead delivery, performance guarantees and production AI/provider remain undecided or unverified.
 - Google forecasts and keyword ideas remain unavailable until eligible authorized sources are connected and verified.
 
 ## Next action
 
-Define the storage/provider-independent asset intake and processing contract using synthetic-only examples: ownership, rights and AI consent, quarantine, scanning, extraction, provenance, failure, and deletion states. Keep file upload and persistence closed until privacy, retention, parser isolation, malware scanning, deletion, and tenant isolation are demonstrably ready and the owner separately opens the real-data gate.
+Implement pure, storage/provider-independent asset workflow types and legal state transitions using synthetic examples only. Verify invalid transitions fail closed. Do not accept user files, create durable asset storage, or call AI providers; those require a later reviewed readiness gate and separate owner decision.
