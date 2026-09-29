@@ -19,21 +19,27 @@ flowchart LR
   Advertiser[Advertiser] --> Web[GrowthTwin web experience]
   Web --> App[Campaign application boundary]
   App --> Identity[Advertiser and workspace]
-  App --> Brand[Brand facts and assets]
-  App --> Brief[Campaign brief and plan]
+  App --> Brand[Brand facts, documents, and asset versions]
+  App --> Brief[Campaign brief and media plan]
   App --> Creative[Creative generation and versions]
+  App --> Pricing[Credits and service-fee ledger]
   App --> Policy[Consent, budget, and safety policy]
   App --> AI[AI gateway]
   App --> Publish[Publishing adapters]
   App --> Report[Performance reporting]
+  App --> Leads[Lead delivery]
+  App --> Experiments[Creative experiments]
   App --> Jobs[Background work boundary]
   Identity --> Store[(PostgreSQL)]
   Brand --> Store
   Brief --> Store
   Creative --> Store
+  Pricing --> Store
   Policy --> Store
   Publish --> Store
   Report --> Store
+  Leads --> Store
+  Experiments --> Store
   AI --> Providers[Local or replaceable model providers]
   Jobs --> Publish
   Jobs --> Report
@@ -45,13 +51,16 @@ The diagram is a logical view, not a deployment topology. It does not require a 
 
 - **Web experience:** low-friction, responsive campaign intake, previews, progress, reports, and pause/stop controls.
 - **Advertiser and workspace:** accounts, memberships, tenant context, and connected destinations. Enforce authorization on the server for every read and write.
-- **Brand facts and assets:** advertiser-supplied facts, references, permitted claims, and reusable creative inputs.
-- **Campaign brief and plan:** validated objective, audience, budget ceiling, schedule, destination, status, and required facts.
-- **Creative generation and versions:** copy and media metadata, revisions, destination formatting, and traceability to the source brief.
+- **Brand facts, documents, and assets:** advertiser-supplied facts, references, source documents, permitted claims, and reusable creative inputs. Preserve original uploads and record rights/source/version metadata. Isolate parsing and text extraction.
+- **Campaign brief and media plan:** validated objective, audience/geography, budget ceiling and currency, schedule, channel/placement, status, and required facts. Forecasts carry source, timestamp, assumptions and confidence; missing forecast data must not be filled with invented values.
+- **Creative generation and versions:** customer-owned material and GrowthTwin-created copy/image/video are distinct paths; record immutable source versions, derivatives, destination formatting, rights and traceability to briefs. Regeneration creates a new version instead of overwriting edits.
+- **Pricing and credit ledger:** keep purchased/granted/bonus credits, holds, consumption, releases/refunds and adjustments auditable and idempotent. Separate creative credits, GrowthTwin service fees, platform media spend, tax and currency. Prices remain a product decision.
 - **Consent, budget, and safety policy:** accepted account scopes, per-campaign and aggregate spend ceilings, allowed schedules and content, stop conditions, and auditable decisions. Fail closed when state is missing or stale.
 - **AI gateway:** server-side contract and replaceable providers for generation and checking. Outputs are untrusted suggestions and must pass deterministic schema and policy validation.
 - **Publishing adapters:** provider-neutral external-action contract. Adapters own OAuth/token details, platform payloads, idempotency keys, failure mapping, and reconciliation. Only the application policy layer may authorize dispatch.
 - **Performance reporting:** imports and normalizes platform results, marks missing or delayed data clearly, and presents understandable summaries.
+- **Lead delivery:** distinguish advertiser requests from campaign-generated leads; route only to an authorized destination with purpose/consent, access, retries, audit and deletion behavior.
+- **Experimentation:** store hypothesis, tested variable, success/guard metrics, budget and duration bounds, result sufficiency, and the user's authorization for any follow-up budget increase.
 - **Background work:** asynchronous generation, scheduling, publishing, and reporting with bounded retries and visible state. Select a queue or workflow product only after need and cost are established.
 - **Persistence and operations:** transaction ownership, tenant-scoped records, health/readiness, revision visibility, audit metadata, backups, and recovery controls.
 
@@ -62,6 +71,12 @@ The diagram is a logical view, not a deployment topology. It does not require a 
 The advertiser first authorizes the connected destination and chooses hard limits. The normal path can proceed without a per-campaign staff approval when the request, content, account, schedule, and spend all fit that authorization. Missing facts, invalid output, unsafe or restricted content, provider uncertainty, and limit violations pause the campaign. A revised creative is always revalidated before dispatch. A prominent advertiser stop action disables future dispatch immediately.
 
 An AI model must never set or raise a spend cap, invent advertiser facts, decide that policy checks passed, access platform credentials, or call a publishing API. Application code validates permissions and current limits at dispatch time, records the exact version and idempotency key, and reconciles uncertain provider responses before retrying.
+
+## Current implementation coverage
+
+The implementation is intentionally earlier than the logical target above. As of the audited `main` at `60f3971`, only `content`'s persistence-free brief/plan and synthetic text variation values plus the public `site`'s session-owned synthetic `CampaignDraft` are in use. `Workspace` exists with one `owner` but is not wired into campaign ownership or the public flow. `ai_gateway`, `publishing`, `analytics`, `approvals`, and `persistence` are package placeholders; there is no domain policy/budget, asset ingestion, credit ledger, campaign forecast, lead route, or experiment implementation. The sample report and pause control are simulations.
+
+Do not turn every box in the diagram into a database model before the first MVP workflow and data/tenant boundaries are selected. The field-by-field gap assessment and implementation dependencies are in [the current system gap analysis](docs/product/current-system-gap-analysis.md). No architectural cloud service is selected or required by that plan.
 
 ## Architecture rules
 
