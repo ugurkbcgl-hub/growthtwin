@@ -424,6 +424,27 @@ class CampaignPreviewViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_owner_report_shows_metrics_as_unavailable_without_a_data_source(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse("campaigns:report", args=[draft.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Rapor verisi henüz bağlı değil")
+        self.assertEqual(response.content.decode().count("Henüz veri yok"), 6)
+        self.assertContains(response, "Veri kaynağı")
+        self.assertContains(response, "Bağlı değil")
+        self.assertContains(response, "tahmin veya performans garantisi içermez")
+
+    def test_other_owner_cannot_open_campaign_report(self):
+        draft = self.make_draft()
+        self.client.force_login(self.other_user)
+
+        response = self.client.get(reverse("campaigns:report", args=[draft.pk]))
+
+        self.assertEqual(response.status_code, 404)
+
     def test_owner_can_update_bounded_synthetic_budget_and_duration(self):
         draft = self.make_draft()
         generate_creative_version_for_owner(owner=self.owner, draft_id=draft.pk)

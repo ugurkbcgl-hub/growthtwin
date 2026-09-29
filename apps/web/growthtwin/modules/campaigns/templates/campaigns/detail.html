@@ -114,6 +114,7 @@
     {% endif %}
 
     <div class="draft-actions">
+      <a class="button button-secondary" href="{% url 'campaigns:report' draft.pk %}">Kampanya raporunu aç</a>
       <a class="button button-secondary" href="{% url 'campaigns:edit' draft.pk %}">Örnek bütçe ve süreyi düzenle</a>
       <form method="post" action="{% url 'campaigns:delete' draft.pk %}">
         {% csrf_token %}

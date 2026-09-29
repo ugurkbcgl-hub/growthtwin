@@ -162,6 +162,14 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .confirmation-field input { width: 1.15rem; height: 1.15rem; margin-top: .2rem; accent-color: var(--green); }
 
 .summary-card { padding: 1.25rem; }
+.report-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: .8rem; margin-top: 1rem; }
+.report-metric h3 { margin: 0 0 .75rem; color: var(--muted); font-size: 1rem; }
+.report-metric p { margin: 0; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
+.report-source { margin-top: 1rem; }
+.report-source div { display: grid; grid-template-columns: minmax(10rem, .7fr) 1.3fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+.report-source div:last-child { border-bottom: 0; }
+.report-source dt { color: var(--muted); }
+.report-source dd { margin: 0; font-weight: 650; }
 .sample-card { margin: 1.5rem 0; }
 .summary-list { margin: 0; }
 .summary-list div { display: grid; grid-template-columns: minmax(10rem, .7fr) 1.3fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
@@ -184,4 +192,5 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
   .page-wrap { margin-top: 2rem; }
   .page-heading { align-items: flex-start; flex-direction: column; }
   .summary-list div { grid-template-columns: 1fr; gap: .15rem; }
+  .report-source div { grid-template-columns: 1fr; gap: .15rem; }
 }
