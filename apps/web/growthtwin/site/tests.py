@@ -180,9 +180,7 @@ class CampaignDraftFlowTests(TestCase):
 
         response = self.client.post(reverse("site:delete-campaign", args=(draft.pk,)))
 
-        self.assertRedirects(
-            response, f"{self.url}?draft=deleted#kampanya-denemesi"
-        )
+        self.assertRedirects(response, f"{self.url}?draft=deleted#kampanya-denemesi")
         self.assertFalse(CampaignDraft.objects.exists())
 
     def test_get_does_not_discard_draft(self):
