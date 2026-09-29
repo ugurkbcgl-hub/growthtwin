@@ -123,7 +123,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed initial legal/product landscape (2026-09-29):** mapped official sources for ad-claim substantiation, online consumer checkout, commercial email/SMS/call follow-up, KVKK notice/consent and international transfers, and the current health-sector advertising rules. Product gates and unresolved legal questions are in the [Türkiye readiness map](docs/product/turkiye-advertising-privacy-readiness.md). This is not a complete legal review; no real data, payment or live campaign was enabled.
 
-**Next research slice:** build the dated sector-and-channel eligibility matrix for the first Google Search workflow, starting with the selected unregulated local-service example and identifying restricted or unsupported categories. Check both current Turkish sector rules and Google Ads policies. Use the matrix to define the product's fail-closed allow/restrict/stop behavior; do not treat legal research as API approval or campaign authorization.
+**Completed in the 2026-09-29 research slice:** [Google Search Türkiye sector eligibility matrix](docs/product/google-search-turkiye-sector-eligibility.md) records a dated, sourced first pass for the synthetic local-service example and restricted/unsupported Google Ads categories. It defines `eligible`, `restricted`, `not_supported`, and `needs_review` states with fail-closed behavior. This is planning research only; several sectors remain unassessed, and no legal, platform-account, API or publication approval is implied.
+
+**Next action:** implement a small provider-free eligibility decision contract for local synthetic campaign drafts, using the four documented outcomes and the fail-closed rule semantics. Keep sources/version metadata as inputs; do not connect accounts, call Google, change publication behavior, or introduce real advertiser data.
 
 ## Phase 3 — First publishing and reporting integration
 

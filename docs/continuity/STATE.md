@@ -1,29 +1,20 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 23:52 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 00:00 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `origin/main` is `5bdd712` after PR #158 (`docs: assess Google Ads Search API feasibility in Türkiye`), merged at 2026-09-29 20:49 UTC. Its required CI `36628835883` and post-merge CI `36629110577` passed. Current local branch: `research/turkiye-ad-privacy-readiness`.
-- PR #154 required CI `36622723566` and post-merge CI `36622985685` passed. PR #155 refreshed continuity after #154. The authenticated report remains disconnected and synthetic; no local tests were run during manual visual inspection.
-- Manual visual review is complete using a narrow ~596 px view and a ~1265 px desktop view on an isolated `localhost` fixture. Planned dates, no observed period, unknown freshness, and all six unavailable metrics were legible at both sizes; no horizontal overflow was visible. On desktop the metric cards form three columns; on the narrow view the summary stacks and cards adapt to available width. No product code changed.
-- The earlier browser session showed two synthetic drafts. Their active server-side session and two associated records remain in the local PostgreSQL database, but the browser's current session no longer lists them after the isolated review login changed the `127.0.0.1` session cookie. No project-database draft deletion was performed. Do not expose or manually copy session-cookie values; determine whether there is a supported, safe recovery path before claiming the drafts are accessible again.
-
-## Product and safety context
-
-- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. Omneky is a long-term capability reference, not first-release scope.
-- Local synthetic-data product development is authorized. Staging E2E, backup/restore, rollback, and other release-readiness gates remain before external beta or production.
-- PR #135 added the authenticated report shell; #138 established a provider-neutral typed metric contract; #140 connected typed unavailable metrics and labeled dates as the planned campaign period; #141 defined provider-neutral metric semantics; #142 mapped official Google Ads API v25 fields; #143 added typed unavailable reasons; #145 documented source-specific zero-row and freshness behavior; #147 refreshed the handoff.
-- PR #150 adds `freshness_unknown` as a valueless report reason for a complete observation without trustworthy freshness evidence; it remains distinct from partial coverage and stale data. The underlying freshness evaluator is synthetic and no live source, adapter, or account is verified.
-- The authenticated report remains disconnected and contains no observed values. Search mapping leaves reach unavailable; text-ad interactions are not added again to clicks; attributed conversions do not prove delivered leads.
-- Keep the Django/PostgreSQL modular monolith and previously approved Heroku staging only. No additional paid service. Real advertiser/customer/lead data, uploads, production AI, platform account connections, publication, advertiser spend, and payments remain out of scope. Never push directly to `main`; successful PRs may be merged after review and required CI under the owner's standing authorization.
+- `main` is `375b058` after PR #159, which added the initial Türkiye advertising, consumer and privacy readiness map. Required CI `36629594340` passed; post-merge CI `36629858494` passed.
+- Current feature branch: `research/google-search-eligibility-matrix`, based on `375b058`. This branch contains the dated Google Search Türkiye sector-eligibility matrix and ROADMAP update; PR has not yet been opened.
+- The matrix is research/planning only. It distinguishes `eligible`, `restricted`, `not_supported` and `needs_review`; the local-service example is eligible only for synthetic local planning. It does not approve lawfulness, advertiser accounts, GrowthTwin API access or publication.
+- Product direction remains broad Türkiye advertisers. Local synthetic development is authorized. Do not use real advertiser/customer/lead data, connect live accounts, publish campaigns, or enable payment. Do not add paid services or exceed the approved Heroku staging setup.
 
 ## Open risks
 
-- Real-data readiness and release gates remain: secure file handling, privacy/retention, data recipients, provider terms, Türkiye-specific platform/API approvals, token protection/revocation, audit/stop behavior, backup/restore, rollback, and staging browser E2E.
+- Multiple sectors and subcategories remain unassessed; stale or missing evidence must fail closed. Qualified Turkish legal review and current platform-policy review remain necessary before live use.
+- Real-data readiness and release gates remain: privacy/retention, provider terms, platform/API approval, token protection/revocation, audit/stop behavior, backup/restore, rollback, and staging browser E2E.
 - Credit costs, TRY/tax/payment pricing, ad service fees, lead delivery, performance guarantees, and production AI/provider remain undecided or unverified.
-- Google Ads API access/eligibility and production freshness thresholds remain unverified; provider-specific adapters, source verification, ingestion, and durable audit are not implemented.
 
 ## Next action
 
-Review and submit the initial Türkiye advertising, consumer, privacy, and health-sector readiness map, then proceed to the dated Google Search sector/channel eligibility matrix. Keep research separate from legal clearance and product release: no real account, advertiser data, lead flow, payment, or campaign action. The two earlier synthetic drafts remain stored under an active server-side session but are not visible in the current browser session; do not expose or copy session-cookie values, and do not claim the drafts are restored.
+Complete review of the Google Search Türkiye eligibility-matrix PR and merge it only after required CI passes. Then implement a small provider-free eligibility decision contract for local synthetic drafts, following the matrix's fail-closed states; do not connect accounts, call Google, change publication behavior, or introduce real advertiser data.
