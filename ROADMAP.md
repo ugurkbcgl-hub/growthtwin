@@ -12,7 +12,7 @@ The product should remove routine GrowthTwin-operator work after an advertiser e
 - Django 5.2 LTS + PostgreSQL 18 is the accepted local stack and is already scaffolded under `apps/web`.
 - CI checks Django configuration, formatting, linting, dependency vulnerabilities, package builds, migrations, and focused tests. A synthetic profile edit E2E exists locally and in CI.
 - Local browser E2E and GitHub-hosted CI provide the initial feedback loop. Keep local UI work on synthetic data.
-- Heroku staging has an approved Basic web dyno, Essential-0 PostgreSQL, and Standard Free Scheduler. The Scheduler runs synthetic session cleanup daily at 00:00 UTC; first execution and actual one-off dyno cost remain unverified. The deployed app is for synthetic staging only.
+- Heroku staging has an approved Basic web dyno, Essential-0 PostgreSQL, and Standard Free Scheduler. On 2026-09-29, the Scheduler page recorded the daily synthetic session-cleanup job at 00:00 UTC as last run, and Heroku logs showed its one-off process exited with status 0. Actual one-off dyno cost remains unverified. The deployed app is for synthetic staging only.
 
 ## Phase 1 — Product experience prototype
 
@@ -78,6 +78,7 @@ Staging browser E2E for the demo, backup/restore, controlled rollback, and final
 
 Session-scoped prototype drafts must remain synthetic. Heroku staging now has a
 daily `python manage.py clearsessions` job scheduled at 00:00 UTC through
-Heroku Scheduler. The first execution and actual one-off dyno cost remain
-unverified. Scheduler is best-effort; do not infer a real-data retention
-guarantee from session expiry or this schedule.
+Heroku Scheduler. The 2026-09-29 00:00 UTC execution is verified in Heroku logs
+with exit status 0. Actual one-off dyno cost remains unverified. Scheduler is
+best-effort; do not infer a real-data retention guarantee from session expiry
+or this schedule.
