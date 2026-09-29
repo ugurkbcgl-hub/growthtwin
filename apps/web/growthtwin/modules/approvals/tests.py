@@ -8,6 +8,7 @@ from django.test import SimpleTestCase
 from growthtwin.modules.approvals.contracts import (
     PolicyReason,
     SyntheticActionEvidence,
+    SyntheticEvidenceSource,
     evaluate_synthetic_action,
 )
 
@@ -29,6 +30,8 @@ class SyntheticActionPolicyTests(SimpleTestCase):
             action_at=datetime(2026, 10, 5, 12, tzinfo=timezone.utc),
             campaign_starts_at=datetime(2026, 10, 1, tzinfo=timezone.utc),
             campaign_ends_at=datetime(2026, 10, 14, tzinfo=timezone.utc),
+            evidence_source=SyntheticEvidenceSource.TEST_FIXTURE,
+            evidence_observed_at=datetime(2026, 10, 5, 12, tzinfo=timezone.utc),
         )
 
     def test_valid_synthetic_evidence_is_only_eligible_for_review(self):
@@ -36,6 +39,46 @@ class SyntheticActionPolicyTests(SimpleTestCase):
 
         self.assertTrue(decision.eligible_for_synthetic_review)
         self.assertEqual(decision.reasons, ())
+        self.assertEqual(decision.evidence_source, self.evidence.evidence_source)
+        self.assertEqual(
+            decision.evidence_observed_at, self.evidence.evidence_observed_at
+        )
+        self.assertFalse(decision.live_dispatch_authorized)
+
+    def test_missing_or_unknown_evidence_source_fails_closed(self):
+        for source in (None, "live_google_ads"):
+            with self.subTest(source=source):
+                decision = evaluate_synthetic_action(
+                    replace(self.evidence, evidence_source=source)
+                )
+
+                self.assertIn(PolicyReason.EVIDENCE_SOURCE_INVALID, decision.reasons)
+                self.assertIsNone(decision.evidence_source)
+                self.assertFalse(decision.eligible_for_synthetic_review)
+
+    def test_missing_or_naive_observation_time_fails_closed(self):
+        cases = (
+            (None, PolicyReason.EVIDENCE_TIME_MISSING),
+            (datetime(2026, 10, 5, 12), PolicyReason.EVIDENCE_TIME_INVALID),
+        )
+        for observed_at, expected_reason in cases:
+            with self.subTest(observed_at=observed_at):
+                decision = evaluate_synthetic_action(
+                    replace(self.evidence, evidence_observed_at=observed_at)
+                )
+
+                self.assertIn(expected_reason, decision.reasons)
+                self.assertIsNone(decision.evidence_observed_at)
+                self.assertFalse(decision.eligible_for_synthetic_review)
+
+    def test_observation_time_is_reported_without_a_freshness_claim(self):
+        observed_at = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        decision = evaluate_synthetic_action(
+            replace(self.evidence, evidence_observed_at=observed_at)
+        )
+
+        self.assertTrue(decision.eligible_for_synthetic_review)
+        self.assertEqual(decision.evidence_observed_at, observed_at)
         self.assertFalse(decision.live_dispatch_authorized)
 
     def test_unknown_authorization_fails_closed(self):
