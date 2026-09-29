@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last repository verification: 2026-09-29 02:31 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. `main` is `0735aa5` (PR #79); working tree clean, no open PRs. PR #79 CI `36498106247` and post-merge CI `36498250268` passed. The focused local mobile browser E2E passed.
+Last repository verification: 2026-09-29 08:07 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`. Starting point was clean `main` at `6481b13` (PR #80); PR #80 is merged and its CI passed. Current documentation branch: `docs/verify-scheduler-first-run`; changes are pending review. No open PRs were found before this branch. Heroku Scheduler dashboard and logs were read on 2026-09-29; see verified result below.
 
 ## Goal and working rules
 
@@ -8,7 +8,7 @@ Last repository verification: 2026-09-29 02:31 (Europe/Istanbul). Repository: `h
 - Local synthetic-data product development is authorized. Keep using the existing Django/PostgreSQL app and CI; use branches and PRs, never push directly to `main`.
 - Advertisers must authorize connected accounts and define enforceable spend, schedule, and content limits before live actions. Pause when information or permission is unclear.
 - Keep local, CI, and staging examples synthetic. Do not expose secrets or private advertiser data.
-- Do not add paid services or enable live publishing/spend without authorization. Heroku Scheduler run review was deferred until 2026-10-01 or later; do not inspect it earlier.
+- Do not add paid services or enable live publishing/spend without authorization. The owner explicitly requested a read-only Heroku Scheduler check on 2026-09-29; no run was triggered and no settings were changed.
 
 ## Current product state
 
@@ -38,9 +38,9 @@ Last repository verification: 2026-09-29 02:31 (Europe/Istanbul). Repository: `h
 - Select the first advertiser workflow and publishing destination only after validating user need and Türkiye-specific platform eligibility, approval, policy, and reporting.
 - Define advertiser consent, spend caps, review/autonomy defaults, and stop conditions before live publishing or spend.
 - Session drafts are synthetic. Verify retention/deletion before accepting real advertiser data; staging E2E, backup/restore, and rollback remain external-beta/production gates.
-- Heroku Scheduler's first scheduled execution and actual billed one-off dyno usage remain unverified. Keep staging data synthetic; the best-effort cleanup cadence is not a retention guarantee. Do not inspect the scheduled run before 2026-10-01.
+- Heroku Scheduler's first run is verified: dashboard Last Run was 2026-09-29 00:00 UTC, Next Due was 2026-09-30 00:00 UTC, and application logs showed `python manage.py clearsessions` exited with status 0 at 00:00:11 UTC. Actual billed one-off dyno usage remains unverified. Keep staging data synthetic; this best-effort run is not a real-data retention guarantee.
 - AI/provider selection and production data-processing terms remain undecided. Recheck provider terms before using an external provider.
 
 ## Next action
 
-Review server-side validation accessibility for the daily budget and duration controls using synthetic invalid values; fix only reproduced focus, error-association, or announcement gaps, and do not check Heroku Scheduler before 2026-10-01.
+Review server-side validation accessibility for the daily budget and duration controls using synthetic invalid values; fix only reproduced focus, error-association, or announcement gaps.

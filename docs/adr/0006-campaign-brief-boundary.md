@@ -69,11 +69,12 @@ On 2026-09-28, after the owner authorized the scoped staging change, the
 Standard Free Heroku Scheduler add-on was provisioned on
 `growthtwin-stage-270927`. A job was configured to run
 `python manage.py clearsessions` daily at 00:00 UTC (03:00 Europe/Istanbul),
-using the Basic dyno. The dashboard showed the first run due at 2026-09-29
-00:00 UTC and Last Run `Never`; successful execution and actual one-off dyno
-cost have not yet been verified. The add-on itself is Free, while job dyno
-runtime is billed. The existing staging estimate remained about USD 12/month
-at setup; observe actual usage after the first run.
+using the Basic dyno. On 2026-09-29, the Scheduler dashboard showed Last Run
+at 00:00 UTC and Next Due at 2026-09-30 00:00 UTC. Heroku application logs
+showed the one-off process exited with status 0 at 00:00:11 UTC. Actual
+one-off dyno cost remains unverified. The add-on itself is Free, while job
+dyno runtime is billed; the existing staging estimate at setup was about USD
+12/month before tax.
 
 When a persistent content entity is proposed, it must be owned by an explicit
 advertiser/workspace identity, not a browser session. Do not implement that
@@ -88,9 +89,9 @@ behavior are specified.
 - Session expiry blocks access but does not itself prove that expired rows are
   promptly removed. Cleanup cadence is an explicit privacy/operations gate.
 - Staging has a Standard Free Scheduler add-on and the synthetic cleanup job
-  described above. Its first run and actual variable dyno cost remain
-  unverified; do not treat best-effort execution as a real-data retention
-  guarantee.
+  described above. The first run completed with exit status 0; actual variable
+  dyno cost remains unverified. Do not treat best-effort execution as a
+  real-data retention guarantee.
 - A later ORM extraction requires a deliberate data migration and ownership
   transition rather than a direct rename of `CampaignDraft`.
 - Workspace identity, retention duration, and real-data acceptance remain open.
@@ -100,8 +101,7 @@ behavior are specified.
 - Keep `CampaignBrief` and `CampaignPlan` free of persistence and HTTP concerns.
 - Preserve and verify session isolation, expiry cleanup, edit, and deletion in
   the site adapter.
-- Verify the scheduled job's first execution and observe actual one-off dyno
-  usage. Keep staging data synthetic; do not treat best-effort scheduling as a
-  production retention guarantee.
+- Observe actual one-off dyno usage. Keep staging data synthetic; do not treat
+  best-effort scheduling as a production retention guarantee.
 - Before a content ORM entity or real advertiser data, decide workspace owner,
   retention/deletion policy, and migration/rollback approach.
