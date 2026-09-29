@@ -7,6 +7,8 @@ from django.test import SimpleTestCase
 
 from growthtwin.modules.campaigns.report_metrics import (
     CampaignReportMetric,
+    MetricFreshness,
+    MetricObservation,
     MetricStatus,
     MetricUnavailableReason,
     MetricUnit,
@@ -18,6 +20,19 @@ class CampaignReportMetricTests(SimpleTestCase):
     def setUp(self):
         self.window = ReportingWindow(date(2026, 9, 1), date(2026, 9, 30))
 
+    def observation(self, **overrides):
+        values = {
+            "scope": "synthetic-campaign-1",
+            "requested_window": self.window,
+            "covered_window": self.window,
+            "retrieved_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "response_complete": True,
+            "row_present": True,
+            "freshness": MetricFreshness.CURRENT,
+            "freshness_rule": "synthetic-freshness-rule-v1",
+        }
+        return MetricObservation(**(values | overrides))
+
     def test_available_zero_is_distinct_from_unavailable(self):
         observed_zero = CampaignReportMetric(
             key="clicks",
@@ -27,7 +42,7 @@ class CampaignReportMetricTests(SimpleTestCase):
             window=self.window,
             value=0,
             source="synthetic-report-fixture",
-            observed_at=datetime(2026, 10, 1, tzinfo=timezone.utc),
+            observation=self.observation(),
         )
         no_data = CampaignReportMetric(
             key="clicks",
@@ -53,14 +68,16 @@ class CampaignReportMetricTests(SimpleTestCase):
             value=Decimal("0.00"),
             currency="TRY",
             source="synthetic-report-fixture",
-            observed_at=datetime(2026, 10, 1, tzinfo=timezone.utc),
+            observation=self.observation(),
         )
 
         self.assertEqual(metric.currency, "TRY")
         self.assertEqual(metric.source, "synthetic-report-fixture")
-        self.assertEqual(metric.observed_at.utcoffset().total_seconds(), 0)
+        self.assertEqual(metric.observation.retrieved_at.utcoffset().total_seconds(), 0)
 
-    def test_available_metric_requires_value_source_and_aware_observation(self):
+    def test_available_metric_requires_value_source_and_complete_fresh_observation(
+        self,
+    ):
         required = {
             "key": "impressions",
             "label": "Impressions",
@@ -69,16 +86,97 @@ class CampaignReportMetricTests(SimpleTestCase):
             "window": self.window,
             "value": 3,
             "source": "fixture",
-            "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "observation": self.observation(),
         }
         for field, value in (
             ("value", None),
             ("source", None),
-            ("observed_at", datetime(2026, 10, 1)),
-            ("observed_at", "2026-10-01T00:00:00Z"),
+            ("observation", None),
+            ("observation", "2026-10-01T00:00:00Z"),
         ):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 CampaignReportMetric(**(required | {field: value}))
+
+    def test_available_zero_requires_complete_exact_window_and_present_row(self):
+        required = {
+            "key": "clicks",
+            "label": "Clicks",
+            "status": MetricStatus.AVAILABLE,
+            "unit": MetricUnit.COUNT,
+            "window": self.window,
+            "value": 0,
+            "source": "synthetic-report-fixture",
+        }
+        observations = (
+            self.observation(row_present=False),
+            self.observation(response_complete=False),
+            self.observation(
+                covered_window=ReportingWindow(date(2026, 9, 1), date(2026, 9, 29))
+            ),
+            self.observation(
+                requested_window=ReportingWindow(date(2026, 9, 2), date(2026, 9, 30)),
+                covered_window=ReportingWindow(date(2026, 9, 2), date(2026, 9, 30)),
+            ),
+        )
+        for observation in observations:
+            with self.subTest(observation=observation), self.assertRaises(ValueError):
+                CampaignReportMetric(**(required | {"observation": observation}))
+
+    def test_retrieval_time_alone_does_not_confirm_a_metric_row(self):
+        observation = self.observation(
+            covered_window=None,
+            row_present=False,
+            freshness=MetricFreshness.UNKNOWN,
+            freshness_rule=None,
+        )
+        self.assertEqual(
+            observation.retrieved_at, datetime(2026, 10, 1, tzinfo=timezone.utc)
+        )
+        self.assertFalse(observation.is_complete_for(self.window))
+
+    def test_recent_retrieval_with_unknown_freshness_cannot_be_available(self):
+        with self.assertRaises(ValueError):
+            CampaignReportMetric(
+                key="clicks",
+                label="Clicks",
+                status=MetricStatus.AVAILABLE,
+                unit=MetricUnit.COUNT,
+                window=self.window,
+                value=0,
+                source="synthetic-report-fixture",
+                observation=self.observation(
+                    freshness=MetricFreshness.UNKNOWN,
+                    freshness_rule=None,
+                ),
+            )
+
+    def test_stale_unavailable_reason_requires_source_rule_classification(self):
+        with self.assertRaises(ValueError):
+            CampaignReportMetric(
+                key="clicks",
+                label="Clicks",
+                status=MetricStatus.UNAVAILABLE,
+                unit=MetricUnit.COUNT,
+                window=self.window,
+                unavailable_reason=MetricUnavailableReason.STALE,
+                source="synthetic-report-fixture",
+                observation=self.observation(),
+            )
+
+    def test_observation_requires_valid_scope_time_and_covered_window(self):
+        invalid = (
+            {"scope": " "},
+            {"retrieved_at": datetime(2026, 10, 1)},
+            {"response_complete": None},
+            {"row_present": 0},
+            {"freshness": None},
+            {"freshness_rule": 12},
+            {"freshness": MetricFreshness.CURRENT, "freshness_rule": None},
+            {"covered_window": ReportingWindow(date(2026, 8, 31), date(2026, 9, 1))},
+        )
+        for overrides in invalid:
+            with self.subTest(overrides=overrides), self.assertRaises(ValueError):
+                self.observation(**overrides)
 
     def test_unavailable_metric_rejects_numeric_value_or_provenance(self):
         required = {
@@ -111,7 +209,11 @@ class CampaignReportMetricTests(SimpleTestCase):
                 MetricUnavailableReason.PARTIAL,
                 {
                     "source": "google-ads",
-                    "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+                    "observation": self.observation(
+                        covered_window=ReportingWindow(
+                            date(2026, 9, 1), date(2026, 9, 29)
+                        )
+                    ),
                 },
                 "Dönem verisi kısmi",
             ),
@@ -119,7 +221,10 @@ class CampaignReportMetricTests(SimpleTestCase):
                 MetricUnavailableReason.STALE,
                 {
                     "source": "google-ads",
-                    "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+                    "observation": self.observation(
+                        freshness=MetricFreshness.STALE,
+                        freshness_rule="synthetic-stale-rule-v1",
+                    ),
                 },
                 "Kaynak verisi güncel değil",
             ),
@@ -141,7 +246,9 @@ class CampaignReportMetricTests(SimpleTestCase):
             "window": None,
             "unavailable_reason": MetricUnavailableReason.PARTIAL,
             "source": "google-ads",
-            "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "observation": self.observation(
+                covered_window=ReportingWindow(date(2026, 9, 1), date(2026, 9, 29))
+            ),
         }
         with self.assertRaises(ValueError):
             CampaignReportMetric(**required)
@@ -156,7 +263,7 @@ class CampaignReportMetricTests(SimpleTestCase):
                 window=self.window,
                 value=0,
                 source="fixture",
-                observed_at=datetime(2026, 10, 1, tzinfo=timezone.utc),
+                observation=self.observation(),
                 unavailable_reason=MetricUnavailableReason.NOT_CONNECTED,
             )
 
@@ -169,7 +276,7 @@ class CampaignReportMetricTests(SimpleTestCase):
             "window": self.window,
             "value": 1,
             "source": "fixture",
-            "observed_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "observation": self.observation(),
         }
         for overrides in (
             {"value": -1},
