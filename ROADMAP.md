@@ -87,7 +87,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #122:** add a pure synthetic policy check for authorization, destination/channel/content state, campaign and aggregate budget caps, schedule, and stop conditions. It reports reasons, fails closed on unknown inputs, and never authorizes live dispatch. Its caller-supplied evidence remains untrusted.
 
-**In progress on `feat/policy-evidence-metadata`:** add the allowlisted synthetic evidence source and timezone-aware observation time to the policy result. Unknown labels and missing/naive timestamps fail closed. The returned metadata is caller-supplied and untrusted; do not treat it as authentication, freshness proof, atomic spend reservation, or live authorization. Design trusted state provenance and durable audit separately before any publishing adapter.
+**Completed in PR #126:** add allowlisted synthetic evidence-source labels and a timezone-aware observation time to the policy result. Unknown labels and missing/naive timestamps fail closed. The returned metadata remains caller-supplied and untrusted; it is not authentication, freshness proof, atomic spend reservation, or live authorization.
+
+**Next local contract:** define a stable synthetic policy version and rule identifiers for each decision so later explanations can identify which deterministic check ran. Keep this metadata in memory, do not imply the version authenticates evidence, and do not add persistence, live integrations, spend reservation, or dispatch authorization. Trusted provenance and durable audit remain separate readiness work before a publishing adapter.
 
 ## Phase 3 — First publishing and reporting integration
 
