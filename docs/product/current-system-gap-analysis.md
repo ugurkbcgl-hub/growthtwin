@@ -5,6 +5,8 @@
 **İncelenen kaynak:** `main` commit `60f39717fe3102fe764670e29023554368e6b2e3`; mevcut uygulama kaynakları ve [GrowthTwin ürün/hizmet blueprint'i](growthtwin-service-blueprint.md).
 **Kapsam:** mevcut yazılımın yeni ürün yönüne uyumu ve kodlamadan önce gereken temel sınırlar. Bu belge yeni kanal, sağlayıcı, hizmet bedeli, garanti veya ürün kapsamı kararı vermez.
 
+**Takip güncellemesi (2026-09-29):** Başlangıçtaki kod denetimi `60f3971` commit'inin snapshot'ıdır. PR #108 analizi main'e ekledi. Mevcut `feat/first-search-campaign-foundation` dalı ADR-0008 kapsamıyla sentetik, workspace'e bağlı `WorkspaceCampaignDraft`, pozitif para-alt-birim tavanı ve owner-scoped application service ekliyor; PR açılana kadar main'de değildir. Bu model kullanıcı arayüzüne bağlı değildir ve yayın/harcama izni uygulamaz. Gerçek veri, güvenli dosya alımı, ücret/kredi defteri, politika, tahmin ve kanal adapter açıkları sürmektedir.
+
 ## 1. Mevcut sistemin kısa karşılığı
 
 Şu anki web ürünü bir **sentetik kampanya deney prototipi**. Türkiye’de reklam hesabı bağlayıp kampanya yöneten ya da müşteri dokümanı alıp işleyen hazır bir SaaS değildir. Yerel geliştirme, Django/PostgreSQL ve GitHub CI temeli var; uygulama tarafındaki ürün/domain altyapısı yeni blueprint'in küçük bir parçası.
