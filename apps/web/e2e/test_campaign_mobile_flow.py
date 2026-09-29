@@ -316,6 +316,11 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
 
                 page.get_by_role("button", name="Örnek rapor").click()
                 self.assertEqual(page.locator("#step-count").inner_text(), "3 / 3")
+                report_top = page.locator("#report-panel").evaluate(
+                    "panel => panel.getBoundingClientRect().top"
+                )
+                self.assertGreaterEqual(report_top, 0)
+                self.assertLess(report_top, page.evaluate("window.innerHeight"))
                 self.assert_no_horizontal_overflow(page)
 
                 page.get_by_role("button", name="Bu taslağı sil").click()

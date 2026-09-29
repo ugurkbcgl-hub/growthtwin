@@ -33,10 +33,13 @@
       Number.isFinite(amount) && amount > 0 ? formatLira(amount * days) : "—";
   };
 
-  const showStep = (step) => {
+  const showStep = (step, shouldScroll = false) => {
     panels.forEach((panel, index) => {
       panel.hidden = index !== step - 1;
     });
+    if (shouldScroll) {
+      panels[step - 1].scrollIntoView({ block: "start", behavior: "instant" });
+    }
     const stepName = document.createElement("span");
     stepName.textContent = stepNames[step - 1];
     stepLabel.replaceChildren(document.createTextNode(`0${step} `), stepName);
@@ -93,13 +96,15 @@
   dailyLimitInput.addEventListener("input", updateBudget);
   daysInput.addEventListener("change", updateBudget);
   document.getElementById("edit-brief").addEventListener("click", () => {
-    showStep(1);
+    showStep(1, true);
     if (planEditTarget === "target-audience" || planEditTarget === "brand-context") {
       document.querySelector(".optional-context").open = true;
     }
     document.getElementById(planEditTarget).focus();
   });
-  document.getElementById("show-report").addEventListener("click", () => showStep(3));
+  document
+    .getElementById("show-report")
+    .addEventListener("click", () => showStep(3, true));
   pauseButton.addEventListener("click", () => {
     demoPaused = !demoPaused;
     document.getElementById("automation-state").textContent =
