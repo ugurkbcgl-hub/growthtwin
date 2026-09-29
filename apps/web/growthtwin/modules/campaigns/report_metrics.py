@@ -1,7 +1,7 @@
 """Provider-neutral values for campaign report metrics."""
 
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 from enum import StrEnum
 
@@ -38,6 +38,57 @@ class MetricFreshness(StrEnum):
 
 
 @dataclass(frozen=True)
+class MetricFreshnessRule:
+    """Configured freshness policy for one source and metric family.
+
+    The interval is an application policy, not a provider guarantee or SLO.
+    """
+
+    identifier: str
+    source: str
+    metric_family: str
+    max_age: timedelta
+
+    def __post_init__(self):
+        for name in ("identifier", "source", "metric_family"):
+            value = getattr(self, name)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"Freshness rule {name} is required.")
+        if not isinstance(self.max_age, timedelta) or self.max_age <= timedelta(0):
+            raise ValueError("Freshness rule max age must be a positive duration.")
+
+
+def classify_metric_freshness(
+    *,
+    source_data_as_of: datetime | None,
+    checked_at: datetime,
+    rule: MetricFreshnessRule | None,
+) -> MetricFreshness:
+    """Classify source data time under an explicit configured rule.
+
+    Missing evidence or a source timestamp in the future is unknown. Retrieval
+    time is intentionally not an input: a recent fetch can contain old data.
+    """
+
+    for name, value in (
+        ("checked_at", checked_at),
+        ("source_data_as_of", source_data_as_of),
+    ):
+        if value is not None and (
+            not isinstance(value, datetime) or value.utcoffset() is None
+        ):
+            raise ValueError(f"{name} must be timezone-aware.")
+    if rule is not None and not isinstance(rule, MetricFreshnessRule):
+        raise ValueError("Freshness rule must use the configured rule type.")
+    if source_data_as_of is None or rule is None:
+        return MetricFreshness.UNKNOWN
+    age = checked_at - source_data_as_of
+    if age < timedelta(0):
+        return MetricFreshness.UNKNOWN
+    return MetricFreshness.CURRENT if age <= rule.max_age else MetricFreshness.STALE
+
+
+@dataclass(frozen=True)
 class ReportingWindow:
     """Inclusive dates covered by a report metric."""
 
@@ -60,17 +111,25 @@ class MetricObservation:
     """
 
     scope: str
+    source: str
+    metric_family: str
     requested_window: ReportingWindow
     covered_window: ReportingWindow | None
     retrieved_at: datetime
+    source_data_as_of: datetime | None
+    freshness_checked_at: datetime
     response_complete: bool
     row_present: bool
     freshness: MetricFreshness
-    freshness_rule: str | None
+    freshness_rule: MetricFreshnessRule | None
 
     def __post_init__(self):
         if not isinstance(self.scope, str) or not self.scope.strip():
             raise ValueError("Observation scope is required.")
+        if not isinstance(self.source, str) or not self.source.strip():
+            raise ValueError("Observation source is required.")
+        if not isinstance(self.metric_family, str) or not self.metric_family.strip():
+            raise ValueError("Observation metric family is required.")
         if not isinstance(self.requested_window, ReportingWindow):
             raise ValueError("Observation requires a requested reporting window.")
         if self.covered_window is not None and not isinstance(
@@ -87,6 +146,18 @@ class MetricObservation:
             or self.retrieved_at.utcoffset() is None
         ):
             raise ValueError("Retrieval time must be timezone-aware.")
+        if (
+            not isinstance(self.freshness_checked_at, datetime)
+            or self.freshness_checked_at.utcoffset() is None
+        ):
+            raise ValueError("Freshness check time must be timezone-aware.")
+        if self.freshness_checked_at < self.retrieved_at:
+            raise ValueError("Freshness cannot be checked before retrieval.")
+        if self.source_data_as_of is not None and (
+            not isinstance(self.source_data_as_of, datetime)
+            or self.source_data_as_of.utcoffset() is None
+        ):
+            raise ValueError("Source data time must be timezone-aware.")
         if not isinstance(self.response_complete, bool) or not isinstance(
             self.row_present, bool
         ):
@@ -95,14 +166,24 @@ class MetricObservation:
             )
         if not isinstance(self.freshness, MetricFreshness):
             raise ValueError("Observation freshness must be explicit.")
-        if self.freshness_rule is not None and not isinstance(self.freshness_rule, str):
-            raise ValueError("Freshness rule must be a text identifier.")
-        if self.freshness in (MetricFreshness.CURRENT, MetricFreshness.STALE) and (
-            not isinstance(self.freshness_rule, str) or not self.freshness_rule.strip()
+        if self.freshness_rule is not None and not isinstance(
+            self.freshness_rule, MetricFreshnessRule
+        ):
+            raise ValueError("Freshness rule must use the configured rule type.")
+        if self.freshness_rule is not None and (
+            self.freshness_rule.source != self.source
+            or self.freshness_rule.metric_family != self.metric_family
         ):
             raise ValueError(
-                "Current or stale freshness requires a source-specific rule."
+                "Freshness rule must match the observed source and family."
             )
+        expected_freshness = classify_metric_freshness(
+            source_data_as_of=self.source_data_as_of,
+            checked_at=self.freshness_checked_at,
+            rule=self.freshness_rule,
+        )
+        if self.freshness is not expected_freshness:
+            raise ValueError("Freshness must match the configured rule evaluation.")
 
     def is_complete_for(self, window: ReportingWindow) -> bool:
         """Whether this observation can support a value for the exact window."""
@@ -195,6 +276,13 @@ class CampaignReportMetric:
                     )
                 if self.observation.requested_window != self.window:
                     raise ValueError("Observation window must match the metric window.")
+                if (
+                    self.observation.source != self.source
+                    or self.observation.metric_family != self.key
+                ):
+                    raise ValueError(
+                        "Observation source and family must match the metric."
+                    )
                 is_complete = self.observation.is_complete_for(self.window)
                 if self.unavailable_reason is MetricUnavailableReason.PARTIAL:
                     if is_complete:
@@ -236,6 +324,11 @@ class CampaignReportMetric:
             raise ValueError(
                 "Available metrics require a complete row for the exact window."
             )
+        if (
+            self.observation.source != self.source
+            or self.observation.metric_family != self.key
+        ):
+            raise ValueError("Observation source and family must match the metric.")
         if self.observation.freshness is not MetricFreshness.CURRENT:
             raise ValueError(
                 "Available metrics require a current source-specific freshness result."

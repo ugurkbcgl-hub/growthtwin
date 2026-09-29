@@ -27,20 +27,31 @@ omitted row or a recent fetch as a confirmed zero could fabricate a result.
    source-specific rule. A missing row cannot be mapped to zero, even if the
    report request completed and its fetch time is recent. `unknown` freshness
    must remain unavailable.
-4. A partial unavailable metric must carry an observation that is not complete
+4. Freshness is computed by a pure classifier from the source's
+   `source_data_as_of` timestamp, the timezone-aware evaluation time, and a
+   configured `MetricFreshnessRule` that names its source, metric family,
+   identifier, and positive maximum age. At the exact maximum age data is
+   `current`; older data is `stale`. Missing rule/source time and a source time
+   later than the evaluation time produce `unknown`. Retrieval time is not an
+   input to this classification. The observation and metric must match the
+   rule's source and metric family. The configured age is application policy,
+   not a provider SLO or guarantee.
+5. A partial unavailable metric must carry an observation that is not complete
    for its period. A stale unavailable metric carries a complete last
-   observation and a source-specific rule that classifies it as stale. This
-   type adds no universal age threshold and does not itself compute freshness.
-5. Observation scope, completion flags, and freshness-rule labels are
+   observation and a rule evaluation that classifies it as stale.
+6. Observation scope, completion flags, source timestamps, and rule identity are
    caller-supplied evidence. They are useful for deterministic contracts and
    synthetic tests, but do not authenticate a provider, account, query,
-   pagination, row, freshness calculation, or data source.
+   pagination, row, source timestamp, or data source. No live adapter is
+   included.
 
 ## Consequences
 
 - Retrieval time is distinct from the report period and coverage.
 - A source adapter must prove scope, row presence, full period coverage, and
   complete retrieval before returning an available value.
-- Freshness remains metric/source-specific and must be reviewed against current
-  source guidance. No database schema, provider adapter, account connection,
+- Freshness evaluation is deterministic once a source/metric policy is
+  explicitly configured. Choosing production thresholds remains metric/source-
+  specific and must be reviewed against current source guidance. No database
+  schema, provider adapter, account connection,
   real-data import, publication, or spend is included.
