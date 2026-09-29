@@ -1,33 +1,29 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 10:42 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 11:22 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Clean `main` at `f524a11` (PR #98); no open PRs at this snapshot.
-- PR #98 CI run `36537946501` passed. Its post-merge `main` run `36538134330` was still in progress at this snapshot.
-- PR #97 CI run `36537625405` and post-merge run `36537842405` passed.
-- PR #96 CI run `36536971429` and post-merge run `36537179131` passed.
+- Clean `main` at `54c2c30` (PR #100); no open PRs at this snapshot.
+- PR #100 CI run `36541396010` and post-merge main CI run `36541595990` passed, including Django tests, formatting/lint, and browser E2E.
+- Local development site is listening at `127.0.0.1:8002` (PID 11876). It serves the current source after collecting static assets and restarting the verified runserver.
 
 ## Product and safety context
 
 - GrowthTwin targets people and organizations in Türkiye who want to advertise; clinics are one example. Omneky is a long-term capability reference, not first-release scope.
 - Local product development with synthetic data is authorized. Keep Django 5.2/PostgreSQL modular monolith; use feature branches and PRs; do not push directly to `main`.
-- The local site demonstrates brief → campaign preview → editable deterministic copy → simulated pause → sample report. Drafts belong to an anonymous session and are stored in PostgreSQL. No AI provider, ad account, publication, real spend, or real performance metrics are connected.
-- The first-visit notice now accurately says brief data is sent to the GrowthTwin app and temporarily stored as a session draft; this prototype does not send it to AI services or ad platforms, publish ads, or spend money. Real or sensitive information must not be used.
-- Existing Heroku staging is approved only within the previously agreed budget and synthetic-data boundary. The daily `clearsessions` job's first run succeeded on 2026-09-29; actual one-off dyno cost is unverified, and Scheduler is best-effort. Staging E2E, backup/restore, rollback, and final cost/CI recording remain gates before external beta or production.
-- First advertiser workflow/destination, live-action consent/autonomy rules, and production AI/data terms remain undecided. Do not connect real accounts, publish, spend, deploy production, or add paid services without required authorization.
+- The site demonstrates brief → plan/preview → deterministic editable copy → simulated pause → sample report. Anonymous session drafts are stored in PostgreSQL. No AI provider, ad account, publication, real spend, or real metrics are connected. Do not enter real or sensitive data.
+- The Heroku `clearsessions` job's first run succeeded, but Scheduler is best-effort and its actual one-off dyno cost is unverified. It is not a real-data retention guarantee. Staging E2E, backup/restore, rollback, and final cost/CI recording remain gates before external beta or production.
+- First advertiser workflow/destination, production AI/data terms, category-specific retention, and real-data admission remain undecided. Do not connect accounts, publish, spend, deploy production, or add paid services without the required authorization.
 
 ## Recent verified work
 
-- PR #89 fixed the mobile post-submit preview scroll; PR and post-merge CI passed.
-- PR #92 clarified session-draft access expiry and added accessible delete confirmation; PR and post-merge CI passed.
-- PR #94 warns that regeneration replaces all edited copy; the focused mobile E2E and post-merge CI passed.
-- The campaign-plan/copy review compared two distinct synthetic advertiser briefs. Summaries reflect user-entered objective, audience, offer, and budget; deterministic copy formats supplied facts with no additional factual claims. No defect was demonstrated.
-- Review of editing an existing draft confirmed the brief and plan update together; creative copy stays visibly marked stale until the advertiser deliberately regenerates it, preserving edits. Existing mobile E2E covers this path; no inconsistency was found.
-- The first-visit content review found the inaccurate “nothing is sent anywhere” notice. PR #96 corrected the data-flow statement and added a focused regression test; PR and post-merge CI passed.
-- Visual inspection through the open browser was unavailable because app security blocked browser automation. The local server at `127.0.0.1:8002` was reported running earlier; current availability was not rechecked.
+- Phase 1 acceptance was verified against the brief → preview → sample report journey. Manual desktop review at a 1252 px viewport found horizontal page overflow, a hard-to-read data-use notice, and a report action that could leave the report off-screen. PR #100 fixed all three; the refreshed desktop view had no horizontal scrollbar and the report was visible after navigation. Mobile remains covered by E2E.
+- PR #96 corrected the first-visit data notice: inputs go to the GrowthTwin app and are stored as a temporary session draft; this prototype does not send them to AI services or ad platforms, publish, or spend.
+- Two synthetic advertiser briefs and the existing-draft edit flow were reviewed. Plan/copy reflect supplied facts, and edited copy remains visibly stale until the advertiser chooses to regenerate it. No other defect was demonstrated.
+- A local browser test attempt could not create its PostgreSQL test database because the configured local DB role lacks `CREATE DATABASE`; it did not run. The complete required CI suite passed on PR #100 and after merge.
+- [ADR-0007](../adr/0007-workspace-ownership-and-retention.md) establishes a synthetic-only Phase 2 boundary: future campaign data is workspace-owned, anonymous drafts are not backfilled, and real-data retention must be defined by data category and purpose before launch. It is not legal approval to process personal data.
 
 ## Next action
 
-Compare the Phase 1 acceptance criteria with the implemented campaign journey and focused browser E2E to identify any remaining demonstrable gap before considering Phase 2; keep product examples synthetic and do not add publishing or external services.
+Implement the smallest local synthetic `Workspace` model owned by an authenticated Django user, with tenant-ownership and deletion tests. Keep it disconnected from anonymous session drafts and do not accept real advertiser data or set a universal retention duration.

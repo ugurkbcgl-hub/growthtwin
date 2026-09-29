@@ -18,7 +18,7 @@ The product should remove routine GrowthTwin-operator work after an advertiser e
 
 **Goal:** demonstrate a clear, low-effort paid-advertising journey for a user in Türkiye without waiting for external APIs, paid infrastructure, or a production model.
 
-Status: the first local product slice saves synthetic campaign briefs as session-scoped drafts, derives a plan summary, and demonstrates preview, simulated pause, and sample report. Its first copywriting increment provides three deterministic, editable text starting points using only supplied context; it does not call an AI provider. There is no connected account, publishing, or real metrics. Durable advertiser/workspace persistence remains deferred until ownership and retention decisions are defined.
+Status: **Phase 1 acceptance verified on 2026-09-29.** The local product slice saves synthetic briefs as session-scoped drafts, derives a plan summary, and demonstrates preview, simulated pause, editable deterministic copy, and sample report. Visual review at a 1252 px desktop viewport found and fixed horizontal overflow, a hard-to-read data notice, and a report transition that could leave the report off-screen (PR #100). Mobile E2E and all PR/post-merge CI checks pass. There is no connected account, AI provider, publishing, or real metrics. Durable advertiser/workspace persistence remains deferred until ownership and lifecycle boundaries are specified; see ADR-0006 and ADR-0007.
 
 - Build the public product entry and a mobile-friendly campaign workspace in the existing Django application.
 - Let any advertiser in the Türkiye target market describe a goal with a short plain-language brief, then ask only for essential missing details such as audience, destination, timing, and maximum spend.
@@ -30,6 +30,8 @@ Status: the first local product slice saves synthetic campaign briefs as session
 ## Phase 2 — Local campaign vertical slice
 
 **Goal:** connect the website to deterministic campaign records and evaluate draft generation without creating external side effects.
+
+**First gate:** establish the workspace owner and the campaign/brand data lifecycle before adding durable content records. For this synthetic-only prototype, workspace ownership is tied to an authenticated user, anonymous session drafts are never backfilled automatically, and no real advertiser data is accepted. Do not invent a universal retention period; set purpose- and data-category-specific limits before real data. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).
 
 - Model advertiser/workspace, brand facts and assets, campaign brief, versioned multi-format ad creatives, destinations, user-defined caps, and status history.
 - Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.
