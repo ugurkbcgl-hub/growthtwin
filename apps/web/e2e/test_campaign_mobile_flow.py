@@ -7,6 +7,57 @@ from playwright.sync_api import sync_playwright
 class CampaignMobileFlowBrowserTests(LiveServerTestCase):
     """Keep the first-visit brief, preview, and report usable on mobile."""
 
+    def test_regeneration_discloses_replacing_edited_copy(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                page.goto(self.live_server_url)
+                page.locator("#campaign-brief").fill(
+                    "Sentetik seramik atölyesi tanıtımı"
+                )
+                page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.wait_for_url("**campaign=*#kampanya-denemesi")
+
+                headline = page.locator(".creative-variant").first.get_by_label(
+                    "Başlık"
+                )
+                headline.fill("Elle düzenlenmiş sentetik başlık")
+                page.get_by_role("button", name="Metinleri kaydet").click()
+                page.wait_for_url("**creative=saved")
+                self.assertEqual(
+                    page.locator(".creative-variant")
+                    .first.get_by_label("Başlık")
+                    .input_value(),
+                    "Elle düzenlenmiş sentetik başlık",
+                )
+
+                page.locator("#edit-brief").click()
+                page.locator("#campaign-brief").fill("Sentetik yeni brief ile değiştir")
+                page.get_by_role("button", name="Örnek kampanyayı gör").click()
+                page.wait_for_url("**campaign=*#kampanya-denemesi")
+                self.assertTrue(page.locator(".creative-stale-note").is_visible())
+                warning = page.locator("#creative-regenerate-warning")
+                self.assertTrue(warning.is_visible())
+                self.assertIn("kaydedilmiş", warning.inner_text())
+                regenerate = page.get_by_role(
+                    "button", name="Brief’ten yeni öneriler oluştur"
+                )
+                self.assertEqual(
+                    regenerate.get_attribute("aria-describedby"),
+                    "creative-regenerate-warning",
+                )
+                regenerate.click()
+                page.wait_for_url("**creative=regenerated")
+                self.assertEqual(
+                    page.locator(".creative-variant")
+                    .first.get_by_label("Başlık")
+                    .input_value(),
+                    "Sentetik yeni brief ile değiştir",
+                )
+            finally:
+                browser.close()
+
     def test_budget_and_duration_errors_are_associated_and_focused(self):
         invalid_cases = (
             (
