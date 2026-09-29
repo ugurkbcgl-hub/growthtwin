@@ -194,6 +194,9 @@ def campaign_report(request, draft_id):
                 window=report_window,
                 currency=draft.currency,
             ),
+            "planned_report_window": report_window,
+            "observed_report_window": None,
+            "report_freshness_status": "Kaynak verisi yok; güncellik doğrulanamıyor",
         },
     )
 
