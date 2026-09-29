@@ -229,6 +229,16 @@ class CampaignDraftFlowTests(TestCase):
         self.assertNotContains(response, "Kaydedilmiş taslakların")
         self.assertFalse(Session.objects.exists())
 
+    def test_first_visit_explains_where_prototype_brief_is_stored(self):
+        response = self.client.get(self.url)
+
+        self.assertContains(response, "GrowthTwin uygulamasına iletilir")
+        self.assertContains(response, "bu oturum için taslak olarak geçici saklanır")
+        self.assertContains(
+            response, "AI hizmetlerine veya reklam platformlarına veri göndermez"
+        )
+        self.assertNotContains(response, "hiçbir yere gönderilmez")
+
     def test_saved_draft_list_shows_details_to_distinguish_similar_briefs(self):
         self.client.post(self.url, self.valid_data)
         first = CampaignDraft.objects.get()
