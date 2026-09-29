@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 15:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 15:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Main is `16948a032c2c3624f20ae128605582a5fb916803`; PRs #110–#113 are merged. PR #113 CI `36566669448` and post-merge main CI `36566886901` passed. No open PR existed when checked for the new branch.
-- Current branch is `feat/workspace-campaign-maintenance`, based on PR #113. Uncommitted changes add owner-scoped bounded budget/duration edits and confirmed POST deletion of synthetic campaign drafts, with tenant tests and documentation updates. No PR is open yet.
+- Main is `2f4fd6a21cd1c2ca4d624772d30c73380c2eb4f1`; PRs #110–#114 are merged. PR #114 CI `36567921819` and post-merge main CI `36568151300` passed. No open PR existed when checked for the new branch.
+- Current branch is `feat/workspace-campaign-e2e`; PR #115 is open. It adds authenticated browser E2E tests for the fixed-synthetic campaign create/edit/delete flow and tenant access boundary, plus documentation updates. Verify the CI run on the latest PR commit before merging.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -29,8 +29,9 @@ Last verified: 2026-09-29 15:23 (Europe/Istanbul). Repository: `https://github.c
 - PR #111 adds tenant-isolation and validation tests.
 - PR #112 adds provider-free, source-traceable Google Search text assets with RSA character limits and explicit unavailable forecast/keyword states. Required PR and post-merge CI passed.
 - PR #113 adds login-protected workspace list and fixed-sample campaign creation/preview. It withholds free-text advertiser inputs until readiness gates; 14 targeted campaign tests and PR/main CI passed.
-- Current branch's 22 campaign tests passed locally, covering bounded budget/duration changes, owner isolation, invalid choices and explicit deletion confirmation. Django system check, migration check, Ruff lint/format and `git diff --check` passed. No provider call is made.
+- PR #114 adds whitelisted budget/duration edits and confirmed owner-scoped deletion. Its 22 focused campaign tests, PR CI and post-merge main CI passed.
+- Current branch's 3 browser E2E tests pass locally, including the mobile owner flow, confirmed deletion, foreign-draft 404 and horizontal overflow checks. Ruff lint/format and `git diff --check` pass. No provider call is made.
 
 ## Next action
 
-Review, commit and open a PR for `feat/workspace-campaign-maintenance`; wait for required CI and merge only if the diff and checks remain clean. It allows only the owner to change whitelisted synthetic budget/duration options or confirm deletion. Then add browser end-to-end coverage for the authenticated workspace flow. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
+Review the final PR #115 diff and verify required CI on its latest commit; merge only if clean. Then verify main CI and continue with the next Phase 2 gap. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
