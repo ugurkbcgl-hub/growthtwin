@@ -45,6 +45,43 @@
       {% empty %}<p>Açıklama üretmek için hizmet brief'i gerekli.</p>{% endfor %}
     </section>
 
+    <section class="asset-section" aria-labelledby="creative-variants-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="creative-variants-title">Farklı reklam metinleri</h2>
+          <p>Brief ve sentetik marka örneğinden hazırlanan başlangıç taslakları.</p>
+        </div>
+        {% if creative_version %}<span>Versiyon {{ creative_version.version }}</span>{% endif %}
+      </div>
+      {% if creative_is_stale %}
+        <aside class="notice" role="status">
+          <strong>Kampanya bilgileri değişti</strong>
+          <p>Önceki metinler güncel kampanya bilgilerine göre hazırlanmadı. Yeni sürüm oluşturana kadar gösterilmiyor.</p>
+        </aside>
+      {% endif %}
+      {% if creative_version %}
+        {% for variant in creative_version.variants %}
+          <article class="asset-card">
+            <small>{{ variant.angle }}</small>
+            <h3>{{ variant.headline }}</h3>
+            <p>{{ variant.body }}</p>
+            <small>Çağrı: {{ variant.call_to_action }}</small>
+          </article>
+        {% endfor %}
+        <p class="pacing-note">Bu başlangıç metinleri harici AI kullanılmadan şablonla hazırlandı. İddialar ve yayın uygunluğu ayrıca doğrulanmadı.</p>
+      {% else %}
+        <p>Bu kampanya bilgileri için güncel bir metin sürümü yok.</p>
+      {% endif %}
+      {% if creative_is_stale or not creative_version %}
+        <form method="post" action="{% url 'campaigns:generate_creatives' draft.pk %}">
+          {% csrf_token %}
+          <button class="button button-secondary" type="submit">
+            {% if creative_version_count %}Güncel metin sürümünü oluştur{% else %}Metin seçenekleri oluştur{% endif %}
+          </button>
+        </form>
+      {% endif %}
+    </section>
+
     <section class="notice notice-muted" aria-labelledby="forecast-title">
       <h2 id="forecast-title">Tahmin ve arama terimleri</h2>
       <p><strong>Gösterim, tıklama, maliyet ve dönüşüm:</strong> {{ plan.forecast_reason }}</p>

@@ -17,6 +17,8 @@ from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
+    creative_source_hash_for_draft,
+    generate_creative_version_for_owner,
     update_campaign_draft_for_owner,
 )
 from growthtwin.modules.workspaces.models import Workspace
@@ -101,6 +103,7 @@ def campaign_create(request):
             flight_start=today + timedelta(days=1),
             flight_end=today + timedelta(days=15),
         )
+        generate_creative_version_for_owner(owner=request.user, draft_id=draft.pk)
         return redirect("campaigns:detail", draft_id=draft.pk)
 
     return render(
@@ -121,6 +124,13 @@ def campaign_detail(request, draft_id):
         pk=draft_id,
     )
     plan = build_google_search_campaign_plan(draft)
+    versions = draft.creative_versions or []
+    latest_creative_version = versions[-1] if versions else None
+    creative_is_stale = bool(
+        latest_creative_version
+        and latest_creative_version.get("source_hash")
+        != creative_source_hash_for_draft(draft)
+    )
     return render(
         request,
         "campaigns/detail.html",
@@ -131,8 +141,26 @@ def campaign_detail(request, draft_id):
             "daily_average_display": _format_daily_average(
                 plan.daily_media_average_minor
             ),
+            "creative_version": (
+                latest_creative_version if not creative_is_stale else None
+            ),
+            "creative_is_stale": creative_is_stale,
+            "creative_version_count": len(versions),
         },
     )
+
+
+@login_required
+@require_POST
+def campaign_generate_creatives(request, draft_id):
+    """Create a provider-free synthetic creative version for the owner."""
+
+    get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    generate_creative_version_for_owner(owner=request.user, draft_id=draft_id)
+    return redirect("campaigns:detail", draft_id=draft_id)
 
 
 @login_required

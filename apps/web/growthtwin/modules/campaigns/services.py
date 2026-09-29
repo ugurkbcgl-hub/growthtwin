@@ -1,12 +1,19 @@
 """Owner-scoped campaign draft application operations."""
 
 from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.utils import timezone
 
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.synthetic_rules import (
     ALLOWED_SYNTHETIC_BUDGETS_MINOR,
     ALLOWED_SYNTHETIC_DURATIONS_DAYS,
 )
+from growthtwin.modules.content.creative import (
+    draft_creative_variants,
+    source_fingerprint,
+)
+from growthtwin.modules.content.planning import CampaignBrief
 from growthtwin.modules.workspaces.services import get_workspace_for_owner
 
 
@@ -14,6 +21,50 @@ def get_campaign_draft_for_owner(*, owner, draft_id):
     """Fetch a draft only through the authenticated workspace owner."""
 
     return WorkspaceCampaignDraft.objects.owned_by(owner).get(pk=draft_id)
+
+
+def _creative_brief(draft):
+    return CampaignBrief(
+        text=draft.brief,
+        objective=draft.objective,
+        objective_label=draft.get_objective_display(),
+        target_audience=draft.target_city,
+        brand_context=draft.brand_name,
+    )
+
+
+def creative_source_hash_for_draft(draft):
+    """Fingerprint the campaign fields used to draft its text variants."""
+
+    return source_fingerprint(_creative_brief(draft))
+
+
+def generate_creative_version_for_owner(*, owner, draft_id):
+    """Append a deterministic creative version only to the owner's draft."""
+
+    with transaction.atomic():
+        draft = (
+            WorkspaceCampaignDraft.objects.owned_by(owner)
+            .select_for_update()
+            .get(pk=draft_id)
+        )
+        brief = _creative_brief(draft)
+        source_hash = source_fingerprint(brief)
+        versions = list(draft.creative_versions or [])
+        if versions and versions[-1].get("source_hash") == source_hash:
+            return draft, versions[-1]
+        version = {
+            "version": len(versions) + 1,
+            "source_hash": source_hash,
+            "created_at": timezone.now().isoformat(),
+            "variants": [
+                variant.as_record() for variant in draft_creative_variants(brief)
+            ],
+        }
+        versions.append(version)
+        draft.creative_versions = versions
+        draft.save(update_fields=("creative_versions", "updated_at"))
+        return draft, version
 
 
 def create_campaign_draft_for_owner(*, owner, workspace_id, **values):

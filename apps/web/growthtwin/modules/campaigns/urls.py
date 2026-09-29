@@ -11,5 +11,10 @@ urlpatterns = [
     path("new/", views.campaign_create, name="create"),
     path("<int:draft_id>/", views.campaign_detail, name="detail"),
     path("<int:draft_id>/edit/", views.campaign_edit, name="edit"),
+    path(
+        "<int:draft_id>/creatives/generate/",
+        views.campaign_generate_creatives,
+        name="generate_creatives",
+    ),
     path("<int:draft_id>/delete/", views.campaign_delete, name="delete"),
 ]

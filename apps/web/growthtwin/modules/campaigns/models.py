@@ -42,6 +42,7 @@ class WorkspaceCampaignDraft(models.Model):
     brief = models.TextField(max_length=4000)
     target_city = models.CharField(max_length=100)
     destination_url = models.URLField(max_length=500, blank=True)
+    creative_versions = models.JSONField(blank=True, default=list)
     media_budget_minor = models.PositiveBigIntegerField(
         validators=[MinValueValidator(1)],
         help_text="Integer minor units; independent of GrowthTwin fees and credits.",
