@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 09:47 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 09:53 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Snapshot baseline: clean `main` at `1b2d5d3` (PR #89), merged with required CI successful. No open PRs were found after the merge.
-- PR #89 CI run `36532346912` and post-merge main CI run `36532516653` passed. PR #88 CI run `36531350844` and post-merge run `36531514788` also passed.
-- Current branch: `docs/brief-preview-handoff-20260929`; this continuity update is pending review.
+- Snapshot baseline: clean `main` at `7cec831` (PR #90), merged with required CI successful. No open PRs were found after the merge.
+- PR #90 CI run `36532991502` and post-merge main CI run `36533155346` passed. PR #89 CI run `36532346912` and post-merge run `36532516653` also passed.
+- Current branch: `docs/creative-report-review-handoff`; this continuity update is pending review.
 
 ## Product and safety context
 
@@ -23,8 +23,9 @@ Last verified: 2026-09-29 09:47 (Europe/Istanbul). Repository: `https://github.c
 - Reviewing the edit-save flow confirmed valid creative edits update the same session-owned draft, redirect back to its preview, and show a `role="status"` success message. The preview labels the flow as a draft and explicitly says it does not publish or spend. No specific feedback or accessibility defect was found, so no code change or extra test was needed for this review. The local server is listening at `127.0.0.1:8002`; app security blocked browser automation from refreshing/navigating to the local site, so the rendered visual result was not inspected. The user can refresh the local URL directly in the browser.
 - Phase 1 first-visit review found a mobile navigation gap: after submitting a brief, the browser stayed at the page's previous scroll position and could leave the resulting preview below the viewport. PR #89 adds a preview-section URL fragment and scrolls the preview into view when a saved campaign loads. The mobile browser E2E now asserts the target is visible; the first CI run exposed that the fragment alone was insufficient, so explicit scrolling was added. The passing PR and post-merge CI runs include the full Django and browser E2E suites.
 - The remaining first-visit checks were reviewed against the current template, form, planning module, and browser E2E: copy is industry-neutral, brand/audience/objective intake is optional, brief/budget/duration are validated, safety labels say no publication/spend and prohibit real data, and mobile keyboard/error feedback plus report navigation are covered. No additional demonstrated gap was found. Visual inspection in the open desktop browser remains unavailable due to the app security block; local server continues listening at `127.0.0.1:8002`.
+- A source review of deterministic creative suggestions found they format only supplied brief, brand, and audience text with generic calls to action; existing focused tests cover missing inputs and avoiding invented "best" or "free" claims. The pause/report path labels the action, period, metrics, and results as examples; pause feedback says there is no real campaign. PR #89 CI and post-merge CI passed the existing Django and browser E2E suites. No additional gap requiring a change was found.
 - Staging browser E2E, backup/restore, rollback, and final cost/CI recording remain gates before an external beta or production. First advertiser workflow/destination, live-action consent and autonomy rules, and production AI/data terms remain undecided.
 
 ## Next action
 
-Review deterministic creative suggestions against generic synthetic briefs to ensure copy introduces no unsupported product, performance, or outcome claims; keep outputs editable and clearly identified as examples.
+Review the session-scoped draft lifetime and deletion messaging from the advertiser's perspective; keep durable account/workspace persistence deferred until ownership and retention decisions are made.
