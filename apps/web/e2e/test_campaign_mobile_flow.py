@@ -170,8 +170,12 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     page.evaluate("document.activeElement.id"), "create-preview"
                 )
                 page.keyboard.press("Enter")
-                page.wait_for_url("**campaign=*")
+                page.wait_for_url("**campaign=*#kampanya-denemesi")
                 self.assertEqual(page.locator("#step-count").inner_text(), "2 / 3")
+                studio_top = page.locator("#kampanya-denemesi").evaluate(
+                    "element => element.getBoundingClientRect().top"
+                )
+                self.assertLess(studio_top, 120)
                 self.assert_no_horizontal_overflow(page)
 
                 pause_button = page.get_by_role("button", name="Örnek akışı durdur")

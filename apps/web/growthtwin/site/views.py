@@ -256,7 +256,9 @@ def home(request):
             ]
             campaign.creative_source_hash = source_fingerprint(brief)
             campaign.save(update_fields=("creative_variants", "creative_source_hash"))
-        return redirect(f"{reverse('site:home')}?campaign={campaign.pk}")
+        return redirect(
+            f"{reverse('site:home')}?campaign={campaign.pk}#kampanya-denemesi"
+        )
 
     if request.method == "GET" and request.GET.get("campaign"):
         try:
