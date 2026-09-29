@@ -266,6 +266,16 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 page.get_by_role("button", name="Örnek rapor").click()
                 self.assertEqual(page.locator("#step-count").inner_text(), "3 / 3")
                 self.assert_no_horizontal_overflow(page)
+
+                page.get_by_role("button", name="Bu taslağı sil").click()
+                page.wait_for_url("**draft=deleted#kampanya-denemesi")
+                self.assertEqual(
+                    page.get_by_role("status")
+                    .filter(has_text="Taslak silindi ve bu oturumdan kaldırıldı.")
+                    .count(),
+                    1,
+                )
+                self.assertEqual(page.locator("#saved-campaign").count(), 0)
             finally:
                 browser.close()
 

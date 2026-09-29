@@ -37,11 +37,14 @@ def delete_campaign(request, campaign_id):
     if session_key is None:
         return redirect("site:home")
 
-    CampaignDraft.objects.filter(
+    deleted_count, _ = CampaignDraft.objects.filter(
         pk=campaign_id,
         session_id=session_key,
     ).delete()
-    return redirect("site:home")
+    if deleted_count == 0:
+        return redirect("site:home")
+
+    return redirect(f"{reverse('site:home')}?draft=deleted#kampanya-denemesi")
 
 
 def campaign_brief(campaign):
@@ -142,6 +145,9 @@ def render_campaign_home(request, form, campaign, creative_form=None):
                 request.GET.get("creative")
                 if request.GET.get("creative") in {"saved", "regenerated"}
                 else ""
+            ),
+            "draft_notice": (
+                "deleted" if request.GET.get("draft") == "deleted" else ""
             ),
             "drafts": drafts,
             "form": form,
