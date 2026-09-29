@@ -97,9 +97,7 @@ class AssetWorkflow:
         self._require_state(AssetState.QUARANTINED)
         return replace(self, state=AssetState.SCAN_PENDING)
 
-    def record_security_scan(
-        self, result: SecurityScanResult
-    ) -> "AssetWorkflow":
+    def record_security_scan(self, result: SecurityScanResult) -> "AssetWorkflow":
         """Advance only clean scans to extraction; errors fail closed."""
 
         self._require_state(AssetState.SCAN_PENDING)
@@ -140,6 +138,4 @@ class AssetWorkflow:
 
     def _require_state_not(self, forbidden: AssetState) -> None:
         if self.state is forbidden:
-            raise AssetWorkflowError(
-                f"Action is not permitted from {forbidden.value}."
-            )
+            raise AssetWorkflowError(f"Action is not permitted from {forbidden.value}.")

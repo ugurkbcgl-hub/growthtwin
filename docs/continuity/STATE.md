@@ -5,7 +5,7 @@ Last verified: 2026-09-29 16:13 (Europe/Istanbul). Repository: `https://github.c
 ## Verified repository state
 
 - `main` is `1f6ad5b7b049aa025c3e570ab9f563b8814d8b92`; PR #119 is merged. Its required CI `36572692042` and post-merge main CI `36572958105` passed.
-- Current branch `feat/asset-workflow-contracts` is based on main at commit `92b6fb43e1be2e0c0ea21fe8a45b114e154c9efc`. PR #120 is open; required CI `36573448094` is in progress. It introduces storage/provider-independent asset workflow types and fail-closed transitions; no file operations, persistence, or network calls.
+- Current branch `feat/asset-workflow-contracts` is based on main. PR #120 is open and adds storage/provider-independent asset workflow types with no file operations, persistence, or network calls. CI on an earlier head failed Ruff formatting; the fix is prepared. Recheck required CI for the latest PR head before merging.
 - PR #117 budget-pacing behavior and PR #118 continuity updates are merged; their required and post-merge CI runs passed.
 
 ## Product and safety context
@@ -23,7 +23,7 @@ Last verified: 2026-09-29 16:13 (Europe/Istanbul). Repository: `https://github.c
 - PR #116 improved Turkish accessible sign-in, the return path, and mobile account entry while keeping public registration closed.
 - PR #117 added a clearly labeled equal-allocation daily planning average without presenting a platform limit or performance forecast.
 - PR #118 refreshed project continuity. PR #119 added ADR-0009 for safe asset intake; PR and post-merge main CI passed.
-- PR #120 packages the pure asset state contract. Local tests were not run; required GitHub CI is in progress.
+- PR #120 packages the pure asset state contract. Local tests were not run. The first PR CI run found a formatting issue; it is corrected in the current working tree. Local Ruff is unavailable in the configured Python environment.
 
 ## Open risks
 
@@ -33,4 +33,4 @@ Last verified: 2026-09-29 16:13 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Review the pure asset workflow contract and confirm PR #120's required CI. Merge only if review is clean and CI passes. Do not add upload, persistence, parsing, or AI-provider behavior. After that contract is reviewed, define synthetic-only transition tests before considering isolated local file handling.
+Review the pure asset workflow contract and confirm the latest required CI for PR #120. Merge only if review is clean and CI passes. Do not add upload, persistence, parsing, or AI-provider behavior. After that contract is reviewed, define synthetic-only transition tests before considering isolated local file handling.
