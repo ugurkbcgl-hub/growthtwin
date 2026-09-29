@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 09:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 09:29 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Snapshot baseline: clean `main` at `6f4c602` (PR #86), merged with required CI successful. No open PRs were found after the merge.
-- PR #86 (`74a659d`) and post-merge main CI run `36530563389` passed.
-- Current branch: `docs/saved-draft-review-handoff`; this continuity update is pending review.
+- Snapshot baseline: clean `main` at `b133a01` (PR #87), merged with required CI successful. No open PRs were found after the merge.
+- PR #87 CI run `36530898226` and post-merge main CI run `36531083899` passed; PR #86 and its post-merge run also passed.
+- Current branch: `docs/brief-to-preview-handoff`; this continuity update is pending review.
 
 ## Product and safety context
 
@@ -19,9 +19,10 @@ Last verified: 2026-09-29 09:23 (Europe/Istanbul). Repository: `https://github.c
 
 - The scheduled Heroku `clearsessions` job's first run at 2026-09-29 00:00 UTC exited successfully. Its actual one-off dyno cost is unverified; Scheduler is best-effort and does not establish a real-data retention guarantee.
 - Source review confirmed that the brief/preview labels daily and total sample limits and describes the flow as non-publishing; report figures are labeled synthetic. Visual hierarchy was not verified in the prior review.
-- Review found the saved-draft list showed only the brief, daily amount, and duration, so two drafts with the same brief/limits but different brand, audience, or objective were difficult to tell apart. PR #86 now shows those differentiating details, total limit, and creation time. Its focused Django test with two similar synthetic drafts passed; PR CI `36530405593` and post-merge CI `36530563389` also passed. The local server is listening at `127.0.0.1:8002`; app security blocked browser automation from refreshing/navigating to the local site, so the rendered visual result was not inspected. The user can refresh the local URL directly in the browser.
+- Review found the saved-draft list showed only the brief, daily amount, and duration, so two drafts with the same brief/limits but different brand, audience, or objective were difficult to tell apart. PR #86 now shows those differentiating details, total limit, and creation time. Its focused Django test with two similar synthetic drafts passed; PR CI `36530405593` and post-merge CI `36530563389` also passed.
+- Reviewing the edit-save flow confirmed valid creative edits update the same session-owned draft, redirect back to its preview, and show a `role="status"` success message. The preview labels the flow as a draft and explicitly says it does not publish or spend. No specific feedback or accessibility defect was found, so no code change or extra test was needed for this review. The local server is listening at `127.0.0.1:8002`; app security blocked browser automation from refreshing/navigating to the local site, so the rendered visual result was not inspected. The user can refresh the local URL directly in the browser.
 - Staging browser E2E, backup/restore, rollback, and final cost/CI recording remain gates before an external beta or production. First advertiser workflow/destination, live-action consent and autonomy rules, and production AI/data terms remain undecided.
 
 ## Next action
 
-Review how saving edits to an existing draft returns to its preview and communicates that the updated version was saved; confirm it remains an unpublished, no-spend draft. Fix only demonstrated feedback or accessibility gaps using synthetic content.
+Review the first-visit campaign brief-to-preview journey against Phase 1 acceptance; fix only demonstrated clarity, mobile-layout, or accessibility gaps using synthetic content, and keep the journey unpublished and no-spend.
