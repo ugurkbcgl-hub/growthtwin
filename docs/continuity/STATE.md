@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 15:10 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 15:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Main is `d242a892d5aef6502cb64c02edd1a50eaee33e78`; PR #110, #111 and #112 are merged. PR #112 required CI `36564841865` and post-merge main CI `36565059126` passed. No open PR was present when checked.
-- Current branch is `feat/workspace-campaign-preview`, based on PR #112. Its uncommitted changes add authenticated owner-scoped list/preview launched only from a fixed synthetic example, Turkish TRY formatting, navigation, tests and documentation; free-text advertiser inputs are withheld until readiness gates are met. No PR is open yet.
+- Main is `16948a032c2c3624f20ae128605582a5fb916803`; PRs #110–#113 are merged. PR #113 CI `36566669448` and post-merge main CI `36566886901` passed. No open PR existed when checked for the new branch.
+- Current branch is `feat/workspace-campaign-maintenance`, based on PR #113. Uncommitted changes add owner-scoped bounded budget/duration edits and confirmed POST deletion of synthetic campaign drafts, with tenant tests and documentation updates. No PR is open yet.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -28,8 +28,9 @@ Last verified: 2026-09-29 15:10 (Europe/Istanbul). Repository: `https://github.c
 - PR #110 adds the workspace-owned campaign draft, constraints, owner-scoped services and ADR-0008; anonymous `site.CampaignDraft` remains separate.
 - PR #111 adds tenant-isolation and validation tests.
 - PR #112 adds provider-free, source-traceable Google Search text assets with RSA character limits and explicit unavailable forecast/keyword states. Required PR and post-merge CI passed.
-- Current branch checks: 14 campaign tests passed locally, including an assertion that submitted free text cannot replace fixed sample content; Django system check, migration check, Ruff lint/format, `collectstatic` and `git diff --check` passed. Tests use synthetic fixtures and do not call providers.
+- PR #113 adds login-protected workspace list and fixed-sample campaign creation/preview. It withholds free-text advertiser inputs until readiness gates; 14 targeted campaign tests and PR/main CI passed.
+- Current branch's 22 campaign tests passed locally, covering bounded budget/duration changes, owner isolation, invalid choices and explicit deletion confirmation. Django system check, migration check, Ruff lint/format and `git diff --check` passed. No provider call is made.
 
 ## Next action
 
-Review, commit and open a PR for `feat/workspace-campaign-preview`; wait for required CI and merge only if the diff and checks remain clean. The branch's authenticated workspace list/preview persists only a fixed synthetic sample and remains separate from the anonymous prototype. After merge, implement owner-scoped revision/removal using synthetic inputs. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
+Review, commit and open a PR for `feat/workspace-campaign-maintenance`; wait for required CI and merge only if the diff and checks remain clean. It allows only the owner to change whitelisted synthetic budget/duration options or confirm deletion. Then add browser end-to-end coverage for the authenticated workspace flow. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.

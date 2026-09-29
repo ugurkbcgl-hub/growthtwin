@@ -58,6 +58,14 @@
       <p class="ready-note" role="status">Taslak yerel inceleme için hazır. Bu durum yayın izni anlamına gelmez.</p>
     {% endif %}
 
-    <a class="button button-secondary" href="{% url 'campaigns:create' %}">Başka bir taslak oluştur</a>
+    <div class="draft-actions">
+      <a class="button button-secondary" href="{% url 'campaigns:edit' draft.pk %}">Örnek bütçe ve süreyi düzenle</a>
+      <form method="post" action="{% url 'campaigns:delete' draft.pk %}">
+        {% csrf_token %}
+        <label class="delete-confirmation"><input type="checkbox" name="confirm_delete" required> Bu sentetik taslağı sil</label>
+        <button class="button button-danger" type="submit">Taslağı sil</button>
+      </form>
+      <a class="button button-primary" href="{% url 'campaigns:create' %}">Yeni sentetik taslak</a>
+    </div>
   </div>
 {% endblock %}

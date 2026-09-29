@@ -7,11 +7,18 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.formats import number_format
+from django.views.decorators.http import require_POST
 
-from growthtwin.modules.campaigns.forms import CampaignDraftForm
+from growthtwin.modules.campaigns.forms import (
+    CampaignDraftEditForm,
+    CampaignDraftForm,
+)
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
-from growthtwin.modules.campaigns.services import create_campaign_draft_for_owner
+from growthtwin.modules.campaigns.services import (
+    create_campaign_draft_for_owner,
+    update_campaign_draft_for_owner,
+)
 from growthtwin.modules.workspaces.models import Workspace
 
 SYNTHETIC_CAMPAIGN = {
@@ -115,3 +122,58 @@ def campaign_detail(request, draft_id):
             "budget_display": _format_budget(draft.media_budget_minor),
         },
     )
+
+
+@login_required
+def campaign_edit(request, draft_id):
+    """Change only bounded synthetic budget and duration options."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    initial_duration = (
+        (draft.flight_end - draft.flight_start).days
+        if draft.flight_start and draft.flight_end
+        else 14
+    )
+    form = CampaignDraftEditForm(
+        request.POST or None,
+        initial={
+            "media_budget_minor": str(draft.media_budget_minor),
+            "duration_days": str(initial_duration),
+            "synthetic_confirmation": True,
+        },
+    )
+    if request.method == "POST" and form.is_valid():
+        today = timezone.localdate()
+        update_campaign_draft_for_owner(
+            owner=request.user,
+            draft_id=draft.pk,
+            media_budget_minor=int(form.cleaned_data["media_budget_minor"]),
+            flight_start=today + timedelta(days=1),
+            flight_end=today
+            + timedelta(days=1 + int(form.cleaned_data["duration_days"])),
+        )
+        return redirect("campaigns:detail", draft_id=draft.pk)
+
+    return render(
+        request,
+        "campaigns/edit.html",
+        {"draft": draft, "form": form},
+    )
+
+
+@login_required
+@require_POST
+def campaign_delete(request, draft_id):
+    """Remove only the authenticated owner's draft, and only on POST."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    if request.POST.get("confirm_delete") != "on":
+        return redirect("campaigns:detail", draft_id=draft.pk)
+    draft.delete()
+    return redirect("campaigns:list")
