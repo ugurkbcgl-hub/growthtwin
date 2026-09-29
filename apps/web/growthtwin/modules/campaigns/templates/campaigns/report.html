@@ -1,0 +1,35 @@
+{% extends "campaigns/base.html" %}
+{% block title %}{{ draft.name }} · Rapor{% endblock %}
+{% block content %}
+  <div class="narrow-column">
+    <a class="back-link" href="{% url 'campaigns:detail' draft.pk %}">← Kampanyaya dön</a>
+    <p class="eyebrow">Kampanya raporu</p>
+    <h1>{{ draft.name }}</h1>
+    <p class="lead">{{ draft.brand_name }} · {{ draft.target_city }} · Google Search</p>
+
+    <aside class="notice" role="status">
+      <strong>Rapor verisi henüz bağlı değil</strong>
+      <p>Bu kampanyaya bağlı doğrulanmış bir reklam hesabı veya rapor kaynağı yok. Bu nedenle sonuç değerleri gösterilmiyor.</p>
+    </aside>
+
+    <section aria-labelledby="report-metrics-title">
+      <h2 id="report-metrics-title">Takip edilecek sonuçlar</h2>
+      <p class="pacing-note">Veriler doğrulanmış bir kanal bağlantısı sağlandığında kaynağı ve güncellenme zamanı ile gösterilir. Bu ekran tahmin veya performans garantisi içermez.</p>
+      <div class="report-metrics">
+        {% for metric in report_metrics %}
+          <article class="summary-card report-metric">
+            <h3>{{ metric }}</h3>
+            <p>Henüz veri yok</p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <dl class="summary-card report-source">
+      <div><dt>Veri kaynağı</dt><dd>Bağlı değil</dd></div>
+      <div><dt>Son güncelleme</dt><dd>Henüz veri alınmadı</dd></div>
+    </dl>
+
+    <p class="notice notice-muted">Bu prototip reklam hesabına bağlanmaz, reklam yayımlamaz ve harcama yapmaz.</p>
+  </div>
+{% endblock %}

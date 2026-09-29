@@ -69,6 +69,15 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 self.assert_no_horizontal_overflow(page)
 
                 detail_url = reverse("campaigns:detail", args=[draft_id])
+                page.get_by_role("link", name="Kampanya raporunu aç").click()
+                page.wait_for_url(f"**{reverse('campaigns:report', args=[draft_id])}")
+                self.assertIn(
+                    "Rapor verisi henüz bağlı değil", page.locator("body").inner_text()
+                )
+                self.assertEqual(page.get_by_text("Henüz veri yok").count(), 6)
+                self.assert_no_horizontal_overflow(page)
+                page.get_by_role("link", name="Kampanyaya dön").click()
+                page.wait_for_url(f"**{detail_url}")
                 page.get_by_role("link", name="Örnek bütçe ve süreyi düzenle").click()
                 page.locator("#id_media_budget_minor").select_option("1000000")
                 page.locator("#id_duration_days").select_option("30")

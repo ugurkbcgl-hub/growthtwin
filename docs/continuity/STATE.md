@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 19:08 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 19:16 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `1761e05263d3888e6a76854f58d58f2ab866dc18`; PR #133 merged with squash. Required CI `36594773935` and post-merge CI `36595188130` passed.
-- Current checkout: `main`, clean and up to date with `origin/main`. No open PR was listed at verification.
+- Baseline `main`: `402cebcc79ac0d02d36438b2237d16438bc7f2f7`; PR #134 merged with squash. Required CI `36595791516` and post-merge CI `36596059472` passed.
+- Current branch: `feat/workspace-report-empty-state`, based on that main commit; implementation and focused validation are complete locally and ready for a PR.
 
 ## Product and safety context
 
@@ -15,6 +15,8 @@ Last verified: 2026-09-29 19:08 (Europe/Istanbul). Repository: `https://github.c
 - PR #131 merged deterministic creative versions into the authenticated campaign flow; source-fingerprint staleness handling and owner-only POST regeneration are covered by CI. Main CI and post-merge CI passed.
 - PR #133 adds an owner-scoped review preference for one current creative variant, bound to its version and hidden if source inputs change. A new generated version clears the previous preference. Focused validation: 29 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; Django system check, migration check, Ruff lint and formatting pass. PR CI and post-merge CI passed against PostgreSQL.
 - ADR-0014 records the review preference boundary. The options remain synthetic and provider-free; preference is not approval, performance data, or publication.
+- ADR-0015 defines the authenticated report empty state: no invented metric values, source disconnected, and no ad platform operations. The local implementation now has six unavailable metric categories and explicit source/update status.
+- Report-slice validation: 31 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; the browser flow confirms all six unavailable values and no mobile horizontal overflow. Django system check, migration check, Ruff lint and formatting pass. PostgreSQL CI has not yet run for this branch.
 - The authenticated workspace uses fixed synthetic campaign examples. User uploads, real advertiser/customer/lead data, live account connections, publication, advertiser spend, payments, and production AI are not authorized or implemented.
 - Keep the Django/PostgreSQL monolith and approved Heroku staging resources. Add no paid services; never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
 
@@ -26,4 +28,4 @@ Last verified: 2026-09-29 19:08 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Implement the authenticated campaign report view as an honest empty state for delivery, spend, interactions, and leads until a verified channel integration supplies data. Do not show fabricated performance figures, forecasts, or guarantees. Keep synthetic sample reporting clearly separate; do not add provider calls or real campaign data.
+Commit and open a PR for the authenticated report empty state. After PostgreSQL CI succeeds, merge under the user's standing authorization and verify post-merge CI. Clearly separate it from the public simulated sample report; do not add fabricated metrics, forecasts, guarantee values, provider calls, or real campaign data.

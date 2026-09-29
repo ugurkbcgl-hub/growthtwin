@@ -26,3 +26,4 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0012 — Synthetic policy version and rule identifiers](0012-synthetic-policy-identifiers.md) — Accepted for local synthetic-data development only
 - [0013 — Workspace synthetic creative versions](0013-workspace-synthetic-creative-versions.md) — Accepted for local synthetic-data development only
 - [0014 — Workspace creative review preference](0014-workspace-creative-preference.md) — Accepted for local synthetic-data development only
+- [0015 — Authenticated campaign report without a data source](0015-authenticated-campaign-report-empty-state.md) — Accepted for local synthetic-data development only

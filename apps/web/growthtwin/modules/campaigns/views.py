@@ -169,6 +169,31 @@ def campaign_detail(request, draft_id):
 
 
 @login_required
+def campaign_report(request, draft_id):
+    """Show an honest report shell until verified channel data is available."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    return render(
+        request,
+        "campaigns/report.html",
+        {
+            "draft": draft,
+            "report_metrics": (
+                "Erişim",
+                "Gösterimler",
+                "Tıklamalar",
+                "Diğer etkileşimler",
+                "İletişim talepleri",
+                "Medya harcaması",
+            ),
+        },
+    )
+
+
+@login_required
 @require_POST
 def campaign_generate_creatives(request, draft_id):
     """Create a provider-free synthetic creative version for the owner."""
