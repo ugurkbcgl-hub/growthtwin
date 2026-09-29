@@ -1,12 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 17:16 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 17:18 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `6602b95cd6042f6a34a4067f68c54e90f9db7f7d`, PR #123 merged, post-merge CI `36578334751` passed.
-- PR #124 is open on `docs/low-usage-handoff-20260929-cycle2`. Its current CI `36581098202` passed before this handoff correction; verify checks again after the branch is updated.
-- The worktree is clean on that documentation branch. No other open PR was listed at verification.
+- Baseline `main`: `7a3d07895b04fb39b97e2177ac17d4ba5098b0ba`, PR #124 merged. Its required CI `36581098202` and post-merge CI `36581436492` passed.
+- Current branch: `docs/reconcile-policy-handoff`; it corrects the next-action note in the handoff to match the canonical roadmap and the user's current request. No open PR was listed at verification.
 
 ## Product and safety context
 
