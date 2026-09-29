@@ -78,8 +78,16 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                     page.get_by_text("Veri kaynağı bağlı değil").count(), 6
                 )
                 self.assertEqual(
-                    page.get_by_text("Planlanan kampanya dönemi:", exact=False).count(),
-                    6,
+                    page.get_by_text("Planlanan kampanya dönemi", exact=False).count(),
+                    1,
+                )
+                self.assertIn(
+                    "Gözlenen rapor dönemi", page.locator("body").inner_text()
+                )
+                self.assertIn("Veri güncelliği", page.locator("body").inner_text())
+                self.assertIn(
+                    "Kaynak verisi yok; güncellik doğrulanamıyor",
+                    page.locator("body").inner_text(),
                 )
                 self.assert_no_horizontal_overflow(page)
                 page.get_by_role("link", name="Kampanyaya dön").click()
