@@ -30,6 +30,9 @@ sources, review dates, or the distinction between a restriction and a stop.
 5. Do not connect the contract to publication or a live channel. A later
    integration requires separate review, focused coverage, and an explicit
    server-owned authorization boundary.
+6. The campaign-preview fixture uses a 30-day re-review date only to
+   demonstrate the stale-rule transition. This is not a rule expiry, legal
+   deadline, or platform-mandated review period.
 
 ## Consequences
 

@@ -130,6 +130,20 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .notice-muted { border-color: var(--line); background: #f0f1ed; color: var(--ink); }
 .notice-muted h2 { margin-bottom: .75rem; }
 .pacing-note { margin: .75rem 0 0; color: var(--muted); font-size: .92rem; }
+.eligibility-card { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid #b9d3c1; border-radius: .9rem; background: var(--soft-green); }
+.eligibility-card-review { border-color: #ead9a4; background: var(--soft-amber); }
+.eligibility-card-stop { border-color: #dfb0aa; background: #fff2ef; }
+.eligibility-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+.eligibility-heading .eyebrow { margin: 0; }
+.eligibility-card h2 { margin: .75rem 0 .5rem; }
+.eligibility-card p { margin-bottom: .65rem; }
+.eligibility-badge { display: inline-flex; align-items: center; min-height: 1.8rem; padding: .2rem .7rem; border-radius: 999px; background: white; color: var(--green-dark); font-size: .83rem; font-weight: 750; }
+.eligibility-badge-review { background: var(--soft-amber); color: var(--amber); }
+.eligibility-badge-stop { background: #fff0ed; color: #8d211a; }
+.eligibility-boundary { color: var(--muted); font-size: .92rem; }
+.eligibility-source { margin-top: .9rem; padding-top: .75rem; border-top: 1px solid #b9d3c1; }
+.eligibility-source summary { width: fit-content; cursor: pointer; font-weight: 700; }
+.eligibility-source p { margin-bottom: .2rem; }
 
 .campaign-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1rem; }
 .campaign-card { display: block; padding: 1.25rem; color: var(--ink); text-decoration: none; }
