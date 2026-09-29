@@ -115,9 +115,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #152:** document the Google Ads evidence limits for per-row source time, report-window coverage, retrieval time, and provider SLO guidance. The reviewed official guides do not define a row-level `source_data_as_of` contract; record this as an evidence gap, not proof that no endpoint or metadata exists. Keep freshness unknown when the source cannot support the claim; no live adapter was added. Required CI `36619787628` and post-merge CI `36620109320` passed.
 
-**Current synthetic UI slice (`feat/report-observation-status`, PR pending):** separate planned campaign dates, actually observed reporting dates, and freshness status in the report summary. Until a verified source is connected, show no observed period and freshness as unknown. Do not present an SLO as a delivery guarantee or add a live adapter.
+**Completed in PR #154:** separate planned campaign dates, actually observed reporting dates, and freshness status in the report summary. Until a verified source is connected, show no observed period and freshness as unknown. No SLO guarantee or live adapter was added. Required PR CI `36622723566` and post-merge CI `36622985685` passed.
 
-**Next synthetic foundation slice:** review and manually inspect the report's empty state at desktop and mobile widths, then continue the next report contract item without implying connected data.
+**Next synthetic foundation slice:** manually inspect the report's empty state at desktop and mobile widths, then continue the next report contract item without implying connected data.
 
 ## Phase 3 — First publishing and reporting integration
 

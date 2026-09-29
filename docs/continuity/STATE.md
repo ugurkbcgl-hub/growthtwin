@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 22:50 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 23:00 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `048c49c` after PR #153. PR #150 required/post-merge CI `36618254042`/`36618532218` and PR #151 required/post-merge CI `36619100149`/`36619387519` passed. PR #152 required/post-merge CI `36619787628`/`36620109320` and PR #153 CI `36621068238` passed; PR #153 post-merge CI `36621329777` passed at 2026-09-29 22:49 Europe/Istanbul.
-- Current branch: `feat/report-observation-status`, based on merged `main`; separates planned dates, observed report period, and freshness in the disconnected report empty state. PR not yet opened.
-- PR #152 documents the source timestamp evidence gap; PR #153 refreshed continuity. Both required and post-merge CI passed. Current report UI slice has not been locally tested; required PR CI is pending.
+- `main` is `48be3d3` after PR #154. PR #150 required/post-merge CI `36618254042`/`36618532218` and PR #151 required/post-merge CI `36619100149`/`36619387519` passed. PR #152 required/post-merge CI `36619787628`/`36620109320` and PR #153 CI `36621068238` passed; PR #153 post-merge CI `36621329777` passed. PR #154 required CI `36622723566` and post-merge CI `36622985685` both passed at 2026-09-29 23:00 Europe/Istanbul.
+- Current branch: `docs/report-status-handoff`, based on merged `main`; records the completed report observation-status UI and CI results, with visual inspection as the next action.
+- PR #152 documents the source timestamp evidence gap; PR #153 refreshed continuity. Both required and post-merge CI passed. PR #154 keeps report data disconnected and synthetic; local test suite was not run. Required PR and post-merge CI (including Django and browser E2E) passed.
 
 ## Product and safety context
 
@@ -25,4 +25,4 @@ Last verified: 2026-09-29 22:50 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Review the report period/freshness UI diff, open its PR, and merge only after required CI succeeds. Then inspect the empty state at desktop and mobile widths; keep data synthetic and do not add a live adapter.
+Manually inspect the authenticated report empty state at desktop and mobile widths, confirming planned period, no observed period, unknown freshness, and no horizontal overflow. Use only synthetic/local data; do not add a live adapter.
