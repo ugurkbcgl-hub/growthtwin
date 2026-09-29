@@ -81,7 +81,9 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                     page.get_by_text("Planlanan kampanya dönemi", exact=False).count(),
                     1,
                 )
-                self.assertIn("Gözlenen rapor dönemi", page.locator("body").inner_text())
+                self.assertIn(
+                    "Gözlenen rapor dönemi", page.locator("body").inner_text()
+                )
                 self.assertIn("Veri güncelliği", page.locator("body").inner_text())
                 self.assertIn(
                     "Kaynak verisi yok; güncellik doğrulanamıyor",
