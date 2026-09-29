@@ -229,6 +229,31 @@ class CampaignDraftFlowTests(TestCase):
         self.assertNotContains(response, "Kaydedilmiş taslakların")
         self.assertFalse(Session.objects.exists())
 
+    def test_saved_draft_list_shows_details_to_distinguish_similar_briefs(self):
+        self.client.post(self.url, self.valid_data)
+        first = CampaignDraft.objects.get()
+        second_data = {
+            **self.valid_data,
+            "brand_context": "Sentetik seramik atölyesi",
+            "target_audience": "Hafta sonu üretim yapmak isteyenler",
+            "objective": "sales",
+        }
+        self.client.post(self.url, second_data)
+        second = CampaignDraft.objects.exclude(pk=first.pk).get()
+
+        listing = self.client.get(self.url)
+
+        self.assertContains(listing, "Marka / teklif: Mahalle fırını")
+        self.assertContains(listing, "Marka / teklif: Sentetik seramik atölyesi")
+        self.assertContains(listing, "Kitle: Yakındaki çalışanlar")
+        self.assertContains(listing, "Kitle: Hafta sonu üretim yapmak isteyenler")
+        self.assertContains(listing, "Potansiyel müşteri bulmak")
+        self.assertContains(listing, "Satış, randevu veya rezervasyon almak")
+        self.assertContains(listing, "₺10500 toplam")
+        self.assertContains(listing, f'href="?campaign={first.pk}"')
+        self.assertContains(listing, f'href="?campaign={second.pk}"')
+        self.assertContains(listing, "Oluşturuldu")
+
     def test_session_draft_list_does_not_expose_other_sessions(self):
         response = self.client.post(self.url, self.valid_data)
         draft = CampaignDraft.objects.get()

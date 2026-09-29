@@ -333,7 +333,11 @@
                     <li class="saved-draft-item">
                       <div class="saved-draft-copy">
                         <strong>{{ draft.brief }}</strong>
-                        <span>₺{{ draft.daily_limit }} / gün · {{ draft.duration_days }} gün</span>
+                        {% if draft.brand_context %}<span>Marka / teklif: {{ draft.brand_context|truncatechars:72 }}</span>{% endif %}
+                        {% if draft.target_audience %}<span>Kitle: {{ draft.target_audience|truncatechars:72 }}</span>{% endif %}
+                        {% if draft.objective %}<span>{{ draft.get_objective_display }}</span>{% endif %}
+                        <span>₺{{ draft.daily_limit }} / gün · {{ draft.duration_days }} gün · ₺{{ draft.total_limit }} toplam</span>
+                        <time datetime="{{ draft.created_at|date:'c' }}">Oluşturuldu {{ draft.created_at|date:"j M Y, H:i" }}</time>
                       </div>
                       <div class="saved-draft-actions">
                         <a class="button button-secondary" href="?campaign={{ draft.pk }}">Devam et</a>
