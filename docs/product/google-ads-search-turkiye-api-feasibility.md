@@ -1,6 +1,6 @@
 # Google Ads Search in Türkiye: API feasibility
 
-**Reviewed:** 2026-09-29 (Europe/Istanbul)  
+**Reviewed:** 2026-09-29 (Europe/Istanbul)
 **Scope:** official-source desk research for the synthetic Google Search campaign candidate. This is not legal advice, an account eligibility decision, API approval, a forecast, or authorization to connect or publish.
 
 ## Assessment
