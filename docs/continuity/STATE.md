@@ -1,17 +1,17 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 17:50 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 17:53 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `5fb74fb2c07730c163afd4c8ab84e62f202ead59`, PR #127 merged with squash. Required CI `36584727249` and post-merge CI `36585002361` passed.
-- Current branch: `feat/synthetic-policy-identifiers`, based on the verified main commit. Synthetic policy version/rule identifiers are being added; changes are not yet in a PR.
+- Baseline `main`: `21f47839020cfb91ed4a3d844f6ddef489029ccb`, PR #128 merged with squash. Required CI `36585464840` and post-merge CI `36585760021` passed.
+- Current branch: `docs/record-policy-identifiers-merge`, based on the verified main commit; only verified project status and next-step documentation are changed locally.
 
 ## Product and safety context
 
 - GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. Its long-term capability reference does not set first-release scope.
 - Local synthetic-data product development is authorized. The remaining Phase 0 staging E2E, backup/restore, and rollback checks are release-readiness gates and do not block local product work.
-- PR #122 adds a pure fail-closed campaign action-policy evaluator. PR #126 adds two allowlisted synthetic evidence-source labels and caller-supplied timezone-aware observation time. Its 13 focused tests, local Django system check, Ruff checks, required PR CI, and source review passed. The current branch adds stable informational policy version and evaluated rule IDs; it does not authenticate evidence or persist results.
+- PR #122 adds a pure fail-closed campaign action-policy evaluator. PR #126 adds two allowlisted synthetic evidence-source labels and caller-supplied timezone-aware observation time. PR #128 adds informational policy version and evaluated-rule identifiers. The 14 focused tests, local Django system check, Ruff checks, PR CI, and post-merge CI passed. These values do not authenticate evidence or persist results.
 - The authenticated workspace uses fixed synthetic campaign examples. User uploads, real advertiser/customer/lead data, live account connections, publication, advertiser spend, payments, and production AI are not authorized or implemented.
 - Keep the Django/PostgreSQL monolith and approved Heroku staging resources. Add no paid services; never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
 
@@ -23,4 +23,4 @@ Last verified: 2026-09-29 17:50 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Complete the current `feat/synthetic-policy-identifiers` change with focused tests and documentation. Keep the version and rule IDs in-memory and informational: no evidence authentication, persistence, live integrations, spend reservation, or dispatch authorization.
+Complete the documentation-only status update, then bring provider-free creative variants into the authenticated workspace campaign path. Keep the work synthetic and owner-scoped, preserve the anonymous demo flow, and add no external AI/provider calls. Ensure creative outputs cannot appear current after relevant campaign inputs change.
