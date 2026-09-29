@@ -7,6 +7,67 @@ from playwright.sync_api import sync_playwright
 class CampaignMobileFlowBrowserTests(LiveServerTestCase):
     """Keep the first-visit brief, preview, and report usable on mobile."""
 
+    def test_budget_and_duration_errors_are_associated_and_focused(self):
+        invalid_cases = (
+            (
+                "#daily-limit",
+                "99",
+                "(field) => { field.removeAttribute('min'); field.step = 'any'; }",
+            ),
+            (
+                "#daily-limit",
+                "100001",
+                "(field) => { field.removeAttribute('max'); field.step = 'any'; }",
+            ),
+            (
+                "#campaign-days",
+                "21",
+                "(field) => { const option = new Option('21 gün', '21'); "
+                "field.add(option); field.value = '21'; }",
+            ),
+        )
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                for selector, invalid_value, bypass_native_constraint in invalid_cases:
+                    with self.subTest(field=selector, value=invalid_value):
+                        page.goto(self.live_server_url)
+                        page.locator("#campaign-brief").fill(
+                            "Sentetik örnek kampanya fikri"
+                        )
+                        field = page.locator(selector)
+                        field.evaluate(bypass_native_constraint)
+                        if selector == "#campaign-days":
+                            field.select_option(invalid_value)
+                        else:
+                            field.fill(invalid_value)
+
+                        with page.expect_response(
+                            lambda response: response.request.method == "POST"
+                        ) as invalid_response:
+                            page.get_by_role(
+                                "button", name="Örnek kampanyayı gör"
+                            ).click()
+                        self.assertEqual(invalid_response.value.status, 200)
+                        page.wait_for_load_state("domcontentloaded")
+                        field_id = field.get_attribute("id")
+                        page.wait_for_function(
+                            f"document.activeElement.id === '{field_id}'",
+                            timeout=3000,
+                        )
+
+                        self.assertEqual(field.get_attribute("aria-invalid"), "true")
+                        error_id = field.get_attribute("aria-describedby")
+                        self.assertEqual(error_id, f"{field.get_attribute('id')}-error")
+                        self.assertTrue(page.locator(f"#{error_id}").inner_text())
+                        self.assertEqual(
+                            page.evaluate("document.activeElement.id"),
+                            field.get_attribute("id"),
+                        )
+            finally:
+                browser.close()
+
     def test_campaign_journey_fits_a_mobile_viewport(self):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
