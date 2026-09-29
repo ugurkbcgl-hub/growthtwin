@@ -105,9 +105,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #142 (research only):** map Google Ads API v25 official source fields to ADR-0017's metric definitions without an account or API request. The Search candidate mapping leaves reach unavailable, avoids double-counting interactions as clicks, and does not treat attributed conversions as delivered lead records.
 
-**Current synthetic foundation slice (PR review pending):** extend the provider-neutral report contract with explicit `not_connected`, `unsupported`, `partial`, and `stale` reasons, reason-specific provenance requirements, and metric-level user-facing explanations. A source-confirmed zero remains an available numeric zero. No provider, account, persistence, or real data is added. See [ADR-0018](docs/adr/0018-explicit-unavailable-report-metric-reasons.md).
+**Completed in PR #143:** extend the provider-neutral report contract with explicit `not_connected`, `unsupported`, `partial`, and `stale` reasons, reason-specific provenance requirements, and metric-level user-facing explanations. A source-confirmed zero remains an available numeric zero. Required PR CI `36602784613` and post-merge CI `36603066285` passed. No provider, account, persistence, or real data was added. See [ADR-0018](docs/adr/0018-explicit-unavailable-report-metric-reasons.md).
 
-**Next synthetic foundation slice:** define when provider report rows and timestamps are complete and fresh enough to support a value, especially where a source omits rows for zero-only results. Keep the rules source-specific and evidence-backed; do not implement an adapter or account connection until the relevant access and readiness gates are met.
+**Next synthetic foundation slice:** define when source report rows and timestamps are complete and fresh enough to support a value, especially where Google Ads omits rows when selected metrics are all zero. Keep the rules source-specific and evidence-backed; do not implement an adapter or account connection until the relevant access and readiness gates are met.
 
 ## Phase 3 — First publishing and reporting integration
 
