@@ -4,7 +4,9 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import number_format
 from django.views.decorators.http import require_POST
@@ -19,6 +21,7 @@ from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     creative_source_hash_for_draft,
     generate_creative_version_for_owner,
+    select_preferred_creative_for_owner,
     update_campaign_draft_for_owner,
 )
 from growthtwin.modules.workspaces.models import Workspace
@@ -146,6 +149,21 @@ def campaign_detail(request, draft_id):
             ),
             "creative_is_stale": creative_is_stale,
             "creative_version_count": len(versions),
+            "preferred_creative_key": (
+                draft.preferred_creative_key
+                if (
+                    not creative_is_stale
+                    and latest_creative_version
+                    and draft.preferred_creative_version
+                    == latest_creative_version.get("version")
+                )
+                else ""
+            ),
+            "creative_preference_notice": (
+                request.GET.get("creative_preference")
+                if request.GET.get("creative_preference") in {"saved", "stale"}
+                else ""
+            ),
         },
     )
 
@@ -161,6 +179,36 @@ def campaign_generate_creatives(request, draft_id):
     )
     generate_creative_version_for_owner(owner=request.user, draft_id=draft_id)
     return redirect("campaigns:detail", draft_id=draft_id)
+
+
+@login_required
+@require_POST
+def campaign_select_preferred_creative(request, draft_id):
+    """Record the owner's informational preference for one current variant."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    try:
+        version_number = int(request.POST.get("version", ""))
+    except (TypeError, ValueError):
+        return redirect(
+            f"{reverse('campaigns:detail', args=[draft_id])}?creative_preference=stale"
+        )
+    result = "saved"
+    try:
+        select_preferred_creative_for_owner(
+            owner=request.user,
+            draft_id=draft_id,
+            version_number=version_number,
+            key=request.POST.get("variant_key", ""),
+        )
+    except ValidationError:
+        result = "stale"
+    return redirect(
+        f"{reverse('campaigns:detail', args=[draft.pk])}?creative_preference={result}"
+    )
 
 
 @login_required

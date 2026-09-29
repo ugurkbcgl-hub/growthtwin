@@ -59,6 +59,11 @@
           <p>Önceki metinler güncel kampanya bilgilerine göre hazırlanmadı. Yeni sürüm oluşturana kadar gösterilmiyor.</p>
         </aside>
       {% endif %}
+      {% if creative_preference_notice == "saved" %}
+        <p class="ready-note" role="status">İnceleme tercihin kaydedildi.</p>
+      {% elif creative_preference_notice == "stale" %}
+        <p class="notice" role="status">Bu seçenek güncel sürümde bulunmadığı için tercih kaydedilmedi. Sayfayı yenileyip güncel metinleri kontrol et.</p>
+      {% endif %}
       {% if creative_version %}
         {% for variant in creative_version.variants %}
           <article class="asset-card">
@@ -66,9 +71,20 @@
             <h3>{{ variant.headline }}</h3>
             <p>{{ variant.body }}</p>
             <small>Çağrı: {{ variant.call_to_action }}</small>
+            {% if preferred_creative_key == variant.key %}
+              <p class="ready-note" role="status">Tercih edilen taslak · sürüm {{ creative_version.version }}</p>
+            {% else %}
+              <form method="post" action="{% url 'campaigns:select_preferred_creative' draft.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="variant_key" value="{{ variant.key }}">
+                <input type="hidden" name="version" value="{{ creative_version.version }}">
+                <button class="button button-secondary" type="submit">Bu taslağı tercih et</button>
+              </form>
+            {% endif %}
           </article>
         {% endfor %}
         <p class="pacing-note">Bu başlangıç metinleri harici AI kullanılmadan şablonla hazırlandı. İddialar ve yayın uygunluğu ayrıca doğrulanmadı.</p>
+        <p class="pacing-note">Tercih yalnızca inceleme içindir; onay, yayın veya harcama başlatmaz.</p>
       {% else %}
         <p>Bu kampanya bilgileri için güncel bir metin sürümü yok.</p>
       {% endif %}

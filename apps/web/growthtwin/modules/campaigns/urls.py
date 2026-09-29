@@ -16,5 +16,10 @@ urlpatterns = [
         views.campaign_generate_creatives,
         name="generate_creatives",
     ),
+    path(
+        "<int:draft_id>/creatives/preference/",
+        views.campaign_select_preferred_creative,
+        name="select_preferred_creative",
+    ),
     path("<int:draft_id>/delete/", views.campaign_delete, name="delete"),
 ]

@@ -63,8 +63,51 @@ def generate_creative_version_for_owner(*, owner, draft_id):
         }
         versions.append(version)
         draft.creative_versions = versions
-        draft.save(update_fields=("creative_versions", "updated_at"))
+        draft.preferred_creative_key = ""
+        draft.preferred_creative_version = None
+        draft.save(
+            update_fields=(
+                "creative_versions",
+                "preferred_creative_key",
+                "preferred_creative_version",
+                "updated_at",
+            )
+        )
         return draft, version
+
+
+def select_preferred_creative_for_owner(*, owner, draft_id, version_number, key):
+    """Save an informational preference only for a current owner-owned variant."""
+
+    with transaction.atomic():
+        draft = (
+            WorkspaceCampaignDraft.objects.owned_by(owner)
+            .select_for_update()
+            .get(pk=draft_id)
+        )
+        versions = list(draft.creative_versions or [])
+        current = versions[-1] if versions else None
+        if (
+            not current
+            or current.get("source_hash") != creative_source_hash_for_draft(draft)
+            or current.get("version") != version_number
+        ):
+            raise ValidationError("Bu reklam metni sürümü artık güncel değil.")
+        if not any(
+            variant.get("key") == key for variant in current.get("variants", [])
+        ):
+            raise ValidationError("Bu reklam metni seçeneği bulunamadı.")
+
+        draft.preferred_creative_key = key
+        draft.preferred_creative_version = version_number
+        draft.save(
+            update_fields=(
+                "preferred_creative_key",
+                "preferred_creative_version",
+                "updated_at",
+            )
+        )
+        return draft
 
 
 def create_campaign_draft_for_owner(*, owner, workspace_id, **values):
