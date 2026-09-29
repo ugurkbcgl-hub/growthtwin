@@ -58,6 +58,14 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                     "Farklı reklam metinleri", page.locator("body").inner_text()
                 )
                 self.assertIn("Kısa tanıtım", page.locator("body").inner_text())
+                page.get_by_role("button", name="Bu taslağı tercih et").nth(1).click()
+                self.assertIn(
+                    "Tercih yalnızca inceleme içindir",
+                    page.locator("body").inner_text(),
+                )
+                self.assertEqual(
+                    page.get_by_text("Tercih edilen taslak · sürüm 1").count(), 1
+                )
                 self.assert_no_horizontal_overflow(page)
 
                 detail_url = reverse("campaigns:detail", args=[draft_id])
@@ -76,6 +84,8 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
         self.assertEqual(draft.media_budget_minor, 1_000_000)
         self.assertEqual((draft.flight_end - draft.flight_start).days, 30)
         self.assertEqual(len(draft.creative_versions), 1)
+        self.assertEqual(draft.preferred_creative_key, "audience-focused")
+        self.assertEqual(draft.preferred_creative_version, 1)
 
     def test_owner_can_confirm_campaign_deletion(self):
         draft = WorkspaceCampaignDraft.objects.create(

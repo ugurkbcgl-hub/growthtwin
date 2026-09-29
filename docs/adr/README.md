@@ -21,3 +21,8 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0007 — Workspace ownership and campaign data lifecycle](0007-workspace-ownership-and-retention.md) — Accepted
 - [0008 — First synthetic campaign workflow and channel candidate](0008-first-mvp-google-search-leads.md) — Accepted
 - [0009 — Asset intake and processing boundary](0009-asset-intake-processing-boundary.md) — Accepted for contract design and synthetic-only local development
+- [0010 — Synthetic action policy contract](0010-synthetic-action-policy-contract.md) — Accepted for local synthetic-data development only
+- [0011 — Synthetic policy-evidence metadata](0011-synthetic-policy-evidence-metadata.md) — Accepted for local synthetic-data development only
+- [0012 — Synthetic policy version and rule identifiers](0012-synthetic-policy-identifiers.md) — Accepted for local synthetic-data development only
+- [0013 — Workspace synthetic creative versions](0013-workspace-synthetic-creative-versions.md) — Accepted for local synthetic-data development only
+- [0014 — Workspace creative review preference](0014-workspace-creative-preference.md) — Accepted for local synthetic-data development only

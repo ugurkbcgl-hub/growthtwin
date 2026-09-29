@@ -13,6 +13,7 @@ from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     generate_creative_version_for_owner,
     get_campaign_draft_for_owner,
+    select_preferred_creative_for_owner,
     update_campaign_draft_for_owner,
 )
 from growthtwin.modules.workspaces.models import Workspace
@@ -311,6 +312,98 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(first_version, second_version)
         self.assertEqual(first_draft.pk, second_draft.pk)
         self.assertEqual(len(second_draft.creative_versions), 1)
+
+    def test_owner_can_prefer_a_current_creative_variant(self):
+        draft = self.make_draft()
+        _, version = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("campaigns:select_preferred_creative", args=[draft.pk]),
+            {"variant_key": "audience-focused", "version": version["version"]},
+        )
+
+        draft.refresh_from_db()
+        self.assertRedirects(
+            response,
+            f"{reverse('campaigns:detail', args=[draft.pk])}?creative_preference=saved",
+        )
+        self.assertEqual(draft.preferred_creative_key, "audience-focused")
+        self.assertEqual(draft.preferred_creative_version, version["version"])
+        detail = self.client.get(
+            f"{reverse('campaigns:detail', args=[draft.pk])}?creative_preference=saved"
+        )
+        self.assertContains(detail, "Tercih edilen taslak")
+        self.assertContains(detail, "İnceleme tercihin kaydedildi")
+        self.assertContains(detail, "Tercih yalnızca inceleme içindir")
+
+    def test_preference_rejects_stale_or_unknown_variant(self):
+        draft = self.make_draft()
+        _, version = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        self.client.force_login(self.owner)
+        url = reverse("campaigns:select_preferred_creative", args=[draft.pk])
+
+        self.client.post(
+            url,
+            {"variant_key": "made-up", "version": version["version"]},
+        )
+        draft.refresh_from_db()
+        self.assertEqual(draft.preferred_creative_key, "")
+
+        self.client.post(
+            url,
+            {"variant_key": "audience-focused", "version": "999"},
+        )
+        draft.refresh_from_db()
+        self.assertEqual(draft.preferred_creative_key, "")
+
+    def test_preference_is_owner_scoped_and_post_only(self):
+        draft = self.make_draft()
+        self.client.force_login(self.other_user)
+
+        response = self.client.post(
+            reverse("campaigns:select_preferred_creative", args=[draft.pk]),
+            {"variant_key": "audience-focused", "version": "1"},
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.client.force_login(self.owner)
+        response = self.client.get(
+            reverse("campaigns:select_preferred_creative", args=[draft.pk])
+        )
+        self.assertEqual(response.status_code, 405)
+
+    def test_preference_is_hidden_on_source_change_and_cleared_on_new_version(self):
+        draft = self.make_draft()
+        _, version = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        select_preferred_creative_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+            version_number=version["version"],
+            key="audience-focused",
+        )
+        draft.refresh_from_db()
+        draft.brief = "Changed synthetic brief."
+        draft.save(update_fields=("brief",))
+        self.client.force_login(self.owner)
+
+        stale_detail = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
+
+        self.assertContains(stale_detail, "Kampanya bilgileri değişti")
+        self.assertNotContains(stale_detail, "Tercih edilen taslak")
+        self.client.post(reverse("campaigns:generate_creatives", args=[draft.pk]))
+        draft.refresh_from_db()
+        self.assertEqual(draft.preferred_creative_key, "")
+        self.assertIsNone(draft.preferred_creative_version)
 
     def test_campaign_form_rejects_other_owners_workspace(self):
         self.client.force_login(self.owner)
