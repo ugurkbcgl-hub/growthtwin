@@ -1,13 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 16:40 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 16:48 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `4ff0cb3233fdddd08be1ba510ad79efc2246374f`; PR #121 is merged. Required CI `36574998136` and post-merge main CI `36575264802` passed. No open PR was listed at the time of verification.
-- Current feature branch: `feat/synthetic-action-policy-contracts`, PR [#122](https://github.com/ugurkbcgl-hub/growthtwin/pull/122) open. It adds pure fail-closed policy checks for synthetic action review, ten focused tests, ADR-0010, and status corrections in the project/architecture/roadmap/gap-analysis documents. CI run `36576729888` was in progress at verification.
-- Local checks: Django system check passed; all ten new policy tests passed; Ruff lint and formatting passed for the approvals package and Django settings.
-- The campaign test suite was attempted but PostgreSQL denied creation of its test database. No application secret was exposed. The focused policy suite does not require a database.
+- `main` is `751e6dd0c5aeff6c69e3590980a9b7d844f9dbfa`; PR #122 is merged. Required PR CI `36576865860` and post-merge main CI `36577137802` passed. No open PR was listed after the merge.
+- The current branch `docs/post-policy-current-state` updates the project, architecture, roadmap, gap analysis, and handoff snapshot for PR #122. The PR has not yet been opened.
+- PR #122 adds a pure synthetic action-policy evaluator and ten focused tests. Local Django system check, policy tests, Ruff lint/format, and post-merge full Django and browser E2E CI passed. Local campaign integration tests could not create their PostgreSQL test database because the local role lacks that privilege.
 
 ## Product and safety context
 
@@ -15,7 +14,7 @@ Last verified: 2026-09-29 16:40 (Europe/Istanbul). Repository: `https://github.c
 - Local synthetic-data product development is authorized. Real advertiser/customer/lead data must wait for the readiness gate and separate owner decision. Do not connect live accounts, publish, charge, or spend.
 - The authenticated campaign workspace creates a fixed synthetic example. Public registration, user uploads, persistent asset records, AI provider calls, account connections, live forecasts, publication, and payment are not implemented.
 - ADR-0008 selects a synthetic city-service quote/contact flow, Google Search as a technical candidate, and the advertiser's own site. ADR-0009 sets future file-safety boundaries. Neither establishes demand, API eligibility, legal readiness, pricing, or permission to publish.
-- PRs #120–#121 add and test pure asset workflow contracts only. The current policy evaluator checks caller-supplied evidence and always leaves `live_dispatch_authorized` false; it does not authenticate evidence, reserve spend, or record durable audit.
+- PR #122 checks caller-supplied evidence and always leaves live dispatch unauthorized. It does not authenticate evidence, reserve spend, prove freshness, or persist an audit record.
 - Keep the Django/PostgreSQL monolith and approved Heroku staging footprint; add no paid resources. Staging E2E, backup/restore, and rollback remain release-readiness gates; Scheduler one-off cost remains unverified.
 - Use feature branches/PRs, never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
 
@@ -24,8 +23,8 @@ Last verified: 2026-09-29 16:40 (Europe/Istanbul). Repository: `https://github.c
 - Real-data readiness: secure file handling, privacy/retention, data recipients, provider terms, platform/API approvals, token controls, audit/stop/revoke, backup/restore and rollback remain incomplete.
 - Credit costs, TRY/tax/payment pricing, ad service fees, lead delivery, performance guarantees and production AI/provider remain undecided or unverified.
 - Google forecasts and keyword ideas remain unavailable until eligible authorized sources are connected and verified.
-- The synthetic policy contract does not make live dispatch safe. Trusted evidence provenance, concurrent budget reservation, policy versioning, durable audit and stop/revoke enforcement still need design and verification.
+- Before live policy use, design trusted evidence provenance, policy versioning, durable audit, concurrent budget reservation, and stop/revoke enforcement. The current evaluator is only a local synthetic contract.
 
 ## Next action
 
-Check CI for PR #122 after its latest commit, review the final diff, and merge only when required checks pass. Keep all external actions disabled.
+Open and merge the current documentation correction after review and required CI pass. Then add a small synthetic-only metadata contract for policy evidence source and observation time; keep it explicitly untrusted and disconnected from live dispatch.
