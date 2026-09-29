@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 11:22 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 11:32 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Clean `main` at `54c2c30` (PR #100); no open PRs at this snapshot.
-- PR #100 CI run `36541396010` and post-merge main CI run `36541595990` passed, including Django tests, formatting/lint, and browser E2E.
+- `main` at `f31c16b` (PR #102); docs PR #101 and workspace model PR #102 are merged. Post-merge main CI run `36543340617` was still running at this snapshot.
+- PR #100 CI run `36541396010` and post-merge main CI run `36541595990` passed. PR #101 CI `36542515905` and PR #102 CI `36543083676` passed, including Django tests, formatting/lint, and browser E2E.
 - Local development site is listening at `127.0.0.1:8002` (PID 11876). It serves the current source after collecting static assets and restarting the verified runserver.
 
 ## Product and safety context
@@ -23,7 +23,8 @@ Last verified: 2026-09-29 11:22 (Europe/Istanbul). Repository: `https://github.c
 - Two synthetic advertiser briefs and the existing-draft edit flow were reviewed. Plan/copy reflect supplied facts, and edited copy remains visibly stale until the advertiser chooses to regenerate it. No other defect was demonstrated.
 - A local browser test attempt could not create its PostgreSQL test database because the configured local DB role lacks `CREATE DATABASE`; it did not run. The complete required CI suite passed on PR #100 and after merge.
 - [ADR-0007](../adr/0007-workspace-ownership-and-retention.md) establishes a synthetic-only Phase 2 boundary: future campaign data is workspace-owned, anonymous drafts are not backfilled, and real-data retention must be defined by data category and purpose before launch. It is not legal approval to process personal data.
+- PR #102 added the minimal `Workspace(owner, name, created_at)` model, user deletion cascade, migration, and owner-scoping tests. The model is not yet used by signup or campaign UI. Django system check, migration consistency, Ruff lint/format, and PR CI passed. Local focused tests could not start because the configured PostgreSQL role lacks permission to create the test database.
 
 ## Next action
 
-Implement the smallest local synthetic `Workspace` model owned by an authenticated Django user, with tenant-ownership and deletion tests. Keep it disconnected from anonymous session drafts and do not accept real advertiser data or set a universal retention duration.
+Add a minimal authenticated workspace entry point with server-side owner filtering and workspace creation/listing tests. Keep anonymous session drafts separate and use synthetic data only; do not set a universal retention duration.
