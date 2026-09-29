@@ -1,0 +1,63 @@
+{% extends "campaigns/base.html" %}
+{% block title %}{{ draft.name }}{% endblock %}
+{% block content %}
+  <p class="eyebrow">2 / 2 · Reklam taslağı</p>
+  <div class="narrow-column">
+    <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalara dön</a>
+    <h1>{{ draft.name }}</h1>
+    <p class="lead">{{ draft.brand_name }} · {{ draft.target_city }} · Google Search</p>
+
+    <aside class="notice" role="note">
+      <strong>Önizleme · yayınlanmadı</strong>
+      <p>Bu metin taslağı sabit sentetik örnekten hazırlanmıştır. Google Ads hesabına bağlanılmadı ve harcama yapılmadı.</p>
+    </aside>
+
+    <section class="summary-card" aria-labelledby="plan-summary-title">
+      <h2 id="plan-summary-title">Plan özeti</h2>
+      <dl class="summary-list">
+        <div><dt>Hedef</dt><dd>Teklif / iletişim talebi</dd></div>
+        <div><dt>Hedef şehir</dt><dd>{{ plan.target_city }}</dd></div>
+        <div><dt>Toplam medya tavanı</dt><dd>{{ budget_display }}</dd></div>
+        <div><dt>Kampanya dönemi</dt><dd>{{ plan.flight_start|default:"Belirtilmedi" }} – {{ plan.flight_end|default:"Belirtilmedi" }}</dd></div>
+        <div><dt>Reklamın gideceği sayfa</dt><dd><a href="{{ plan.final_url }}" rel="noreferrer">{{ plan.final_url }}</a></dd></div>
+      </dl>
+    </section>
+
+    <section class="asset-section" aria-labelledby="headlines-title">
+      <div class="section-heading"><h2 id="headlines-title">Başlık seçenekleri</h2><span>En fazla 30 karakter</span></div>
+      {% for asset in plan.headlines %}
+        <article class="asset-card">
+          <p>{{ asset.text }}</p>
+          <small>{{ asset.text|length }}/{{ asset.max_characters }} · Kaynak: {{ asset.source_fields|join:", " }}</small>
+        </article>
+      {% empty %}<p>Başlık üretmek için işletme adı ve şehir gerekli.</p>{% endfor %}
+    </section>
+
+    <section class="asset-section" aria-labelledby="descriptions-title">
+      <div class="section-heading"><h2 id="descriptions-title">Açıklama seçenekleri</h2><span>En fazla 90 karakter</span></div>
+      {% for asset in plan.descriptions %}
+        <article class="asset-card">
+          <p>{{ asset.text }}</p>
+          <small>{{ asset.text|length }}/{{ asset.max_characters }} · Kaynak: {{ asset.source_fields|join:", " }}</small>
+        </article>
+      {% empty %}<p>Açıklama üretmek için hizmet brief'i gerekli.</p>{% endfor %}
+    </section>
+
+    <section class="notice notice-muted" aria-labelledby="forecast-title">
+      <h2 id="forecast-title">Tahmin ve arama terimleri</h2>
+      <p><strong>Gösterim, tıklama, maliyet ve dönüşüm:</strong> {{ plan.forecast_reason }}</p>
+      <p><strong>Anahtar kelime önerisi:</strong> {{ plan.keyword_ideas_reason }}</p>
+    </section>
+
+    {% if plan.missing_requirements %}
+      <section class="requirements" aria-labelledby="requirements-title">
+        <h2 id="requirements-title">Taslağı tamamlamak için</h2>
+        <ul>{% for item in plan.missing_requirements %}<li>{{ item }}</li>{% endfor %}</ul>
+      </section>
+    {% else %}
+      <p class="ready-note" role="status">Taslak yerel inceleme için hazır. Bu durum yayın izni anlamına gelmez.</p>
+    {% endif %}
+
+    <a class="button button-secondary" href="{% url 'campaigns:create' %}">Başka bir taslak oluştur</a>
+  </div>
+{% endblock %}

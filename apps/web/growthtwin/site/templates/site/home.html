@@ -28,6 +28,11 @@
       <nav class="topnav" aria-label="Ana gezinme">
         <a href="#nasil-calisir">Nasıl çalışır?</a>
         <a href="#kontrol">Kontrol sende</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'campaigns:list' %}">Çalışma alanım</a>
+        {% else %}
+          <a href="{% url 'login' %}?next={% url 'campaigns:list' %}">Giriş yap</a>
+        {% endif %}
       </nav>
       <a class="topbar-cta" href="#kampanya-denemesi">
         Akışı dene <span aria-hidden="true">↗</span>

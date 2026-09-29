@@ -9,6 +9,7 @@
     <main>
       <header>
         <h1>Demo klinik profili</h1>
+        <a href="{% url 'campaigns:list' %}">Kampanya çalışma alanı</a>
         <form method="post" action="{% url 'logout' %}">
           {% csrf_token %}
           <button type="submit">Çıkış yap</button>

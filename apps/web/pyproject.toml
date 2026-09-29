@@ -47,3 +47,7 @@ include = ["config*", "growthtwin*"]
     "static/site/css/*.css",
     "static/site/js/*.js",
 ]
+"growthtwin.modules.campaigns" = [
+    "templates/campaigns/*.html",
+    "static/campaigns/css/*.css",
+]

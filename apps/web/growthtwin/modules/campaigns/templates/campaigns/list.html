@@ -1,0 +1,40 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Kampanyaların{% endblock %}
+{% block content %}
+  <p class="eyebrow">Çalışma alanın</p>
+  <div class="page-heading">
+    <div>
+      <h1>Kampanyaların</h1>
+      <p class="lead">Hedefini anlat, reklam taslağını birlikte netleştirelim.</p>
+    </div>
+    <a class="button button-primary" href="{% url 'campaigns:create' %}">Yeni kampanya oluştur</a>
+  </div>
+
+  <aside class="notice" role="note">
+    <strong>Sentetik prototip</strong>
+    <p>Gerçek işletme, müşteri veya kişi bilgisi girme. Bu ekranda hesap bağlama, reklam yayını, AI üretimi veya harcama yapılmaz.</p>
+  </aside>
+
+  {% if draft_rows %}
+    <section aria-labelledby="saved-campaigns-title">
+      <h2 id="saved-campaigns-title">Kaydedilen taslaklar</h2>
+      <div class="campaign-list">
+        {% for row in draft_rows %}
+          <a class="campaign-card" href="{% url 'campaigns:detail' row.draft.pk %}">
+            <span class="status-tag">Taslak · {{ row.draft.channel }}</span>
+            <h3>{{ row.draft.name }}</h3>
+            <p>{{ row.draft.brand_name }} · {{ row.draft.target_city }}</p>
+            <p>{{ row.budget_display }} toplam medya bütçesi</p>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <section class="empty-state" aria-labelledby="empty-title">
+      <span class="empty-icon" aria-hidden="true">＋</span>
+      <h2 id="empty-title">Henüz kampanya taslağın yok</h2>
+      <p>Örnek akış, Ankara'daki sentetik bir ev bakım hizmetini kullanır. Kampanya alanları şu aşamada sabit örneklerden gelir.</p>
+      <a class="button button-secondary" href="{% url 'campaigns:create' %}">Sentetik örnekle başla</a>
+    </section>
+  {% endif %}
+{% endblock %}

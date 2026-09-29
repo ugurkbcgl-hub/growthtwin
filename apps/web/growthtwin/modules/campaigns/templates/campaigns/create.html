@@ -1,0 +1,46 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Yeni kampanya{% endblock %}
+{% block content %}
+  <p class="eyebrow">1 / 2 · Kampanya brief'i</p>
+  <div class="narrow-column">
+    <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalara dön</a>
+    <h1>Ne tanıtmak istiyorsun?</h1>
+    <p class="lead">Önce sentetik örnek akışı gör. Bu aşamada serbest metin veya işletme bilgisi kaydetmiyoruz.</p>
+
+    <aside class="notice" role="note">
+      <strong>Yalnız sentetik bilgi kullan</strong>
+      <p>Gerçek müşteri, lead, iletişim bilgisi veya gizli şirket belgesi ekleme. Kampanya henüz hiçbir platformda yayınlanmaz.</p>
+    </aside>
+
+    <section class="summary-card sample-card" aria-labelledby="sample-title">
+      <h2 id="sample-title">Kullanılacak örnek senaryo</h2>
+      <dl class="summary-list">
+        <div><dt>İşletme</dt><dd>{{ sample.brand_name }}</dd></div>
+        <div><dt>Hizmet</dt><dd>{{ sample.brief }}</dd></div>
+        <div><dt>Şehir</dt><dd>{{ sample.target_city }}</dd></div>
+        <div><dt>Web sitesi</dt><dd>{{ sample.destination_url }}</dd></div>
+        <div><dt>Örnek medya bütçesi</dt><dd>5.000,00 TRY</dd></div>
+      </dl>
+    </section>
+
+    <form class="campaign-form" method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        {% if field.name == "workspace" %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="confirmation-field">
+        {{ form.synthetic_confirmation }}
+        <label for="{{ form.synthetic_confirmation.id_for_label }}">{{ form.synthetic_confirmation.label }}</label>
+        {{ form.synthetic_confirmation.errors }}
+      </div>
+      <button class="button button-primary" type="submit">Sentetik örnekle taslağı hazırla</button>
+    </form>
+  </div>
+{% endblock %}

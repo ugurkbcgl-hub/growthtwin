@@ -1,0 +1,174 @@
+:root {
+  color-scheme: light;
+  --ink: #18231d;
+  --muted: #59665e;
+  --paper: #f6f4ef;
+  --surface: #fffefa;
+  --line: #dce1da;
+  --green: #176b4d;
+  --green-dark: #0d5038;
+  --soft-green: #e8f2ec;
+  --amber: #6e5010;
+  --soft-amber: #fbf2d8;
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+a { color: var(--green-dark); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #df9d2d;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  z-index: 2;
+  padding: .7rem 1rem;
+  background: var(--surface);
+}
+
+.skip-link:focus { top: 1rem; }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4.75rem;
+  padding: .75rem max(1.25rem, calc((100vw - 1100px) / 2));
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 750;
+  letter-spacing: -.04em;
+  text-decoration: none;
+}
+
+.wordmark span { color: var(--green); font-weight: 450; }
+
+.site-header nav { display: flex; align-items: center; gap: 1.25rem; }
+.site-header nav a { font-weight: 600; text-decoration: none; }
+.site-header form { margin: 0; }
+
+.text-button {
+  padding: .35rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--green-dark);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.page-wrap { width: min(1100px, calc(100% - 2rem)); margin: 3rem auto 5rem; }
+.narrow-column { width: min(760px, 100%); margin: 1.5rem auto 0; }
+.eyebrow { color: var(--green); font-size: .8rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: .6rem; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.045em; line-height: 1.08; }
+h2 { font-size: 1.35rem; letter-spacing: -.025em; }
+.lead { color: var(--muted); font-size: 1.08rem; }
+.back-link { display: inline-block; margin-bottom: 1.25rem; font-weight: 650; text-decoration: none; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: .7rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: .65rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.button-primary { background: var(--green); color: white; }
+.button-primary:hover { background: var(--green-dark); }
+.button-secondary { border-color: var(--line); background: var(--surface); color: var(--ink); }
+
+.notice, .summary-card, .empty-state, .asset-card, .campaign-card {
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  background: var(--surface);
+}
+
+.notice { margin: 1.5rem 0 2rem; padding: 1rem 1.15rem; border-color: #ead9a4; background: var(--soft-amber); color: var(--amber); }
+.notice p:last-child { margin-bottom: 0; }
+.notice-muted { border-color: var(--line); background: #f0f1ed; color: var(--ink); }
+.notice-muted h2 { margin-bottom: .75rem; }
+
+.campaign-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 1rem; }
+.campaign-card { display: block; padding: 1.25rem; color: var(--ink); text-decoration: none; }
+.campaign-card:hover { border-color: #97b6a2; box-shadow: 0 8px 25px #18231d0b; }
+.campaign-card h3 { margin: .75rem 0 .3rem; font-size: 1.2rem; }
+.campaign-card p { margin-bottom: .35rem; color: var(--muted); }
+.status-tag { color: var(--green-dark); font-size: .78rem; font-weight: 750; }
+
+.empty-state { display: grid; justify-items: center; padding: 3rem 1.5rem; text-align: center; }
+.empty-state p { max-width: 36rem; color: var(--muted); }
+.empty-icon { display: grid; width: 3rem; height: 3rem; place-items: center; margin-bottom: 1rem; border-radius: 50%; background: var(--soft-green); color: var(--green); font-size: 1.6rem; }
+
+.campaign-form { display: grid; gap: 1.1rem; margin-top: 1.5rem; }
+.form-field { display: grid; gap: .4rem; }
+.form-field label, .confirmation-field label { font-weight: 700; }
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: .7rem .8rem;
+  border: 1px solid #bbc5bd;
+  border-radius: .55rem;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+.form-field textarea { min-height: 7rem; resize: vertical; }
+.field-help { margin: 0; color: var(--muted); font-size: .9rem; }
+.errorlist { margin: .2rem 0 0; color: #a32820; }
+.confirmation-field { display: flex; flex-wrap: wrap; align-items: flex-start; gap: .65rem; padding: 1rem; border: 1px solid var(--line); border-radius: .6rem; background: var(--surface); }
+.confirmation-field input { width: 1.15rem; height: 1.15rem; margin-top: .2rem; accent-color: var(--green); }
+
+.summary-card { padding: 1.25rem; }
+.sample-card { margin: 1.5rem 0; }
+.summary-list { margin: 0; }
+.summary-list div { display: grid; grid-template-columns: minmax(10rem, .7fr) 1.3fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+.summary-list div:last-child { border-bottom: 0; }
+.summary-list dt { color: var(--muted); }
+.summary-list dd { min-width: 0; margin: 0; overflow-wrap: anywhere; font-weight: 650; }
+
+.asset-section, .requirements { margin: 2rem 0; }
+.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.section-heading span { color: var(--muted); font-size: .9rem; }
+.asset-card { margin: .75rem 0; padding: 1rem 1.1rem; }
+.asset-card p { margin-bottom: .5rem; font-size: 1.08rem; font-weight: 650; overflow-wrap: anywhere; }
+.asset-card small { color: var(--muted); }
+.requirements { padding: 1rem 1.25rem; border-left: 4px solid #d69a34; background: #fffaf0; }
+.ready-note { color: var(--green-dark); font-weight: 700; }
+
+@media (max-width: 650px) {
+  .site-header { padding-inline: 1rem; }
+  .site-header nav { gap: .8rem; }
+  .page-wrap { margin-top: 2rem; }
+  .page-heading { align-items: flex-start; flex-direction: column; }
+  .summary-list div { grid-template-columns: 1fr; gap: .15rem; }
+}
