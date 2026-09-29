@@ -1,6 +1,6 @@
 """Validation for the provider-neutral campaign reporting contract."""
 
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 
 from django.test import SimpleTestCase
@@ -8,11 +8,13 @@ from django.test import SimpleTestCase
 from growthtwin.modules.campaigns.report_metrics import (
     CampaignReportMetric,
     MetricFreshness,
+    MetricFreshnessRule,
     MetricObservation,
     MetricStatus,
     MetricUnavailableReason,
     MetricUnit,
     ReportingWindow,
+    classify_metric_freshness,
 )
 
 
@@ -21,15 +23,27 @@ class CampaignReportMetricTests(SimpleTestCase):
         self.window = ReportingWindow(date(2026, 9, 1), date(2026, 9, 30))
 
     def observation(self, **overrides):
+        source = overrides.get("source", "synthetic-report-fixture")
+        metric_family = overrides.get("metric_family", "clicks")
+        rule = MetricFreshnessRule(
+            identifier=f"synthetic-{metric_family}-v1",
+            source=source,
+            metric_family=metric_family,
+            max_age=timedelta(hours=1),
+        )
         values = {
             "scope": "synthetic-campaign-1",
+            "source": "synthetic-report-fixture",
+            "metric_family": "clicks",
             "requested_window": self.window,
             "covered_window": self.window,
             "retrieved_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "source_data_as_of": datetime(2026, 10, 1, tzinfo=timezone.utc),
+            "freshness_checked_at": datetime(2026, 10, 1, tzinfo=timezone.utc),
             "response_complete": True,
             "row_present": True,
             "freshness": MetricFreshness.CURRENT,
-            "freshness_rule": "synthetic-freshness-rule-v1",
+            "freshness_rule": rule,
         }
         return MetricObservation(**(values | overrides))
 
@@ -68,7 +82,7 @@ class CampaignReportMetricTests(SimpleTestCase):
             value=Decimal("0.00"),
             currency="TRY",
             source="synthetic-report-fixture",
-            observation=self.observation(),
+            observation=self.observation(metric_family="media_spend"),
         )
 
         self.assertEqual(metric.currency, "TRY")
@@ -126,6 +140,7 @@ class CampaignReportMetricTests(SimpleTestCase):
         observation = self.observation(
             covered_window=None,
             row_present=False,
+            source_data_as_of=None,
             freshness=MetricFreshness.UNKNOWN,
             freshness_rule=None,
         )
@@ -146,6 +161,7 @@ class CampaignReportMetricTests(SimpleTestCase):
                 source="synthetic-report-fixture",
                 observation=self.observation(
                     freshness=MetricFreshness.UNKNOWN,
+                    source_data_as_of=None,
                     freshness_rule=None,
                 ),
             )
@@ -166,12 +182,22 @@ class CampaignReportMetricTests(SimpleTestCase):
     def test_observation_requires_valid_scope_time_and_covered_window(self):
         invalid = (
             {"scope": " "},
+            {"source": " "},
+            {"metric_family": " "},
             {"retrieved_at": datetime(2026, 10, 1)},
             {"response_complete": None},
             {"row_present": 0},
             {"freshness": None},
             {"freshness_rule": 12},
             {"freshness": MetricFreshness.CURRENT, "freshness_rule": None},
+            {
+                "freshness_rule": MetricFreshnessRule(
+                    "wrong-family",
+                    "synthetic-report-fixture",
+                    "impressions",
+                    timedelta(hours=1),
+                )
+            },
             {"covered_window": ReportingWindow(date(2026, 8, 31), date(2026, 9, 1))},
         )
         for overrides in invalid:
@@ -208,11 +234,12 @@ class CampaignReportMetricTests(SimpleTestCase):
             (
                 MetricUnavailableReason.PARTIAL,
                 {
-                    "source": "google-ads",
+                    "source": "synthetic-report-fixture",
                     "observation": self.observation(
+                        metric_family="reach",
                         covered_window=ReportingWindow(
                             date(2026, 9, 1), date(2026, 9, 29)
-                        )
+                        ),
                     ),
                 },
                 "Dönem verisi kısmi",
@@ -220,10 +247,13 @@ class CampaignReportMetricTests(SimpleTestCase):
             (
                 MetricUnavailableReason.STALE,
                 {
-                    "source": "google-ads",
+                    "source": "synthetic-report-fixture",
                     "observation": self.observation(
+                        metric_family="reach",
                         freshness=MetricFreshness.STALE,
-                        freshness_rule="synthetic-stale-rule-v1",
+                        source_data_as_of=datetime(
+                            2026, 9, 30, 21, 59, tzinfo=timezone.utc
+                        ),
                     ),
                 },
                 "Kaynak verisi güncel değil",
@@ -245,9 +275,10 @@ class CampaignReportMetricTests(SimpleTestCase):
             "unit": MetricUnit.COUNT,
             "window": None,
             "unavailable_reason": MetricUnavailableReason.PARTIAL,
-            "source": "google-ads",
+            "source": "synthetic-report-fixture",
             "observation": self.observation(
-                covered_window=ReportingWindow(date(2026, 9, 1), date(2026, 9, 29))
+                metric_family="reach",
+                covered_window=ReportingWindow(date(2026, 9, 1), date(2026, 9, 29)),
             ),
         }
         with self.assertRaises(ValueError):
@@ -302,3 +333,76 @@ class CampaignReportMetricTests(SimpleTestCase):
     def test_reporting_window_rejects_reversed_dates(self):
         with self.assertRaises(ValueError):
             ReportingWindow(date(2026, 9, 30), date(2026, 9, 1))
+
+
+class MetricFreshnessEvaluationTests(SimpleTestCase):
+    def setUp(self):
+        self.rule = MetricFreshnessRule(
+            identifier="synthetic-search-clicks-v1",
+            source="synthetic-google-ads",
+            metric_family="clicks",
+            max_age=timedelta(hours=1),
+        )
+        self.checked_at = datetime(2026, 10, 1, 12, tzinfo=timezone.utc)
+
+    def test_data_at_exact_threshold_is_current_and_just_past_is_stale(self):
+        self.assertEqual(
+            classify_metric_freshness(
+                source_data_as_of=self.checked_at - timedelta(hours=1),
+                checked_at=self.checked_at,
+                rule=self.rule,
+            ),
+            MetricFreshness.CURRENT,
+        )
+        self.assertEqual(
+            classify_metric_freshness(
+                source_data_as_of=self.checked_at - timedelta(hours=1, seconds=1),
+                checked_at=self.checked_at,
+                rule=self.rule,
+            ),
+            MetricFreshness.STALE,
+        )
+
+    def test_missing_evidence_or_future_source_time_is_unknown(self):
+        for source_time, rule in (
+            (None, self.rule),
+            (self.checked_at, None),
+            (self.checked_at + timedelta(seconds=1), self.rule),
+        ):
+            with self.subTest(source_time=source_time, rule=rule):
+                self.assertEqual(
+                    classify_metric_freshness(
+                        source_data_as_of=source_time,
+                        checked_at=self.checked_at,
+                        rule=rule,
+                    ),
+                    MetricFreshness.UNKNOWN,
+                )
+
+    def test_rule_requires_identity_and_positive_interval(self):
+        for duration in (timedelta(0), timedelta(seconds=-1)):
+            with self.subTest(duration=duration), self.assertRaises(ValueError):
+                MetricFreshnessRule("rule", "source", "clicks", duration)
+
+    def test_timestamps_must_be_aware(self):
+        with self.assertRaises(ValueError):
+            classify_metric_freshness(
+                source_data_as_of=datetime(2026, 10, 1),
+                checked_at=self.checked_at,
+                rule=self.rule,
+            )
+        with self.assertRaises(ValueError):
+            MetricObservation(
+                scope="scope",
+                source="source",
+                metric_family="clicks",
+                requested_window=ReportingWindow(date(2026, 10, 1), date(2026, 10, 1)),
+                covered_window=None,
+                retrieved_at=self.checked_at,
+                source_data_as_of=None,
+                freshness_checked_at=datetime(2026, 10, 1),
+                response_complete=False,
+                row_present=False,
+                freshness=MetricFreshness.UNKNOWN,
+                freshness_rule=None,
+            )
