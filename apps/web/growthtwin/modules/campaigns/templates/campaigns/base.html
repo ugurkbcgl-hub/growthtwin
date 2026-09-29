@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f4ef">
+    <title>{% block title %}Kampanyalar{% endblock %} — GrowthTwin</title>
+    <link rel="stylesheet" href="{% static 'campaigns/css/campaigns.css' %}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
+    <header class="site-header">
+      <a class="wordmark" href="{% url 'campaigns:list' %}">growth<span>twin</span></a>
+      <nav aria-label="Hesap menüsü">
+        <a href="{% url 'campaigns:list' %}">Kampanyalar</a>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="text-button" type="submit">Çıkış yap</button>
+        </form>
+      </nav>
+    </header>
+    <main id="main-content" class="page-wrap">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
