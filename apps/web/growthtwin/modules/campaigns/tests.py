@@ -11,6 +11,7 @@ from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
+    generate_creative_version_for_owner,
     get_campaign_draft_for_owner,
     update_campaign_draft_for_owner,
 )
@@ -231,12 +232,85 @@ class CampaignPreviewViewTests(TestCase):
             draft.brief,
             "Ankara'da ev bakım ve onarım hizmeti için teklif talepleri alın.",
         )
+        self.assertEqual(len(draft.creative_versions), 1)
+        self.assertEqual(draft.creative_versions[0]["version"], 1)
         self.assertRedirects(response, reverse("campaigns:detail", args=[draft.pk]))
         preview = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
         self.assertEqual(preview.status_code, 200)
         self.assertContains(preview, "Önizleme · yayınlanmadı")
         self.assertContains(preview, "5.000,00 TRY")
         self.assertContains(preview, "Yetkili Google Ads tahmin kaynağı bağlı değil")
+        self.assertContains(preview, "Farklı reklam metinleri")
+        self.assertContains(preview, "Kısa tanıtım")
+        self.assertContains(preview, "harici AI kullanılmadan şablonla hazırlandı")
+
+    def test_creative_versions_are_owner_scoped_and_post_only(self):
+        draft = self.make_draft()
+        self.client.force_login(self.other_user)
+
+        response = self.client.post(
+            reverse("campaigns:generate_creatives", args=[draft.pk])
+        )
+
+        self.assertEqual(response.status_code, 404)
+        draft.refresh_from_db()
+        self.assertEqual(draft.creative_versions, [])
+
+        self.client.force_login(self.owner)
+        response = self.client.get(
+            reverse("campaigns:generate_creatives", args=[draft.pk])
+        )
+        self.assertEqual(response.status_code, 405)
+        draft.refresh_from_db()
+        self.assertEqual(draft.creative_versions, [])
+
+    def test_changed_creative_inputs_hide_old_text_until_new_version_is_created(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+        generate_creative_version_for_owner(owner=self.owner, draft_id=draft.pk)
+        draft.refresh_from_db()
+        original_copy = draft.creative_versions[-1]["variants"][0]["body"]
+
+        draft.brief = "Updated synthetic offer details for Ankara."
+        draft.save(update_fields=("brief",))
+        stale_response = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
+
+        self.assertContains(stale_response, "Kampanya bilgileri değişti")
+        self.assertNotContains(stale_response, original_copy)
+        self.assertContains(stale_response, "Güncel metin sürümünü oluştur")
+
+        generate_response = self.client.post(
+            reverse("campaigns:generate_creatives", args=[draft.pk])
+        )
+        draft.refresh_from_db()
+        self.assertRedirects(
+            generate_response,
+            reverse("campaigns:detail", args=[draft.pk]),
+        )
+        self.assertEqual(len(draft.creative_versions), 2)
+        self.assertEqual(draft.creative_versions[-1]["version"], 2)
+        self.assertEqual(
+            draft.creative_versions[-1]["variants"][0]["body"], draft.brief
+        )
+        current_response = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
+        self.assertNotContains(current_response, "Kampanya bilgileri değişti")
+        self.assertContains(current_response, draft.brief)
+
+    def test_repeated_generation_for_unchanged_inputs_does_not_duplicate_version(self):
+        draft = self.make_draft()
+
+        first_draft, first_version = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        second_draft, second_version = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+
+        self.assertEqual(first_version, second_version)
+        self.assertEqual(first_draft.pk, second_draft.pk)
+        self.assertEqual(len(second_draft.creative_versions), 1)
 
     def test_campaign_form_rejects_other_owners_workspace(self):
         self.client.force_login(self.owner)
@@ -259,6 +333,7 @@ class CampaignPreviewViewTests(TestCase):
 
     def test_owner_can_update_bounded_synthetic_budget_and_duration(self):
         draft = self.make_draft()
+        generate_creative_version_for_owner(owner=self.owner, draft_id=draft.pk)
         self.client.force_login(self.owner)
 
         response = self.client.post(
@@ -275,6 +350,9 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(draft.media_budget_minor, 1_000_000)
         self.assertEqual((draft.flight_end - draft.flight_start).days, 30)
         self.assertEqual(draft.brief, "Offer repair estimates in Ankara.")
+        self.assertEqual(len(draft.creative_versions), 1)
+        detail = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
+        self.assertNotContains(detail, "Kampanya bilgileri değişti")
 
     def test_campaign_edit_rejects_unlisted_budget(self):
         draft = self.make_draft()

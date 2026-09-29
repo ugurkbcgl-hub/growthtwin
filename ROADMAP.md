@@ -91,7 +91,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #128:** add a stable synthetic policy version and identifiers for the deterministic checks reported with each decision. This metadata is informational and in memory; the version does not authenticate evidence. No persistence, live integration, spend reservation, or dispatch authorization is included.
 
-**Next user-owned content slice:** bring the existing provider-free creative-variant workflow into the authenticated workspace campaign path. Keep the inputs synthetic and owner-scoped, avoid silently changing the anonymous demo flow, and do not add external AI/provider calls in this step. Define versioning and update behavior so edits to campaign inputs cannot leave misleading creative copy marked current.
+**In progress on `feat/workspace-creative-variants`:** bring the existing provider-free creative-variant workflow into the authenticated workspace campaign path. Keep inputs synthetic and owner-scoped, preserve the anonymous demo flow, and make stale creative versions hidden after relevant brief inputs change. Budget and schedule edits should not invalidate copy.
 
 ## Phase 3 — First publishing and reporting integration
 
