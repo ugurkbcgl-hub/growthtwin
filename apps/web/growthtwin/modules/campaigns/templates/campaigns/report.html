@@ -20,7 +20,7 @@
           <article class="summary-card report-metric">
             <h3>{{ metric.label }}</h3>
             {% if metric.status == "unavailable" %}
-              <p>Henüz veri yok</p>
+              <p>{{ metric.unavailable_message }}</p>
             {% else %}
               <p>{{ metric.value }}{% if metric.currency %} {{ metric.currency }}{% endif %}</p>
             {% endif %}

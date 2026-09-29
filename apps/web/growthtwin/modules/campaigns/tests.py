@@ -12,6 +12,7 @@ from growthtwin.modules.campaigns.planning import build_google_search_campaign_p
 from growthtwin.modules.campaigns.report_metrics import (
     CampaignReportMetric,
     MetricStatus,
+    MetricUnavailableReason,
     MetricUnit,
 )
 from growthtwin.modules.campaigns.services import (
@@ -437,7 +438,7 @@ class CampaignPreviewViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Rapor verisi henüz bağlı değil")
-        self.assertEqual(response.content.decode().count("Henüz veri yok"), 6)
+        self.assertEqual(response.content.decode().count("Veri kaynağı bağlı değil"), 6)
         self.assertContains(response, "Veri kaynağı")
         self.assertContains(response, "Bağlı değil")
         self.assertContains(response, "tahmin veya performans garantisi içermez")
@@ -448,6 +449,12 @@ class CampaignPreviewViewTests(TestCase):
         )
         self.assertTrue(
             all(metric.status is MetricStatus.UNAVAILABLE for metric in metrics)
+        )
+        self.assertTrue(
+            all(
+                metric.unavailable_reason is MetricUnavailableReason.NOT_CONNECTED
+                for metric in metrics
+            )
         )
         self.assertEqual(metrics[0].window.start, draft.flight_start)
         self.assertEqual(metrics[-1].unit, MetricUnit.CURRENCY)

@@ -18,8 +18,11 @@ number is interpretable and traceable.
 2. Require an explicit available/unavailable status. Available values may be
    zero, must be non-negative and finite, and require an inclusive reporting
    window, a source, and timezone-aware observation timestamp. Unavailable
-   metrics carry no value or observed-data provenance; their window is included
-   when one is known, and omitted if the campaign has no defined flight dates.
+   metrics carry no numeric value and a typed reason. A not-connected metric
+   has no source observation; an unsupported metric identifies the channel; a
+   partial or stale metric records its source, reporting window, and
+   timezone-aware observation time. An unavailable metric's window is omitted
+   only when no campaign period is defined.
 3. Distinguish count and currency units. Currency metrics require a three-letter
    uppercase code; count metrics cannot carry a currency.
 4. Keep this contract persistence-free and provider-neutral. The local report
