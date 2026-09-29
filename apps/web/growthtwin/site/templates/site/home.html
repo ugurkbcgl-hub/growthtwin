@@ -263,10 +263,11 @@
                     </details>
                   {% endfor %}
                   <button class="button button-primary button-full" type="submit" name="action" value="save">Metinleri kaydet</button>
-                </form>
+              </form>
               <form method="post" action="{% url 'site:save-creatives' campaign.pk %}" class="creative-regenerate-form">
                   {% csrf_token %}
-                  <button class="button button-secondary button-full" type="submit" name="action" value="regenerate">Brief’ten yeni öneriler oluştur</button>
+                  <p class="creative-editor-note" id="creative-regenerate-warning">Yeni öneriler mevcut üç metnin tamamının yerine geçer; kaydedilmiş veya kaydedilmemiş düzenlemelerin de silinir.</p>
+                  <button class="button button-secondary button-full" type="submit" name="action" value="regenerate" aria-describedby="creative-regenerate-warning">Brief’ten yeni öneriler oluştur</button>
               </form>
               </section>
               {% endif %}
