@@ -81,7 +81,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Asset boundary decided:** [ADR-0009](docs/adr/0009-asset-intake-processing-boundary.md) defines contract-first handling of future customer files. It keeps ownership, rights declaration, task permission and AI-provider permission separate; requires quarantine, scanning, provenance, fail-closed states and complete deletion; and explicitly does not authorize upload, persistence, storage, parsing, or AI calls.
 
-**Next:** define pure, storage/provider-independent asset workflow types and transitions using synthetic examples. Then review illegal-transition behavior before considering isolated local file handling. Keep user upload, durable persistence, and real data closed.
+**In progress on `feat/asset-workflow-contracts`:** define pure, storage/provider-independent asset workflow types and transitions using synthetic examples. Review permission gates, illegal transitions, and fail-closed errors. This contract performs no file operations and has no persistence or AI adapter. Keep user upload and real data closed.
 
 ## Phase 3 — First publishing and reporting integration
 
