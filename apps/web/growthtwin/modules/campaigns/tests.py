@@ -460,7 +460,7 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(metrics[-1].unit, MetricUnit.CURRENCY)
         self.assertEqual(metrics[-1].currency, draft.currency)
         self.assertIsNone(metrics[-1].source)
-        self.assertIsNone(metrics[-1].observed_at)
+        self.assertIsNone(metrics[-1].observation)
         self.assertContains(response, "Planlanan kampanya dönemi:")
 
     def test_owner_report_without_flight_dates_has_no_invented_period(self):

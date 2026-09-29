@@ -20,8 +20,11 @@ identified metrics that are not available for the selected Search workflow.
 2. Every unavailable metric must use one reason: `not_connected`, `unsupported`,
    `partial`, or `stale`. Unavailable values always carry no numeric value.
 3. `not_connected` carries no source observation. `unsupported` identifies the
-   channel/source, but has no observation timestamp. `partial` and `stale`
-   require a source, a reporting window, and a timezone-aware observation time.
+   channel/source, but has no observation evidence. `partial` and `stale`
+   require a source, a reporting window, and the observation evidence defined
+   in ADR-0019. Partial metrics must not claim complete row coverage; stale
+   metrics must identify a complete last observation that failed a
+   source-specific freshness rule.
 4. Display a plain-language explanation at the metric itself. Do not substitute
    an unavailable reason with zero, hide its source/period state, or describe a
    scheduled campaign period as observed delivery.

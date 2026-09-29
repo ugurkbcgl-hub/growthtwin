@@ -29,6 +29,14 @@ class MetricUnit(StrEnum):
     CURRENCY = "currency"
 
 
+class MetricFreshness(StrEnum):
+    """Freshness classification evaluated under a source-specific rule."""
+
+    CURRENT = "current"
+    STALE = "stale"
+    UNKNOWN = "unknown"
+
+
 @dataclass(frozen=True)
 class ReportingWindow:
     """Inclusive dates covered by a report metric."""
@@ -39,6 +47,72 @@ class ReportingWindow:
     def __post_init__(self):
         if self.start > self.end:
             raise ValueError("Reporting window end must not precede its start.")
+
+
+@dataclass(frozen=True)
+class MetricObservation:
+    """Synthetic evidence about report retrieval and metric-period coverage.
+
+    ``retrieved_at`` records when the result was fetched. It does not establish
+    freshness by itself. A metric is complete only when the requested period
+    was covered, the response/pagination finished, and a row for the metric was
+    actually present.
+    """
+
+    scope: str
+    requested_window: ReportingWindow
+    covered_window: ReportingWindow | None
+    retrieved_at: datetime
+    response_complete: bool
+    row_present: bool
+    freshness: MetricFreshness
+    freshness_rule: str | None
+
+    def __post_init__(self):
+        if not isinstance(self.scope, str) or not self.scope.strip():
+            raise ValueError("Observation scope is required.")
+        if not isinstance(self.requested_window, ReportingWindow):
+            raise ValueError("Observation requires a requested reporting window.")
+        if self.covered_window is not None and not isinstance(
+            self.covered_window, ReportingWindow
+        ):
+            raise ValueError("Covered window must use the report window type.")
+        if self.covered_window is not None and (
+            self.covered_window.start < self.requested_window.start
+            or self.covered_window.end > self.requested_window.end
+        ):
+            raise ValueError("Covered window must be inside the requested window.")
+        if (
+            not isinstance(self.retrieved_at, datetime)
+            or self.retrieved_at.utcoffset() is None
+        ):
+            raise ValueError("Retrieval time must be timezone-aware.")
+        if not isinstance(self.response_complete, bool) or not isinstance(
+            self.row_present, bool
+        ):
+            raise ValueError(
+                "Observation completion and row presence must be explicit."
+            )
+        if not isinstance(self.freshness, MetricFreshness):
+            raise ValueError("Observation freshness must be explicit.")
+        if self.freshness_rule is not None and not isinstance(self.freshness_rule, str):
+            raise ValueError("Freshness rule must be a text identifier.")
+        if self.freshness in (MetricFreshness.CURRENT, MetricFreshness.STALE) and (
+            not isinstance(self.freshness_rule, str) or not self.freshness_rule.strip()
+        ):
+            raise ValueError(
+                "Current or stale freshness requires a source-specific rule."
+            )
+
+    def is_complete_for(self, window: ReportingWindow) -> bool:
+        """Whether this observation can support a value for the exact window."""
+
+        return (
+            self.requested_window == window
+            and self.covered_window == window
+            and self.response_complete
+            and self.row_present
+        )
 
 
 @dataclass(frozen=True)
@@ -58,7 +132,7 @@ class CampaignReportMetric:
     value: int | Decimal | None = None
     currency: str | None = None
     source: str | None = None
-    observed_at: datetime | None = None
+    observation: MetricObservation | None = None
 
     def __post_init__(self):
         if not isinstance(self.status, MetricStatus):
@@ -73,6 +147,10 @@ class CampaignReportMetric:
             raise ValueError("Metric key and label are required.")
         if self.window is not None and not isinstance(self.window, ReportingWindow):
             raise ValueError("Reporting window must use the report window type.")
+        if self.observation is not None and not isinstance(
+            self.observation, MetricObservation
+        ):
+            raise ValueError("Metric observation must use the observation type.")
         if self.unit is MetricUnit.CURRENCY:
             if (
                 not self.currency
@@ -93,16 +171,16 @@ class CampaignReportMetric:
             if self.unavailable_reason is None:
                 raise ValueError("Unavailable metrics require an explicit reason.")
             if self.unavailable_reason is MetricUnavailableReason.NOT_CONNECTED:
-                if self.source is not None or self.observed_at is not None:
+                if self.source is not None or self.observation is not None:
                     raise ValueError(
                         "Not-connected metrics cannot contain source observations."
                     )
             elif self.unavailable_reason is MetricUnavailableReason.UNSUPPORTED:
                 if not self.source or not self.source.strip():
                     raise ValueError("Unsupported metrics require the channel source.")
-                if self.observed_at is not None:
+                if self.observation is not None:
                     raise ValueError(
-                        "Unsupported metrics cannot claim an observation time."
+                        "Unsupported metrics cannot claim a source observation."
                     )
             else:
                 if not self.source or not self.source.strip():
@@ -111,13 +189,27 @@ class CampaignReportMetric:
                     raise ValueError(
                         "Partial or stale metrics require a reporting window."
                     )
-                if (
-                    not isinstance(self.observed_at, datetime)
-                    or self.observed_at.utcoffset() is None
-                ):
+                if self.observation is None:
                     raise ValueError(
-                        "Partial or stale metrics require an aware observation time."
+                        "Partial or stale metrics require retrieval evidence."
                     )
+                if self.observation.requested_window != self.window:
+                    raise ValueError("Observation window must match the metric window.")
+                is_complete = self.observation.is_complete_for(self.window)
+                if self.unavailable_reason is MetricUnavailableReason.PARTIAL:
+                    if is_complete:
+                        raise ValueError(
+                            "Partial metrics cannot claim complete row coverage."
+                        )
+                else:
+                    if not is_complete:
+                        raise ValueError(
+                            "Stale metrics require a complete observed metric row."
+                        )
+                    if self.observation.freshness is not MetricFreshness.STALE:
+                        raise ValueError(
+                            "Stale metrics require a stale freshness classification."
+                        )
             return
 
         if self.unavailable_reason is not None:
@@ -138,12 +230,15 @@ class CampaignReportMetric:
             raise ValueError("Count metrics require an integer value.")
         if not self.source or not self.source.strip():
             raise ValueError("Available metrics require a data source.")
-        if (
-            not isinstance(self.observed_at, datetime)
-            or self.observed_at.utcoffset() is None
+        if self.observation is None or not self.observation.is_complete_for(
+            self.window
         ):
             raise ValueError(
-                "Available metrics require a timezone-aware observation time."
+                "Available metrics require a complete row for the exact window."
+            )
+        if self.observation.freshness is not MetricFreshness.CURRENT:
+            raise ValueError(
+                "Available metrics require a current source-specific freshness result."
             )
 
     @property

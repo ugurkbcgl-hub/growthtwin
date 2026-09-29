@@ -109,7 +109,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #145 (research only):** document source-specific zero-row completeness and freshness rules for the Google Search candidate. Official guidance confirms that segmented all-zero rows and dates with no metrics can be omitted, common metrics have different update guidance from conversions, and historical values can be adjusted later. Retrieval time must remain distinct from metric coverage/freshness; an absent row cannot become zero without independent completeness evidence. No adapter or account connection was implemented. Required PR CI `36604492004` and post-merge CI `36604748472` passed. See the [Google Search mapping](docs/product/google-search-report-metric-mapping.md).
 
-**Next synthetic foundation slice:** translate those research requirements into a provider-free report observation/coverage contract and tests that prevent an absent row or fetch timestamp alone from implying a complete, fresh zero. Do not add a platform adapter or account connection.
+**Current synthetic foundation slice (PR review pending):** add a provider-neutral observation contract that separates requested and covered windows, source response completion, row presence, retrieval time, and a source-specific freshness classification. Available values require a complete exact-period row and an explicit `current` result under a named rule; a recent fetch or absent row cannot confirm zero. No universal freshness age, provider adapter, account, or real data is added. See [ADR-0019](docs/adr/0019-report-observation-coverage.md).
+
+**Next synthetic foundation slice:** define and test source-specific freshness rule evaluation using synthetic timestamps and the documented Google Ads metric-family guidance. Keep thresholds explicitly tied to their source and metric; do not build a live adapter or treat an SLO as a guarantee.
 
 ## Phase 3 — First publishing and reporting integration
 
