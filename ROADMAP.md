@@ -103,7 +103,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Metric semantics (ADR-0017; documentation update pending PR #141):** define provider-neutral meanings for the six report categories, their attribution boundaries, reporting windows, currency, and unknown/stale-data handling. Do not flatten differing native platform definitions into comparable values. Keep this as a design contract; do not connect a platform or imply live reporting.
 
-**Next synthetic foundation slice:** research current official Google Ads reporting definitions and map their source fields to the provider-neutral metrics without accessing an account. Record unsupported, partial, and attribution-dependent categories as such; do not connect or import platform data.
+**Completed in PR #142 (research only):** map Google Ads API v25 official source fields to ADR-0017's metric definitions without an account or API request. The Search candidate mapping leaves reach unavailable, avoids double-counting interactions as clicks, and does not treat attributed conversions as delivered lead records.
+
+**Next synthetic foundation slice:** extend report states so “not connected”, “unsupported”, “partial”, and “stale” are not conflated with a source-confirmed zero. Keep provider code absent and use synthetic fixtures only.
 
 ## Phase 3 — First publishing and reporting integration
 
