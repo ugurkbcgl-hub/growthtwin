@@ -1,10 +1,10 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 19:19 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 19:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `3b25ea5a6d6219021710699f3c823939478ce531`; PR #135 merged with squash. Required CI `36596567121` passed; post-merge CI `36596844250` is running.
+- Baseline `main`: `102d02068f5bf4e6f6b20d351b0792cdf06a5766`; PR #136 merged with squash. Required CI `36597062416` passed; post-merge CI `36597337620` is running. PR #135 and post-merge CI `36596844250` passed.
 - Current checkout: `main`, clean and up to date with `origin/main`. No open PR was listed at verification.
 
 ## Product and safety context
