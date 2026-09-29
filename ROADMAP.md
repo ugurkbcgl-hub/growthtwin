@@ -125,7 +125,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in the 2026-09-29 research slice:** [Google Search Türkiye sector eligibility matrix](docs/product/google-search-turkiye-sector-eligibility.md) records a dated, sourced first pass for the synthetic local-service example and restricted/unsupported Google Ads categories. It defines `eligible`, `restricted`, `not_supported`, and `needs_review` states with fail-closed behavior. This is planning research only; several sectors remain unassessed, and no legal, platform-account, API or publication approval is implied.
 
-**Next action:** implement a small provider-free eligibility decision contract for local synthetic campaign drafts, using the four documented outcomes and the fail-closed rule semantics. Keep sources/version metadata as inputs; do not connect accounts, call Google, change publication behavior, or introduce real advertiser data.
+**Completed in the 2026-09-30 synthetic slice:** ADR-0018 and `approvals.eligibility` define an in-memory, provider-free decision contract for the four matrix outcomes. Missing/stale rule metadata and unknown/unmet conditions fail closed; combining platform and legal rule claims keeps the most restrictive result. The contract is not connected to campaign views, persistence, account APIs, or publication.
+
+**Next action:** review the contract boundary and CI in its feature PR. After merge, decide which synthetic campaign preview state should display the category/channel eligibility explanation. Keep it disconnected from external actions and live data.
 
 ## Phase 3 — First publishing and reporting integration
 
