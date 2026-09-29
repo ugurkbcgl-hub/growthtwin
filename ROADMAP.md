@@ -47,7 +47,7 @@ This work is required before continuing the authenticated workspace UI or accept
 
 **Acceptance:** owner-facing review selects one initial advertiser workflow/objective and cohort hypothesis, first platform candidate (or records an explicit API/access blocker), first service boundary, lead destination/consent approach, supported first creative tasks, credit/fee hypothesis, beginner/pro defaults and bounded autonomy. Open legal, partner, privacy and pricing items have named evidence and next steps. The blueprint does not itself authorize real accounts, data, payment, publishing, ad spend or paid infrastructure. Those remain blocked until the separate readiness gate and owner decision.
 
-**Next work after this draft:** use the evidence and decision register to complete the channel scorecard and calculate/creative/pricing examples for one MVP scenario; then review and record the first-release choices before adding durable authenticated workspace screens. Do not expand to omnichannel implementation while this selection is open.
+**Next work after the first comparison draft:** validate the sector-neutral city service-lead hypothesis with user/problem evidence; request or verify test/API access for the P0 Google and Meta candidates (plus TikTok if creative testing is the primary differentiator); collect like-for-like platform planner output and lead/report constraints for the same synthetic scenario. Then present a decision-ready first-release recommendation with uncertainty and cost rows. Do not expand to omnichannel implementation or authenticated workspace UI while this selection is open.
 
 ## Phase 2 — Local campaign vertical slice
 
