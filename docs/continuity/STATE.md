@@ -5,7 +5,7 @@ Last verified: 2026-09-30 00:00 (Europe/Istanbul). Repository: `https://github.c
 ## Verified repository state
 
 - `main` is `375b058` after PR #159, which added the initial Türkiye advertising, consumer and privacy readiness map. Required CI `36629594340` passed; post-merge CI `36629858494` passed.
-- Current feature branch: `research/google-search-eligibility-matrix`, based on `375b058`. This branch contains the dated Google Search Türkiye sector-eligibility matrix and ROADMAP update; PR has not yet been opened.
+- Current feature branch: `research/google-search-eligibility-matrix`, PR [#160](https://github.com/ugurkbcgl-hub/growthtwin/pull/160), based on `375b058`; research commit `93bf7a1`. Required PR CI is pending.
 - The matrix is research/planning only. It distinguishes `eligible`, `restricted`, `not_supported` and `needs_review`; the local-service example is eligible only for synthetic local planning. It does not approve lawfulness, advertiser accounts, GrowthTwin API access or publication.
 - Product direction remains broad Türkiye advertisers. Local synthetic development is authorized. Do not use real advertiser/customer/lead data, connect live accounts, publish campaigns, or enable payment. Do not add paid services or exceed the approved Heroku staging setup.
 
@@ -17,4 +17,4 @@ Last verified: 2026-09-30 00:00 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Complete review of the Google Search Türkiye eligibility-matrix PR and merge it only after required CI passes. Then implement a small provider-free eligibility decision contract for local synthetic drafts, following the matrix's fail-closed states; do not connect accounts, call Google, change publication behavior, or introduce real advertiser data.
+Review PR #160 and merge only after required CI passes. Then implement a small provider-free eligibility decision contract for local synthetic drafts, following the matrix's fail-closed states; do not connect accounts, call Google, change publication behavior, or introduce real advertiser data.
