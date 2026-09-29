@@ -9,6 +9,11 @@ from django.urls import reverse
 
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
+from growthtwin.modules.campaigns.report_metrics import (
+    CampaignReportMetric,
+    MetricStatus,
+    MetricUnit,
+)
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     generate_creative_version_for_owner,
@@ -436,6 +441,36 @@ class CampaignPreviewViewTests(TestCase):
         self.assertContains(response, "Veri kaynağı")
         self.assertContains(response, "Bağlı değil")
         self.assertContains(response, "tahmin veya performans garantisi içermez")
+        metrics = response.context["report_metrics"]
+        self.assertEqual(len(metrics), 6)
+        self.assertTrue(
+            all(isinstance(metric, CampaignReportMetric) for metric in metrics)
+        )
+        self.assertTrue(
+            all(metric.status is MetricStatus.UNAVAILABLE for metric in metrics)
+        )
+        self.assertEqual(metrics[0].window.start, draft.flight_start)
+        self.assertEqual(metrics[-1].unit, MetricUnit.CURRENCY)
+        self.assertEqual(metrics[-1].currency, draft.currency)
+        self.assertIsNone(metrics[-1].source)
+        self.assertIsNone(metrics[-1].observed_at)
+        self.assertContains(response, "Dönem:")
+
+    def test_owner_report_without_flight_dates_has_no_invented_period(self):
+        draft = self.make_draft()
+        draft.flight_start = None
+        draft.flight_end = None
+        draft.save(update_fields=("flight_start", "flight_end"))
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse("campaigns:report", args=[draft.pk]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["report_metrics"]), 6)
+        self.assertTrue(
+            all(metric.window is None for metric in response.context["report_metrics"])
+        )
+        self.assertNotContains(response, "Dönem:")
 
     def test_other_owner_cannot_open_campaign_report(self):
         draft = self.make_draft()
