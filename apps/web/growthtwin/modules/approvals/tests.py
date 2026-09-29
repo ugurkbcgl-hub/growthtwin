@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from django.test import SimpleTestCase
 
 from growthtwin.modules.approvals.contracts import (
+    SYNTHETIC_POLICY_RULES,
+    SYNTHETIC_POLICY_VERSION,
     PolicyReason,
     SyntheticActionEvidence,
     SyntheticEvidenceSource,
@@ -43,6 +45,18 @@ class SyntheticActionPolicyTests(SimpleTestCase):
         self.assertEqual(
             decision.evidence_observed_at, self.evidence.evidence_observed_at
         )
+        self.assertEqual(decision.policy_version, SYNTHETIC_POLICY_VERSION)
+        self.assertEqual(decision.evaluated_rule_ids, SYNTHETIC_POLICY_RULES)
+        self.assertFalse(decision.live_dispatch_authorized)
+
+    def test_policy_identifiers_are_reported_even_when_a_check_blocks(self):
+        decision = evaluate_synthetic_action(
+            replace(self.evidence, advertiser_authorized=None)
+        )
+
+        self.assertFalse(decision.eligible_for_synthetic_review)
+        self.assertEqual(decision.policy_version, SYNTHETIC_POLICY_VERSION)
+        self.assertEqual(decision.evaluated_rule_ids, SYNTHETIC_POLICY_RULES)
         self.assertFalse(decision.live_dispatch_authorized)
 
     def test_missing_or_unknown_evidence_source_fails_closed(self):

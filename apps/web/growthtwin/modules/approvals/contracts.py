@@ -33,6 +33,23 @@ class SyntheticEvidenceSource(StrEnum):
     TEST_FIXTURE = "test_fixture"
 
 
+class SyntheticPolicyRule(StrEnum):
+    """Stable identifiers for checks run by the synthetic policy evaluator."""
+
+    ENVIRONMENT = "environment_is_synthetic"
+    AUTHORIZATION = "required_authorizations_present"
+    CHANNEL_AND_CONTENT = "channel_and_content_allowed"
+    POLICY_AND_STOP = "policy_current_and_stop_clear"
+    BUDGET = "campaign_and_account_caps_respected"
+    CURRENCY = "currency_valid"
+    EVIDENCE_METADATA = "evidence_source_and_observation_time_valid"
+    SCHEDULE = "action_within_campaign_schedule"
+
+
+SYNTHETIC_POLICY_VERSION = "synthetic-action-policy.v1"
+SYNTHETIC_POLICY_RULES = tuple(SyntheticPolicyRule)
+
+
 @dataclass(frozen=True)
 class SyntheticActionEvidence:
     """Caller-supplied facts for a local review; never a live authorization."""
@@ -62,6 +79,8 @@ class SyntheticPolicyDecision:
 
     eligible_for_synthetic_review: bool
     reasons: tuple[PolicyReason, ...]
+    policy_version: str = SYNTHETIC_POLICY_VERSION
+    evaluated_rule_ids: tuple[SyntheticPolicyRule, ...] = SYNTHETIC_POLICY_RULES
     evidence_source: SyntheticEvidenceSource | None = None
     evidence_observed_at: datetime | None = None
     live_dispatch_authorized: bool = False
