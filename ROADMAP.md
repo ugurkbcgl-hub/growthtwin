@@ -89,7 +89,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #126:** add allowlisted synthetic evidence-source labels and a timezone-aware observation time to the policy result. Unknown labels and missing/naive timestamps fail closed. The returned metadata remains caller-supplied and untrusted; it is not authentication, freshness proof, atomic spend reservation, or live authorization.
 
-**In progress on `feat/synthetic-policy-identifiers`:** add a stable synthetic policy version and identifiers for the deterministic checks reported with each decision. Keep this metadata in memory; the version does not authenticate evidence. No persistence, live integration, spend reservation, or dispatch authorization is included.
+**Completed in PR #128:** add a stable synthetic policy version and identifiers for the deterministic checks reported with each decision. This metadata is informational and in memory; the version does not authenticate evidence. No persistence, live integration, spend reservation, or dispatch authorization is included.
+
+**Next user-owned content slice:** bring the existing provider-free creative-variant workflow into the authenticated workspace campaign path. Keep the inputs synthetic and owner-scoped, avoid silently changing the anonymous demo flow, and do not add external AI/provider calls in this step. Define versioning and update behavior so edits to campaign inputs cannot leave misleading creative copy marked current.
 
 ## Phase 3 — First publishing and reporting integration
 
