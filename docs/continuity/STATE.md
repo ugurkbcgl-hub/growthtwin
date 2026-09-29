@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 09:29 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 09:47 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Snapshot baseline: clean `main` at `b133a01` (PR #87), merged with required CI successful. No open PRs were found after the merge.
-- PR #87 CI run `36530898226` and post-merge main CI run `36531083899` passed; PR #86 and its post-merge run also passed.
-- Current branch: `docs/brief-to-preview-handoff`; this continuity update is pending review.
+- Snapshot baseline: clean `main` at `1b2d5d3` (PR #89), merged with required CI successful. No open PRs were found after the merge.
+- PR #89 CI run `36532346912` and post-merge main CI run `36532516653` passed. PR #88 CI run `36531350844` and post-merge run `36531514788` also passed.
+- Current branch: `docs/brief-preview-handoff-20260929`; this continuity update is pending review.
 
 ## Product and safety context
 
@@ -21,8 +21,10 @@ Last verified: 2026-09-29 09:29 (Europe/Istanbul). Repository: `https://github.c
 - Source review confirmed that the brief/preview labels daily and total sample limits and describes the flow as non-publishing; report figures are labeled synthetic. Visual hierarchy was not verified in the prior review.
 - Review found the saved-draft list showed only the brief, daily amount, and duration, so two drafts with the same brief/limits but different brand, audience, or objective were difficult to tell apart. PR #86 now shows those differentiating details, total limit, and creation time. Its focused Django test with two similar synthetic drafts passed; PR CI `36530405593` and post-merge CI `36530563389` also passed.
 - Reviewing the edit-save flow confirmed valid creative edits update the same session-owned draft, redirect back to its preview, and show a `role="status"` success message. The preview labels the flow as a draft and explicitly says it does not publish or spend. No specific feedback or accessibility defect was found, so no code change or extra test was needed for this review. The local server is listening at `127.0.0.1:8002`; app security blocked browser automation from refreshing/navigating to the local site, so the rendered visual result was not inspected. The user can refresh the local URL directly in the browser.
+- Phase 1 first-visit review found a mobile navigation gap: after submitting a brief, the browser stayed at the page's previous scroll position and could leave the resulting preview below the viewport. PR #89 adds a preview-section URL fragment and scrolls the preview into view when a saved campaign loads. The mobile browser E2E now asserts the target is visible; the first CI run exposed that the fragment alone was insufficient, so explicit scrolling was added. The passing PR and post-merge CI runs include the full Django and browser E2E suites.
+- The remaining first-visit checks were reviewed against the current template, form, planning module, and browser E2E: copy is industry-neutral, brand/audience/objective intake is optional, brief/budget/duration are validated, safety labels say no publication/spend and prohibit real data, and mobile keyboard/error feedback plus report navigation are covered. No additional demonstrated gap was found. Visual inspection in the open desktop browser remains unavailable due to the app security block; local server continues listening at `127.0.0.1:8002`.
 - Staging browser E2E, backup/restore, rollback, and final cost/CI recording remain gates before an external beta or production. First advertiser workflow/destination, live-action consent and autonomy rules, and production AI/data terms remain undecided.
 
 ## Next action
 
-Review the first-visit campaign brief-to-preview journey against Phase 1 acceptance; fix only demonstrated clarity, mobile-layout, or accessibility gaps using synthetic content, and keep the journey unpublished and no-spend.
+Review deterministic creative suggestions against generic synthetic briefs to ensure copy introduces no unsupported product, performance, or outcome claims; keep outputs editable and clearly identified as examples.
