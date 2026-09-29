@@ -1,1 +1,1 @@
-"""Workspace and tenant boundary placeholder."""
+"""Workspace and tenant boundary."""
