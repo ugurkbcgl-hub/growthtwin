@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 10:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 10:39 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Clean `main` at `8e70d41` (`fix: clarify prototype brief data handling`, PR #96). No open PRs.
-- PR #96 CI run `36536971429` and post-merge `main` CI run `36537179131` passed, including Django tests, formatting/lint, and browser E2E.
-- PR #95 post-merge `main` CI run `36536575345` passed.
+- Clean `main` at `185775d` (PR #97). No open PRs.
+- PR #97 CI run `36537625405` passed, including Django tests, formatting/lint, and browser E2E. Its post-merge main run `36537842405` was still in progress at this snapshot.
+- PR #96 and post-merge main CI runs `36536971429` and `36537179131` passed.
 
 ## Product and safety context
 
