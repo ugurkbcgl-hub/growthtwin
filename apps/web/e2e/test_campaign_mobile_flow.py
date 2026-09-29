@@ -19,8 +19,8 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_url("**campaign=*#kampanya-denemesi")
 
-                headline = (
-                    page.locator(".creative-variant").first.get_by_label("Başlık")
+                headline = page.locator(".creative-variant").first.get_by_label(
+                    "Başlık"
                 )
                 headline.fill("Elle düzenlenmiş sentetik başlık")
                 page.get_by_role("button", name="Metinleri kaydet").click()
@@ -33,9 +33,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 )
 
                 page.locator("#edit-brief").click()
-                page.locator("#campaign-brief").fill(
-                    "Sentetik yeni brief ile değiştir"
-                )
+                page.locator("#campaign-brief").fill("Sentetik yeni brief ile değiştir")
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_url("**campaign=*#kampanya-denemesi")
                 self.assertTrue(page.locator(".creative-stale-note").is_visible())
