@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 19:58 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 19:08 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `9f7094f7ed6d8a7e587eef2c26af8502185746ac`; PR #132 merged with squash after its required CI passed. PR #131 and post-merge CI `36592558477` also passed.
-- Current branch: `feat/workspace-creative-preference`, based on that main commit; implementation and focused checks are local, not yet in a PR.
+- Baseline `main`: `1761e05263d3888e6a76854f58d58f2ab866dc18`; PR #133 merged with squash. Required CI `36594773935` and post-merge CI `36595188130` passed.
+- Current checkout: `main`, clean and up to date with `origin/main`. No open PR was listed at verification.
 
 ## Product and safety context
 
@@ -13,7 +13,7 @@ Last verified: 2026-09-29 19:58 (Europe/Istanbul). Repository: `https://github.c
 - Local synthetic-data product development is authorized. The remaining Phase 0 staging E2E, backup/restore, and rollback checks are release-readiness gates and do not block local product work.
 - PR #122 adds a pure fail-closed campaign action-policy evaluator. PR #126 adds two allowlisted synthetic evidence-source labels and caller-supplied timezone-aware observation time. PR #128 adds informational policy version and evaluated-rule identifiers. The 14 focused tests, local Django system check, Ruff checks, PR CI, and post-merge CI passed. These values do not authenticate evidence or persist results.
 - PR #131 merged deterministic creative versions into the authenticated campaign flow; source-fingerprint staleness handling and owner-only POST regeneration are covered by CI. Main CI and post-merge CI passed.
-- PR #133 adds an owner-scoped review preference for one current creative variant, bound to its version and hidden if source inputs change. A new generated version clears the previous preference. Focused validation: 29 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; Django system check, migration check, Ruff lint and formatting pass. The initial PR CI stopped at a formatting check for the new migration before functional tests; the migration is now formatted and CI is rerunning. PostgreSQL CI has not passed on this branch yet.
+- PR #133 adds an owner-scoped review preference for one current creative variant, bound to its version and hidden if source inputs change. A new generated version clears the previous preference. Focused validation: 29 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; Django system check, migration check, Ruff lint and formatting pass. PR CI and post-merge CI passed against PostgreSQL.
 - ADR-0014 records the review preference boundary. The options remain synthetic and provider-free; preference is not approval, performance data, or publication.
 - The authenticated workspace uses fixed synthetic campaign examples. User uploads, real advertiser/customer/lead data, live account connections, publication, advertiser spend, payments, and production AI are not authorized or implemented.
 - Keep the Django/PostgreSQL monolith and approved Heroku staging resources. Add no paid services; never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
@@ -26,4 +26,4 @@ Last verified: 2026-09-29 19:58 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Review PR #133 after its rerun completes. If required CI passes, merge under the user's standing authorization and verify post-merge CI. Keep selection informational and version-bound; do not accept free-text advertiser data or add provider calls.
+Implement the authenticated campaign report view as an honest empty state for delivery, spend, interactions, and leads until a verified channel integration supplies data. Do not show fabricated performance figures, forecasts, or guarantees. Keep synthetic sample reporting clearly separate; do not add provider calls or real campaign data.
