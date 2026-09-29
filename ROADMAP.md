@@ -111,9 +111,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #149:** add a provider-neutral observation contract that separates requested and covered windows, source response completion, row presence, retrieval time, and freshness evidence. A pure evaluator classifies source-data time under an explicit source/metric-family rule; missing or future-dated source evidence is `unknown`, and retrieval time alone does not affect freshness. Available values require a complete exact-period row and evaluator-produced `current` status. Synthetic thresholds are policy examples only, not provider guarantees. No adapter, account, or real data is added. Required PR CI `36617325319` and post-merge CI `36617630617` passed. See [ADR-0019](docs/adr/0019-report-observation-coverage.md).
 
-**Current synthetic foundation slice:** distinguish a complete report observation with unknown freshness from stale and partial data, with a typed `freshness_unknown` unavailable reason. Keep it valueless and require the evaluator result to match; do not add a live adapter.
+**Completed in PR #150:** distinguish a complete report observation with unknown freshness from stale and partial data, with a typed `freshness_unknown` unavailable reason. Keep it valueless and require the evaluator result to match; no live adapter was added. Required PR CI `36618254042` and post-merge CI `36618532218` passed.
 
-**Next synthetic foundation slice:** review source timestamp provenance requirements for a future adapter. Keep actual provider thresholds and freshness behavior unclaimed until current source guidance and response fields are verified.
+**Next synthetic foundation slice:** document what source-timestamp and reporting-window evidence a future provider adapter must prove, and distinguish any response-provided timestamp from local retrieval time and provider-level SLO guidance. Leave freshness `unknown` when the source cannot support the claim; do not add a live adapter.
 
 ## Phase 3 — First publishing and reporting integration
 
