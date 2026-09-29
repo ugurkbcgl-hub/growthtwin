@@ -113,7 +113,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #150:** distinguish a complete report observation with unknown freshness from stale and partial data, with a typed `freshness_unknown` unavailable reason. Keep it valueless and require the evaluator result to match; no live adapter was added. Required PR CI `36618254042` and post-merge CI `36618532218` passed.
 
-**Next synthetic foundation slice:** document what source-timestamp and reporting-window evidence a future provider adapter must prove, and distinguish any response-provided timestamp from local retrieval time and provider-level SLO guidance. Leave freshness `unknown` when the source cannot support the claim; do not add a live adapter.
+**Current synthetic foundation slice (`docs/report-source-freshness-evidence`, PR pending):** document the Google Ads evidence limits for per-row source time, report-window coverage, retrieval time, and provider SLO guidance. The reviewed official guides do not define a row-level `source_data_as_of` contract; record this as an evidence gap, not proof that no endpoint or metadata exists. Keep freshness unknown when the source cannot support the claim; do not add a live adapter.
+
+**Next synthetic foundation slice:** define how the report presents its observed period and freshness evidence separately, including the unknown state, without presenting an SLO as a delivery guarantee.
 
 ## Phase 3 — First publishing and reporting integration
 
