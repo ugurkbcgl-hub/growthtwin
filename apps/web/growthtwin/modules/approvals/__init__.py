@@ -1,1 +1,1 @@
-"""Content approval boundary placeholder."""
+"""Synthetic campaign action-policy contracts."""
