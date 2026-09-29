@@ -97,7 +97,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #135:** give each authenticated workspace campaign a report page with reach, impressions, clicks, other interactions, contact requests, and media spend. Mark values unavailable until a verified channel source exists; show source and update status, with no fabricated metrics. Keep this distinct from the public prototype's simulated sample report. See [ADR-0015](docs/adr/0015-authenticated-campaign-report-empty-state.md).
 
-**Completed locally; PR pending:** define a provider-neutral report metric contract that distinguishes unavailable data from a real zero and carries reporting window, unit/currency, source, and timezone-aware observation time. Focused tests use synthetic fixtures only. The contract is persistence-free and does not connect platforms or fabricate live results. See [ADR-0016](docs/adr/0016-campaign-report-metric-contract.md).
+**Completed in PR #138:** define a provider-neutral report metric contract that distinguishes unavailable data from a real zero and carries reporting window, unit/currency, source, and timezone-aware observation time. Focused tests use synthetic fixtures only. The contract is persistence-free and does not connect platforms or fabricate live results. See [ADR-0016](docs/adr/0016-campaign-report-metric-contract.md).
 
 **Next synthetic foundation slice:** adapt the authenticated report shell to render typed metric contract values while keeping the current data-unavailable state and no-source explanation. Continue to use synthetic values only; do not connect platforms or imply live reporting.
 

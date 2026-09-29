@@ -1,31 +1,27 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 19:23 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 19:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Baseline `main`: `102d02068f5bf4e6f6b20d351b0792cdf06a5766`; PR #136 merged with squash. Required CI `36597062416` passed; post-merge CI `36597337620` is running. PR #135 and post-merge CI `36596844250` passed.
-- Current checkout: `main`, clean and up to date with `origin/main`. No open PR was listed at verification.
+- `main` is at `c9f5823e1a06bff260adba17d5d8bfce1de7a7b0` after PR #138 merged. Its required CI run `36598277954` passed. Post-merge CI `36598564211` was in progress at last check.
+- PR #138 is merged. No other open PR was listed before it was created. Local campaign metric-contract tests (6), all campaign tests (37), Django system check, migration check, Ruff lint/format, and diff whitespace check passed. CI also passed migration, Django test, and browser E2E stages.
+- Checkout is `main`, fast-forwarded to the merge commit. No unrelated working changes were present before the continuity update.
 
 ## Product and safety context
 
-- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. Its long-term capability reference does not set first-release scope.
-- Local synthetic-data product development is authorized. The remaining Phase 0 staging E2E, backup/restore, and rollback checks are release-readiness gates and do not block local product work.
-- PR #122 adds a pure fail-closed campaign action-policy evaluator. PR #126 adds two allowlisted synthetic evidence-source labels and caller-supplied timezone-aware observation time. PR #128 adds informational policy version and evaluated-rule identifiers. The 14 focused tests, local Django system check, Ruff checks, PR CI, and post-merge CI passed. These values do not authenticate evidence or persist results.
-- PR #131 merged deterministic creative versions into the authenticated campaign flow; source-fingerprint staleness handling and owner-only POST regeneration are covered by CI. Main CI and post-merge CI passed.
-- PR #133 adds an owner-scoped review preference for one current creative variant, bound to its version and hidden if source inputs change. A new generated version clears the previous preference. Focused validation: 29 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; Django system check, migration check, Ruff lint and formatting pass. PR CI and post-merge CI passed against PostgreSQL.
-- ADR-0014 records the review preference boundary. The options remain synthetic and provider-free; preference is not approval, performance data, or publication.
-- ADR-0015 defines the authenticated report empty state: no invented metric values, source disconnected, and no ad platform operations. The local implementation now has six unavailable metric categories and explicit source/update status.
-- PR #135 adds an owner-scoped campaign report page with six unavailable metric categories and explicit source/update status. It does not create fake metrics or connect a platform. 31 campaign tests and three authenticated campaign browser E2E tests pass on SQLite; browser coverage verifies the six unavailable values and no mobile horizontal overflow. PR PostgreSQL CI passed; post-merge CI is still running.
-- The authenticated workspace uses fixed synthetic campaign examples. User uploads, real advertiser/customer/lead data, live account connections, publication, advertiser spend, payments, and production AI are not authorized or implemented.
-- Keep the Django/PostgreSQL monolith and approved Heroku staging resources. Add no paid services; never push directly to `main`. Successful PRs may be merged after review and required CI pass under the owner's standing authorization.
+- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. Omneky is a long-term capability reference, not first-release scope.
+- Local synthetic-data product development is authorized. Staging E2E, backup/restore, rollback, and other release-readiness gates remain before external beta or production.
+- PR #135 added an authenticated report shell with six unavailable metric categories and explicit source/update state. PR #138 adds an immutable, provider-neutral metric contract with explicit available/unavailable status, reporting window, unit/currency, source, and timezone-aware observation time. An available zero is valid; unavailable metrics cannot carry a numeric value. This contract is not yet connected to the report UI or any storage/provider.
+- The authenticated workspace uses synthetic campaign examples. Real advertiser/customer/lead data, uploads, production AI, platform account connections, publication, advertiser spend, and payments remain out of scope. Do not invent report values or forecasts.
+- Keep Django/PostgreSQL modular monolith and previously approved Heroku staging only. No additional paid service. Never push directly to `main`; successful PRs may be merged after review and required CI under the owner's standing authorization.
 
 ## Open risks
 
-- Real-data readiness: secure file handling, privacy/retention, data recipients, provider terms, platform/API approvals, token controls, audit/stop/revoke, backup/restore, and rollback remain incomplete.
+- Real-data readiness and release gates remain: secure file handling, privacy/retention, data recipients, provider terms, Türkiye-specific platform/API approvals, token protection/revocation, audit/stop behavior, backup/restore, rollback, and staging browser E2E.
 - Credit costs, TRY/tax/payment pricing, ad service fees, lead delivery, performance guarantees, and production AI/provider remain undecided or unverified.
-- The current evaluator's caller-provided policy evidence is not trusted and is not dispatch authorization. Trusted provenance, any freshness policy, durable audit, atomic budget reservation, and stop/revoke enforcement remain future work.
+- Report metric semantics, attribution, trusted source provenance, freshness thresholds, ingestion, and durable audit must be specified before real reporting.
 
 ## Next action
 
-Define and test a provider-neutral report metric contract that distinguishes unavailable from zero and records reporting window, currency where relevant, source, and observation time. Use synthetic examples only; do not connect platforms or fabricate live results.
+Connect `CampaignReportMetric` to the authenticated report shell with typed unavailable values and current no-source explanatory copy. Keep it persistence-free and provider-free, show no synthetic result numbers in the authenticated report, and add focused unit/view coverage.
