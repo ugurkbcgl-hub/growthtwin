@@ -63,7 +63,7 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **Completed:** PR #116 replaces the stale Phase 0 login screen with a Turkish, accessible sign-in page that explains the synthetic-only scope, preserves the requested return path, and keeps public registration closed. PR and post-merge CI passed.
 
-**In progress on `feat/synthetic-budget-pacing`:** show the campaign's equal-allocation daily planning average, clearly separated from a platform spend limit or performance forecast. Keep the forecast and keyword states unavailable until an authorized source exists.
+**Completed:** PR #117 shows the campaign's equal-allocation daily planning average, clearly separated from a platform spend limit or performance forecast. PR and post-merge CI passed.
 
 ## Phase 2 — Local campaign vertical slice
 
@@ -78,6 +78,8 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 - Add quality checks for missing/unsupported claims, format constraints, and budget/schedule completeness. A rejected or ambiguous output stays paused.
 - Verify tenant isolation, schema validation, retry/idempotency behavior, and the campaign user journey.
 - **Acceptance:** the local end-to-end path saves a campaign, produces or safely rejects structured ad drafts, explains its state, and cannot publish or incur ad spend.
+
+**Next implementation boundary:** prepare the storage/provider-independent asset intake and processing contract (ownership, rights/AI consent, quarantine, scan, extraction, provenance, failure and deletion states) using synthetic-only fixtures. Do not accept uploaded customer files or start persistence/storage until the privacy, retention, parser isolation, malware scanning, deletion and tenant-isolation requirements are demonstrably met and the owner separately opens the real-data gate.
 
 ## Phase 3 — First publishing and reporting integration
 
