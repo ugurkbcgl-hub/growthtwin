@@ -25,7 +25,7 @@
               <p>{{ metric.value }}{% if metric.currency %} {{ metric.currency }}{% endif %}</p>
             {% endif %}
             {% if metric.window %}
-              <p class="pacing-note">Dönem: {{ metric.window.start }} – {{ metric.window.end }}</p>
+              <p class="pacing-note">Planlanan kampanya dönemi: {{ metric.window.start }} – {{ metric.window.end }}</p>
             {% endif %}
           </article>
         {% endfor %}

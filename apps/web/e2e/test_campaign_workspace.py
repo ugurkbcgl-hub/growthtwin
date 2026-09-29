@@ -75,7 +75,10 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                     "Rapor verisi henüz bağlı değil", page.locator("body").inner_text()
                 )
                 self.assertEqual(page.get_by_text("Henüz veri yok").count(), 6)
-                self.assertEqual(page.get_by_text("Dönem:", exact=False).count(), 6)
+                self.assertEqual(
+                    page.get_by_text("Planlanan kampanya dönemi:", exact=False).count(),
+                    6,
+                )
                 self.assert_no_horizontal_overflow(page)
                 page.get_by_role("link", name="Kampanyaya dön").click()
                 page.wait_for_url(f"**{detail_url}")

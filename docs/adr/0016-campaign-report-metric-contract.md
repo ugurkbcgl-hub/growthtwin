@@ -22,7 +22,8 @@ number is interpretable and traceable.
    when one is known, and omitted if the campaign has no defined flight dates.
 3. Distinguish count and currency units. Currency metrics require a three-letter
    uppercase code; count metrics cannot carry a currency.
-4. Keep this contract persistence-free and disconnected from the report UI.
+4. Keep this contract persistence-free and provider-neutral. The local report
+   UI may consume typed unavailable metrics, but has no data-source adapter.
    Tests use synthetic fixtures only. This decision does not authorize platform
    connections, importing real data, account access, publication, or spend.
 
