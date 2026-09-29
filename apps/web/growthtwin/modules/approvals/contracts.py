@@ -21,6 +21,16 @@ class PolicyReason(StrEnum):
     CURRENCY_INVALID = "currency_invalid"
     SCHEDULE_MISSING = "schedule_missing_or_invalid"
     OUTSIDE_SCHEDULE = "action_outside_schedule"
+    EVIDENCE_SOURCE_INVALID = "evidence_source_missing_or_unknown"
+    EVIDENCE_TIME_MISSING = "evidence_observation_time_missing"
+    EVIDENCE_TIME_INVALID = "evidence_observation_time_not_timezone_aware"
+
+
+class SyntheticEvidenceSource(StrEnum):
+    """Known labels for evidence origins used only by local synthetic flows."""
+
+    FIXED_SAMPLE = "fixed_sample"
+    TEST_FIXTURE = "test_fixture"
 
 
 @dataclass(frozen=True)
@@ -41,15 +51,19 @@ class SyntheticActionEvidence:
     action_at: datetime | None = None
     campaign_starts_at: datetime | None = None
     campaign_ends_at: datetime | None = None
+    evidence_source: SyntheticEvidenceSource | None = None
+    evidence_observed_at: datetime | None = None
     synthetic_environment: bool = True
 
 
 @dataclass(frozen=True)
 class SyntheticPolicyDecision:
-    """Precondition result for a synthetic preview, not permission to dispatch."""
+    """Synthetic check result and unverified metadata; never dispatch permission."""
 
     eligible_for_synthetic_review: bool
     reasons: tuple[PolicyReason, ...]
+    evidence_source: SyntheticEvidenceSource | None = None
+    evidence_observed_at: datetime | None = None
     live_dispatch_authorized: bool = False
 
 
@@ -107,6 +121,15 @@ def evaluate_synthetic_action(
     ):
         reasons.append(PolicyReason.CURRENCY_INVALID)
 
+    if not isinstance(evidence.evidence_source, SyntheticEvidenceSource):
+        reasons.append(PolicyReason.EVIDENCE_SOURCE_INVALID)
+
+    observed_at = evidence.evidence_observed_at
+    if observed_at is None:
+        reasons.append(PolicyReason.EVIDENCE_TIME_MISSING)
+    elif not isinstance(observed_at, datetime) or observed_at.utcoffset() is None:
+        reasons.append(PolicyReason.EVIDENCE_TIME_INVALID)
+
     schedule = (
         evidence.action_at,
         evidence.campaign_starts_at,
@@ -129,4 +152,14 @@ def evaluate_synthetic_action(
     return SyntheticPolicyDecision(
         eligible_for_synthetic_review=not unique_reasons,
         reasons=unique_reasons,
+        evidence_source=(
+            evidence.evidence_source
+            if isinstance(evidence.evidence_source, SyntheticEvidenceSource)
+            else None
+        ),
+        evidence_observed_at=(
+            observed_at
+            if isinstance(observed_at, datetime) and observed_at.utcoffset() is not None
+            else None
+        ),
     )
