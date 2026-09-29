@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 13:41 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 13:46 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Main is `60f39717fe3102fe764670e29023554368e6b2e3`; latest main CI run `36552662332` passed. PR #105 and subsequent documentation PRs are merged. No open PR was present at audit start.
-- Current working branch is `docs/current-system-foundation-audit`, based on that main commit. It contains documentation changes for the implementation gap inventory, architecture coverage, and roadmap sequencing; these are not yet committed or submitted as a PR. Recheck live PR and CI status before repository actions.
+- Main is `8cd4705260fd041dc8d053868566d9b78ec1f59e`; PR #108 (`docs: assess current system against product plan`) is merged. Its required PR CI run `36557310231` passed. Post-merge main CI run `36557534411` was in progress at this snapshot; verify its final status before relying on it. No open PR was present after merge.
+- Current working branch `docs/system-gap-handoff-sync` is a documentation-only follow-up to make this handoff reflect the just-merged PR and active main CI. Recheck live PR and CI status before repository actions.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -26,8 +26,8 @@ Last verified: 2026-09-29 13:41 (Europe/Istanbul). Repository: `https://github.c
 - Initial source review found TikTok and X self-serve ad-account country eligibility includes Türkiye, but that does not prove GrowthTwin API authorization or availability of every objective/placement. LinkedIn Marketing API access is vetted. Google YouTube reach planning API is allowlisted. Meta application access needs validation. Snapchat, Pinterest, Microsoft Ads, Yandex and local inventory need research before being described as supported. Details and links are in the blueprint.
 - Official Commerce Ministry information reviewed includes advertising rule changes effective 2026-08-01 concerning targeted ads, AI-generated ad characters/digital likeness, minors, influencers and substantiation. KVKK cross-border data transfer and IYS commercial message obligations are identified for counsel-led workflow analysis. This is a planning scan, not legal advice or approval.
 - Documentation-only `git diff --check` passed on PR #105. Application CI passed on GitHub. No local application tests were run for the documentation change.
-- This branch adds a source-reviewed code-to-plan gap assessment, clarifies the logical target versus implemented coverage in `ARCHITECTURE.md`, and links the assessment and sequencing in `ROADMAP.md`. Findings are based on main `60f3971`; no application code or external service was changed. Local app tests have not been run.
+- PR #108 merged the source-reviewed code-to-plan gap assessment, clarified logical architecture versus implemented coverage in `ARCHITECTURE.md`, and linked the assessment and sequencing in `ROADMAP.md`. Findings were based on main `60f3971`; no application code or external service was changed. Required PR CI passed; no local app tests were run.
 
 ## Next action
 
-Finish reviewing this documentation branch, run `git diff --check`, commit and open a PR, then review the rendered changes and wait for required CI. Merge only if review and CI pass. After that, continue Phase 1.5: compare Google/Meta (and TikTok if relevant) for one synthetic city service-lead scenario, disclose evidence/cost/access uncertainty, and present the first-release workflow for owner selection. Only after that selection should the smallest synthetic-only workspace-authorization and campaign-persistence contracts begin. Keep real data, account connections, publishing, and spend blocked.
+Verify post-merge main CI for `8cd4705`. Then continue Phase 1.5: compare Google/Meta (and TikTok if relevant) for one synthetic city service-lead scenario, disclose evidence/cost/access uncertainty, and present the first-release workflow for owner selection. Only after that selection should the smallest synthetic-only workspace-authorization and campaign-persistence contracts begin. Keep real data, account connections, publishing, and spend blocked.
