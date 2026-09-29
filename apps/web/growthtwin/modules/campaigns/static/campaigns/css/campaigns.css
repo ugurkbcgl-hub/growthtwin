@@ -80,6 +80,14 @@ textarea:focus-visible {
 
 .page-wrap { width: min(1100px, calc(100% - 2rem)); margin: 3rem auto 5rem; }
 .narrow-column { width: min(760px, 100%); margin: 1.5rem auto 0; }
+.auth-wrap { display: grid; min-height: calc(100vh - 10rem); place-items: center; }
+.auth-card { width: min(560px, 100%); padding: clamp(1.25rem, 5vw, 2.5rem); border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); box-shadow: 0 16px 50px #18231d0a; }
+.auth-card h1 { font-size: clamp(2rem, 5vw, 2.6rem); }
+.auth-card .notice { margin-bottom: 1.25rem; }
+.auth-form { margin-top: 0; }
+.auth-form .button { width: 100%; margin-top: .25rem; }
+.auth-error { margin-bottom: 1rem; padding: .8rem 1rem; border: 1px solid #dfb0aa; border-radius: .6rem; background: #fff2ef; color: #8d211a; font-weight: 650; }
+.auth-note { margin: 1.25rem 0 0; color: var(--muted); font-size: .92rem; }
 .eyebrow { color: var(--green); font-size: .8rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
 h1, h2, h3, p { margin-top: 0; }

@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 15:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 15:45 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Main is `2f4fd6a21cd1c2ca4d624772d30c73380c2eb4f1`; PRs #110–#114 are merged. PR #114 CI `36567921819` and post-merge main CI `36568151300` passed. No open PR existed when checked for the new branch.
-- Current branch is `feat/workspace-campaign-e2e`; PR #115 is open. It adds authenticated browser E2E tests for the fixed-synthetic campaign create/edit/delete flow and tenant access boundary, plus documentation updates. Verify the CI run on the latest PR commit before merging.
+- Main is `af8b24b19936b6911c75869516822725fddfb394`; PRs #110–#115 are merged. PR #115 CI `36568904271` and post-merge main CI `36569141168` passed. No open PR existed when checked for the new branch.
+- Current branch is `feat/workspace-login-experience`, based on PR #115. It replaces the stale Phase 0 login screen with localized sign-in copy/form accessibility and a browser E2E check; work is not yet committed or submitted.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -30,8 +30,9 @@ Last verified: 2026-09-29 15:33 (Europe/Istanbul). Repository: `https://github.c
 - PR #112 adds provider-free, source-traceable Google Search text assets with RSA character limits and explicit unavailable forecast/keyword states. Required PR and post-merge CI passed.
 - PR #113 adds login-protected workspace list and fixed-sample campaign creation/preview. It withholds free-text advertiser inputs until readiness gates; 14 targeted campaign tests and PR/main CI passed.
 - PR #114 adds whitelisted budget/duration edits and confirmed owner-scoped deletion. Its 22 focused campaign tests, PR CI and post-merge main CI passed.
-- Current branch's 3 browser E2E tests pass locally, including the mobile owner flow, confirmed deletion, foreign-draft 404 and horizontal overflow checks. Ruff lint/format and `git diff --check` pass. No provider call is made.
+- PR #115 adds 3 browser E2E tests: mobile owner create/edit/delete, foreign-draft 404 and horizontal-overflow checks. PR CI and post-merge main CI passed.
+- Current branch adds a Turkish login page and mobile-visible account entry, plus a browser check for localized errors, password-manager autocomplete, intended return path, closed registration and mobile overflow. Four workspace/login browser E2E tests pass together; Ruff lint/format, `collectstatic`, Django check and `git diff --check` pass locally. No provider is called.
 
 ## Next action
 
-Review the final PR #115 diff and verify required CI on its latest commit; merge only if clean. Then verify main CI and continue with the next Phase 2 gap. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
+Review/commit `feat/workspace-login-experience`, open a PR, and merge only after review and required CI pass. It keeps the mobile account entry visible and does not open public registration. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.

@@ -1,6 +1,7 @@
 """Validation for creating a local synthetic campaign draft."""
 
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 
 from growthtwin.modules.content.creative import CreativeVariant
 from growthtwin.site.models import CampaignObjective
@@ -123,3 +124,23 @@ class CreativeVariantsForm(forms.Form):
             }
             for index, variant in enumerate(self.variants)
         ]
+
+
+class GrowthTwinAuthenticationForm(AuthenticationForm):
+    """Use Turkish labels and password-manager hints on the login screen."""
+
+    username = forms.CharField(
+        label="Kullanıcı adı",
+        widget=forms.TextInput(
+            attrs={
+                "autocomplete": "username",
+                "autocapitalize": "none",
+                "spellcheck": "false",
+            }
+        ),
+    )
+    password = forms.CharField(
+        label="Parola",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
