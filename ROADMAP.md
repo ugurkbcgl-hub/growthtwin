@@ -99,7 +99,11 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in PR #138:** define a provider-neutral report metric contract that distinguishes unavailable data from a real zero and carries reporting window, unit/currency, source, and timezone-aware observation time. Focused tests use synthetic fixtures only. The contract is persistence-free and does not connect platforms or fabricate live results. See [ADR-0016](docs/adr/0016-campaign-report-metric-contract.md).
 
-**Next synthetic foundation slice:** define provider-neutral meanings for the six report categories, including attribution boundaries, reporting windows, and freshness/unknown-data handling. Keep this as a synthetic contract/design task; do not connect platforms or imply live reporting.
+**Completed in PR #140:** connect typed unavailable metric values to the authenticated report shell. Show the planned campaign period only when its dates are defined; do not imply observed delivery. No source, value, persistence, or provider is added.
+
+**Metric semantics (ADR-0017; documentation update pending PR #141):** define provider-neutral meanings for the six report categories, their attribution boundaries, reporting windows, currency, and unknown/stale-data handling. Do not flatten differing native platform definitions into comparable values. Keep this as a design contract; do not connect a platform or imply live reporting.
+
+**Next synthetic foundation slice:** research current official Google Ads reporting definitions and map their source fields to the provider-neutral metrics without accessing an account. Record unsupported, partial, and attribution-dependent categories as such; do not connect or import platform data.
 
 ## Phase 3 — First publishing and reporting integration
 

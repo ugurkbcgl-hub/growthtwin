@@ -454,7 +454,7 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(metrics[-1].currency, draft.currency)
         self.assertIsNone(metrics[-1].source)
         self.assertIsNone(metrics[-1].observed_at)
-        self.assertContains(response, "Dönem:")
+        self.assertContains(response, "Planlanan kampanya dönemi:")
 
     def test_owner_report_without_flight_dates_has_no_invented_period(self):
         draft = self.make_draft()
@@ -470,7 +470,7 @@ class CampaignPreviewViewTests(TestCase):
         self.assertTrue(
             all(metric.window is None for metric in response.context["report_metrics"])
         )
-        self.assertNotContains(response, "Dönem:")
+        self.assertNotContains(response, "Planlanan kampanya dönemi:")
 
     def test_other_owner_cannot_open_campaign_report(self):
         draft = self.make_draft()
