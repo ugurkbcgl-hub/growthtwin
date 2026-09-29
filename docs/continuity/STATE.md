@@ -1,11 +1,11 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 15:31 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 15:33 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
 - Main is `2f4fd6a21cd1c2ca4d624772d30c73380c2eb4f1`; PRs #110–#114 are merged. PR #114 CI `36567921819` and post-merge main CI `36568151300` passed. No open PR existed when checked for the new branch.
-- Current branch is `feat/workspace-campaign-e2e`, based on PR #114. It adds authenticated browser E2E tests for the fixed-synthetic campaign create/edit/delete flow and tenant access boundary, plus documentation updates. No PR is open yet.
+- Current branch is `feat/workspace-campaign-e2e`; PR #115 is open. It adds authenticated browser E2E tests for the fixed-synthetic campaign create/edit/delete flow and tenant access boundary, plus documentation updates. Verify the CI run on the latest PR commit before merging.
 - PR #104 blueprint gate and prior Phase 1 prototype/workspace milestones remain as recorded in `PROJECT.md` and `ROADMAP.md`.
 
 ## Product and safety context
@@ -34,4 +34,4 @@ Last verified: 2026-09-29 15:31 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Review and open a PR for `feat/workspace-campaign-e2e`; wait for required CI and merge only if the diff and checks remain clean. It verifies mobile create/edit, confirmed delete and that another user receives not found. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
+Review the final PR #115 diff and verify required CI on its latest commit; merge only if clean. Then verify main CI and continue with the next Phase 2 gap. Keep real data, uploads, AI provider calls, account connections, publishing, payments and spend blocked.
