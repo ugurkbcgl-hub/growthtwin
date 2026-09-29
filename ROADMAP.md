@@ -127,7 +127,9 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in the 2026-09-30 synthetic slice:** ADR-0018 and `approvals.eligibility` define an in-memory, provider-free decision contract for the four matrix outcomes. Missing/stale rule metadata and unknown/unmet conditions fail closed; combining platform and legal rule claims keeps the most restrictive result. The contract is not connected to campaign views, persistence, account APIs, or publication.
 
-**Next action:** review the contract boundary and CI in its feature PR. After merge, decide which synthetic campaign preview state should display the category/channel eligibility explanation. Keep it disconnected from external actions and live data.
+**Completed in the 2026-09-30 preview slice:** the authenticated campaign detail page shows the dated status for the fixed synthetic home-maintenance example, its source/version and demo-only re-review date, and a clear explanation that the check is not legal clearance or permission to publish. Its 30-day review interval only demonstrates the stale-rule transition; it is not a legal or platform deadline. The local evaluator moves overdue rules to `needs_review`; there is no account/API or publication connection.
+
+**Next action:** review the current preview PR and required CI. Then prioritize the remaining sector matrix gaps before exposing a sector selector; an unreviewed category must remain paused. Keep all examples synthetic and the preview disconnected from external actions.
 
 ## Phase 3 — First publishing and reporting integration
 

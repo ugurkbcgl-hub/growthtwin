@@ -12,6 +12,42 @@
       <p>Bu metin taslağı sabit sentetik örnekten hazırlanmıştır. Google Ads hesabına bağlanılmadı ve harcama yapılmadı.</p>
     </aside>
 
+    <section
+      class="eligibility-card{% if eligibility_decision.outcome == 'needs_review' or eligibility_decision.outcome == 'restricted' %} eligibility-card-review{% elif eligibility_decision.outcome == 'not_supported' %} eligibility-card-stop{% endif %}"
+      aria-labelledby="eligibility-title"
+    >
+      <div class="eligibility-heading">
+        <p class="eyebrow">Türkiye · Google Search · sentetik örnek</p>
+        {% if eligibility_decision.outcome == "eligible" %}
+          <span class="eligibility-badge eligibility-badge-eligible">Planlama için uygun</span>
+        {% elif eligibility_decision.outcome == "restricted" %}
+          <span class="eligibility-badge eligibility-badge-review">Kısıtlı</span>
+        {% elif eligibility_decision.outcome == "not_supported" %}
+          <span class="eligibility-badge eligibility-badge-stop">Desteklenmiyor</span>
+        {% else %}
+          <span class="eligibility-badge eligibility-badge-review">İnceleme gerekli</span>
+        {% endif %}
+      </div>
+      <h2 id="eligibility-title">Sektör ve kanal kontrolü</h2>
+      {% if eligibility_decision.outcome == "eligible" %}
+        <p>Yalnızca örnek ev bakım hizmeti için sentetik yerel planlama akışı uygundur.</p>
+      {% elif eligibility_decision.outcome == "restricted" %}
+        <p>Bu örnek yalnız belirtilen kategori ve kanal koşulları içinde planlanabilir.</p>
+      {% elif eligibility_decision.outcome == "not_supported" %}
+        <p>Bu kategori ve kanal birleşimi için taslak durdurulmalıdır.</p>
+      {% else %}
+        <p>Uygunluk doğrulanamadı; taslak duraklatılmalıdır.</p>
+      {% endif %}
+      <p class="eligibility-boundary">Bu kontrol gerçek bir işletmenin veya hizmetin hukuk ve Google uygunluğunu değerlendirmez. Reklam hesabı, API erişimi ya da yayın izni vermez.</p>
+      <details class="eligibility-source">
+        <summary>Kontrol kaynağı ve geçerlilik tarihi</summary>
+        {% for rule in eligibility_decision.evaluated_rules %}
+          <p><a href="{{ rule.source_url }}" rel="noreferrer">Türkiye sektör ve Google Search uygunluk matrisi</a></p>
+          <p class="pacing-note">Kayıt sürümü: {{ rule.rule_version }} · Gözden geçirme: {{ rule.reviewed_on }} · Sentetik örnek için yeniden inceleme: {{ rule.review_due_on }}. Bu tarih resmi kuralın sona erme tarihi değildir.</p>
+        {% endfor %}
+      </details>
+    </section>
+
     <section class="summary-card" aria-labelledby="plan-summary-title">
       <h2 id="plan-summary-title">Plan özeti</h2>
       <dl class="summary-list">

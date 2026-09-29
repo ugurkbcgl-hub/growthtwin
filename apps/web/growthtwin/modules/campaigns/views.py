@@ -11,6 +11,9 @@ from django.utils import timezone
 from django.utils.formats import number_format
 from django.views.decorators.http import require_POST
 
+from growthtwin.modules.campaigns.eligibility import (
+    synthetic_campaign_eligibility_preview,
+)
 from growthtwin.modules.campaigns.forms import (
     CampaignDraftEditForm,
     CampaignDraftForm,
@@ -144,6 +147,9 @@ def campaign_detail(request, draft_id):
         {
             "draft": draft,
             "plan": plan,
+            "eligibility_decision": synthetic_campaign_eligibility_preview(
+                evaluated_on=timezone.localdate()
+            ),
             "budget_display": _format_budget(draft.media_budget_minor),
             "daily_average_display": _format_daily_average(
                 plan.daily_media_average_minor
