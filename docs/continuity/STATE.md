@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-29 22:29 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-29 22:30 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- `main` is `6f32b0d` after PR #150. PR #149 required/post-merge CI `36617325319`/`36617630617` passed. PR #150 required CI `36618254042` and post-merge CI `36618532218` passed at 2026-09-29 22:26 Europe/Istanbul.
-- Current branch: `docs/freshness-unknown-handoff`, based on merged `main`; updates the handoff and canonical status for PR #150, and records the next source-evidence design task.
-- PR #150 local checks: 50 campaign Django tests passed; Django system check and migration consistency passed; Ruff lint/format and `git diff --check` passed. Browser E2E not run locally; required PR CI passed.
+- `main` is `c059c1e` after PR #151. PR #149 required/post-merge CI `36617325319`/`36617630617` passed. PR #150 required/post-merge CI `36618254042`/`36618532218` passed. PR #151 required CI `36619100149` and post-merge CI `36619387519` passed at 2026-09-29 22:30 Europe/Istanbul.
+- Current branch: `docs/report-source-freshness-evidence`, based on merged `main`; updates the Google Search evidence mapping and records the cautious timestamp finding. PR not yet opened.
+- PR #151 changed documentation only; `git diff --check` and required PR CI passed. PR #150 local validation and required/post-merge CI passed.
 
 ## Product and safety context
 
@@ -25,4 +25,4 @@ Last verified: 2026-09-29 22:29 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Document evidence requirements for source data time and reporting-window coverage in a future provider adapter. Do not treat retrieval time or an SLO as a source timestamp or guarantee; keep this work synthetic and adapter-free.
+Finish and review the source freshness evidence note, open its documentation PR, and wait for required CI. Preserve the evidence-gap qualification and do not add a live adapter or treat an SLO as a guarantee.
