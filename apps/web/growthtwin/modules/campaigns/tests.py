@@ -12,6 +12,7 @@ from growthtwin.modules.campaigns.planning import build_google_search_campaign_p
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     get_campaign_draft_for_owner,
+    update_campaign_draft_for_owner,
 )
 from growthtwin.modules.workspaces.models import Workspace
 
@@ -180,6 +181,20 @@ class CampaignPreviewViewTests(TestCase):
         }
         return values | overrides
 
+    def make_draft(self):
+        return create_campaign_draft_for_owner(
+            owner=self.owner,
+            workspace_id=self.workspace.pk,
+            name="Synthetic home repair campaign",
+            brand_name="Başkent Ev Bakım",
+            brief="Offer repair estimates in Ankara.",
+            target_city="Ankara",
+            destination_url="https://example.test/repair",
+            media_budget_minor=500_000,
+            flight_start=date(2026, 10, 1),
+            flight_end=date(2026, 10, 15),
+        )
+
     def test_campaign_workspace_requires_login(self):
         response = self.client.get(reverse("campaigns:list"))
 
@@ -235,20 +250,110 @@ class CampaignPreviewViewTests(TestCase):
         self.assertFalse(WorkspaceCampaignDraft.objects.exists())
 
     def test_other_owner_cannot_open_campaign_preview(self):
-        draft = create_campaign_draft_for_owner(
-            owner=self.owner,
-            workspace_id=self.workspace.pk,
-            name="Synthetic home repair campaign",
-            brand_name="Başkent Ev Bakım",
-            brief="Offer repair estimates in Ankara.",
-            target_city="Ankara",
-            destination_url="https://example.test/repair",
-            media_budget_minor=500_000,
-            flight_start=date(2026, 10, 1),
-            flight_end=date(2026, 10, 14),
-        )
+        draft = self.make_draft()
         self.client.force_login(self.other_user)
 
         response = self.client.get(reverse("campaigns:detail", args=[draft.pk]))
 
         self.assertEqual(response.status_code, 404)
+
+    def test_owner_can_update_bounded_synthetic_budget_and_duration(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("campaigns:edit", args=[draft.pk]),
+            {
+                "media_budget_minor": "1000000",
+                "duration_days": "30",
+                "synthetic_confirmation": "on",
+            },
+        )
+
+        draft.refresh_from_db()
+        self.assertRedirects(response, reverse("campaigns:detail", args=[draft.pk]))
+        self.assertEqual(draft.media_budget_minor, 1_000_000)
+        self.assertEqual((draft.flight_end - draft.flight_start).days, 30)
+        self.assertEqual(draft.brief, "Offer repair estimates in Ankara.")
+
+    def test_campaign_edit_rejects_unlisted_budget(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("campaigns:edit", args=[draft.pk]),
+            {
+                "media_budget_minor": "999999",
+                "duration_days": "14",
+                "synthetic_confirmation": "on",
+            },
+        )
+
+        draft.refresh_from_db()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(draft.media_budget_minor, 500_000)
+
+    def test_owner_scoped_service_rejects_unlisted_synthetic_values(self):
+        draft = self.make_draft()
+
+        with self.assertRaises(ValidationError):
+            update_campaign_draft_for_owner(
+                owner=self.owner,
+                draft_id=draft.pk,
+                media_budget_minor=999_999,
+                flight_start=date(2026, 10, 1),
+                flight_end=date(2026, 10, 15),
+            )
+
+        draft.refresh_from_db()
+        self.assertEqual(draft.media_budget_minor, 500_000)
+
+    def test_other_owner_cannot_edit_campaign(self):
+        draft = self.make_draft()
+        self.client.force_login(self.other_user)
+
+        response = self.client.get(reverse("campaigns:edit", args=[draft.pk]))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_owner_must_confirm_before_campaign_delete(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.post(reverse("campaigns:delete", args=[draft.pk]))
+
+        self.assertRedirects(response, reverse("campaigns:detail", args=[draft.pk]))
+        self.assertTrue(WorkspaceCampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_owner_can_delete_campaign_only_after_confirmation(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.post(
+            reverse("campaigns:delete", args=[draft.pk]),
+            {"confirm_delete": "on"},
+        )
+
+        self.assertRedirects(response, reverse("campaigns:list"))
+        self.assertFalse(WorkspaceCampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_campaign_delete_does_not_accept_get(self):
+        draft = self.make_draft()
+        self.client.force_login(self.owner)
+
+        response = self.client.get(reverse("campaigns:delete", args=[draft.pk]))
+
+        self.assertEqual(response.status_code, 405)
+        self.assertTrue(WorkspaceCampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_other_owner_cannot_delete_campaign(self):
+        draft = self.make_draft()
+        self.client.force_login(self.other_user)
+
+        response = self.client.post(
+            reverse("campaigns:delete", args=[draft.pk]),
+            {"confirm_delete": "on"},
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(WorkspaceCampaignDraft.objects.filter(pk=draft.pk).exists())

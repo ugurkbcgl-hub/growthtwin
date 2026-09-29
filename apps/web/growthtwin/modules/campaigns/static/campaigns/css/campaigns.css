@@ -106,6 +106,10 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .button-primary { background: var(--green); color: white; }
 .button-primary:hover { background: var(--green-dark); }
 .button-secondary { border-color: var(--line); background: var(--surface); color: var(--ink); }
+.button-danger { border-color: #d9aaa5; background: #fff7f5; color: #8d211a; }
+.draft-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+.draft-actions form { margin: 0; }
+.delete-confirmation { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; color: #8d211a; font-size: .9rem; }
 
 .notice, .summary-card, .empty-state, .asset-card, .campaign-card {
   border: 1px solid var(--line);

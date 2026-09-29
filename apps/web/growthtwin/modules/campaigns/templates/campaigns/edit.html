@@ -1,0 +1,35 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Sentetik taslak ayarları{% endblock %}
+{% block content %}
+  <p class="eyebrow">Taslak ayarları</p>
+  <div class="narrow-column">
+    <a class="back-link" href="{% url 'campaigns:detail' draft.pk %}">← Önizlemeye dön</a>
+    <h1>Bütçe ve süreyi değiştir</h1>
+    <p class="lead">Bu prototipte yalnızca listeden seçilen sentetik örnek ayarları kaydedilir.</p>
+
+    <aside class="notice" role="note">
+      <strong>Sentetik prototip</strong>
+      <p>İşletme, reklam metni, web sitesi veya müşteri bilgisi değiştirilemez. Bu ayar reklam hesabına gönderilmez ve harcama başlatmaz.</p>
+    </aside>
+
+    <form class="campaign-form" method="post">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        {% if field.name != "synthetic_confirmation" %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {{ field.errors }}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="confirmation-field">
+        {{ form.synthetic_confirmation }}
+        <label for="{{ form.synthetic_confirmation.id_for_label }}">{{ form.synthetic_confirmation.label }}</label>
+        {{ form.synthetic_confirmation.errors }}
+      </div>
+      <button class="button button-primary" type="submit">Ayarları kaydet</button>
+    </form>
+  </div>
+{% endblock %}
