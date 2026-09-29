@@ -33,6 +33,8 @@ Status: **Phase 1 acceptance verified on 2026-09-29.** The local product slice s
 
 **First gate:** establish the workspace owner and the campaign/brand data lifecycle before adding durable content records. For this synthetic-only prototype, workspace ownership is tied to an authenticated user, anonymous session drafts are never backfilled automatically, and no real advertiser data is accepted. Do not invent a universal retention period; set purpose- and data-category-specific limits before real data. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).
 
+Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scoping tests are merged in PR #102. It is not connected to signup, workspace selection, or campaign drafts. Next, add a small authenticated workspace entry point with server-side owner filtering, still using synthetic data only.
+
 - Model advertiser/workspace, brand facts and assets, campaign brief, versioned multi-format ad creatives, destinations, user-defined caps, and status history.
 - Add a server-side AI gateway with validated structured output and provider adapters. Begin with local Ollama plus synthetic data; use NIM only for synthetic evaluation.
 - Add quality checks for missing/unsupported claims, format constraints, and budget/schedule completeness. A rejected or ambiguous output stays paused.
