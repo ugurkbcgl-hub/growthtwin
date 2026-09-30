@@ -1,16 +1,17 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-09-30 20:00 +0300 (Europe/Istanbul)
+Review date: 2026-09-30 20:11 +0300 (Europe/Istanbul)
 
 This review was read-only; no deployment, account creation, restore, rollback, paid resource, live account, campaign, or spend was performed. Use synthetic values only.
 
 ## Verified baseline
 
-- Current `main` after PR #172 is `5d63290b44503992473a2c9469d3733e04a6f0ab`. PR #171 and #172 are merged; PR #171 required CI `36745452282` and post-merge CI `36745746001` passed; PR #172 required CI `36746196220` and post-merge CI `36746483602` passed. Both runs included Django tests and browser E2E.
+- Current `main` baseline after PR #174 is `05e102f26a5879d127914754128d1be08528c0db`. PR #171, #172 and #174 are merged; PR #171 required CI `36745452282` and post-merge CI `36745746001` passed; PR #172 required CI `36746196220` and post-merge CI `36746483602` passed; PR #174 required CI `36748631258` and post-merge CI `36748897583` passed. All listed runs included Django tests and browser E2E.
 - GitHub branch protection is enabled on `main`; the required context is `Django system check`, PR branches must be up to date, and admin enforcement is enabled.
-- A direct GET to the approved staging `/health/` endpoint on 2026-09-30 returned HTTP 200 and `{"status":"ok","version":"unknown"}`. This verifies endpoint and database readiness at that time, not the deployed revision.
+- A direct GET to the approved staging `/health/` endpoint on 2026-09-30 returned HTTP 200 and `{"status":"ok","version":"unknown"}`. This verifies endpoint and database readiness, but the application response does not identify its code revision.
+- The authenticated Heroku overview/activity feed showed one Basic web dyno and the latest code deployment as release v5, commit `ac2f627d`, dated 2026-09-27. Later releases v6–v10 shown in the feed changed configuration; no later code deployment was listed. The deployed code revision is therefore known from the dashboard snapshot, though the runtime health endpoint still reports `unknown`.
 - The staging E2E runner exists at `apps/web/e2e/run_staging.py`. It is pinned to the approved HTTPS host, prompts locally for a disposable account username/password, runs the profile-edit flow, and suppresses details for unexpected failures. No staging E2E was run in this review.
-- Heroku CLI is not installed in this workspace. The dashboard's current release, resource and cost details therefore were not rechecked. `DEPLOYMENT.md` retains older observations and labels them with their observation dates.
+- Heroku CLI is not installed, but the authenticated dashboard was reviewed read-only on 2026-09-30. It showed one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), Standard Free Scheduler, and an estimated total of about USD 12/month. The dashboard estimate is not an invoice; actual charges, tax, and Scheduler one-off dyno cost remain unverified.
 
 ## Verification sequence and stop points
 
@@ -22,7 +23,7 @@ Run from `apps/web` after confirming Python dependencies and Chromium are availa
 
 Pass evidence: runner exits successfully, confirms profile save and persistence after reload, confirms logout blocks the protected profile, and reports no saved browser state. Record timestamp, deployed revision if known, and outcome only. Do not treat this profile flow as evidence for campaign authorization/publishing.
 
-Stop if the deployed revision is unknown, the disposable account is unavailable, any real data appears, or the result is ambiguous. The current health response has `version: unknown`.
+Stop if the deployed revision cannot be matched to the reviewed code, the disposable account is unavailable, any real data appears, or the result is ambiguous. The dashboard lists `ac2f627d`, while the current health response still has `version: unknown`; verify that the existing app release and the intended test target match before running.
 
 ### 2. Backup and restore — planning only; not safe to execute yet
 
@@ -40,15 +41,14 @@ Pass evidence: restore the selected release through the approved deployment mech
 
 ### 4. Cost and CI gate — partially verified
 
-The GitHub merge gate is verified above, and PR/post-merge CI results are recorded in the continuity state. Current Heroku invoice/resource usage and Scheduler one-off cost are not verified by this review because Heroku CLI is unavailable and the prior dashboard observations are dated. Refresh those values from the authenticated dashboard before any further staging change. Do not create resources for this check.
+The GitHub merge gate is verified above, and PR/post-merge CI results are recorded in the continuity state. The authenticated dashboard currently estimates about USD 12/month for the approved resources. This is not actual billed usage; tax treatment and Scheduler one-off dyno charges remain unverified. No resource was created for this check.
 
 ## Current blockers
 
-- Deployed revision is unknown from the public health response.
+- The dashboard identifies deployed code as `ac2f627d` (last code deploy shown 2026-09-27), but the health response still reports version `unknown`; runtime revision reporting is not wired or not populated.
 - No disposable staging account is provisioned/verified for the browser E2E.
-- No authenticated Heroku dashboard session was used from this workspace; live release and current billing could not be checked.
 - Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
 
 ## Next action
 
-Provision a disposable synthetic staging account through the authorized admin path, then run the existing `python -m e2e.run_staging` flow with credentials entered only at its hidden local prompts. Before doing so, confirm the staging revision through the authenticated Heroku dashboard; if it remains unknown, resolve that deployment-identification gap first.
+Provision a disposable synthetic staging account through the authorized admin path, then run the existing `python -m e2e.run_staging` flow with credentials entered only at its hidden local prompts. The Heroku dashboard lists `ac2f627d`, but the runtime version is unknown; confirm the test target matches that reviewed release before running the E2E.

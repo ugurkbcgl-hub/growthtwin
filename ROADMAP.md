@@ -174,7 +174,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 ## Existing Phase 0 tasks retained as gates
 
-Use the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) to complete the existing staging E2E, backup/restore, rollback, and cost/CI gates safely. The 2026-09-30 review confirmed CI and branch protection, but the deployed revision is unknown and a disposable staging account is not verified.
+Use the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) to complete the existing staging E2E, backup/restore, rollback, and cost/CI gates safely. The 2026-09-30 review confirmed CI and branch protection; the Heroku dashboard lists code release `ac2f627d`, while `/health/` reports `version: unknown`. A disposable staging account is not verified.
 
 Staging browser E2E for the demo, backup/restore, controlled rollback, and final cost/CI recording remain incomplete. They are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.
 

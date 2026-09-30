@@ -30,16 +30,16 @@ Do not copy production data into development or staging. Promotion must never ca
 
 - App: `growthtwin-stage-270927` at `https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/`.
 - Last dashboard observation recorded at 2026-09-27 20:06 Europe/Istanbul: one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL add-on (~USD 0.007/hour); dashboard estimate about USD 12/month.
-- At that observation the latest deployed code revision was `ac2f627d`; later releases were configuration changes. Current `main` at `6aba41e` was not deployed. Recheck the dashboard before deploying because it can change.
-- A direct request to `/health/?check=20260927-followup-01` returned HTTP 200 and `{"status":"ok","version":"unknown"}`. Database readiness responded, but the app did not identify its revision. An in-app browser request was blocked by the client, so that browser path remains unverified.
+- The live dashboard was rechecked on 2026-09-30: its latest code deployment remains release v5 at `ac2f627d` (2026-09-27); later v6–v10 releases shown were configuration changes. `main` is newer and was not deployed. The app overview estimates about USD 12/month for the one Basic dyno, Essential-0 Postgres, and Standard Free Scheduler. This is an estimate, not an invoice; Scheduler one-off dyno charges and taxes remain unverified.
+- A direct request to `/health/` on 2026-09-30 returned HTTP 200 and `{"status":"ok","version":"unknown"}`. Database readiness responds, but the app does not identify its revision. The dashboard release feed identifies `ac2f627d`; runtime health/version alignment remains unverified.
 - The synthetic profile-edit E2E passes locally and in CI but has not run against this staging deployment. No disposable staging account has been provisioned. Backup/restore and rollback are also unverified.
 - Keep only synthetic values in the staging app and its database. Do not expose or copy config-var secrets. No extra paid dyno or service is approved for account provisioning.
 
 ## Current readiness review (2026-09-30)
 
-- A read-only GET to the staging health endpoint returned HTTP 200 with database-ready status, but `version` was `unknown`; the deployed revision is not verified.
+- A read-only GET to staging returned HTTP 200 and database-ready status, but `version` was `unknown`. The Heroku overview/activity feed identifies the latest code deployment as `ac2f627d` on 2026-09-27; runtime-reported revision still cannot be matched.
 - The pinned staging profile-edit E2E runner is ready, but no run against staging is recorded and a disposable test account is not verified. CI E2E is not a substitute for this check.
-- Heroku CLI is not installed in the reviewed workspace. Current app releases, resource configuration, and billing/Scheduler charges were not rechecked; the snapshot above is historical.
+- Heroku CLI is not installed, but the authenticated dashboard was checked on 2026-09-30: one Basic dyno, one Essential-0 Postgres, Standard Free Scheduler, and estimated monthly cost about USD 12. The estimate is not an invoice; taxes and Scheduler one-off dyno charges remain unverified.
 - Backup/restore and rollback remain unverified. Do not restore over the only database or add a separate resource as part of this review.
 - See the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) for prerequisites, safe stop points, and pass evidence.
 
