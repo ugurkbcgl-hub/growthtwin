@@ -1,12 +1,12 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-30 19:41 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 19:43 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
 - Baseline: clean `main` at `dc910a605c44cf7a115ed945dd6ae30c57b56696` (`docs: assess Turkish political ad eligibility (#171)`). PR #171 is merged; no PRs were open at verification.
 - PR #171 required CI `36745452282` and post-merge main CI `36745746001` both passed, including browser end-to-end checks.
-- This handoff refresh is being prepared on feature branch `docs/low-usage-handoff-20260930`; check its eventual PR and CI live.
+- Current working branch: `docs/refresh-post-political-research-state`, based on `main`; the final status refresh has not yet been opened as a PR.
 
 ## Product and safety context
 
@@ -22,4 +22,4 @@ Last verified: 2026-09-30 19:41 (Europe/Istanbul). Repository: `https://github.c
 
 ## Next action
 
-Read-only review the existing staging browser E2E and Phase 0 checklist. Identify the concrete prerequisites and verification steps for staging E2E, backup/restore, rollback, and cost/CI recording using only already-approved resources. Record only verified documentation gaps; do not add paid resources or start a product feature.
+Continue the Türkiye eligibility matrix with official-source research into Turkish-law requirements for housing and employment advertising; keep unresolved offers paused at `needs_review`.
