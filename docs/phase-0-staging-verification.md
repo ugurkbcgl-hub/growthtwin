@@ -1,29 +1,29 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-09-30 20:11 +0300 (Europe/Istanbul)
+Review date: 2026-09-30 22:52 +0300 (Europe/Istanbul)
 
-This review was read-only; no deployment, account creation, restore, rollback, paid resource, live account, campaign, or spend was performed. Use synthetic values only.
+The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
 ## Verified baseline
 
-- Current `main` baseline after PR #174 is `05e102f26a5879d127914754128d1be08528c0db`. PR #171, #172 and #174 are merged; PR #171 required CI `36745452282` and post-merge CI `36745746001` passed; PR #172 required CI `36746196220` and post-merge CI `36746483602` passed; PR #174 required CI `36748631258` and post-merge CI `36748897583` passed. All listed runs included Django tests and browser E2E.
+- Current `main` baseline before this documentation update is `69476a62d2d289761d1aeef8c672e66dadc28b6d`, after PR #176. Its latest main CI run `36750735813` passed. No open PRs were listed at review time. The staging E2E below passed against this same commit, deployed as release v14.
 - GitHub branch protection is enabled on `main`; the required context is `Django system check`, PR branches must be up to date, and admin enforcement is enabled.
 - A direct GET to the approved staging `/health/` endpoint on 2026-09-30 returned HTTP 200 and `{"status":"ok","version":"unknown"}`. This verifies endpoint and database readiness, but the application response does not identify its code revision.
-- The authenticated Heroku overview/activity feed showed one Basic web dyno and the latest code deployment as release v5, commit `ac2f627d`, dated 2026-09-27. Later releases v6–v10 shown in the feed changed configuration; no later code deployment was listed. The deployed code revision is therefore known from the dashboard snapshot, though the runtime health endpoint still reports `unknown`.
-- The staging E2E runner exists at `apps/web/e2e/run_staging.py`. It is pinned to the approved HTTPS host, prompts locally for a disposable account username/password, runs the profile-edit flow, and suppresses details for unexpected failures. No staging E2E was run in this review.
-- Heroku CLI is not installed, but the authenticated dashboard was reviewed read-only on 2026-09-30. It showed one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), Standard Free Scheduler, and an estimated total of about USD 12/month. The dashboard estimate is not an invoice; actual charges, tax, and Scheduler one-off dyno cost remain unverified.
+- The authenticated Heroku CLI release list showed the latest code deployment as v14, commit `69476a62`, on 2026-09-30; v11–v13 were configuration releases. The health endpoint returned HTTP 200 with `version: unknown`, so runtime revision reporting remains unresolved.
+- The staging E2E runner exists at `apps/web/e2e/run_staging.py`, pinned to the approved HTTPS host. The passing staging check reused `e2e.profile_edit_flow.run_profile_edit_flow` through a one-time local helper; it verified login, profile save and persistence after reload, logout, and logged-out access protection. It used the disposable account `growthtwin-e2e-20260930`; no password was recorded.
+- The approved resources remain one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), and Standard Free Scheduler, with a previously observed estimate near USD 12/month. This is not an invoice; actual charges, tax, and Scheduler one-off dyno cost remain unverified. No resource was added in this work.
 
 ## Verification sequence and stop points
 
-### 1. Staging browser E2E — ready after test-account setup
+### 1. Staging browser E2E — passed for the profile-edit flow
 
-Prerequisite: create or identify a dedicated disposable account on the approved staging app through its authorized admin path. Use fabricated profile details only. Do not place a password in chat, Git, or logs; enter it only at the runner's hidden local prompt.
+Verified 2026-09-30 against release v14 (`69476a62`) on the approved HTTPS host. The account is a normal active user, not staff or superuser. It was used only with fabricated profile values. The account remains available for future staging checks; its password is not recorded in this repository or handoff.
 
-Run from `apps/web` after confirming Python dependencies and Chromium are available: `python -m e2e.run_staging`.
+The existing profile flow was invoked through a one-time local helper because staging-account setup required a password handoff. The standard runner remains available from `apps/web`: `python -m e2e.run_staging`.
 
-Pass evidence: runner exits successfully, confirms profile save and persistence after reload, confirms logout blocks the protected profile, and reports no saved browser state. Record timestamp, deployed revision if known, and outcome only. Do not treat this profile flow as evidence for campaign authorization/publishing.
+Pass evidence: the browser flow completed login, saved the synthetic profile, verified persistence after reload, logged out, and confirmed protected profile access redirects to login. Browser context was closed; no state was persisted locally. This proves only the demo profile flow, not campaign authorization or publishing.
 
-Stop if the deployed revision cannot be matched to the reviewed code, the disposable account is unavailable, any real data appears, or the result is ambiguous. The dashboard lists `ac2f627d`, while the current health response still has `version: unknown`; verify that the existing app release and the intended test target match before running.
+Before a future rerun, verify the deployed release and test target again. Stop if they differ, the disposable account is unavailable, any real data appears, or the result is ambiguous. The health endpoint still has `version: unknown` and cannot independently attest to the deployed revision.
 
 ### 2. Backup and restore — planning only; not safe to execute yet
 
@@ -37,7 +37,7 @@ Pass evidence: identify the snapshot/recovery point, restore target and duration
 
 First obtain a current release list and code revision from the authorized Heroku dashboard or an installed authenticated CLI. Select a known-good reviewed release, then check schema/migration compatibility before rollback. Never roll back across an irreversible migration without a tested recovery plan.
 
-Pass evidence: restore the selected release through the approved deployment mechanism, verify health and deployed revision, run staging E2E, and record application/database recovery ordering. No rollback has been performed or verified; current deployment revision remains unknown.
+Pass evidence: restore the selected release through the approved deployment mechanism, verify health and deployed revision, run staging E2E, and record application/database recovery ordering. No rollback has been performed or verified; the health endpoint still cannot report the running revision.
 
 ### 4. Cost and CI gate — partially verified
 
@@ -45,10 +45,9 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Current blockers
 
-- The dashboard identifies deployed code as `ac2f627d` (last code deploy shown 2026-09-27), but the health response still reports version `unknown`; runtime revision reporting is not wired or not populated.
-- No disposable staging account is provisioned/verified for the browser E2E.
+- The health response still reports version `unknown`; runtime revision reporting is not wired or not populated.
 - Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
 
 ## Next action
 
-Provision a disposable synthetic staging account through the authorized admin path, then run the existing `python -m e2e.run_staging` flow with credentials entered only at its hidden local prompts. The Heroku dashboard lists `ac2f627d`, but the runtime version is unknown; confirm the test target matches that reviewed release before running the E2E.
+Plan a non-destructive, synthetic-only backup/restore rehearsal: verify the existing database plan's recovery capabilities, define a safe restore target and recovery order, and do not overwrite the only staging database until a safe target is established.
