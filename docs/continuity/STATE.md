@@ -1,29 +1,28 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-30 20:01 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 20:12 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Latest verified `main`: `5d63290b44503992473a2c9469d3733e04a6f0ab` after PR #172. PR #171 required CI `36745452282` and post-merge CI `36745746001` passed; PR #172 required CI `36746196220` and post-merge CI `36746483602` passed. Each included Django and browser E2E tests.
-- `main` branch protection was verified: required GitHub Actions check `Django system check`, up-to-date PR branch required, admin enforcement enabled.
-- Current feature branch: `docs/phase0-staging-readiness-review`. It contains a documentation-only Phase 0 readiness review; no open PR was present before this branch was created.
-- A staging `/health/` GET on 2026-09-30 returned HTTP 200 with `{"status":"ok","version":"unknown"}`; database readiness responded, but deployed revision is unknown.
+- Latest `main` baseline: `05e102f26a5879d127914754128d1be08528c0db` after PR #174. PR #174 required CI `36748631258` and post-merge CI `36748897583` passed, including Django tests and browser E2E. PRs #171 and #172 also passed required and post-merge CI.
+- GitHub `main` branch protection is enabled: required check `Django system check`, up-to-date PR branches and admin enforcement.
+- Current feature branch: `docs/phase0-staging-live-review`; the dashboard findings and docs refresh are being prepared here. Recheck the live PR/CI before continuing.
+- Heroku dashboard on 2026-09-30 shows the last code deployment as v5 / `ac2f627d` from 2026-09-27. Releases v6–v10 shown after it changed configuration. A direct `/health/` GET returned HTTP 200, database-ready, but `version: unknown`.
+- The dashboard shows one Basic dyno, Essential-0 Postgres and Standard Free Scheduler; estimated monthly total about USD 12. This is not invoice evidence; tax and one-off Scheduler dyno costs remain unknown.
 
 ## Completed in this work
 
-- Reviewed `DEPLOYMENT.md`, `TESTING.md`, ADR-0003, the existing staging E2E runner, Phase 0 roadmap gates, CI workflow, and live GitHub branch protection.
-- Added `docs/phase-0-staging-verification.md` with verified prerequisites, pass evidence, and safe stop points for staging E2E, backup/restore, rollback, and cost/CI.
-- Updated `DEPLOYMENT.md` and `ROADMAP.md` with the dated health-readiness finding and linked verification sequence. `git diff --check` passed. Application tests were not run for this documentation-only change.
-- Heroku CLI is not installed in this workspace. Current dashboard releases/resources/billing were not queried. No staging E2E, backup/restore, rollback, account creation, or deployment was performed.
+- Reviewed `DEPLOYMENT.md`, `TESTING.md`, ADR-0003, staging E2E runner, Phase 0 gates, CI and GitHub branch protection.
+- Added the read-only Phase 0 verification sequence and refreshed deployment/roadmap records from the authenticated Heroku dashboard.
+- `git diff --check` passed. No app tests, staging E2E, deployment, account creation, backup/restore, rollback or paid-resource change was performed.
 
-## Open risks and prerequisites
+## Open prerequisites
 
-- Staging revision remains unknown. The authenticated Heroku dashboard must be checked before a staging E2E or deployment decision.
-- The staging browser test needs a disposable synthetic account. Its password must be entered only at the test runner's hidden local prompt; do not send it in chat or write it to Git/logs.
-- A restore could overwrite the only staging database. No safe restore target or approved recovery procedure is verified; no paid resource may be added without a new owner decision.
-- Current Heroku billing/resource totals and Scheduler one-off charge are unverified. The last documented dashboard observation is historical.
-- Backup/restore and rollback remain unverified release gates. Keep all work synthetic; no live account, campaign, publication or spend.
+- No disposable synthetic staging account is verified for the existing profile-edit E2E. Runner `python -m e2e.run_staging` prompts for username/password locally; the password must be entered only at the hidden prompt, never in chat/Git/logs.
+- Runtime health does not report a commit hash. The dashboard shows `ac2f627d`; verify it remains the intended target before testing.
+- Backup/restore and rollback remain unverified. A restore can overwrite the only staging database; do not proceed until a safe target and recovery order are established.
+- Actual invoice, taxes and Scheduler one-off dyno charges remain unverified. Do not add paid resources without a new owner decision.
 
 ## Next action
 
-After confirming the staging revision in the authenticated Heroku dashboard and identifying a disposable synthetic test account, run `python -m e2e.run_staging` from `apps/web`; enter account credentials only at its hidden local prompts. Do not proceed with restore or rollback until a non-destructive target and recovery order are established.
+Identify a disposable synthetic staging account using the authorized admin path and run the existing staging browser E2E against the dashboard-verified `ac2f627d` release; enter credentials only in the runner's hidden local prompts. If credentials or admin access are needed, pause at that point rather than requesting them in chat.
