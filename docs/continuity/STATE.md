@@ -1,27 +1,25 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-30 19:36 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 19:41 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Latest verified `main`: `1ee541e3d832efb3bd5d96ccdc6ea78352125f02` (PR #170). Required CI `36743525443` and post-merge CI `36744652209` passed.
-- Current branch: `docs/turkiye-political-ad-eligibility`, based on that `main`. The working tree contains the political/election eligibility research and aligned status-document updates for review.
-- PR #171 has not yet been opened. No open PRs were returned by the live GitHub query at the start of this work; the new branch changes are local so far.
-- PR #170's Law 4207 update supplements Google's tobacco restriction. PR #171's proposed research records Türkiye's election-period rules, messaging restrictions, Google political-targeting and verification caveats, and remains `needs_review`.
+- Baseline: clean `main` at `dc910a605c44cf7a115ed945dd6ae30c57b56696` (`docs: assess Turkish political ad eligibility (#171)`). PR #171 is merged; no PRs were open at verification.
+- PR #171 required CI `36745452282` and post-merge main CI `36745746001` both passed, including browser end-to-end checks.
+- This handoff refresh is being prepared on feature branch `docs/low-usage-handoff-20260930`; check its eventual PR and CI live.
 
-## Completed in this work
+## Product and safety context
 
-- Reviewed current official Google Ads political-content, personalized-ad targeting and election-verification sources, plus KVKK's election-data guide and YSK election decision.
-- Updated the existing political/election row and official source list in `docs/product/google-search-turkiye-sector-eligibility.md`. Paid Search interpretation is explicitly unresolved; no campaign is cleared.
-- Refreshed `PROJECT.md` and `ROADMAP.md` to remove stale PR #169/#170 pending statuses and reflect verified CI outcomes and the current research slice.
-- Documentation-only work; local application tests have not been run. CI for PR #171 is not yet available.
+- GrowthTwin serves people and organizations in Türkiye who want to advertise; clinics are one example. The accepted architecture is a Django 5.2/PostgreSQL modular monolith.
+- Local development uses synthetic examples. Do not use real advertiser/customer/lead/patient data, connect live accounts, publish campaigns, incur ad spend, or add paid services without the applicable readiness gate and owner decision. Never expose credentials or secret values.
+- The campaign eligibility matrix is category-level planning research, not legal advice or clearance of any offer. Political/election ads remain `needs_review`; exact Google Search treatment, sponsor rules, dates, and legal interpretation require current checks and qualified review. PR #171 only changed documentation/research; it did not add a selector, account/API integration, publishing, or spend.
+- Heroku staging has its previously approved resources only. The scheduled session cleanup ran once successfully, but its actual one-off dyno cost is unverified and it is not a real-data retention guarantee.
 
-## Open risks
+## Remaining gates
 
-- Election dates and restrictions depend on the current YSK calendar and rules; the cited 2023/1560 decision concerns a past election and must not be reused as a current calendar.
-- Exact paid Google Search treatment and advertiser/account verification require current policy checks and qualified legal review. Political campaigns remain paused at `needs_review`.
-- The matrix is category-level planning, not legal advice or approval. No sector selector, live account, API, publication, real advertiser data or spend is connected. Staging E2E, backup/restore, rollback and real-data readiness gates remain open.
+- ROADMAP still lists staging browser E2E, backup/restore, controlled rollback, and final cost/CI recording as incomplete before external beta or production.
+- Privacy/data readiness, provider terms, platform approvals, live-action consent and spend enforcement remain open. Do not infer readiness from the local synthetic workflow or policy research.
 
 ## Next action
 
-Review the local documentation diff, run `git diff --check`, then commit and open PR #171. Merge only after local review and required CI pass; verify post-merge CI before updating the handoff.
+Read-only review the existing staging browser E2E and Phase 0 checklist. Identify the concrete prerequisites and verification steps for staging E2E, backup/restore, rollback, and cost/CI recording using only already-approved resources. Record only verified documentation gaps; do not add paid resources or start a product feature.
