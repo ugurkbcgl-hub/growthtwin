@@ -2,7 +2,7 @@
 
 Review date: 2026-09-30 20:00 +0300 (Europe/Istanbul)
 
-This is a read-only readiness review. It does not authorize a staging deploy, account creation, database restore, rollback, paid resource, live account, campaign, or spend. Use synthetic values only.
+This review was read-only; no deployment, account creation, restore, rollback, paid resource, live account, campaign, or spend was performed. Use synthetic values only.
 
 ## Verified baseline
 
@@ -46,7 +46,7 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 - Deployed revision is unknown from the public health response.
 - No disposable staging account is provisioned/verified for the browser E2E.
-- Heroku CLI/dashboard access was not available from this workspace; live release and current billing could not be checked.
+- No authenticated Heroku dashboard session was used from this workspace; live release and current billing could not be checked.
 - Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
 
 ## Next action
