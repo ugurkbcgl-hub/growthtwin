@@ -135,7 +135,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 **Completed in the 2026-09-30 preview slice:** the authenticated campaign detail page shows the dated status for the fixed synthetic home-maintenance example, its source/version and demo-only re-review date, and a clear explanation that the check is not legal clearance or permission to publish. Its 30-day review interval only demonstrates the stale-rule transition; it is not a legal or platform deadline. The local evaluator moves overdue rules to `needs_review`; there is no account/API or publication connection.
 
-**Current research slice:** PR #166's supplement research passed required CI `36739134600` and post-merge CI `36739507855`. PR #167's ordinary-food research passed `36740203483` and `36740519517`; PR #168's adult-services work passed `36741167177` and `36741491268`; PR #169's status refresh passed `36742863063` and `36743130604`. PR #170 added Turkish Law 4207 constraints to the Google tobacco policy stop; required CI `36743525443` and post-merge CI `36744652209` passed. The current branch documents political/election advertising gates for Türkiye; required CI and review will follow when its PR is opened. Keep unresolved offers at `needs_review`, examples synthetic, and the preview disconnected from external actions.
+**Current research slice:** PR #166's supplement research passed required CI `36739134600` and post-merge CI `36739507855`. PR #167's ordinary-food research passed `36740203483` and `36740519517`; PR #168's adult-services work passed `36741167177` and `36741491268`; PR #169's status refresh passed `36742863063` and `36743130604`. PR #170 added Turkish Law 4207 constraints to the Google tobacco policy stop; required CI `36743525443` and post-merge CI `36744652209` passed. PR #171 documents political/election advertising gates for Türkiye; required CI `36745452282` and post-merge CI `36745746001` passed. Keep unresolved offers at `needs_review`, examples synthetic, and the preview disconnected from external actions.
 
 ## Phase 3 — First publishing and reporting integration
 
@@ -173,6 +173,8 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 - Production AI/provider selection and production hosting.
 
 ## Existing Phase 0 tasks retained as gates
+
+Use the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) to complete the existing staging E2E, backup/restore, rollback, and cost/CI gates safely. The 2026-09-30 review confirmed CI and branch protection, but the deployed revision is unknown and a disposable staging account is not verified.
 
 Staging browser E2E for the demo, backup/restore, controlled rollback, and final cost/CI recording remain incomplete. They are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.
 

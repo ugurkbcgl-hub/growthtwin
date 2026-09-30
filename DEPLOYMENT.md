@@ -35,6 +35,14 @@ Do not copy production data into development or staging. Promotion must never ca
 - The synthetic profile-edit E2E passes locally and in CI but has not run against this staging deployment. No disposable staging account has been provisioned. Backup/restore and rollback are also unverified.
 - Keep only synthetic values in the staging app and its database. Do not expose or copy config-var secrets. No extra paid dyno or service is approved for account provisioning.
 
+## Current readiness review (2026-09-30)
+
+- A read-only GET to the staging health endpoint returned HTTP 200 with database-ready status, but `version` was `unknown`; the deployed revision is not verified.
+- The pinned staging profile-edit E2E runner is ready, but no run against staging is recorded and a disposable test account is not verified. CI E2E is not a substitute for this check.
+- Heroku CLI is not installed in the reviewed workspace. Current app releases, resource configuration, and billing/Scheduler charges were not rechecked; the snapshot above is historical.
+- Backup/restore and rollback remain unverified. Do not restore over the only database or add a separate resource as part of this review.
+- See the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) for prerequisites, safe stop points, and pass evidence.
+
 ## Rollout gates
 
 - Local website prototype: no deployment required; use synthetic examples and local verification.
