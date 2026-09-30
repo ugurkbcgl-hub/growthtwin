@@ -5,7 +5,7 @@ Last verified: 2026-09-30 19:11 (Europe/Istanbul). Repository: `https://github.c
 ## Verified repository state
 
 - `main` is clean at `cdb0caa` after documentation-only PR #168. Required CI `36741167177` and post-merge CI `36741491268` both passed, including Django tests and browser end-to-end tests.
-- Current branch: `docs/update-sept30-research-status`, commit `6710cfd`. PR #169 is open: https://github.com/ugurkbcgl-hub/growthtwin/pull/169. It refreshes only verified status in PROJECT/ROADMAP/STATE after #167 and #168 completed. Required CI is pending.
+- Current branch: `docs/update-sept30-research-status`, commit `6710cfd`. PR #169 is open: https://github.com/ugurkbcgl-hub/growthtwin/pull/169. It refreshes only verified status in PROJECT/ROADMAP/STATE after #167 and #168 completed. Required CI `36742539471` passed.
 - PR #167 (ordinary-food research) merged; its required CI `36740203483` and post-merge CI `36740519517` passed.
 - PR #168 (adult-services subcategories) merged at `cdb0caa`; required CI `36741167177` and post-merge CI `36741491268` passed.
 - Latest matrix additions are source-based category-level research, not legal advice or advertiser/product/service clearance. No live account, API, publication, advertiser data, payment, or additional paid service was connected.
