@@ -6,7 +6,7 @@ Last verified: 2026-09-30 19:20 (Europe/Istanbul). Repository: `https://github.c
 
 - Latest `main` is `e62f175` after documentation-only PR #169. Its required CI `36742863063` passed. Post-merge CI `36743130604` passed, including Django tests and browser end-to-end tests.
 - Current branch: `docs/turkiye-tobacco-eligibility`. It documents Google Ads' tobacco-ad ban alongside Türkiye Law 4207's category-level advertising, promotion and internet-sale restrictions. No specific advertiser or adjacent offer is cleared.
-- PR #170 is the tobacco-law documentation update; check its live URL, head commit and required CI before merging. No merge or post-merge CI has been verified for #170.
+- PR #170 is open: https://github.com/ugurkbcgl-hub/growthtwin/pull/170. Its required CI is pending; no merge or post-merge CI has been verified for #170.
 - This is planning research only. No live account, API, publication, advertiser data, payment, or additional paid service was connected.
 
 ## Open risks
