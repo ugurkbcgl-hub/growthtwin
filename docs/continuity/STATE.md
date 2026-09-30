@@ -26,4 +26,3 @@ Last verified: 2026-09-30 20:17 +0300 (Europe/Istanbul). Repository: `https://gi
 ## Next action
 
 Resume the staging profile-edit E2E only after a disposable synthetic account is identified. Run `python -m e2e.run_staging` from `apps/web`, entering credentials only at its hidden local prompts. If account/admin credentials are required, ask the owner to use the local prompt or provide access through a secure mechanism; do not request secrets in chat.
-
