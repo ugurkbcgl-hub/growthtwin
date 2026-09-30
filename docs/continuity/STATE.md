@@ -1,28 +1,29 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-30 20:12 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 20:17 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Latest `main` baseline: `05e102f26a5879d127914754128d1be08528c0db` after PR #174. PR #174 required CI `36748631258` and post-merge CI `36748897583` passed, including Django tests and browser E2E. PRs #171 and #172 also passed required and post-merge CI.
-- GitHub `main` branch protection is enabled: required check `Django system check`, up-to-date PR branches and admin enforcement.
-- Current feature branch: `docs/phase0-staging-live-review`; the dashboard findings and docs refresh are being prepared here. Recheck the live PR/CI before continuing.
-- Heroku dashboard on 2026-09-30 shows the last code deployment as v5 / `ac2f627d` from 2026-09-27. Releases v6–v10 shown after it changed configuration. A direct `/health/` GET returned HTTP 200, database-ready, but `version: unknown`.
-- The dashboard shows one Basic dyno, Essential-0 Postgres and Standard Free Scheduler; estimated monthly total about USD 12. This is not invoice evidence; tax and one-off Scheduler dyno costs remain unknown.
+- Latest `main` baseline: `1253730d6d6bf5a3ca9b371862999e3040a6d75a` after PR #175. PR #175 required CI `36749727263` and post-merge CI `36750049089` passed, including Django tests and browser E2E. PR #174 also passed required CI `36748631258` and post-merge CI `36748897583`.
+- `main` branch protection is enabled: required check `Django system check`, up-to-date PR branches, and admin enforcement.
+- Current branch: `docs/phase0-final-handoff`, prepared from the verified main for this continuity refresh. Check live PR/CI status before further work.
+- Heroku dashboard on 2026-09-30 shows the latest code deployment as v5 / `ac2f627d` dated 2026-09-27; later v6–v10 entries were configuration releases. `/health/` returned HTTP 200 and database-ready, with `version: unknown`.
+- Heroku Resources shows one Basic dyno, Essential-0 Postgres, Standard Free Scheduler, and an estimated USD 12/month. This is not an invoice; actual tax/usage and one-off Scheduler dyno cost remain unverified.
 
-## Completed in this work
+## Completed
 
-- Reviewed `DEPLOYMENT.md`, `TESTING.md`, ADR-0003, staging E2E runner, Phase 0 gates, CI and GitHub branch protection.
-- Added the read-only Phase 0 verification sequence and refreshed deployment/roadmap records from the authenticated Heroku dashboard.
-- `git diff --check` passed. No app tests, staging E2E, deployment, account creation, backup/restore, rollback or paid-resource change was performed.
+- Reviewed deployment/testing docs, ADR-0003, staging E2E runner, CI, GitHub branch protection and the live Heroku dashboard.
+- Added a Phase 0 staging verification sequence, refreshed deployment/roadmap facts, and merged PR #175.
+- `git diff --check` passed; required/post-merge CI passed. No staging E2E, deploy, account creation, restore, rollback or resource change was performed.
 
-## Open prerequisites
+## Open blockers
 
-- No disposable synthetic staging account is verified for the existing profile-edit E2E. Runner `python -m e2e.run_staging` prompts for username/password locally; the password must be entered only at the hidden prompt, never in chat/Git/logs.
-- Runtime health does not report a commit hash. The dashboard shows `ac2f627d`; verify it remains the intended target before testing.
-- Backup/restore and rollback remain unverified. A restore can overwrite the only staging database; do not proceed until a safe target and recovery order are established.
-- Actual invoice, taxes and Scheduler one-off dyno charges remain unverified. Do not add paid resources without a new owner decision.
+- The browser E2E runner needs a disposable synthetic account. The account credentials are not available here; never share the password in chat, Git or logs.
+- Runtime health does not expose the deployed commit. Dashboard release `ac2f627d` is the target evidence; verify that it is still current before the E2E.
+- Backup/restore and rollback remain unverified. A restore can overwrite the only staging database; first establish a safe target and recovery order.
+- Keep all staging values synthetic. No real account, campaign, publication, spend, or new paid resource was enabled in this review.
 
 ## Next action
 
-Identify a disposable synthetic staging account using the authorized admin path and run the existing staging browser E2E against the dashboard-verified `ac2f627d` release; enter credentials only in the runner's hidden local prompts. If credentials or admin access are needed, pause at that point rather than requesting them in chat.
+Resume the staging profile-edit E2E only after a disposable synthetic account is identified. Run `python -m e2e.run_staging` from `apps/web`, entering credentials only at its hidden local prompts. If account/admin credentials are required, ask the owner to use the local prompt or provide access through a secure mechanism; do not request secrets in chat.
+
