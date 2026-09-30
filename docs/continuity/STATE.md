@@ -1,20 +1,27 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-09-30 19:20 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-09-30 19:36 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Verified repository state
 
-- Latest `main` is `e62f175` after documentation-only PR #169. Its required CI `36742863063` passed. Post-merge CI `36743130604` passed, including Django tests and browser end-to-end tests.
-- Current branch: `docs/turkiye-tobacco-eligibility`. It documents Google Ads' tobacco-ad ban alongside Türkiye Law 4207's category-level advertising, promotion and internet-sale restrictions. No specific advertiser or adjacent offer is cleared.
-- PR #170 is open: https://github.com/ugurkbcgl-hub/growthtwin/pull/170. Its required CI is pending; no merge or post-merge CI has been verified for #170.
-- This is planning research only. No live account, API, publication, advertiser data, payment, or additional paid service was connected.
+- Latest verified `main`: `1ee541e3d832efb3bd5d96ccdc6ea78352125f02` (PR #170). Required CI `36743525443` and post-merge CI `36744652209` passed.
+- Current branch: `docs/turkiye-political-ad-eligibility`, based on that `main`. The working tree contains the political/election eligibility research and aligned status-document updates for review.
+- PR #171 has not yet been opened. No open PRs were returned by the live GitHub query at the start of this work; the new branch changes are local so far.
+- PR #170's Law 4207 update supplements Google's tobacco restriction. PR #171's proposed research records Türkiye's election-period rules, messaging restrictions, Google political-targeting and verification caveats, and remains `needs_review`.
+
+## Completed in this work
+
+- Reviewed current official Google Ads political-content, personalized-ad targeting and election-verification sources, plus KVKK's election-data guide and YSK election decision.
+- Updated the existing political/election row and official source list in `docs/product/google-search-turkiye-sector-eligibility.md`. Paid Search interpretation is explicitly unresolved; no campaign is cleared.
+- Refreshed `PROJECT.md` and `ROADMAP.md` to remove stale PR #169/#170 pending statuses and reflect verified CI outcomes and the current research slice.
+- Documentation-only work; local application tests have not been run. CI for PR #171 is not yet available.
 
 ## Open risks
 
-- The sector matrix is incomplete. Crypto, political advertising, housing, employment and other regulated categories need exact, dated channel and Turkish-law assessment before a workflow is enabled.
-- Category-level research is not legal advice or campaign clearance. Any cessation/public-health campaign and tobacco-adjacent offer needs its own review.
-- The eligibility contract remains provider-free and disconnected from accounts, publication, spend and real advertiser data. Staging E2E, backup/restore, rollback and real-data readiness gates remain open.
+- Election dates and restrictions depend on the current YSK calendar and rules; the cited 2023/1560 decision concerns a past election and must not be reused as a current calendar.
+- Exact paid Google Search treatment and advertiser/account verification require current policy checks and qualified legal review. Political campaigns remain paused at `needs_review`.
+- The matrix is category-level planning, not legal advice or approval. No sector selector, live account, API, publication, real advertiser data or spend is connected. Staging E2E, backup/restore, rollback and real-data readiness gates remain open.
 
 ## Next action
 
-Review PR #170's current diff and required CI; merge only if clean and required CI passes, then verify post-merge CI and continue the Türkiye matrix with political advertising.
+Review the local documentation diff, run `git diff --check`, then commit and open PR #171. Merge only after local review and required CI pass; verify post-merge CI before updating the handoff.
