@@ -1,6 +1,6 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-09-30 22:52 +0300 (Europe/Istanbul)
+Review date: 2026-10-01 18:47 +0300 (Europe/Istanbul)
 
 The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
@@ -25,13 +25,17 @@ Pass evidence: the browser flow completed login, saved the synthetic profile, ve
 
 Before a future rerun, verify the deployed release and test target again. Stop if they differ, the disposable account is unavailable, any real data appears, or the result is ambiguous. The health endpoint still has `version: unknown` and cannot independently attest to the deployed revision.
 
-### 2. Backup and restore — planning only; not safe to execute yet
+### 2. Backup and restore — safe rehearsal designed; execution blocked on a backup
 
-Before a restore attempt, verify the exact database plan's included backup/restore capability and current recovery behavior. Define a synthetic-only snapshot, recovery point, expected data, and post-restore checks. Preserve the original snapshot and record the recovery order.
+On 2026-10-01, the authenticated Heroku CLI reported **no backups, restores, or copies** for the approved staging app. The database plan is Essential-0. Heroku's current plan table lists optional daily PGBackups for Essential plans, with seven daily and one weekly backup retained; Essential plans do not support fork, follow, or rollback. No backup was captured or restored during this review.
 
-Do not restore over the only staging database during this readiness pass: restore can overwrite existing data, and the account's test-data state is not established. Do not add a second database or backup add-on without a new cost/owner decision. A future rehearsal needs a documented non-destructive target or an explicitly approved maintenance window and recovery plan.
+Heroku's restore command replaces the target database's contents. Therefore the staging database is not a safe rehearsal target. The designed target is a **new, uniquely named, disposable local PostgreSQL database** on the existing workstation, created only after a synthetic-only source dump exists. Restore into that empty database with the PostgreSQL 18.6 `pg_restore` executable using `--no-owner --no-privileges`; never add `--clean` or point the command at the configured development/test database. Check the target name and connection before restore, then validate expected synthetic records and Django checks against that isolated target. Keep the dump until validation and cleanup are complete, then remove the disposable database and local dump securely.
 
-Pass evidence: identify the snapshot/recovery point, restore target and duration; verify expected synthetic records and Django health; record the result and cleanup. No backup/restore has been performed or verified.
+Do not begin capture/download/restore yet. The staging database's data composition has not been freshly verified as exclusively synthetic, PGBackups stores logical dumps in the US, and capture/download can consume resources. Confirm synthetic-only contents, whether US backup storage is acceptable for this staging data, and the estimated cost/usage against the already approved budget before capturing. Do not add a database, add-on, or paid resource. If those conditions are met, capture once, download without exposing any temporary backup URL or credentials in logs, and perform the isolated local restore described above. Never restore over the sole staging database.
+
+Pass evidence: record the backup identifier/time, source and target, restore duration, expected synthetic record checks, Django health/system-check result, and cleanup. Current evidence is only that no remote backup exists and a local PostgreSQL 18.6 restore tool is installed; no backup/restore has been performed or verified.
+
+Plan references (checked 2026-10-01): [Heroku Postgres plans](https://devcenter.heroku.com/articles/heroku-postgres-plans), [Heroku PGBackups](https://devcenter.heroku.com/articles/heroku-postgres-backups), [logical backups and data residency](https://devcenter.heroku.com/articles/heroku-postgres-logical-backups), and [Postgres data safety](https://devcenter.heroku.com/articles/heroku-postgres-data-safety-and-continuous-protection).
 
 ### 3. Deployment rollback — planning only; no deploy performed
 
@@ -50,4 +54,4 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Next action
 
-Plan a non-destructive, synthetic-only backup/restore rehearsal: verify the existing database plan's recovery capabilities, define a safe restore target and recovery order, and do not overwrite the only staging database until a safe target is established.
+Before requesting one PGBackup capture, establish that the staging database contains only synthetic data, confirm US backup storage is acceptable, and verify capture usage fits the approved budget. If all three are true, capture and restore only into a new isolated local PostgreSQL database; never overwrite staging.
