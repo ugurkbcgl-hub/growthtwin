@@ -175,11 +175,15 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 edit_panel.locator("summary").click()
                 edit_form = edit_panel.locator("form")
                 self.assertEqual(
-                    edit_form.locator("input[name='headline']").get_attribute("maxlength"),
+                    edit_form.locator("input[name='headline']").get_attribute(
+                        "maxlength"
+                    ),
                     "80",
                 )
                 self.assertEqual(
-                    edit_form.locator("textarea[name='body']").get_attribute("maxlength"),
+                    edit_form.locator("textarea[name='body']").get_attribute(
+                        "maxlength"
+                    ),
                     "240",
                 )
                 self.assertEqual(
@@ -201,10 +205,10 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 edit_form.get_by_role(
                     "button", name="Düzenlemeyi yeni sürüm olarak kaydet"
                 ).click()
-                confirmation = edit_form.locator(
-                    "input[name='synthetic_confirmation']"
+                confirmation = edit_form.locator("input[name='synthetic_confirmation']")
+                self.assertFalse(
+                    confirmation.evaluate("element => element.checkValidity()")
                 )
-                self.assertFalse(confirmation.evaluate("element => element.checkValidity()"))
                 self.assert_no_horizontal_overflow(page)
 
                 edit_panel = page.locator("details.creative-edit").first
