@@ -1,6 +1,6 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-10-01 22:19 +0300 (Europe/Istanbul)
+Review date: 2026-10-01 22:43 +0300 (Europe/Istanbul)
 
 The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
@@ -25,7 +25,7 @@ Pass evidence: the browser flow completed login, saved the synthetic profile, ve
 
 Before a future rerun, verify the deployed release and test target again. Stop if they differ, the disposable account is unavailable, any real data appears, or the result is ambiguous. The health endpoint still has `version: unknown` and cannot independently attest to the deployed revision.
 
-### 2. Backup and restore — isolated fixture and local schema-only drills passed; data-bearing app restore remains unverified
+### 2. Backup and restore — isolated synthetic app drill passed; configured DB and staging recovery remain unverified
 
 The owner chose a local database rehearsal. On 2026-10-01, a temporary PostgreSQL 18.6 cluster bound only to `127.0.0.1` was initialized under the operating-system temporary directory. A fabricated marker row was captured with `pg_dump --format=custom`, restored with `pg_restore --no-owner --no-privileges` into a separate empty database, and verified. The temporary cluster, dump, and log were removed. No password was used, and no persistent local database or Heroku resource was changed.
 
@@ -33,9 +33,9 @@ This proves the local PostgreSQL dump/restore toolchain with a tiny synthetic fi
 
 On 2026-10-01, the configured local `growthtwin` database was identified through a hidden password prompt. A custom-format **schema-only** dump restored to a newly created temporary database; the restored database had the same 11 public tables and every restored table was empty. No application records were included. This did not verify the source data composition, a full data-bearing application backup/restore, or Heroku staging recovery. The local Django test settings use in-memory SQLite; CI creates an ephemeral PostgreSQL service. There is no separately configured persistent PostgreSQL test database in the repository setup.
 
-Next, create or otherwise identify an isolated local PostgreSQL rehearsal source populated only from Django migrations and explicitly fabricated test records. Take a custom-format dump and restore it into a newly created empty local database. Verify a known synthetic marker plus Django system and migration checks against the restored target. Keep the configured `growthtwin` development database and Heroku staging out of the restore path. Remove only the uniquely named disposable rehearsal source, restore target, and dump after validation. Do not expose database credentials in chat, logs, or command history. No new paid resource or Heroku data transfer is required.
+On 2026-10-01, an additional temporary PostgreSQL 18.6 cluster bound to loopback was initialized. Django migrations were applied to a new source database, one fabricated auth account with an unusable password was added, and a full custom-format dump was restored into a separate empty database. The synthetic marker was found exactly once; `manage.py check --database default` and `manage.py migrate --check --noinput` both passed on the restored target. The server was stopped. No configured local `growthtwin` or Heroku database was used. The cluster directory and dump remain under `%TEMP%` at `gwt_full_rehearsal_a656127cec`; cleanup was attempted only after confirming the exact resolved path, but the command tool's automatic policy blocked the recursive removal. Its contents are synthetic rehearsal data only.
 
-Pass evidence so far: the isolated fixture row survived a local PostgreSQL 18.6 custom-format backup and restore, and the local app database schema-only restore matched 11 public tables with no rows. Full application-data restore remains unverified.
+This verifies a Django-shaped, data-bearing local round-trip, not a backup of the configured `growthtwin` database or Heroku staging. Clear the stopped temporary rehearsal directory before continuing to rollback planning.
 
 ### 3. Deployment rollback — planning only; no deploy performed
 
@@ -54,4 +54,4 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Next action
 
-Create an isolated PostgreSQL rehearsal source from migrations and fabricated records, then prove full custom-format dump/restore into a new empty local database and run Django checks there; do not use or overwrite configured `growthtwin` or staging.
+Remove the stopped, synthetic-only rehearsal directory `%TEMP%\gwt_full_rehearsal_a656127cec` using an allowed local file operation. Do not touch configured `growthtwin` or staging data.
