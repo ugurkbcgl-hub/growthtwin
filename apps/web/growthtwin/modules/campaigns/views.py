@@ -17,6 +17,7 @@ from growthtwin.modules.campaigns.eligibility import (
 from growthtwin.modules.campaigns.forms import (
     CampaignDraftEditForm,
     CampaignDraftForm,
+    CreativeVariantEditForm,
 )
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
@@ -27,6 +28,7 @@ from growthtwin.modules.campaigns.report_metrics import (
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
     creative_source_hash_for_draft,
+    edit_creative_variant_for_owner,
     generate_creative_version_for_owner,
     select_preferred_creative_for_owner,
     update_campaign_draft_for_owner,
@@ -123,16 +125,7 @@ def campaign_create(request):
     )
 
 
-@login_required
-def campaign_detail(request, draft_id):
-    """Render an owner's local plan; cross-tenant IDs resolve as not found."""
-
-    draft = get_object_or_404(
-        WorkspaceCampaignDraft.objects.owned_by(request.user).select_related(
-            "workspace"
-        ),
-        pk=draft_id,
-    )
+def _campaign_detail_response(request, draft, *, bound_edit_form=None):
     plan = build_google_search_campaign_plan(draft)
     versions = draft.creative_versions or []
     latest_creative_version = versions[-1] if versions else None
@@ -141,6 +134,40 @@ def campaign_detail(request, draft_id):
         and latest_creative_version.get("source_hash")
         != creative_source_hash_for_draft(draft)
     )
+    creative_version = latest_creative_version if not creative_is_stale else None
+    creative_version_history = (
+        [
+            version
+            for version in versions[:-1]
+            if version.get("source_hash") == creative_source_hash_for_draft(draft)
+        ]
+        if creative_version
+        else []
+    )
+    variant_rows = []
+    if creative_version:
+        for variant in creative_version.get("variants", []):
+            initial = {
+                "variant_key": variant.get("key", ""),
+                "version": creative_version.get("version"),
+                "headline": variant.get("headline", ""),
+                "body": variant.get("body", ""),
+                "call_to_action": variant.get("call_to_action", ""),
+            }
+            form_matches = bool(
+                bound_edit_form
+                and bound_edit_form["variant_key"].value() == variant.get("key")
+            )
+            variant_rows.append(
+                {
+                    "variant": variant,
+                    "edit_form": (
+                        bound_edit_form
+                        if form_matches
+                        else CreativeVariantEditForm(initial=initial)
+                    ),
+                }
+            )
     return render(
         request,
         "campaigns/detail.html",
@@ -154,9 +181,9 @@ def campaign_detail(request, draft_id):
             "daily_average_display": _format_daily_average(
                 plan.daily_media_average_minor
             ),
-            "creative_version": (
-                latest_creative_version if not creative_is_stale else None
-            ),
+            "creative_version": creative_version,
+            "creative_version_history": creative_version_history,
+            "creative_variant_rows": variant_rows,
             "creative_is_stale": creative_is_stale,
             "creative_version_count": len(versions),
             "preferred_creative_key": (
@@ -174,8 +201,26 @@ def campaign_detail(request, draft_id):
                 if request.GET.get("creative_preference") in {"saved", "stale"}
                 else ""
             ),
+            "creative_edit_notice": (
+                request.GET.get("creative_edit")
+                if request.GET.get("creative_edit") in {"saved", "stale"}
+                else ""
+            ),
         },
     )
+
+
+@login_required
+def campaign_detail(request, draft_id):
+    """Render an owner's local plan; cross-tenant IDs resolve as not found."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user).select_related(
+            "workspace"
+        ),
+        pk=draft_id,
+    )
+    return _campaign_detail_response(request, draft)
 
 
 @login_required
@@ -247,6 +292,48 @@ def campaign_select_preferred_creative(request, draft_id):
         result = "stale"
     return redirect(
         f"{reverse('campaigns:detail', args=[draft.pk])}?creative_preference={result}"
+    )
+
+
+@login_required
+@require_POST
+def campaign_edit_creative(request, draft_id):
+    """Save a bounded text edit as a new owner-scoped synthetic version."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user).select_related(
+            "workspace"
+        ),
+        pk=draft_id,
+    )
+    form = CreativeVariantEditForm(request.POST)
+    if not form.is_valid():
+        current_versions = draft.creative_versions or []
+        current_version = current_versions[-1] if current_versions else None
+        if not current_version or not any(
+            variant.get("key") == form["variant_key"].value()
+            for variant in current_version.get("variants", [])
+        ):
+            return redirect(
+                f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=stale"
+            )
+        return _campaign_detail_response(request, draft, bound_edit_form=form)
+    try:
+        edit_creative_variant_for_owner(
+            owner=request.user,
+            draft_id=draft_id,
+            version_number=form.cleaned_data["version"],
+            key=form.cleaned_data["variant_key"],
+            headline=form.cleaned_data["headline"],
+            body=form.cleaned_data["body"],
+            call_to_action=form.cleaned_data["call_to_action"],
+        )
+    except ValidationError:
+        return redirect(
+            f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=stale"
+        )
+    return redirect(
+        f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=saved"
     )
 
 

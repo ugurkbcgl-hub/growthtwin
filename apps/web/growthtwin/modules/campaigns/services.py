@@ -10,6 +10,9 @@ from growthtwin.modules.campaigns.synthetic_rules import (
     ALLOWED_SYNTHETIC_DURATIONS_DAYS,
 )
 from growthtwin.modules.content.creative import (
+    CREATIVE_BODY_MAX_LENGTH,
+    CREATIVE_CTA_MAX_LENGTH,
+    CREATIVE_HEADLINE_MAX_LENGTH,
     draft_creative_variants,
     source_fingerprint,
 )
@@ -108,6 +111,77 @@ def select_preferred_creative_for_owner(*, owner, draft_id, version_number, key)
             )
         )
         return draft
+
+
+def edit_creative_variant_for_owner(
+    *, owner, draft_id, version_number, key, headline, body, call_to_action
+):
+    """Append a validated owner edit to the current synthetic creative history."""
+
+    with transaction.atomic():
+        draft = (
+            WorkspaceCampaignDraft.objects.owned_by(owner)
+            .select_for_update()
+            .get(pk=draft_id)
+        )
+        versions = list(draft.creative_versions or [])
+        current = versions[-1] if versions else None
+        if (
+            not current
+            or current.get("source_hash") != creative_source_hash_for_draft(draft)
+            or current.get("version") != version_number
+        ):
+            raise ValidationError("Bu reklam metni sürümü artık güncel değil.")
+
+        edited_fields = {
+            "headline": (headline, CREATIVE_HEADLINE_MAX_LENGTH),
+            "body": (body, CREATIVE_BODY_MAX_LENGTH),
+            "call_to_action": (call_to_action, CREATIVE_CTA_MAX_LENGTH),
+        }
+        normalized = {}
+        for field_name, (value, max_length) in edited_fields.items():
+            if not isinstance(value, str):
+                raise ValidationError({field_name: "Metin alanı gerekli."})
+            value = value.strip()
+            if not value:
+                raise ValidationError({field_name: "Bu alan boş bırakılamaz."})
+            if len(value) > max_length:
+                raise ValidationError(
+                    {field_name: f"En fazla {max_length} karakter girebilirsin."}
+                )
+            normalized[field_name] = value
+
+        edited_variants = [dict(variant) for variant in current.get("variants", [])]
+        selected_variant = next(
+            (variant for variant in edited_variants if variant.get("key") == key),
+            None,
+        )
+        if selected_variant is None:
+            raise ValidationError("Düzenlenecek reklam metni bulunamadı.")
+        selected_variant.update(normalized)
+
+        version = {
+            "version": len(versions) + 1,
+            "source_hash": current["source_hash"],
+            "created_at": timezone.now().isoformat(),
+            "revision_type": "owner_edit",
+            "based_on_version": current["version"],
+            "edited_variant_key": key,
+            "variants": edited_variants,
+        }
+        versions.append(version)
+        draft.creative_versions = versions
+        draft.preferred_creative_key = ""
+        draft.preferred_creative_version = None
+        draft.save(
+            update_fields=(
+                "creative_versions",
+                "preferred_creative_key",
+                "preferred_creative_version",
+                "updated_at",
+            )
+        )
+        return draft, version
 
 
 def create_campaign_draft_for_owner(*, owner, workspace_id, **values):

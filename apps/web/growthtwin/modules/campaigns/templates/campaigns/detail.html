@@ -100,8 +100,17 @@
       {% elif creative_preference_notice == "stale" %}
         <p class="notice" role="status">Bu seçenek güncel sürümde bulunmadığı için tercih kaydedilmedi. Sayfayı yenileyip güncel metinleri kontrol et.</p>
       {% endif %}
+      {% if creative_edit_notice == "saved" %}
+        <p class="ready-note" role="status">Düzenlemen yeni sentetik sürüm olarak kaydedildi.</p>
+      {% elif creative_edit_notice == "stale" %}
+        <p class="notice" role="status">Kampanya metni değişti veya sürüm eskidi. Güncel metni açıp yeniden düzenle.</p>
+      {% endif %}
+      {% if creative_version and creative_version.revision_type == "owner_edit" %}
+        <p class="pacing-note">Bu sürüm, {{ creative_version.based_on_version }}. sürümün kullanıcı tarafından düzenlenmiş kopyasıdır.</p>
+      {% endif %}
       {% if creative_version %}
-        {% for variant in creative_version.variants %}
+        {% for row in creative_variant_rows %}
+          {% with variant=row.variant %}
           <article class="asset-card">
             <small>{{ variant.angle }}</small>
             <h3>{{ variant.headline }}</h3>
@@ -117,8 +126,55 @@
                 <button class="button button-secondary" type="submit">Bu taslağı tercih et</button>
               </form>
             {% endif %}
+            <details class="creative-edit" {% if row.edit_form.errors %}open{% endif %}>
+              <summary>Bu metni düzenle</summary>
+              <form method="post" action="{% url 'campaigns:edit_creative' draft.pk %}" class="campaign-form">
+                {% csrf_token %}
+                {% for hidden in row.edit_form.hidden_fields %}{{ hidden }}{{ hidden.errors }}{% endfor %}
+                {{ row.edit_form.non_field_errors }}
+                {% for field in row.edit_form.visible_fields %}
+                  {% if field.name == "synthetic_confirmation" %}
+                  <div class="confirmation-field">
+                    {{ field }}
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                  </div>
+                  {% else %}
+                  <div class="form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                    <small class="field-help">{{ field.value|length }}/{{ field.field.max_length }} karakter</small>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+                <button class="button button-secondary" type="submit">Düzenlemeyi yeni sürüm olarak kaydet</button>
+              </form>
+            </details>
           </article>
+          {% endwith %}
         {% endfor %}
+        {% if creative_version_history %}
+          <details class="creative-history">
+            <summary>Önceki metin sürümlerini görüntüle ({{ creative_version_history|length }})</summary>
+            {% for old_version in creative_version_history %}
+              <section class="creative-history-version" aria-label="Metin sürümü {{ old_version.version }}">
+                <h3>Sürüm {{ old_version.version }}</h3>
+                {% if old_version.revision_type == "owner_edit" %}
+                  <p class="pacing-note">{{ old_version.based_on_version }}. sürümden düzenlendi.</p>
+                {% endif %}
+                {% for old_variant in old_version.variants %}
+                  <article class="creative-history-card">
+                    <small>{{ old_variant.angle }}</small>
+                    <h4>{{ old_variant.headline }}</h4>
+                    <p>{{ old_variant.body }}</p>
+                    <small>Çağrı: {{ old_variant.call_to_action }}</small>
+                  </article>
+                {% endfor %}
+              </section>
+            {% endfor %}
+          </details>
+        {% endif %}
         <p class="pacing-note">Bu başlangıç metinleri harici AI kullanılmadan şablonla hazırlandı. İddialar ve yayın uygunluğu ayrıca doğrulanmadı.</p>
         <p class="pacing-note">Tercih yalnızca inceleme içindir; onay, yayın veya harcama başlatmaz.</p>
       {% else %}
