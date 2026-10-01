@@ -197,6 +197,16 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .asset-card { margin: .75rem 0; padding: 1rem 1.1rem; }
 .asset-card p { margin-bottom: .5rem; font-size: 1.08rem; font-weight: 650; overflow-wrap: anywhere; }
 .asset-card small { color: var(--muted); }
+.creative-edit { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.creative-edit summary { width: fit-content; cursor: pointer; color: var(--green-dark); font-weight: 700; }
+.creative-edit .campaign-form { margin-top: .9rem; }
+.creative-history { margin-top: 1.25rem; padding: 1rem; border: 1px solid var(--line); border-radius: .75rem; background: #f7f8f5; }
+.creative-history summary { cursor: pointer; font-weight: 700; }
+.creative-history-version { margin-top: 1rem; }
+.creative-history-version h3 { margin-bottom: .4rem; }
+.creative-history-card { padding: .8rem 0; border-top: 1px solid var(--line); }
+.creative-history-card h4 { margin: .3rem 0; }
+.creative-history-card p { margin-bottom: .35rem; }
 .requirements { padding: 1rem 1.25rem; border-left: 4px solid #d69a34; background: #fffaf0; }
 .ready-note { color: var(--green-dark); font-weight: 700; }
 

@@ -22,5 +22,10 @@ urlpatterns = [
         views.campaign_select_preferred_creative,
         name="select_preferred_creative",
     ),
+    path(
+        "<int:draft_id>/creatives/edit/",
+        views.campaign_edit_creative,
+        name="edit_creative",
+    ),
     path("<int:draft_id>/delete/", views.campaign_delete, name="delete"),
 ]

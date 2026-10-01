@@ -5,6 +5,10 @@ from hashlib import sha256
 
 from growthtwin.modules.content.planning import CampaignBrief
 
+CREATIVE_HEADLINE_MAX_LENGTH = 80
+CREATIVE_BODY_MAX_LENGTH = 240
+CREATIVE_CTA_MAX_LENGTH = 40
+
 
 def _shorten_preserving_ends(value: str, *, width: int) -> str:
     """Fit copy to a field while retaining context from its beginning and end."""
@@ -78,8 +82,8 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
     subject = brand_context or " ".join(brief.text.split())
     brief_text = " ".join(brief.text.split())
     audience = " ".join(brief.target_audience.split())
-    headline = _shorten_preserving_ends(subject, width=80)
-    short_brief = _shorten_preserving_ends(brief_text, width=240)
+    headline = _shorten_preserving_ends(subject, width=CREATIVE_HEADLINE_MAX_LENGTH)
+    short_brief = _shorten_preserving_ends(brief_text, width=CREATIVE_BODY_MAX_LENGTH)
     audience_copy = (
         f"{_shorten_preserving_ends(audience, width=70)} için: "
         f"{_shorten_preserving_ends(brief_text, width=160)}"
@@ -100,18 +104,22 @@ def draft_creative_variants(brief: CampaignBrief) -> tuple[CreativeVariant, ...]
             key="audience-focused",
             angle="Kitle odağı",
             headline=headline,
-            body=_shorten_preserving_ends(audience_copy, width=240),
+            body=_shorten_preserving_ends(
+                audience_copy, width=CREATIVE_BODY_MAX_LENGTH
+            ),
             call_to_action="Daha fazlasını keşfet",
         ),
         CreativeVariant(
             key="information-focused",
             angle="Bilgi odağı",
             headline=(
-                _shorten_preserving_ends(f"{brand_context} hakkında", width=80)
+                _shorten_preserving_ends(
+                    f"{brand_context} hakkında", width=CREATIVE_HEADLINE_MAX_LENGTH
+                )
                 if brand_context
                 else "Daha fazla bilgi"
             ),
-            body=_shorten_preserving_ends(info_copy, width=240),
+            body=_shorten_preserving_ends(info_copy, width=CREATIVE_BODY_MAX_LENGTH),
             call_to_action="Bilgi al",
         ),
     )
