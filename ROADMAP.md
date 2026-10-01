@@ -176,7 +176,7 @@ Status: the minimal user-owned `Workspace` model and owner-deletion/owner-scopin
 
 Use the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) to complete the remaining backup/restore, rollback, and cost/CI gates safely. On 2026-09-30, the staging profile-edit browser E2E passed against Heroku release v14 (`69476a62`) with a disposable least-privilege synthetic account; GitHub CI and `main` branch protection were also verified. `/health/` still reports `version: unknown`, so runtime revision reporting remains unresolved.
 
-Backup/restore, controlled rollback, and final cost/CI recording remain incomplete. They are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.
+The local `growthtwin` schema-only dump/restore passed on 2026-10-01 (11 public tables matched; target contained no rows), but a full application-data backup/restore, controlled rollback, and final cost/CI recording remain incomplete. The schema-only result does not verify the source data is synthetic. These checks are useful before an external beta or production release, but no longer block a local synthetic-data website prototype. Continue to use the existing approved Heroku resources only; do not add a paid dyno, database, add-on, AI service, or production environment without a new owner decision.
 
 Session-scoped prototype drafts must remain synthetic. Heroku staging now has a
 daily `python manage.py clearsessions` job scheduled at 00:00 UTC through
