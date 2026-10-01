@@ -1,6 +1,6 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-10-01 18:47 +0300 (Europe/Istanbul)
+Review date: 2026-10-01 19:51 +0300 (Europe/Istanbul)
 
 The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
@@ -25,17 +25,15 @@ Pass evidence: the browser flow completed login, saved the synthetic profile, ve
 
 Before a future rerun, verify the deployed release and test target again. Stop if they differ, the disposable account is unavailable, any real data appears, or the result is ambiguous. The health endpoint still has `version: unknown` and cannot independently attest to the deployed revision.
 
-### 2. Backup and restore — safe rehearsal designed; execution blocked on a backup
+### 2. Backup and restore — isolated synthetic drill passed; app database still unverified
 
-On 2026-10-01, the authenticated Heroku CLI reported **no backups, restores, or copies** for the approved staging app. The database plan is Essential-0. Heroku's current plan table lists optional daily PGBackups for Essential plans, with seven daily and one weekly backup retained; Essential plans do not support fork, follow, or rollback. No backup was captured or restored during this review.
+The owner chose a local database rehearsal. On 2026-10-01, a temporary PostgreSQL 18.6 cluster bound only to `127.0.0.1` was initialized under the operating-system temporary directory. A fabricated marker row was captured with `pg_dump --format=custom`, restored with `pg_restore --no-owner --no-privileges` into a separate empty database, and verified. The temporary cluster, dump, and log were removed. No password was used, and no persistent local database or Heroku resource was changed.
 
-Heroku's restore command replaces the target database's contents. Therefore the staging database is not a safe rehearsal target. The designed target is a **new, uniquely named, disposable local PostgreSQL database** on the existing workstation, created only after a synthetic-only source dump exists. Restore into that empty database with the PostgreSQL 18.6 `pg_restore` executable using `--no-owner --no-privileges`; never add `--clean` or point the command at the configured development/test database. Check the target name and connection before restore, then validate expected synthetic records and Django checks against that isolated target. Keep the dump until validation and cleanup are complete, then remove the disposable database and local dump securely.
+This proves the local PostgreSQL dump/restore toolchain with a tiny synthetic fixture only. It does not verify the configured GrowthTwin development/test database, its data composition, its backup, or Heroku staging recovery. The authenticated Heroku CLI reported no staging backups, restores, or copies earlier on 2026-10-01; no remote capture/download/restore has been performed. Keep using a **new, uniquely named disposable local database** as the restore target. Never point a restore at the configured development/test database or staging, and never use `pg_restore --clean` against an existing database.
 
-Do not begin capture/download/restore yet. The staging database's data composition has not been freshly verified as exclusively synthetic, PGBackups stores logical dumps in the US, and capture/download can consume resources. Confirm synthetic-only contents, whether US backup storage is acceptable for this staging data, and the estimated cost/usage against the already approved budget before capturing. Do not add a database, add-on, or paid resource. If those conditions are met, capture once, download without exposing any temporary backup URL or credentials in logs, and perform the isolated local restore described above. Never restore over the sole staging database.
+Next, identify the existing local synthetic test database through a secure credential path, verify its name and that it contains only synthetic data, then take a local custom-format dump and restore it only into a newly created empty local database. Verify a known synthetic record and Django system/migration checks against the restored target. Preserve the source and dump until validation completes; then remove only the disposable restore target and the temporary dump. Do not expose database credentials in chat, logs, or command history. No new paid resource or Heroku data transfer is required for this local rehearsal.
 
-Pass evidence: record the backup identifier/time, source and target, restore duration, expected synthetic record checks, Django health/system-check result, and cleanup. Current evidence is only that no remote backup exists and a local PostgreSQL 18.6 restore tool is installed; no backup/restore has been performed or verified.
-
-Plan references (checked 2026-10-01): [Heroku Postgres plans](https://devcenter.heroku.com/articles/heroku-postgres-plans), [Heroku PGBackups](https://devcenter.heroku.com/articles/heroku-postgres-backups), [logical backups and data residency](https://devcenter.heroku.com/articles/heroku-postgres-logical-backups), and [Postgres data safety](https://devcenter.heroku.com/articles/heroku-postgres-data-safety-and-continuous-protection).
+Pass evidence so far: the isolated fixture row survived a local PostgreSQL 18.6 custom-format backup and restore, and all temporary artifacts were cleaned up. The app database round-trip remains unverified.
 
 ### 3. Deployment rollback — planning only; no deploy performed
 
@@ -54,4 +52,4 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Next action
 
-Before requesting one PGBackup capture, establish that the staging database contains only synthetic data, confirm US backup storage is acceptable, and verify capture usage fits the approved budget. If all three are true, capture and restore only into a new isolated local PostgreSQL database; never overwrite staging.
+Identify the local GrowthTwin synthetic test database through a secure credential path, verify its contents are synthetic, and run a separate local dump/restore into a newly created empty database; never overwrite the source or staging.
