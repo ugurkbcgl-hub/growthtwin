@@ -8,6 +8,7 @@ from django.urls import reverse
 from playwright.sync_api import sync_playwright
 
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
+from growthtwin.modules.campaigns.services import generate_creative_version_for_owner
 from growthtwin.modules.workspaces.models import Workspace
 
 
@@ -143,6 +144,110 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 browser.close()
 
         self.assertFalse(WorkspaceCampaignDraft.objects.filter(pk=draft.pk).exists())
+
+    def test_owner_can_edit_creative_and_review_previous_version(self):
+        draft = WorkspaceCampaignDraft.objects.create(
+            workspace=self.workspace,
+            name="Sentetik metin düzenleme örneği",
+            brand_name="Başkent Ev Bakım (Sentetik)",
+            brief="Offer repair estimates in Ankara.",
+            target_city="Ankara",
+            destination_url="https://example.invalid/ev-bakim",
+            media_budget_minor=500_000,
+        )
+        generate_creative_version_for_owner(owner=self.owner, draft_id=draft.pk)
+
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                page.goto(
+                    f"{self.live_server_url}{reverse('campaigns:detail', args=[draft.pk])}"
+                )
+                page.locator("input[name='username']").fill(self.owner.username)
+                page.locator("input[name='password']").fill(self.owner_password)
+                page.get_by_role("button", name="Giriş yap").click()
+                page.wait_for_url(f"**{reverse('campaigns:detail', args=[draft.pk])}")
+                self.assert_no_horizontal_overflow(page)
+
+                original_headline = page.locator(".asset-card h3").first.inner_text()
+                edit_panel = page.locator("details.creative-edit").first
+                edit_panel.locator("summary").click()
+                edit_form = edit_panel.locator("form")
+                self.assertEqual(
+                    edit_form.locator("input[name='headline']").get_attribute(
+                        "maxlength"
+                    ),
+                    "80",
+                )
+                self.assertEqual(
+                    edit_form.locator("textarea[name='body']").get_attribute(
+                        "maxlength"
+                    ),
+                    "240",
+                )
+                self.assertEqual(
+                    edit_form.locator("input[name='call_to_action']").get_attribute(
+                        "maxlength"
+                    ),
+                    "40",
+                )
+                edit_form.locator("input[name='headline']").fill(
+                    "Ankara için sentetik düzenlenmiş başlık"
+                )
+                edit_form.locator("textarea[name='body']").fill(
+                    "Bu, yalnızca tarayıcı incelemesi için oluşturulmuş sentetik metindir."
+                )
+                edit_form.locator("input[name='call_to_action']").fill(
+                    "Örnek teklifi incele"
+                )
+                edit_form.locator("input[name='synthetic_confirmation']").uncheck()
+                edit_form.get_by_role(
+                    "button", name="Düzenlemeyi yeni sürüm olarak kaydet"
+                ).click()
+                confirmation = edit_form.locator("input[name='synthetic_confirmation']")
+                self.assertFalse(
+                    confirmation.evaluate("element => element.checkValidity()")
+                )
+                self.assert_no_horizontal_overflow(page)
+
+                edit_panel = page.locator("details.creative-edit").first
+                edit_form = edit_panel.locator("form")
+                edit_form.locator("input[name='synthetic_confirmation']").check()
+                edit_form.get_by_role(
+                    "button", name="Düzenlemeyi yeni sürüm olarak kaydet"
+                ).click()
+                page.wait_for_url("**?creative_edit=saved")
+                self.assertIn(
+                    "Düzenlemen yeni sentetik sürüm olarak kaydedildi",
+                    page.locator("body").inner_text(),
+                )
+                self.assertIn("Versiyon 2", page.locator("body").inner_text())
+                self.assertIn(
+                    "Ankara için sentetik düzenlenmiş başlık",
+                    page.locator("body").inner_text(),
+                )
+                self.assertIn(
+                    "Tercih yalnızca inceleme içindir",
+                    page.locator("body").inner_text(),
+                )
+                self.assert_no_horizontal_overflow(page)
+
+                history = page.locator("details.creative-history")
+                history.locator("summary").click()
+                self.assertIn("Sürüm 1", history.inner_text())
+                self.assertIn(original_headline, history.inner_text())
+                self.assert_no_horizontal_overflow(page)
+
+                page.set_viewport_size({"width": 1440, "height": 1000})
+                self.assert_no_horizontal_overflow(page)
+            finally:
+                browser.close()
+
+        draft.refresh_from_db()
+        self.assertEqual(len(draft.creative_versions), 2)
+        self.assertEqual(draft.creative_versions[-1]["revision_type"], "owner_edit")
+        self.assertEqual(draft.preferred_creative_key, "")
 
     def test_other_user_sees_not_found_for_foreign_campaign(self):
         draft = WorkspaceCampaignDraft.objects.create(
