@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 01:31 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 01:39 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,25 +14,23 @@ gates before external beta or production use.
 
 ## Verified repository state
 
-- `main` is at `2e521632c74f321be9d78cb729fddfd7d17d0066`; the worktree was clean
-  and tracked `origin/main` at verification. PR #202 is merged; its required CI
-  `37072537258` and post-merge `main` CI `37072744834` passed. No open PRs
-  were listed after the merge.
-- PR #202 clarifies that the local prototype does not yet support ad-account
-  connection or platform report retrieval, so real campaign results cannot be
-  shown. It adds a direct return link to the campaign plan. The change adds no
-  account access, live data, estimates, spend, or publishing. CI passed; no
-  local tests or authenticated browser visual review were performed.
-- PR #201 refreshed this continuity snapshot; required CI `37072125194` and
-  post-merge `main` CI `37072338290` both passed.
-- PR #200 clarified that the example budget is media budget only, separate from
-  GrowthTwin fees, which the prototype does not calculate. Required CI
-  `37071209396` and post-merge `main` CI `37071471148` passed. The local public
-  page at `http://127.0.0.1:8002/` was visually checked for the note and no
-  visible horizontal overflow.
-- The report is an owner-scoped, provider-free shell. Metrics remain unavailable
-  without a verified source; the shell does not show simulated results or
-  connect accounts.
+- `main` is at `5112a7fe6ba9427b3faf317184ae809a461b5b6c`; the worktree was clean
+  and tracked `origin/main` at verification. PR #204 is merged; required CI
+  `37073305109` passed. Post-merge `main` CI `37073534626` was still running
+  at 2026-10-03 01:39 +0300. No open PRs were listed then.
+- PR #204 adds plain-language explanations for reach, impressions, destination
+  clicks, other channel-defined interactions, delivered contact requests, and
+  source-reported media spend. The text follows ADR-0017 and keeps unavailable
+  values distinct from actual results. No source, live data, estimates, spend,
+  or publication was added. CI passed; no local tests were run.
+- PR #202 clarifies that the prototype cannot connect ad accounts or retrieve
+  platform report data and offers a return link to the campaign plan. Required
+  CI `37072537258` and post-merge `main` CI `37072744834` passed.
+- PR #203 refreshed the continuity note after #202; required CI `37072964625`
+  and post-merge `main` CI `37073158303` passed.
+- The authenticated report page was not visually inspected. Opening its local
+  workspace route redirected to login; no credentials were entered. The public
+  prototype remains accessible at `http://127.0.0.1:8002/`.
 
 ## Open risks and limits
 
@@ -46,11 +44,10 @@ gates before external beta or production use.
   unverified. A temporary isolated PostgreSQL rehearsal folder remains from
   prior work; do not use alternate deletion paths. Staging charges and the
   Scheduler one-off cost remain unverified.
-- No implementation work is currently in progress.
 
 ## Next action
 
-Audit the six authenticated report metric labels and unavailable explanations
-for plain-language clarity without erasing channel-specific meaning. Keep the
-provider disconnected and values unavailable; make one small local synthetic
-UX change only if the source review substantiates it.
+When the local synthetic workspace session is available, visually inspect the
+authenticated report cards at desktop and narrow widths. Only adjust spacing or
+copy if the actual page reveals a problem; keep the report source disconnected
+and use no real data.
