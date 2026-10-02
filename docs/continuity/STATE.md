@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-02 23:46 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
+Last verified: 2026-10-02 23:56 +0300 (Europe/Istanbul). Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
 
@@ -8,16 +8,18 @@ Build a polished, low-effort, self-service paid-advertising platform for adverti
 
 ## Verified repository state
 
-- Latest verified `main`: `c8a66fb44cfcb7875d9d9787c81a56fe2ebc17e4`, merged via PR #192. Required CI `37061846991` and post-merge `main` CI `37062126477` passed, including full Django tests and browser E2E.
-- Current continuity refresh is on feature branch `docs/continuity-after-pr-192`; it will be submitted as PR #193. Do not push directly to `main`.
-- PR #191 post-merge CI `37061399507` and PR #190 post-merge CI `37060818702` passed. PR #189 added live character counts; required and post-merge CI `37059568415`, `37059833068` passed.
-- No Heroku or external service action was taken. Recheck staging before future operations.
+- Latest verified `main`: `41baf3573cb24606d6d886dd550938d5e7c49565`, merged via PR #193. PR #193 CI `37062771616` and post-merge `main` CI `37063052539` passed, including full Django tests and browser E2E.
+- Current continuity refresh is PR #194 on `docs/continuity-after-pr-193`; it is not sent directly to `main`.
+- PR #192 (`c8a66fb`) clarified the difference between a synthetic draft ready for local review and a real campaign ready for publishing. Required CI `37061846991` and post-merge CI `37062126477` passed.
+- PR #190 required CI `37060557459` and post-merge CI `37060818702` passed. PR #189 live character counts passed required/post-merge CI `37059568415`, `37059833068`.
+- No Heroku or external service action was taken in these changes; recheck staging before future operations.
 
 ## Completed
 
 - PR #190 adds owner-scoped restoration of an earlier creative snapshot as a new appended version. History remains intact; only same-source history is eligible; stale, current, unknown, foreign-owner and non-POST requests are rejected; the preferred review selection is cleared. No model/migration change. Local focused 38-test campaign service/view/browser run, Django checks, Ruff, `git diff --check`, required CI and post-merge CI passed.
-- PR #192 distinguishes a synthetic draft ready for local review from a real campaign ready to publish. The campaign page explains in Turkish that account connection, publishing, spend, and real channel metrics are not available, and lists future readiness conditions. No external capability was added. Required and post-merge CI passed.
-- The local public homepage observed at `http://127.0.0.1:8002/` contains a free-text brief and an on-page warning to use synthetic information only; it says the draft is temporarily stored for the browser session and is not sent to AI or an advertising platform. This behavior should be compared carefully with the project's real-data readiness gate before changing intake.
+- PR #192 explains that the campaign page is a synthetic preview: account connection, publishing, spend and real channel metrics are unavailable. It lists launch-readiness conditions without enabling external actions.
+- PR #193 refreshes this handoff after PR #192 and records the next safety review.
+- The local public homepage at `http://127.0.0.1:8002/` contains a free-text brief and a warning to use synthetic information only; it says the draft is temporarily stored for the browser session and is not sent to AI or an advertising platform. The desktop home page was viewed; the authenticated campaign detail was not manually viewed because it requires a local account. No password was entered or requested. The local server is running on port 8002.
 
 ## Open blockers and limits
 
