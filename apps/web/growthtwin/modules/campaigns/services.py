@@ -184,6 +184,59 @@ def edit_creative_variant_for_owner(
         return draft, version
 
 
+def restore_creative_version_for_owner(*, owner, draft_id, version_number):
+    """Append a selected historical snapshot as a new current version."""
+
+    with transaction.atomic():
+        draft = (
+            WorkspaceCampaignDraft.objects.owned_by(owner)
+            .select_for_update()
+            .get(pk=draft_id)
+        )
+        versions = list(draft.creative_versions or [])
+        current = versions[-1] if versions else None
+        source_hash = creative_source_hash_for_draft(draft)
+        if not current or current.get("source_hash") != source_hash:
+            raise ValidationError("Kampanya metni sürümü güncel değil.")
+        if current.get("version") is None or version_number >= current["version"]:
+            raise ValidationError("Yalnızca önceki metin sürümleri geri alınabilir.")
+
+        historical = next(
+            (
+                version
+                for version in versions[:-1]
+                if version.get("version") == version_number
+                and version.get("source_hash") == source_hash
+            ),
+            None,
+        )
+        if historical is None or not historical.get("variants"):
+            raise ValidationError("Bu önceki metin sürümü bulunamadı.")
+
+        version = {
+            "version": len(versions) + 1,
+            "source_hash": source_hash,
+            "created_at": timezone.now().isoformat(),
+            "revision_type": "owner_restore",
+            "based_on_version": current["version"],
+            "restored_from_version": version_number,
+            "variants": [dict(variant) for variant in historical["variants"]],
+        }
+        versions.append(version)
+        draft.creative_versions = versions
+        draft.preferred_creative_key = ""
+        draft.preferred_creative_version = None
+        draft.save(
+            update_fields=(
+                "creative_versions",
+                "preferred_creative_key",
+                "preferred_creative_version",
+                "updated_at",
+            )
+        )
+        return draft, version
+
+
 def create_campaign_draft_for_owner(*, owner, workspace_id, **values):
     """Create a draft only in a workspace owned by the supplied user."""
 

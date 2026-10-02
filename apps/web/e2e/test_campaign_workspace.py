@@ -268,7 +268,22 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 history.locator("summary").click()
                 self.assertIn("Sürüm 1", history.inner_text())
                 self.assertIn(original_headline, history.inner_text())
+                history.get_by_role(
+                    "button", name="Bu sürümü yeni sürüm olarak geri al"
+                ).click()
+                page.wait_for_url("**?creative_edit=restored")
+                self.assertIn(
+                    "Önceki metin yeni bir sürüm olarak geri alındı",
+                    page.locator("body").inner_text(),
+                )
+                self.assertIn("Versiyon 3", page.locator("body").inner_text())
+                self.assertIn(original_headline, page.locator("body").inner_text())
                 self.assert_no_horizontal_overflow(page)
+
+                restored_history = page.locator("details.creative-history")
+                restored_history.locator("summary").click()
+                self.assertIn("Sürüm 1", restored_history.inner_text())
+                self.assertIn("Sürüm 2", restored_history.inner_text())
 
                 page.set_viewport_size({"width": 1440, "height": 1000})
                 self.assert_no_horizontal_overflow(page)
@@ -276,8 +291,10 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 browser.close()
 
         draft.refresh_from_db()
-        self.assertEqual(len(draft.creative_versions), 2)
-        self.assertEqual(draft.creative_versions[-1]["revision_type"], "owner_edit")
+        self.assertEqual(len(draft.creative_versions), 3)
+        self.assertEqual(draft.creative_versions[-2]["revision_type"], "owner_edit")
+        self.assertEqual(draft.creative_versions[-1]["revision_type"], "owner_restore")
+        self.assertEqual(draft.creative_versions[-1]["restored_from_version"], 1)
         self.assertEqual(draft.preferred_creative_key, "")
 
     def test_other_user_sees_not_found_for_foreign_campaign(self):

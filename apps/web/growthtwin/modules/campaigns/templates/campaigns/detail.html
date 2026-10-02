@@ -102,11 +102,15 @@
       {% endif %}
       {% if creative_edit_notice == "saved" %}
         <p class="ready-note" role="status">Düzenlemen yeni sentetik sürüm olarak kaydedildi.</p>
+      {% elif creative_edit_notice == "restored" %}
+        <p class="ready-note" role="status">Önceki metin yeni bir sürüm olarak geri alındı; sürüm geçmişin korundu.</p>
       {% elif creative_edit_notice == "stale" %}
         <p class="notice" role="status">Kampanya metni değişti veya sürüm eskidi. Güncel metni açıp yeniden düzenle.</p>
       {% endif %}
       {% if creative_version and creative_version.revision_type == "owner_edit" %}
         <p class="pacing-note">Bu sürüm, {{ creative_version.based_on_version }}. sürümün kullanıcı tarafından düzenlenmiş kopyasıdır.</p>
+      {% elif creative_version and creative_version.revision_type == "owner_restore" %}
+        <p class="pacing-note">{{ creative_version.restored_from_version }}. sürümün metinleri, yeni {{ creative_version.version }}. sürüm olarak geri alındı.</p>
       {% endif %}
       {% if creative_version %}
         {% for row in creative_variant_rows %}
@@ -166,6 +170,8 @@
                 <h3>Sürüm {{ old_version.version }}</h3>
                 {% if old_version.revision_type == "owner_edit" %}
                   <p class="pacing-note">{{ old_version.based_on_version }}. sürümden düzenlendi.</p>
+                {% elif old_version.revision_type == "owner_restore" %}
+                  <p class="pacing-note">{{ old_version.restored_from_version }}. sürüm, bu yeni sürüme geri alınmıştı.</p>
                 {% endif %}
                 {% for old_variant in old_version.variants %}
                   <article class="creative-history-card">
@@ -175,6 +181,11 @@
                     <small>Çağrı: {{ old_variant.call_to_action }}</small>
                   </article>
                 {% endfor %}
+                <form method="post" action="{% url 'campaigns:restore_creative' draft.pk %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="version" value="{{ old_version.version }}">
+                  <button class="button button-secondary" type="submit">Bu sürümü yeni sürüm olarak geri al</button>
+                </form>
               </section>
             {% endfor %}
           </details>

@@ -17,8 +17,10 @@ from growthtwin.modules.campaigns.report_metrics import (
 )
 from growthtwin.modules.campaigns.services import (
     create_campaign_draft_for_owner,
+    edit_creative_variant_for_owner,
     generate_creative_version_for_owner,
     get_campaign_draft_for_owner,
+    restore_creative_version_for_owner,
     select_preferred_creative_for_owner,
     update_campaign_draft_for_owner,
 )
@@ -318,6 +320,82 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(first_version, second_version)
         self.assertEqual(first_draft.pk, second_draft.pk)
         self.assertEqual(len(second_draft.creative_versions), 1)
+
+    def test_owner_can_restore_previous_creative_as_a_new_version(self):
+        draft = self.make_draft()
+        _, original = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        edit_creative_variant_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+            version_number=original["version"],
+            key="short-introduction",
+            headline="Edited synthetic headline",
+            body="Edited synthetic body.",
+            call_to_action="Edited CTA",
+        )
+        draft.refresh_from_db()
+        original_history = [dict(version) for version in draft.creative_versions]
+        select_preferred_creative_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+            version_number=2,
+            key="audience-focused",
+        )
+
+        _, restored = restore_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+            version_number=1,
+        )
+
+        draft.refresh_from_db()
+        self.assertEqual(len(draft.creative_versions), 3)
+        self.assertEqual(draft.creative_versions[:2], original_history)
+        self.assertEqual(restored["version"], 3)
+        self.assertEqual(restored["revision_type"], "owner_restore")
+        self.assertEqual(restored["based_on_version"], 2)
+        self.assertEqual(restored["restored_from_version"], 1)
+        self.assertEqual(restored["variants"], original_history[0]["variants"])
+        self.assertEqual(draft.preferred_creative_key, "")
+        self.assertIsNone(draft.preferred_creative_version)
+
+    def test_creative_restore_rejects_current_stale_foreign_and_non_post_requests(self):
+        draft = self.make_draft()
+        _, first = generate_creative_version_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+        )
+        edit_creative_variant_for_owner(
+            owner=self.owner,
+            draft_id=draft.pk,
+            version_number=first["version"],
+            key="short-introduction",
+            headline="Edited synthetic headline",
+            body="Edited synthetic body.",
+            call_to_action="Edited CTA",
+        )
+        self.client.force_login(self.other_user)
+        url = reverse("campaigns:restore_creative", args=[draft.pk])
+        self.assertEqual(self.client.post(url, {"version": "1"}).status_code, 404)
+
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.get(url).status_code, 405)
+        self.assertEqual(self.client.post(url, {"version": "2"}).status_code, 302)
+        draft.refresh_from_db()
+        self.assertEqual(len(draft.creative_versions), 2)
+
+        draft.brief = "Changed synthetic source."
+        draft.save(update_fields=("brief",))
+        response = self.client.post(url, {"version": "1"})
+        self.assertRedirects(
+            response,
+            f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=stale",
+        )
+        draft.refresh_from_db()
+        self.assertEqual(len(draft.creative_versions), 2)
 
     def test_owner_can_prefer_a_current_creative_variant(self):
         draft = self.make_draft()
