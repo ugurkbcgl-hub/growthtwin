@@ -170,6 +170,10 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 page.wait_for_url(f"**{reverse('campaigns:detail', args=[draft.pk])}")
                 self.assert_no_horizontal_overflow(page)
 
+                self.assertTrue(
+                    page.locator(".asset-card h3").count(),
+                    page.locator("body").inner_text(),
+                )
                 original_headline = page.locator(".asset-card h3").first.inner_text()
                 edit_panel = page.locator("details.creative-edit").first
                 edit_panel.locator("summary").click()
@@ -179,6 +183,12 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                         "maxlength"
                     ),
                     "80",
+                )
+                self.assertIn(
+                    "id_headline-counter-short-intro",
+                    edit_form.locator("input[name='headline']").get_attribute(
+                        "aria-describedby"
+                    ),
                 )
                 self.assertEqual(
                     edit_form.locator("textarea[name='body']").get_attribute(
@@ -195,11 +205,32 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 edit_form.locator("input[name='headline']").fill(
                     "Ankara için sentetik düzenlenmiş başlık"
                 )
+                self.assertEqual(
+                    edit_form.locator("input[name='headline']")
+                    .locator("xpath=..")
+                    .locator("[data-character-counter-for]")
+                    .inner_text(),
+                    "39/80 karakter",
+                )
                 edit_form.locator("textarea[name='body']").fill(
                     "Bu, yalnızca tarayıcı incelemesi için oluşturulmuş sentetik metindir."
                 )
+                self.assertEqual(
+                    edit_form.locator("textarea[name='body']")
+                    .locator("xpath=..")
+                    .locator("[data-character-counter-for]")
+                    .inner_text(),
+                    "69/240 karakter",
+                )
                 edit_form.locator("input[name='call_to_action']").fill(
                     "Örnek teklifi incele"
+                )
+                self.assertEqual(
+                    edit_form.locator("input[name='call_to_action']")
+                    .locator("xpath=..")
+                    .locator("[data-character-counter-for]")
+                    .inner_text(),
+                    "20/40 karakter",
                 )
                 edit_form.locator("input[name='synthetic_confirmation']").uncheck()
                 edit_form.get_by_role(

@@ -4,9 +4,9 @@ Keep verification proportional to the change. Local product prototypes use synth
 
 ## Current CI and demo coverage
 
-- `.github/workflows/ci.yml` runs for pull requests and pushes to `main`. It installs the Django app and pinned development tools on Python 3.13, checks formatting with Ruff, runs lint, audits installed dependencies with `pip-audit`, builds source/wheel distributions, verifies the templates are present, runs `python manage.py check`, checks migration consistency, and runs Django tests.
+- `.github/workflows/ci.yml` runs for pull requests and pushes to `main`. It installs the Django app and pinned development tools on Python 3.13, checks formatting with Ruff, runs lint, audits installed dependencies with `pip-audit`, builds source/wheel distributions, verifies required templates and static assets are present, runs `python manage.py check`, checks migration consistency, and runs Django tests.
 - CI uses an ephemeral PostgreSQL 18.6 service with CI-only placeholder credentials. GitHub destroys the service after the run.
-- A pinned Playwright/Chromium browser test covers the synthetic profile-edit demo against that CI PostgreSQL service. For a focused local run it can use the isolated in-memory SQLite settings. This is demo coverage, not campaign-product coverage.
+- Pinned Playwright/Chromium browser tests cover the synthetic profile-edit demo and authenticated campaign workspace against that CI PostgreSQL service. Campaign coverage includes owner boundaries, creative editing/version history, live bounded character counters, and narrow-screen overflow. For focused local runs, use the isolated in-memory SQLite settings and regenerate the static manifest after adding static assets. All product examples stay synthetic; no publisher or spend action is called.
 - Dependency auditing requires network access to its vulnerability service. Build artifacts under `apps/web/build/` and `apps/web/dist/` are ignored by Git.
 - The protected `main` branch requires the `Django system check` from GitHub Actions and an up-to-date PR branch.
 
