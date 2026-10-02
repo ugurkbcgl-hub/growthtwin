@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 00:29 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 00:39 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,9 +14,14 @@ before an external beta or production use.
 
 ## Verified repository state
 
-- `main` is at `7647d113321890d958a4d80efd4b9cc954af4ed7`, merged via PR #195.
-  The PR check (`37066810561`) and post-merge `main` CI (`37067055104`) both
-passed. The local `main` checkout was clean, and no open PRs were listed.
+- Public intake code from PR #195 is at
+  `7647d113321890d958a4d80efd4b9cc954af4ed7`; its PR check
+  (`37066810561`) and post-merge `main` CI (`37067055104`) both passed. PR #196
+  then merged the continuity update at
+  `8cd18a8f41c8e50f8b3d728e639c00fce81094ee`; its required CI
+  (`37067463258`) and post-merge `main` CI (`37067699932`) both passed.
+  No open PRs were listed at this verification. Recheck branch, head, PRs, and
+  CI at the start of the next session.
 - PR #195 closes the public free-text intake gap: the visitor can choose an
   objective, example budget, and duration for one fixed synthetic Ankara
   home-maintenance scenario. The server ignores posted brief/brand/audience
@@ -50,9 +55,8 @@ passed. The local `main` checkout was clean, and no open PRs were listed.
 
 ## Current work
 
-This continuity refresh is PR #196 on `docs/continuity-after-pr-195`; it is
-not sent directly to `main`. Verify its required CI before merging under the
-owner's standing authorization for successful PRs.
+No implementation or review is in progress. The latest continuity refresh
+merged through PR #196; no open PRs were listed when this state was verified.
 
 ## Next action
 
