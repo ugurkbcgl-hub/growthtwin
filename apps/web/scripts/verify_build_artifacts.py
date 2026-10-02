@@ -14,6 +14,7 @@ PROJECT_VERSION = PROJECT["version"]
 REQUIRED_FILES = {
     "growthtwin/demo/templates/demo/profile_edit.html",
     "growthtwin/demo/templates/registration/login.html",
+    "growthtwin/modules/campaigns/static/campaigns/js/campaigns.js",
 }
 
 
@@ -50,7 +51,7 @@ def main() -> None:
         }
         require_files("Source distribution", source_files)
 
-    print("Both distributions contain the login and profile templates.")
+    print("Both distributions contain the required application templates and assets.")
 
 
 if __name__ == "__main__":

@@ -144,7 +144,11 @@
                     {{ field.label_tag }}
                     {{ field }}
                     {{ field.errors }}
-                    <small class="field-help">{{ field.value|length }}/{{ field.field.max_length }} karakter</small>
+                    <small
+                      id="{{ field.id_for_label }}-counter-{{ variant.key }}"
+                      class="field-help"
+                      data-character-counter-for="{{ field.id_for_label }}"
+                    >{{ field.value|length }}/{{ field.field.max_length }} karakter</small>
                   </div>
                   {% endif %}
                 {% endfor %}
