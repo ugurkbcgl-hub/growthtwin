@@ -9,15 +9,13 @@ from django.urls import reverse
 from django.utils import timezone
 
 from growthtwin.site.models import CampaignDraft
+from growthtwin.site.views import SYNTHETIC_SAMPLE
 
 
 class CampaignDraftFlowTests(TestCase):
     def setUp(self):
         self.url = reverse("site:home")
         self.valid_data = {
-            "brief": "Sentetik yerel mağaza tanıtımı",
-            "brand_context": "Mahalle fırını; ekşi mayalı ekmek",
-            "target_audience": "Yakındaki çalışanlar",
             "objective": "leads",
             "daily_limit": "750",
             "duration_days": "14",
@@ -28,9 +26,9 @@ class CampaignDraftFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         draft = CampaignDraft.objects.get()
-        self.assertEqual(draft.brief, self.valid_data["brief"])
-        self.assertEqual(draft.brand_context, self.valid_data["brand_context"])
-        self.assertEqual(draft.target_audience, self.valid_data["target_audience"])
+        self.assertEqual(draft.brief, SYNTHETIC_SAMPLE["brief"])
+        self.assertEqual(draft.brand_context, SYNTHETIC_SAMPLE["brand_context"])
+        self.assertEqual(draft.target_audience, SYNTHETIC_SAMPLE["target_audience"])
         self.assertEqual(draft.objective, self.valid_data["objective"])
         self.assertEqual(draft.daily_limit, 750)
         self.assertEqual(draft.duration_days, 14)
@@ -39,11 +37,7 @@ class CampaignDraftFlowTests(TestCase):
 
         preview = self.client.get(response.url)
         self.assertContains(preview, 'id="saved-campaign"')
-        self.assertContains(preview, "Sentetik yerel mağaza tanıtımı")
-        self.assertContains(
-            preview, 'data-brand-context="Mahalle fırını; ekşi mayalı ekmek"'
-        )
-        self.assertContains(preview, 'data-target-audience="Yakındaki çalışanlar"')
+        self.assertContains(preview, SYNTHETIC_SAMPLE["brief"])
         self.assertContains(preview, 'data-objective="Potansiyel müşteri bulmak"')
         self.assertContains(preview, 'data-daily-limit="750"')
         self.assertContains(preview, 'data-duration-days="14"')
@@ -54,9 +48,9 @@ class CampaignDraftFlowTests(TestCase):
         edit_data = {
             **self.valid_data,
             "campaign_id": str(draft.pk),
-            "brief": "Sentetik güncellenmiş tanıtım",
-            "brand_context": "Yerel atölye; seramik dersleri",
-            "target_audience": "Hafta sonu etkinliği arayanlar",
+            "brief": "Gerçek müşteri metni sunucu tarafından yok sayılır",
+            "brand_context": "Gizli marka bilgisi",
+            "target_audience": "Gerçek kişi listesi",
             "objective": "sales",
             "daily_limit": "1250",
             "duration_days": "30",
@@ -66,9 +60,9 @@ class CampaignDraftFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         draft.refresh_from_db()
-        self.assertEqual(draft.brief, "Sentetik güncellenmiş tanıtım")
-        self.assertEqual(draft.brand_context, "Yerel atölye; seramik dersleri")
-        self.assertEqual(draft.target_audience, "Hafta sonu etkinliği arayanlar")
+        self.assertEqual(draft.brief, SYNTHETIC_SAMPLE["brief"])
+        self.assertEqual(draft.brand_context, SYNTHETIC_SAMPLE["brand_context"])
+        self.assertEqual(draft.target_audience, SYNTHETIC_SAMPLE["target_audience"])
         self.assertEqual(draft.objective, "sales")
         self.assertEqual(draft.daily_limit, 1250)
         self.assertEqual(draft.duration_days, 30)
@@ -90,19 +84,17 @@ class CampaignDraftFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("daily_limit", response.context["form"].errors)
         draft.refresh_from_db()
-        self.assertEqual(draft.brief, self.valid_data["brief"])
+        self.assertEqual(draft.brief, SYNTHETIC_SAMPLE["brief"])
         self.assertEqual(draft.daily_limit, 750)
         self.assertEqual(draft.duration_days, 14)
         self.assertEqual(CampaignDraft.objects.count(), 1)
 
     def test_invalid_brief_budget_and_duration_are_not_saved(self):
         invalid_submissions = (
-            ({**self.valid_data, "brief": "   "}, "brief"),
             ({**self.valid_data, "daily_limit": "99"}, "daily_limit"),
             ({**self.valid_data, "daily_limit": "100001"}, "daily_limit"),
             ({**self.valid_data, "duration_days": "21"}, "duration_days"),
             ({**self.valid_data, "objective": "invented"}, "objective"),
-            ({**self.valid_data, "target_audience": "x" * 241}, "target_audience"),
         )
 
         for data, field in invalid_submissions:
@@ -113,37 +105,19 @@ class CampaignDraftFlowTests(TestCase):
                 self.assertIn(field, response.context["form"].errors)
                 self.assertFalse(CampaignDraft.objects.exists())
 
-    def test_optional_brand_context_can_be_left_empty(self):
-        response = self.client.post(
-            self.url, {**self.valid_data, "brand_context": "   "}
-        )
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(CampaignDraft.objects.get().brand_context, "")
-
     def test_optional_objective_can_be_left_empty(self):
         response = self.client.post(self.url, {**self.valid_data, "objective": ""})
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(CampaignDraft.objects.get().objective, "")
 
-    def test_optional_target_audience_can_be_left_empty(self):
-        response = self.client.post(
-            self.url, {**self.valid_data, "target_audience": "   "}
-        )
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(CampaignDraft.objects.get().target_audience, "")
-
     def test_draft_cannot_be_read_from_a_different_session(self):
         response = self.client.post(self.url, self.valid_data)
-        draft = CampaignDraft.objects.get()
         other_client = self.client_class()
 
         other_response = other_client.get(response.url)
 
         self.assertRedirects(other_response, self.url)
-        self.assertNotIn(draft.brief.encode(), other_response.content)
         self.assertEqual(CampaignDraft.objects.count(), 1)
 
     def test_draft_cannot_be_changed_from_a_different_session(self):
@@ -160,7 +134,7 @@ class CampaignDraftFlowTests(TestCase):
 
         self.assertRedirects(response, self.url)
         draft.refresh_from_db()
-        self.assertEqual(draft.brief, self.valid_data["brief"])
+        self.assertEqual(draft.brief, SYNTHETIC_SAMPLE["brief"])
         self.assertEqual(CampaignDraft.objects.count(), 1)
 
     def test_expired_session_cleanup_deletes_its_drafts(self):
@@ -213,7 +187,7 @@ class CampaignDraftFlowTests(TestCase):
         listing = self.client.get(self.url)
         self.assertContains(listing, "Kaydedilmiş taslakların")
         self.assertContains(listing, first.brief)
-        self.assertContains(listing, "İkinci sentetik kampanya")
+        self.assertEqual(CampaignDraft.objects.count(), 2)
 
         resumed = self.client.get(self.url, {"campaign": str(first.pk)})
         self.assertContains(resumed, 'id="saved-campaign"')
@@ -232,20 +206,21 @@ class CampaignDraftFlowTests(TestCase):
     def test_first_visit_explains_where_prototype_brief_is_stored(self):
         response = self.client.get(self.url)
 
-        self.assertContains(response, "GrowthTwin uygulamasına iletilir")
-        self.assertContains(response, "bu oturum için taslak olarak geçici saklanır")
+        self.assertNotContains(response, 'id="campaign-brief"')
+        self.assertNotContains(response, 'id="brand-context"')
+        self.assertNotContains(response, 'id="target-audience"')
+        self.assertContains(response, "sabit sentetik örneği kullanır")
         self.assertContains(
-            response, "AI hizmetlerine veya reklam platformlarına veri göndermez"
+            response, "AI hizmetlerine ya da reklam platformlarına bağlantı yoktur"
         )
-        self.assertNotContains(response, "hiçbir yere gönderilmez")
 
     def test_saved_draft_list_shows_details_to_distinguish_similar_briefs(self):
         self.client.post(self.url, self.valid_data)
         first = CampaignDraft.objects.get()
         second_data = {
             **self.valid_data,
-            "brand_context": "Sentetik seramik atölyesi",
-            "target_audience": "Hafta sonu üretim yapmak isteyenler",
+            "brand_context": "Yetkisiz metin yok sayılır",
+            "target_audience": "Yetkisiz metin yok sayılır",
             "objective": "sales",
         }
         self.client.post(self.url, second_data)
@@ -253,10 +228,10 @@ class CampaignDraftFlowTests(TestCase):
 
         listing = self.client.get(self.url)
 
-        self.assertContains(listing, "Marka / teklif: Mahalle fırını")
-        self.assertContains(listing, "Marka / teklif: Sentetik seramik atölyesi")
-        self.assertContains(listing, "Kitle: Yakındaki çalışanlar")
-        self.assertContains(listing, "Kitle: Hafta sonu üretim yapmak isteyenler")
+        self.assertContains(listing, "Marka / teklif: Örnek Ankara ev bakım işletmesi")
+        self.assertContains(
+            listing, "Kitle: Ankara bölgesinde ev bakım hizmeti arayan kişiler"
+        )
         self.assertContains(listing, "Potansiyel müşteri bulmak")
         self.assertContains(listing, "Satış, randevu veya rezervasyon almak")
         self.assertContains(listing, "₺10500 toplam")
@@ -266,14 +241,12 @@ class CampaignDraftFlowTests(TestCase):
 
     def test_session_draft_list_does_not_expose_other_sessions(self):
         response = self.client.post(self.url, self.valid_data)
-        draft = CampaignDraft.objects.get()
         other_client = self.client_class()
 
         listing = other_client.get(self.url)
         resume = other_client.get(response.url)
 
         self.assertNotContains(listing, "Kaydedilmiş taslakların")
-        self.assertNotContains(listing, draft.brief)
         self.assertRedirects(resume, self.url)
 
     def test_expired_but_uncleared_session_cannot_read_or_delete_draft(self):
@@ -302,10 +275,57 @@ class CampaignDraftFlowTests(TestCase):
 
         response = self.client.post(
             self.url,
-            {**self.valid_data, "brief": "Yeni oturum sentetik taslağı"},
+            {**self.valid_data, "brief": "Yetkisiz yeni brief"},
         )
 
         self.assertEqual(response.status_code, 302)
         fresh_draft = CampaignDraft.objects.exclude(pk=expired_draft.pk).get()
         self.assertNotEqual(fresh_draft.session_id, expired_session_key)
-        self.assertEqual(fresh_draft.brief, "Yeni oturum sentetik taslağı")
+        self.assertEqual(fresh_draft.brief, SYNTHETIC_SAMPLE["brief"])
+
+    def test_public_form_does_not_render_free_text_intake_controls(self):
+        response = self.client.get(self.url)
+
+        for field_id in ("campaign-brief", "brand-context", "target-audience"):
+            with self.subTest(field=field_id):
+                self.assertNotContains(response, f'id="{field_id}"')
+
+    def test_legacy_free_text_drafts_are_hidden_and_cannot_be_resumed(self):
+        self.client.post(self.url, self.valid_data)
+        session = Session.objects.get(pk=self.client.session.session_key)
+        legacy = CampaignDraft.objects.create(
+            session=session,
+            brief="Legacy draft text",
+            brand_context="Legacy brand text",
+            target_audience="Legacy audience text",
+            daily_limit=750,
+            duration_days=7,
+        )
+
+        listing = self.client.get(self.url)
+        resumed = self.client.get(self.url, {"campaign": str(legacy.pk)})
+
+        self.assertContains(
+            listing, "Önceki demo sürümünde serbest metin kabul edilebildiğinden"
+        )
+        self.assertNotContains(listing, "Legacy draft text")
+        self.assertNotContains(listing, "Legacy brand text")
+        self.assertRedirects(resumed, self.url)
+        self.assertTrue(CampaignDraft.objects.filter(pk=legacy.pk).exists())
+
+    def test_arbitrary_posted_brief_and_company_data_are_ignored(self):
+        response = self.client.post(
+            self.url,
+            {
+                **self.valid_data,
+                "brief": "Gerçek müşteri bilgisi",
+                "brand_context": "Gizli şirket bilgisi",
+                "target_audience": "Gerçek kişi listesi",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        draft = CampaignDraft.objects.get()
+        self.assertEqual(draft.brief, SYNTHETIC_SAMPLE["brief"])
+        self.assertEqual(draft.brand_context, SYNTHETIC_SAMPLE["brand_context"])
+        self.assertEqual(draft.target_audience, SYNTHETIC_SAMPLE["target_audience"])

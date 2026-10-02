@@ -1,12 +1,10 @@
 (() => {
-  const briefInput = document.getElementById("campaign-brief");
   const dailyLimitInput = document.getElementById("daily-limit");
   const daysInput = document.getElementById("campaign-days");
-  const briefCount = document.getElementById("brief-count");
   const budgetTotal = document.getElementById("budget-total");
   const flowStatus = document.getElementById("flow-status");
 
-  if (!briefInput || !dailyLimitInput || !daysInput) return;
+  if (!dailyLimitInput || !daysInput) return;
 
   const panels = [
     document.getElementById("brief-panel"),
@@ -17,9 +15,8 @@
   const stepCount = document.getElementById("step-count");
   const stepProgress = document.getElementById("step-progress");
   const pauseButton = document.getElementById("toggle-pause");
-  const stepNames = ["Brief", "Önizleme", "Örnek rapor"];
+  const stepNames = ["Örnek", "Önizleme", "Örnek rapor"];
   let demoPaused = false;
-  let planEditTarget = "campaign-brief";
 
   const formatNumber = (value) =>
     new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 }).format(value);
@@ -79,28 +76,18 @@
     document.getElementById("preview-total").textContent = formatLira(total);
     document.getElementById("plan-budget").textContent =
       `${formatLira(total)} toplam · ${formatLira(amount)} / gün · ${days} gün`;
-    const needsReview = campaign.dataset.needsReview === "true";
-    planEditTarget = campaign.dataset.firstMissingField || "campaign-brief";
-    document.getElementById("edit-brief").textContent = needsReview
-      ? "← Bilgileri gözden geçir"
-      : "← Planı düzenle";
+    document.getElementById("edit-brief").textContent = "← Örnek planı düzenle";
     document.getElementById("report-brief").textContent = brief;
     document.getElementById("report-period").textContent = `${days} günlük örnek görünüm`;
     resetDemoAutomation();
     showStep(2);
   };
 
-  briefInput.addEventListener("input", () => {
-    briefCount.textContent = `${briefInput.value.length} / 280`;
-  });
   dailyLimitInput.addEventListener("input", updateBudget);
   daysInput.addEventListener("change", updateBudget);
   document.getElementById("edit-brief").addEventListener("click", () => {
     showStep(1, true);
-    if (planEditTarget === "target-audience" || planEditTarget === "brand-context") {
-      document.querySelector(".optional-context").open = true;
-    }
-    document.getElementById(planEditTarget).focus();
+    dailyLimitInput.focus();
   });
   document
     .getElementById("show-report")
@@ -119,7 +106,6 @@
       ? "Örnek akış duraklatıldı. Gerçek kampanya yok."
       : "Örnek akış yeniden etkin. Gerçek kampanya yok.";
   });
-  briefCount.textContent = `${briefInput.value.length} / 280`;
   updateBudget();
   const savedCampaign = document.getElementById("saved-campaign");
   if (savedCampaign) {

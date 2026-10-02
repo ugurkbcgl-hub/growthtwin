@@ -16,6 +16,12 @@ from growthtwin.modules.content.planning import CampaignBrief, CampaignPlan
 from growthtwin.site.forms import CampaignDraftForm, CreativeVariantsForm
 from growthtwin.site.models import CampaignDraft
 
+SYNTHETIC_SAMPLE = {
+    "brief": "Ankara bölgesinde ev bakım hizmeti için teklif talepleri",
+    "brand_context": "Örnek Ankara ev bakım işletmesi",
+    "target_audience": "Ankara bölgesinde ev bakım hizmeti arayan kişiler",
+}
+
 
 def active_session_key(request):
     """Return the browser session key only while its server record is valid."""
@@ -28,6 +34,13 @@ def active_session_key(request):
         expire_date__gt=timezone.now(),
     ).exists()
     return session_key if is_active else None
+
+
+def session_sample_drafts(session_key):
+    """Return only drafts created from the fixed public synthetic example."""
+    if session_key is None:
+        return CampaignDraft.objects.none()
+    return CampaignDraft.objects.filter(session_id=session_key, **SYNTHETIC_SAMPLE)
 
 
 @require_POST
@@ -128,10 +141,12 @@ def render_campaign_home(request, form, campaign, creative_form=None):
         and campaign.creative_source_hash != source_fingerprint(brief)
     )
     session_key = active_session_key(request)
-    drafts = (
-        CampaignDraft.objects.filter(session_id=session_key)
-        if session_key is not None
-        else CampaignDraft.objects.none()
+    drafts = session_sample_drafts(session_key)
+    legacy_drafts_hidden = bool(
+        session_key is not None
+        and CampaignDraft.objects.filter(session_id=session_key)
+        .exclude(**SYNTHETIC_SAMPLE)
+        .exists()
     )
     return render(
         request,
@@ -150,6 +165,7 @@ def render_campaign_home(request, form, campaign, creative_form=None):
                 "deleted" if request.GET.get("draft") == "deleted" else ""
             ),
             "drafts": drafts,
+            "legacy_drafts_hidden": legacy_drafts_hidden,
             "form": form,
             "plan": plan,
         },
@@ -163,10 +179,7 @@ def save_creatives(request, campaign_id):
     if session_key is None:
         return redirect("site:home")
 
-    campaign = CampaignDraft.objects.filter(
-        pk=campaign_id,
-        session_id=session_key,
-    ).first()
+    campaign = session_sample_drafts(session_key).filter(pk=campaign_id).first()
     if campaign is None:
         return redirect("site:home")
 
@@ -193,9 +206,6 @@ def save_creatives(request, campaign_id):
     campaign_form = CampaignDraftForm(
         initial={
             "campaign_id": campaign.pk,
-            "brief": campaign.brief,
-            "brand_context": campaign.brand_context,
-            "target_audience": campaign.target_audience,
             "objective": campaign.objective,
             "daily_limit": campaign.daily_limit,
             "duration_days": campaign.duration_days,
@@ -218,29 +228,14 @@ def home(request):
             if session_key is None:
                 return redirect("site:home")
 
-            campaign = CampaignDraft.objects.filter(
-                pk=campaign_id,
-                session_id=session_key,
-            ).first()
+            campaign = session_sample_drafts(session_key).filter(pk=campaign_id).first()
             if campaign is None:
                 return redirect("site:home")
 
-            campaign.brief = form.cleaned_data["brief"]
-            campaign.brand_context = form.cleaned_data["brand_context"]
-            campaign.target_audience = form.cleaned_data["target_audience"]
             campaign.objective = form.cleaned_data["objective"]
             campaign.daily_limit = form.cleaned_data["daily_limit"]
             campaign.duration_days = form.cleaned_data["duration_days"]
-            campaign.save(
-                update_fields=(
-                    "brief",
-                    "brand_context",
-                    "target_audience",
-                    "objective",
-                    "daily_limit",
-                    "duration_days",
-                )
-            )
+            campaign.save(update_fields=("objective", "daily_limit", "duration_days"))
         else:
             if session_key is None:
                 request.session.create()
@@ -249,9 +244,7 @@ def home(request):
             session = Session.objects.get(pk=session_key)
             campaign = CampaignDraft.objects.create(
                 session=session,
-                brief=form.cleaned_data["brief"],
-                brand_context=form.cleaned_data["brand_context"],
-                target_audience=form.cleaned_data["target_audience"],
+                **SYNTHETIC_SAMPLE,
                 objective=form.cleaned_data["objective"],
                 daily_limit=form.cleaned_data["daily_limit"],
                 duration_days=form.cleaned_data["duration_days"],
@@ -276,19 +269,13 @@ def home(request):
         if session_key is None:
             return redirect("site:home")
 
-        campaign = CampaignDraft.objects.filter(
-            pk=campaign_id,
-            session_id=session_key,
-        ).first()
+        campaign = session_sample_drafts(session_key).filter(pk=campaign_id).first()
         if campaign is None:
             return redirect("site:home")
 
         form = CampaignDraftForm(
             initial={
                 "campaign_id": campaign.pk,
-                "brief": campaign.brief,
-                "brand_context": campaign.brand_context,
-                "target_audience": campaign.target_audience,
                 "objective": campaign.objective,
                 "daily_limit": campaign.daily_limit,
                 "duration_days": campaign.duration_days,
