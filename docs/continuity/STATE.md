@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 01:21 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 01:31 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,22 +14,25 @@ gates before external beta or production use.
 
 ## Verified repository state
 
-- `main` is at `2f71c8fb17569782b453a3e75fe1c965c7357416`; the worktree is clean
-  and tracks `origin/main`. PR #200 is merged. Its required CI run
-  `37071209396` and post-merge `main` CI run `37071471148` both passed. No open
-  PRs were listed at 2026-10-03 01:21 +0300.
-- PR #200 clarifies on public and authenticated planning pages that the sample
-  budget is media budget only, separate from GrowthTwin fees, which the
-  prototype does not calculate. No price, payment, account, publishing, or
-  spend capability was added. The final PR CI and post-merge CI passed after
-  moving the notice to preserve an existing mobile E2E expectation; no local
-  tests were run for this documentation update.
-- The local page at `http://127.0.0.1:8002/` was manually inspected after the
-  change. The budget-scope note appeared below the existing synthetic-only
-  notice; no horizontal overflow was visible in the inspected view.
-- Workspace reporting is an owner-scoped, provider-free empty shell. Metrics
-  remain unavailable without a verified source; it does not show simulated
-  results or connect accounts.
+- `main` is at `2e521632c74f321be9d78cb729fddfd7d17d0066`; the worktree was clean
+  and tracked `origin/main` at verification. PR #202 is merged; its required CI
+  `37072537258` and post-merge `main` CI `37072744834` passed. No open PRs
+  were listed after the merge.
+- PR #202 clarifies that the local prototype does not yet support ad-account
+  connection or platform report retrieval, so real campaign results cannot be
+  shown. It adds a direct return link to the campaign plan. The change adds no
+  account access, live data, estimates, spend, or publishing. CI passed; no
+  local tests or authenticated browser visual review were performed.
+- PR #201 refreshed this continuity snapshot; required CI `37072125194` and
+  post-merge `main` CI `37072338290` both passed.
+- PR #200 clarified that the example budget is media budget only, separate from
+  GrowthTwin fees, which the prototype does not calculate. Required CI
+  `37071209396` and post-merge `main` CI `37071471148` passed. The local public
+  page at `http://127.0.0.1:8002/` was visually checked for the note and no
+  visible horizontal overflow.
+- The report is an owner-scoped, provider-free shell. Metrics remain unavailable
+  without a verified source; the shell does not show simulated results or
+  connect accounts.
 
 ## Open risks and limits
 
@@ -47,9 +50,7 @@ gates before external beta or production use.
 
 ## Next action
 
-Review the authenticated campaign report empty state for novice and professional
-clarity. Check whether the current disconnected-source, unavailable-metric,
-report-period, and freshness explanations tell users what is missing and what
-they can do next, without implying live data or fabricated results. Make a
-small local synthetic-only UX change only if the source review substantiates
-one; then update this snapshot with verified results.
+Audit the six authenticated report metric labels and unavailable explanations
+for plain-language clarity without erasing channel-specific meaning. Keep the
+provider disconnected and values unavailable; make one small local synthetic
+UX change only if the source review substantiates it.
