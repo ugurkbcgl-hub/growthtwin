@@ -217,8 +217,19 @@
         <ul>{% for item in plan.missing_requirements %}<li>{{ item }}</li>{% endfor %}</ul>
       </section>
     {% else %}
-      <p class="ready-note" role="status">Taslak yerel inceleme için hazır. Bu durum yayın izni anlamına gelmez.</p>
+      <p class="ready-note" role="status">Sentetik taslak yerel inceleme için hazır. Reklam henüz yayınlanmadı.</p>
     {% endif %}
+
+    <section class="notice notice-muted" aria-labelledby="launch-readiness-title">
+      <h2 id="launch-readiness-title">Gerçek reklam yayını için gerekenler</h2>
+      <p>Bu sayfa yalnızca sentetik bir önizleme sunar. Prototipte reklam hesabı bağlama, reklam yayımlama veya para harcama özelliği yoktur.</p>
+      <ul>
+        <li>İşletmenin gerçek bilgileri ve reklamda kullanılacak iddialar doğrulanmalı.</li>
+        <li>Türkiye’de kullanılabilir reklam kanalı ve hesaba erişim izni doğrulanmalı.</li>
+        <li>Reklamverenin açık onayı ve uygulanabilir toplam harcama sınırı belirlenmeli.</li>
+        <li>Gerçek erişim tahmini ve sonuç raporu için kanal verisi bağlanmalı.</li>
+      </ul>
+    </section>
 
     <div class="draft-actions">
       <a class="button button-secondary" href="{% url 'campaigns:report' draft.pk %}">Kampanya raporunu aç</a>
