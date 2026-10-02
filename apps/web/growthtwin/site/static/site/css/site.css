@@ -279,6 +279,10 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .objective-field .field-label span { color: #898a96; font-size: 9px; font-weight: 500; }
 .objective-field select { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #e8e7ee; border-radius: 9px; background: #fff; color: #444654; font-size: 10px; }
 .field-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; color: #9b9ba5; font-size: 9px; }
+.synthetic-sample { margin: 0 0 15px; padding: 12px; border: 1px solid #e8e6ed; border-radius: 10px; background: #fbfaff; color: #555564; font-size: 11px; line-height: 1.55; }
+.synthetic-sample p { margin: 0; }
+.synthetic-sample p + p { margin-top: 5px; }
+.synthetic-sample .field-label { margin-bottom: 5px; color: #777686; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 19px; }
 .form-field { min-width: 0; }

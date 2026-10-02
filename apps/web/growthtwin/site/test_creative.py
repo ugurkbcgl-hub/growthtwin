@@ -146,6 +146,6 @@ class CreativeFallbackTests(SimpleTestCase):
         with patch("growthtwin.site.views.CampaignDraft.objects.none", return_value=[]):
             response = render_campaign_home(request, CampaignDraftForm(), campaign)
 
-        self.assertContains(response, "brief’in aynen korunabilir")
+        self.assertContains(response, "sabit sentetik örnekteki brief")
         self.assertContains(response, "yayına almadan önce düzenle")
         self.assertContains(response, "bilgileri doğrula")

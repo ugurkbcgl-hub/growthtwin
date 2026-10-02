@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 
 
 class CampaignMobileFlowBrowserTests(LiveServerTestCase):
-    """Keep the first-visit brief, preview, and report usable on mobile."""
+    """Keep the fixed-sample preview and report usable on mobile."""
 
     def test_regeneration_discloses_replacing_edited_copy(self):
         with sync_playwright() as playwright:
@@ -13,9 +13,6 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
             try:
                 page = browser.new_page(viewport={"width": 390, "height": 844})
                 page.goto(self.live_server_url)
-                page.locator("#campaign-brief").fill(
-                    "Sentetik seramik atölyesi tanıtımı"
-                )
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_url("**campaign=*#kampanya-denemesi")
 
@@ -33,15 +30,14 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 )
 
                 page.locator("#edit-brief").click()
-                page.locator("#campaign-brief").fill("Sentetik yeni brief ile değiştir")
+                page.locator("#daily-limit").fill("1000")
                 page.get_by_role("button", name="Örnek kampanyayı gör").click()
                 page.wait_for_url("**campaign=*#kampanya-denemesi")
-                self.assertTrue(page.locator(".creative-stale-note").is_visible())
+                self.assertFalse(page.locator(".creative-stale-note").count())
                 warning = page.locator("#creative-regenerate-warning")
                 self.assertTrue(warning.is_visible())
-                self.assertIn("kaydedilmiş", warning.inner_text())
                 regenerate = page.get_by_role(
-                    "button", name="Brief’ten yeni öneriler oluştur"
+                    "button", name="Örnekten yeni öneriler oluştur"
                 )
                 self.assertEqual(
                     regenerate.get_attribute("aria-describedby"),
@@ -53,7 +49,7 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                     page.locator(".creative-variant")
                     .first.get_by_label("Başlık")
                     .input_value(),
-                    "Sentetik yeni brief ile değiştir",
+                    "Örnek Ankara ev bakım işletmesi",
                 )
             finally:
                 browser.close()
@@ -84,9 +80,6 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 for selector, invalid_value, bypass_native_constraint in invalid_cases:
                     with self.subTest(field=selector, value=invalid_value):
                         page.goto(self.live_server_url)
-                        page.locator("#campaign-brief").fill(
-                            "Sentetik örnek kampanya fikri"
-                        )
                         field = page.locator(selector)
                         field.evaluate(bypass_native_constraint)
                         if selector == "#campaign-days":
@@ -127,86 +120,21 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 page.goto(self.live_server_url)
 
                 self.assert_no_horizontal_overflow(page)
-                brief = page.locator("#campaign-brief")
-                brief.evaluate("(field) => field.removeAttribute('required')")
-                brief.fill("")
-                page.get_by_role("button", name="Örnek kampanyayı gör").click()
-                page.wait_for_load_state("domcontentloaded")
-                self.assertEqual(brief.get_attribute("aria-invalid"), "true")
-                brief_error_id = brief.get_attribute("aria-describedby")
-                self.assertEqual(brief_error_id, f"{brief.get_attribute('id')}-error")
-                self.assertTrue(page.locator(f"#{brief_error_id}").inner_text())
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"),
-                    brief.get_attribute("id"),
+                self.assertEqual(page.locator("#campaign-brief").count(), 0)
+                self.assertEqual(page.locator("#brand-context").count(), 0)
+                self.assertEqual(page.locator("#target-audience").count(), 0)
+                self.assertIn(
+                    "sabit sentetik örneği kullanır",
+                    page.locator(".simulation-note").first.inner_text(),
+                )
+                self.assertIn(
+                    "Ankara bölgesinde ev bakım hizmeti",
+                    page.locator(".synthetic-sample").inner_text(),
                 )
 
-                page.keyboard.type(
-                    "Sentetik örnek: hafta sonu seramik atölyesi için tanıtım"
-                )
-                page.keyboard.press("Tab")
+                page.locator("#campaign-objective").focus()
                 self.assertEqual(
                     page.evaluate("document.activeElement.id"), "campaign-objective"
-                )
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.tagName"), "SUMMARY"
-                )
-                page.keyboard.press("Space")
-                page.keyboard.press("Tab")
-                brand_context = page.locator("#brand-context")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "brand-context"
-                )
-                brand_context.evaluate("(field) => field.removeAttribute('maxlength')")
-                page.keyboard.type("Sentetik " * 40)
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "target-audience"
-                )
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "daily-limit"
-                )
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "campaign-days"
-                )
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "create-preview"
-                )
-                self.assertGreater(len(brand_context.input_value()), 320)
-                with page.expect_response(
-                    lambda response: response.request.method == "POST"
-                ) as invalid_response:
-                    page.keyboard.press("Enter")
-                self.assertEqual(invalid_response.value.status, 200)
-                page.wait_for_load_state("domcontentloaded")
-                page.wait_for_function(
-                    "document.activeElement.id === 'brand-context'",
-                    timeout=3000,
-                )
-                self.assertIsNotNone(
-                    page.locator(".optional-context").get_attribute("open")
-                )
-                self.assertEqual(brand_context.get_attribute("aria-invalid"), "true")
-                brand_error_id = brand_context.get_attribute("aria-describedby")
-                self.assertEqual(
-                    brand_error_id,
-                    f"{brand_context.get_attribute('id')}-error",
-                )
-                self.assertTrue(page.locator(f"#{brand_error_id}").inner_text())
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"),
-                    brand_context.get_attribute("id"),
-                )
-
-                page.keyboard.press("Control+A")
-                page.keyboard.type("Sentetik seramik atölyesi")
-                page.keyboard.press("Tab")
-                self.assertEqual(
-                    page.evaluate("document.activeElement.id"), "target-audience"
                 )
                 page.keyboard.press("Tab")
                 self.assertEqual(
@@ -304,12 +232,14 @@ class CampaignMobileFlowBrowserTests(LiveServerTestCase):
                 )
 
                 page.get_by_role(
-                    "button", name="Brief’ten yeni öneriler oluştur"
+                    "button", name="Örnekten yeni öneriler oluştur"
                 ).click()
                 page.wait_for_url("**creative=regenerated")
                 self.assertEqual(
                     page.get_by_role("status")
-                    .filter(has_text="Brief’inden yeni metin önerileri hazırlandı.")
+                    .filter(
+                        has_text="Sentetik örnekten yeni metin önerileri hazırlandı."
+                    )
                     .count(),
                     1,
                 )

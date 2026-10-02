@@ -5,15 +5,19 @@ and the first local campaign-experience slice. Local product work is authorized
 with synthetic data. Domain module boundaries are documented under
 `growthtwin/modules/`.
 
-The public `/` route collects a campaign brief, optional brand and audience
-details, and a proposed budget and duration. Django saves synthetic campaign
-drafts in PostgreSQL, scoped to the anonymous browser session; the owner can
-list, resume, edit, or delete those drafts. A provider-neutral `CampaignBrief`
-and derived `CampaignPlan` summarize the request and highlight missing inputs.
-The saved brief also gets three deterministic, editable copy starting points;
-they use only the supplied text and do not call an AI provider. The page
+The public `/` route demonstrates one fixed synthetic Ankara home-maintenance
+campaign. Visitors can choose an objective, example daily cap, and duration;
+there are no free-text brief, brand, or audience inputs. Django saves the fixed
+synthetic draft in PostgreSQL, scoped to the anonymous browser session; the
+owner can list, resume, edit those plan options, or delete the draft. Drafts
+from older versions that do not match the fixed sample stay stored but are
+hidden from the public list and cannot be resumed or edited. A
+provider-neutral `CampaignBrief` and derived `CampaignPlan` summarize the
+example. The draft gets three deterministic, editable copy starting points;
+they use only the fixed sample and do not call an AI provider. The page
 demonstrates a clearly simulated pause and sample report. It does not connect an
-ad account, publish, or spend money. The session-scoped draft is a prototype
+ad account, publish, or spend money. Product-level advertiser intake remains
+gated on the real-data readiness work. The session-scoped draft is a prototype
 boundary, not a durable advertiser/workspace data model; see
 [ADR-0006](../../docs/adr/0006-campaign-brief-boundary.md).
 
