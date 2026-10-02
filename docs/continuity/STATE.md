@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 00:39 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 00:50 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,14 +14,16 @@ before an external beta or production use.
 
 ## Verified repository state
 
+- `main` is at `6966c4beb8677c813bac92bf2c799bda6fc81596` after PR #197.
+  PR #197 required CI (`37068418385`) and post-merge `main` CI
+  (`37068642570`) both passed. No open PRs were listed; the local `main`
+  checkout was clean. Verify these live facts again next session.
 - Public intake code from PR #195 is at
   `7647d113321890d958a4d80efd4b9cc954af4ed7`; its PR check
   (`37066810561`) and post-merge `main` CI (`37067055104`) both passed. PR #196
   then merged the continuity update at
   `8cd18a8f41c8e50f8b3d728e639c00fce81094ee`; its required CI
   (`37067463258`) and post-merge `main` CI (`37067699932`) both passed.
-  No open PRs were listed at this verification. Recheck branch, head, PRs, and
-  CI at the start of the next session.
 - PR #195 closes the public free-text intake gap: the visitor can choose an
   objective, example budget, and duration for one fixed synthetic Ankara
   home-maintenance scenario. The server ignores posted brief/brand/audience
@@ -55,13 +57,17 @@ before an external beta or production use.
 
 ## Current work
 
-No implementation or review is in progress. The latest continuity refresh
-merged through PR #196; no open PRs were listed when this state was verified.
+The authenticated workspace creative-editing flow was audited against the
+synthetic-only boundary. Its owner scoping, CSRF-protected POST, server-side
+length limits, append-only versions, and provider-free behavior are adequate
+for local synthetic prototyping. The confirmation is not proof of synthetic
+content and does not make the flow ready for real advertiser data. Existing
+limits are recorded in ADR-0020 and PROJECT.md; no code or canonical policy
+change was needed. No implementation is currently in progress.
 
 ## Next action
 
-Audit the authenticated workspace creative-editing flow against the same
-synthetic-data readiness boundary. Keep it provider-free and workspace-scoped;
-decide whether its existing synthetic-only confirmation and copy-edit limits
-are sufficient, without entering real advertiser data or changing live
-services.
+Refresh `docs/product/current-system-gap-analysis.md` against the current
+`main` implementation and accepted product decisions. Use it to choose the
+next small local, synthetic UX improvement; do not open real-data intake,
+connect live services, or change product scope.
