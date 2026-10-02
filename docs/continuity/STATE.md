@@ -9,7 +9,7 @@ Build a polished, low-effort, self-service paid-advertising platform for adverti
 ## Verified repository state
 
 - Latest verified `main`: `41baf3573cb24606d6d886dd550938d5e7c49565`, merged via PR #193. PR #193 CI `37062771616` and post-merge `main` CI `37063052539` passed, including full Django tests and browser E2E.
-- Current continuity refresh is on `docs/continuity-after-pr-193`; delivered as a feature PR, not directly on `main`.
+- Current continuity refresh is PR #194 on `docs/continuity-after-pr-193`; it is not sent directly to `main`.
 - PR #192 (`c8a66fb`) clarified the difference between a synthetic draft ready for local review and a real campaign ready for publishing. Required CI `37061846991` and post-merge CI `37062126477` passed.
 - PR #190 required CI `37060557459` and post-merge CI `37060818702` passed. PR #189 live character counts passed required/post-merge CI `37059568415`, `37059833068`.
 - No Heroku or external service action was taken in these changes; recheck staging before future operations.
