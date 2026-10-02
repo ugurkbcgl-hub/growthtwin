@@ -8,7 +8,7 @@ Build a polished, low-effort, self-service paid-advertising platform for adverti
 
 ## Verified repository state
 
-- Latest verified `main`: `4b5c769996ee5a5aabda83a9c88e4fac0890aec9`, merged via PR #190. The code working tree was clean immediately after merge; continuity update is being delivered on feature branch `docs/continuity-after-pr-190`, not directly on `main`.
+- Latest verified `main`: `4b5c769996ee5a5aabda83a9c88e4fac0890aec9`, merged via PR #190. The code working tree was clean immediately after merge; continuity update is in PR #191 on feature branch `docs/continuity-after-pr-190`, not directly on `main`.
 - PR #190 required CI run `37060557459` and post-merge `main` CI run `37060818702` passed, including full Django tests and browser E2E.
 - PR #189 (`6a028ab`) added live character counts to creative inputs; required and post-merge CI passed (`37059568415`, `37059833068`).
 - No Heroku or external service action was taken during these changes. Most recently verified staging notes remain those below; recheck before any future staging operation.
@@ -27,5 +27,4 @@ Build a polished, low-effort, self-service paid-advertising platform for adverti
 
 ## Next action
 
-Verify post-merge CI `37060818702`; then continue one small local synthetic UX slice from the service blueprint, first reviewing the current campaign journey and open decisions. Keep external integration and real data outside scope.
-
+Review the current campaign journey and service-blueprint open decisions, then select and implement one small local synthetic UX slice. Keep external integration and real data outside scope.
