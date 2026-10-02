@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 00:50 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 01:02 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,10 +14,11 @@ before an external beta or production use.
 
 ## Verified repository state
 
-- `main` is at `6966c4beb8677c813bac92bf2c799bda6fc81596` after PR #197.
-  PR #197 required CI (`37068418385`) and post-merge `main` CI
-  (`37068642570`) both passed. No open PRs were listed; the local `main`
-  checkout was clean. Verify these live facts again next session.
+- At audit start, `main` was at `a2ba202ea174fc054cde4562c3929800c4f5ded3`
+  after PR #198. Its required CI (`37069238386`) and post-merge `main` CI
+  (`37069449306`) passed. No open PRs were listed and local `main` was clean.
+  Current work is on `docs/refresh-current-system-gap-analysis`; verify the
+  live branch, PR, head and CI again next session.
 - Public intake code from PR #195 is at
   `7647d113321890d958a4d80efd4b9cc954af4ed7`; its PR check
   (`37066810561`) and post-merge `main` CI (`37067055104`) both passed. PR #196
@@ -57,17 +58,16 @@ before an external beta or production use.
 
 ## Current work
 
-The authenticated workspace creative-editing flow was audited against the
-synthetic-only boundary. Its owner scoping, CSRF-protected POST, server-side
-length limits, append-only versions, and provider-free behavior are adequate
-for local synthetic prototyping. The confirmation is not proof of synthetic
-content and does not make the flow ready for real advertiser data. Existing
-limits are recorded in ADR-0020 and PROJECT.md; no code or canonical policy
-change was needed. No implementation is currently in progress.
+The gap analysis and ROADMAP are being refreshed against current code. The
+authenticated workspace uses a narrow single-owner synthetic draft; team roles,
+assets, providers, live reporting and publishing remain absent. A campaign
+creative-edit boundary audit confirmed the accepted controls are adequate only
+for local synthetic work; its confirmation cannot prove text is synthetic.
 
 ## Next action
 
-Refresh `docs/product/current-system-gap-analysis.md` against the current
-`main` implementation and accepted product decisions. Use it to choose the
-next small local, synthetic UX improvement; do not open real-data intake,
-connect live services, or change product scope.
+Implement one small local UX clarification: explain in public and authenticated
+plan summaries that the sample media budget is separate from GrowthTwin
+creative/campaign fees and that no such fee is calculated in this prototype.
+Do not invent a price, accept real data, connect live services, or change product
+scope.
