@@ -27,5 +27,10 @@ urlpatterns = [
         views.campaign_edit_creative,
         name="edit_creative",
     ),
+    path(
+        "<int:draft_id>/creatives/restore/",
+        views.campaign_restore_creative,
+        name="restore_creative",
+    ),
     path("<int:draft_id>/delete/", views.campaign_delete, name="delete"),
 ]

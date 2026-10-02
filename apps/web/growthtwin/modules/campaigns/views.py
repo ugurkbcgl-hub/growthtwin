@@ -30,6 +30,7 @@ from growthtwin.modules.campaigns.services import (
     creative_source_hash_for_draft,
     edit_creative_variant_for_owner,
     generate_creative_version_for_owner,
+    restore_creative_version_for_owner,
     select_preferred_creative_for_owner,
     update_campaign_draft_for_owner,
 )
@@ -203,7 +204,7 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             ),
             "creative_edit_notice": (
                 request.GET.get("creative_edit")
-                if request.GET.get("creative_edit") in {"saved", "stale"}
+                if request.GET.get("creative_edit") in {"saved", "restored", "stale"}
                 else ""
             ),
         },
@@ -334,6 +335,31 @@ def campaign_edit_creative(request, draft_id):
         )
     return redirect(
         f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=saved"
+    )
+
+
+@login_required
+@require_POST
+def campaign_restore_creative(request, draft_id):
+    """Restore an owner's prior creative snapshot as a new version."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user),
+        pk=draft_id,
+    )
+    try:
+        version_number = int(request.POST.get("version", ""))
+        restore_creative_version_for_owner(
+            owner=request.user,
+            draft_id=draft.pk,
+            version_number=version_number,
+        )
+    except (TypeError, ValueError, ValidationError):
+        return redirect(
+            f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=stale"
+        )
+    return redirect(
+        f"{reverse('campaigns:detail', args=[draft.pk])}?creative_edit=restored"
     )
 
 

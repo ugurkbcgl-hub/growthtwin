@@ -29,10 +29,16 @@ has been checked, approved, or published.
    AI provider, upload a file, connect an account, publish, or spend.
 6. Keep this feature local and synthetic until the separate real-data
    readiness gate is met.
+7. Allow the owner to restore an earlier version only while it shares the
+   current campaign source fingerprint. Append the restored snapshot as a new
+   `owner_restore` version linked to both the current and restored versions;
+   never modify the prior snapshots. Clear the review preference after restore.
 
 ## Consequences
 
 - Owners can refine a synthetic text draft and inspect prior versions.
+- Owners can bring back an earlier same-source draft without losing later
+  versions; restoration is recorded as another immutable version.
 - Version history and stale-source checks remain explicit.
 - The confirmation and length limits are workflow safeguards, not proof that
   supplied text is synthetic or factually correct.
