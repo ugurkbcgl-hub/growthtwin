@@ -34,6 +34,15 @@
         {% for metric in report_metrics %}
           <article class="summary-card report-metric">
             <h3>{{ metric.label }}</h3>
+            <p class="report-metric-help">
+              {% if metric.key == "reach" %}Kaynağın saydığı tekil kitle; platformların hesaplama kapsamı değişebilir.
+              {% elif metric.key == "impressions" %}Reklamın gösterim sayısıdır; aynı kişiye birden çok gösterim olabilir.
+              {% elif metric.key == "clicks" %}Kampanyanın hedef bağlantısına yapılan tıklamalar; diğer tıklamalar ayrı tutulur.
+              {% elif metric.key == "interactions" %}Hedef bağlantısı tıklaması dışındaki platform etkileşimleridir; kapsanan tür kanala göre değişir.
+              {% elif metric.key == "contact_requests" %}Form gibi gerçekten teslim alınan taleplerdir; bir dönüşüm sinyali tek başına talebin ulaştığını kanıtlamaz.
+              {% elif metric.key == "media_spend" %}Kaynağın raporladığı reklam maliyeti; GrowthTwin hizmet bedeli, vergi ve kur dönüşümü ayrı kalır.
+              {% endif %}
+            </p>
             {% if metric.status == "unavailable" %}
               <p>{{ metric.unavailable_message }}</p>
             {% else %}

@@ -179,6 +179,7 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .report-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: .8rem; margin-top: 1rem; }
 .report-metric h3 { margin: 0 0 .75rem; color: var(--muted); font-size: 1rem; }
 .report-metric p { margin: 0; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
+.report-metric .report-metric-help { min-height: 4.2em; margin: 0 0 .7rem; font-size: .9rem; font-weight: 400; line-height: 1.45; }
 .report-source { margin-top: 1rem; }
 .report-source div { display: grid; grid-template-columns: minmax(10rem, .7fr) 1.3fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--line); }
 .report-source div:last-child { border-bottom: 0; }
