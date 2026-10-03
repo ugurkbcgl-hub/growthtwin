@@ -216,3 +216,52 @@ explicit caller after their cost and data controls are separately approved.
 Manual factuality/usefulness/diversity review is still required; exact phrase
 screens are not general safety checks. No model was evaluated during this
 refactor, no provider credentials were added, and web routes remain unchanged.
+
+## Owner-approved bounded text evaluation — 2026-10-03
+
+The owner approved up to **USD 5 total** for synthetic provider testing. Do not
+automatically replenish this budget; stop and reassess before any increase. The
+first paid candidate is OpenAI GPT-6 Luna for text only; this is an evaluation
+candidate, not a production selection. The official price checked on
+2026-10-03 is USD 0.10 per million input tokens and USD 0.50 per million output
+tokens. The OpenAI model page says its free tier is unsupported, so a paid API
+project and its current account eligibility must be checked before use.
+
+The opt-in runner `apps/web/scripts/evaluate_openai_synthetic.py` is fixed to
+one model, three existing synthetic briefs, three repetitions per brief, at
+most 512 output tokens, 4,096 request bytes, no tools, no retries, and
+`store: false`. It uses only `OPENAI_API_KEY` from the process environment and
+never prints the key or full request. A shared SQLite ledger outside the
+repository reserves cost before each call and stops at USD 4.50, preserving
+USD 0.50 as headroom. An interrupted/ambiguous call keeps its reservation.
+The runner also refuses to send a request until
+`GROWTHTWIN_AI_EVAL_HARD_LIMIT_CONFIRMED=1` is present. That flag is only an
+operator assertion, not proof of an account setting. The local ledger is the
+same for future provider runners; do not delete/reset it while this approval is
+active. Each completed request is reconciled using conservative token prices,
+and the runner prints estimated spend, outstanding reservation, and remaining
+local allocation.
+
+Before the first billable call, configure a dedicated OpenAI API project for
+this experiment, set and verify a USD 5 monthly hard spend limit, confirm it has
+no other traffic or existing spend that consumes the limit, and keep the API
+key in the local secret environment. OpenAI documents that hard-limit
+enforcement is not instantaneous and spend can slightly exceed the limit;
+therefore the USD 4.50 local reservation ledger preserves a USD 0.50 buffer.
+The provider setting and local reservation ledger are independent safeguards,
+not a mathematical guarantee of a USD 5 ceiling. If the dashboard cannot
+confirm the project limit, do not run the hosted script. Never send advertiser,
+customer, patient, account, or other private data in this evaluation.
+
+OpenAI says API content is not used to train models by default, but standard
+abuse-monitoring logs can retain request/response content for up to 30 days.
+`store: false` disables Responses application-state storage; it does not
+disable standard abuse-monitoring retention. This trial therefore uses only
+the repository's synthetic fixtures.
+
+Official source pages checked 2026-10-03: [GPT-6 Luna model and pricing](https://developers.openai.com/api/docs/models/gpt-6-luna), [API spend limits](https://developers.openai.com/api/docs/guides/spend-limits), [data controls](https://developers.openai.com/api/docs/guides/your-data), and [structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+
+**Next:** after confirming the dedicated project hard limit and configuring the
+key securely, run the fixed synthetic text candidate within the USD 4.50 local
+allocation. Reassess before using the remaining USD 0.50 or adding Google or
+Anthropic candidates.
