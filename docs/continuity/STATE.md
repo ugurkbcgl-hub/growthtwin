@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 22:08 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 22:23 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -10,57 +10,52 @@ industries. Product runtime and AI quality must not depend on the owner's
 local PC/GPU. Develop with synthetic data; no real advertiser data, live ad
 accounts, publication, media spend, or unapproved paid infrastructure.
 
-## Repository and work status
+## Repository and PR state
 
-- `main` was verified at `b2e63d6deee31bef7bb4d192a7aedbe6e4b2f5c6`, the
-  merge commit for PR #227. PR #227 merged successfully; required PR CI
-  `37146525709` and post-merge main CI `37146671062` passed, including tests
-  and browser E2E.
-- No open PRs were returned after #227 merged. A documentation-only state
-  refresh is being prepared on `docs/update-ai-provider-handoff`, based on
-  that main commit; verify its current PR/CI status at the next session.
-- The strategy changes themselves are in [AI provider combinations](../product/ai-provider-strategy.md),
-  and are documented in `AI_PROVIDERS.md`, `PROJECT.md`, and `ROADMAP.md`.
+- `main` was verified clean at
+  `45ce42a1c576463d8d743a9f88dd32cde3035991`. PRs #227 and #228 merged; PR
+  checks and post-merge CI passed (`37146525709`, `37146671062`,
+  `37146841173`, `37146984437`). No open PRs at the last check.
+- Current work is on `feat/credential-free-ai-benchmarks`, created from that
+  verified `main`. Branch changes and PR/CI are not yet submitted at this
+  snapshot.
 
 ## AI and product status
 
-- Current website generation remains deterministic. The provider-neutral
-  gateway has a text creative contract and synthetic/local adapters; Ollama
-  is optional and disconnected from routes. Recent Qwen3 evaluations failed
-  the existing small creative gate. No production provider is selected.
-- The new recommendation is a task router, not a local inference dependency
-  or one-vendor lock-in. Candidate set: OpenAI, Google Gemini/Vertex AI, and
-  Anthropic for text; Google and OpenAI for image and short-video generation.
-  This is a research/evaluation shortlist, not permission to activate APIs or
-  spend money.
-- The provider strategy was checked against official vendor model/API, data,
-  terms, and pricing pages on 2026-10-03. Recheck exact model IDs, data
-  retention, region, availability, and pricing before any use. No live API
-  comparison has been run.
-- Existing approximately USD 12 Heroku staging approval does not cover AI
-  provider charges. No new provider account, credential, paid quota, or
-  service was activated.
-- Image/video/document integrations, task routing, provider failover, and
-  real-data readiness remain unimplemented. Deterministic source/claim rules
-  stay authoritative; model review alone cannot clear claims or ads.
+- Website generation remains deterministic. The provider-neutral gateway has
+  a text creative contract; Ollama is optional and disconnected from routes.
+  Recent Qwen3 evaluations failed the small creative gate. No production
+  provider is selected.
+- PRs #227/#228 documented a hosted, task-routed candidate strategy: OpenAI,
+  Gemini/Vertex AI, and Anthropic for text; Google and OpenAI for image/video.
+  This shortlist does not authorize provider accounts, credentials, paid API
+  calls, or processing real data.
+- Current branch adds a versioned text task profile and bounded synthetic
+  benchmark harness accepting caller-supplied `CreativeGenerator` adapters.
+  It does not create adapters, read credentials, call the network, persist
+  output, or connect to web routes. The optional Ollama CLI is refactored to
+  use the same interface. Ruff lint/format and `git diff --check` passed;
+  application tests were not run locally.
+- The benchmark checks only output-contract failures and exact fixture phrases;
+  manual source-grounding, usefulness, diversity, brand-fit, and correction
+  review remain necessary. No candidate was evaluated in this refactor.
+- Existing approximately USD 12 Heroku approval does not cover AI provider
+  charges. A separate bounded budget is required before billable comparison.
 
 ## Risks and gates
 
-- Free Gemini API use may expose submitted content to product improvement and
-  human review; paid service terms differ and still permit limited safety/legal
-  processing. OpenAI's general API controls and Video API retention differ by
-  endpoint. These are not KVKK approval or Türkiye-only data residency
-  guarantees. No real advertiser material may be sent.
-- Any billable hosted evaluation requires a separate bounded owner-approved
-  budget and synthetic fixtures. Do not connect provider calls to user routes
-  until task gates and privacy/data readiness are met.
-- Keep asset intake, ad-account connection, publishing, spend, and production
-  deployment behind their existing approval/readiness gates.
+- Provider/model IDs, availability, prices, terms, retention, and processing
+  regions change. Recheck current official terms before use. Prior source review
+  is not a KVKK assessment or Türkiye-only processing guarantee.
+- Do not connect provider calls to user routes or process real advertiser
+  assets before data and privacy readiness. A model or second-model critique
+  does not authorize claims, policy clearance, publication, or spend.
+- Image/video integrations, customer-file intake, account connection,
+  publication, and production deployment remain outside this work.
 
 ## Next action
 
-Implement provider-neutral task profiles and a repeatable, credential-free
-synthetic benchmark interface for the text shortlist. Keep the website on its
-deterministic template and provider calls out of routes. Request a bounded
-evaluation budget only when live billable comparisons are required; evaluate
-image/video and customer-file paths later behind their own readiness gates.
+Review and merge this benchmark PR after required CI passes. Then prepare a
+provider-by-provider cost estimate for the fixed synthetic text suite and a
+hard spend cap; ask for budget approval before any billable API comparison.
+Keep the website on deterministic templates and image/video work deferred.

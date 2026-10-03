@@ -155,8 +155,10 @@ provider's current commercial/API terms. Do not send real data to free trials.
 
 1. Keep the current deterministic template active and all provider calls out of
    web routes.
-2. Convert the provider-neutral gateway to task-oriented contracts and a
-   repeatable synthetic benchmark interface without adding vendor secrets.
+2. **Completed 2026-10-03:** add the first versioned creative-copy task profile
+   and repeatable synthetic benchmark harness. The harness accepts a caller-
+   supplied adapter, makes no provider calls itself, and records results in
+   memory/JSON-serializable form only.
 3. Score the text candidates first using the existing multi-industry claim and
    creative fixtures; add image/video suites separately when their workflows
    and budget limits are defined.

@@ -197,3 +197,22 @@ SQLite settings; Ruff format and lint passed. It is not connected to web routes.
 - Structured-output guidance: https://docs.ollama.com/capabilities/structured-outputs
 - Exact Qwen3 1.7B model tag: https://ollama.com/library/qwen3:1.7b
 - Exact Qwen3 1.7B license: https://ollama.com/library/qwen3:1.7b/blobs/d18a5cc71b84
+
+## Provider-neutral text benchmark interface — 2026-10-03
+
+`apps/web/growthtwin/modules/ai_gateway/profiles.py` defines a versioned
+`creative-copy-v1` task profile with a three-run minimum and human review
+dimensions. `benchmark.py` accepts caller-supplied `CreativeGenerator`
+adapters and synthetic cases, then emits JSON-serializable in-memory records
+for contract result, latency, exact fixture phrase matches, candidate label,
+and pending manual scores. The harness does not create provider adapters, read
+keys, make network calls, store results, or authorize route use. It caps each
+invocation at 60 candidate calls.
+
+`scripts/evaluate_local_ollama.py` now uses that same provider-neutral
+interface, with already-installed Ollama candidates by default. The interface
+itself does not require Ollama; future hosted adapters can be passed only by an
+explicit caller after their cost and data controls are separately approved.
+Manual factuality/usefulness/diversity review is still required; exact phrase
+screens are not general safety checks. No model was evaluated during this
+refactor, no provider credentials were added, and web routes remain unchanged.
