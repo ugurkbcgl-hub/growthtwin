@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 11:43 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 11:56 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,10 +14,10 @@ gates before external beta or production use.
 
 ## Verified repository and staging state
 
-- Verified at 11:43 +0300: `main` is `550062526b24db0ea05ee68d37b0eede34081f09` after PR #210, with a clean tree and no open PRs at that time. PR #210 required CI `37110361879` and post-merge CI `37110487277` passed. The previous five `main` runs also passed.
-- PR #206 updated `/health/` to prefer `HEROKU_BUILD_COMMIT`, fall back to `HEROKU_SLUG_COMMIT`, and report `unknown` when neither is available. Four focused tests, Ruff, PR CI `37105816655`, and post-merge `main` CI `37106314635` passed. The change has not been deployed to staging.
-- The authenticated Heroku Activity page was checked read-only on 2026-10-03: latest release remains v14, deployed 2026-09-30 from `69476a62`. Staging is behind current `main`. A direct GET to staging `/health/` returned HTTP 200 with `{"status":"ok","version":"unknown"}` at 11:01 +0300.
-- At 11:32 +0300 an authenticated, read-only Heroku CLI query confirmed `runtime-dyno-build-metadata` is disabled on the staging app. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) says `HEROKU_BUILD_COMMIT` requires that feature and becomes available on the next deploy. No Labs setting, release, config-var value, or secret was changed or revealed. The CLI was run from a temporary local extraction, not installed globally.
+- Verified at 11:56 +0300: `main` is `c13ba96ae610778ad9a924919a7bfabb71f0b12a` after PR #211, the main worktree was clean, and no PRs were open at that time. PR #210 required CI `37110361879` and post-merge CI `37110487277` passed; PR #211 required CI `37110674347` and post-merge CI `37110805928` passed. Current docs follow-up is on branch `docs/record-heroku-dyno-metadata-dependencies`.
+- PR #206 updated `/health/` to prefer `HEROKU_BUILD_COMMIT`, fall back to `HEROKU_SLUG_COMMIT`, and report `unknown` when neither is available. Four focused tests, Ruff, PR CI `37105816655`, and post-merge `main` CI `37106314635` passed. It is now deployed to staging in release v15.
+- The authenticated Heroku CLI shows release v15 deployed from `c13ba96` with succeeded status. A GET to staging `/health/` at 11:54 +0300 returned HTTP 200 with `{"status":"ok","version":"unknown"}`. The deploy's release command reported no migrations to apply.
+- At 11:53 +0300, both `runtime-dyno-build-metadata` and `runtime-dyno-metadata` were enabled on the staging app. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) requires the base Lab for environment metadata and the additional build-metadata Lab for `HEROKU_BUILD_COMMIT`; metadata becomes available on the next deploy. The base Lab was enabled after v15, so the revision remains unverified. Conflicting metadata config-var names were absent before enablement. Config-var values were never displayed. No resource was added.
 - The authenticated synthetic report was visually checked at narrow and desktop widths using a temporary local-only account and fixed synthetic campaign; no visible layout issue was found. No real data, account connection, publication, or spend was used. The local server is not guaranteed to remain running after this session.
 
 ## Open risks and limits
@@ -28,4 +28,4 @@ gates before external beta or production use.
 
 ## Next action
 
-Review the staging change sequence for enabling `runtime-dyno-build-metadata` and deploying the reviewed `main` revision; only proceed with that separate staging change after its scope is explicitly authorized. Then verify the Heroku release and `/health/` revision. Do not reveal config-var values.
+Merge the docs follow-up after required CI passes, then deploy the reviewed `main` commit to the existing staging app and verify release status plus `/health/` commit alignment. Do not reveal config-var values or add infrastructure.
