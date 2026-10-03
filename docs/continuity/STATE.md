@@ -1,71 +1,66 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 22:02 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 22:08 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
 Build a polished, self-service paid-advertising platform for Türkiye across
-industries. The product runtime must not depend on the owner's local PC/GPU.
-Develop and evaluate with synthetic data; no real advertiser data, live ad
-accounts, publication, spend, or unapproved paid infrastructure.
+industries. Product runtime and AI quality must not depend on the owner's
+local PC/GPU. Develop with synthetic data; no real advertiser data, live ad
+accounts, publication, media spend, or unapproved paid infrastructure.
 
-## Verified repository state at start of this work
+## Repository and work status
 
-- `main` was `e0ec0d949ba5724463ee11aae4e24cf9a3932728`; remote `origin/main`
-  matched. The working tree was clean before edits.
-- Previous handoff PR #226 is merged. The latest main CI run observed before
-  edits was run `37145844015`, success. No open pull requests were returned by
-  GitHub at that check.
-- Work is on `docs/multi-provider-ai-strategy`, created from the verified
-  `origin/main`. Current changes are documentation only; PR/CI are not yet
-  created/run at this handoff snapshot.
+- `main` was verified at `b2e63d6deee31bef7bb4d192a7aedbe6e4b2f5c6`, the
+  merge commit for PR #227. PR #227 merged successfully; required PR CI
+  `37146525709` and post-merge main CI `37146671062` passed, including tests
+  and browser E2E.
+- No open PRs were returned after #227 merged. A documentation-only state
+  refresh is being prepared on `docs/update-ai-provider-handoff`, based on
+  that main commit; verify its current PR/CI status at the next session.
+- The strategy changes themselves are in [AI provider combinations](../product/ai-provider-strategy.md),
+  and are documented in `AI_PROVIDERS.md`, `PROJECT.md`, and `ROADMAP.md`.
 
-## Completed in this work
+## AI and product status
 
-- Reviewed `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, continuity instructions,
-  current state, AI provider history, ADR-0004/0009, and the claim-grounding
-  draft. Current product generation is deterministic; Ollama is opt-in and
-  disconnected from routes. Recent Qwen3 local evaluation failed the creative
-  gate. No production AI provider is selected.
-- Checked current official OpenAI, Gemini/Vertex AI, and Anthropic model/API,
-  pricing, data handling, media, and model lifecycle pages on 2026-10-03.
-- Added `docs/product/ai-provider-strategy.md`: recommends an application-owned
-  task router and replaceable hosted providers, with OpenAI/Gemini/Anthropic
-  as text candidates and Google/OpenAI as image/video candidates. It describes
-  provider/data-class gates, deterministic claim authority, synthetic
-  evaluation dimensions, and explicit approval for any billable evaluation.
-- Updated `AI_PROVIDERS.md`, `PROJECT.md`, and `ROADMAP.md` to clarify that
-  local inference is optional, the website remains on templates, and no
-  provider account/API/paid use is activated.
-- Refreshed this state snapshot; changes are not yet committed or reviewed by
-  CI.
+- Current website generation remains deterministic. The provider-neutral
+  gateway has a text creative contract and synthetic/local adapters; Ollama
+  is optional and disconnected from routes. Recent Qwen3 evaluations failed
+  the existing small creative gate. No production provider is selected.
+- The new recommendation is a task router, not a local inference dependency
+  or one-vendor lock-in. Candidate set: OpenAI, Google Gemini/Vertex AI, and
+  Anthropic for text; Google and OpenAI for image and short-video generation.
+  This is a research/evaluation shortlist, not permission to activate APIs or
+  spend money.
+- The provider strategy was checked against official vendor model/API, data,
+  terms, and pricing pages on 2026-10-03. Recheck exact model IDs, data
+  retention, region, availability, and pricing before any use. No live API
+  comparison has been run.
+- Existing approximately USD 12 Heroku staging approval does not cover AI
+  provider charges. No new provider account, credential, paid quota, or
+  service was activated.
+- Image/video/document integrations, task routing, provider failover, and
+  real-data readiness remain unimplemented. Deterministic source/claim rules
+  stay authoritative; model review alone cannot clear claims or ads.
 
-## Current risks and limits
+## Risks and gates
 
-- Provider/model IDs, API features, prices, regions, and terms change. The
-  shortlist is not a production recommendation; recheck official terms before
-  evaluation or selection.
-- OpenAI API content is not used for training by default, but standard abuse
-  monitoring may retain data for up to 30 days; video does not support its
-  retention controls per the checked docs. Google's free Gemini API may use
-  submitted content to improve products; paid service rules differ and still
-  include limited safety/legal retention. None of these is a KVKK review or
-  confirmation of Türkiye-only processing.
-- The owner has not approved a new AI evaluation spend. Existing approximately
-  USD 12 Heroku staging approval does not cover provider API charges.
-- Existing AI gateway only has a text creative contract and local/synthetic
-  adapters. Image/video/document integrations, task routing, real-data
-  readiness, and provider availability failover are not implemented.
-- Current hosted/API vendor performance has not been measured on GrowthTwin's
-  own task suite. No candidate may receive real advertiser material or be
-  connected to routes based on these documents alone.
+- Free Gemini API use may expose submitted content to product improvement and
+  human review; paid service terms differ and still permit limited safety/legal
+  processing. OpenAI's general API controls and Video API retention differ by
+  endpoint. These are not KVKK approval or Türkiye-only data residency
+  guarantees. No real advertiser material may be sent.
+- Any billable hosted evaluation requires a separate bounded owner-approved
+  budget and synthetic fixtures. Do not connect provider calls to user routes
+  until task gates and privacy/data readiness are met.
+- Keep asset intake, ad-account connection, publishing, spend, and production
+  deployment behind their existing approval/readiness gates.
 
 ## Next action
 
-Review and merge the documentation PR after required CI passes. Then implement
-provider-neutral task profiles and a repeatable synthetic benchmark interface
-for the text shortlist without provider credentials or web-route calls. Ask
-for a bounded spend decision only when a live, billable vendor comparison is
-actually required; keep image/video and customer-file ingestion behind their
-separate readiness gates.
+Implement provider-neutral task profiles and a repeatable, credential-free
+synthetic benchmark interface for the text shortlist. Keep the website on its
+deterministic template and provider calls out of routes. Request a bounded
+evaluation budget only when live billable comparisons are required; evaluate
+image/video and customer-file paths later behind their own readiness gates.
