@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 15:11 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 21:43 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -20,8 +20,10 @@ release gates before external beta or production use.
   merged as `b464bf1f745b1a68576d4a8f471bbde7ed65db83`; PR CI `37121217179`
   and post-merge CI `37121322397` passed. PR #223 (`design/claim-grounding-contract`)
   merged as `f1158118bf3c7c1d7ce9f369a1015d1ac490107d`; PR CI `37121534148`
-  and post-merge CI `37121664437` passed. Current work is on branch
-  `feat/synthetic-claim-evidence`; PR/CI status is pending.
+  and post-merge CI `37121664437` passed. PR #224 merged as
+  `60e19f8b40fcc415f16c9defa9e164292230cd9b`; PR CI `37122112785` and
+  post-merge CI `37122235037` passed. Current work is on
+  `feat/synthetic-fact-copy-assembly`; PR/CI status is pending.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -64,6 +66,11 @@ release gates before external beta or production use.
   source truth, policy, legal compliance, or completeness of the claim list;
   it is not connected to web routes. All 21 focused `ai_gateway` tests and Ruff
   format/lint passed locally with in-memory SQLite test settings.
+- The current branch adds bounded, persistence-free fact-copy assembly: it
+  joins at most five caller-listed exact-matched statements, returning no text
+  when any verdict fails or output exceeds 1,200 characters. It does not
+  create copy or prove the claim inventory complete. All 25 focused gateway
+  tests and Ruff checks passed locally; code is not connected to web routes.
 
 ## Open risks and limits
 
@@ -91,9 +98,10 @@ release gates before external beta or production use.
 
 ## Next action
 
-Review and merge the exact-source claim matcher PR after local review and
-required CI pass. Then prototype controlled copy assembly over exact approved
-fact text and assess its utility on synthetic briefs; keep deterministic
-website generation active. Use only synthetic fixtures; leave real data, web-route AI
-activation, account connections, publishing, spend, paid services, and the
-configured local database untouched.
+Review and merge the controlled fact-copy assembly PR after local review and
+required CI pass. Then evaluate whether this highly constrained approach is
+useful across synthetic advertiser types and define how claim-list completeness
+can be enforced; keep deterministic website generation active. Use only
+synthetic fixtures; leave real data, web-route AI activation, account
+connections, publishing, spend, paid services, and the configured local
+database untouched.

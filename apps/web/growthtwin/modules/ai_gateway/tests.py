@@ -18,6 +18,13 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationResult,
     generate_creative_draft,
 )
+from growthtwin.modules.ai_gateway.fact_copy import (
+    MAX_ASSEMBLED_COPY_LENGTH,
+    CopyAssemblyRejectionReason,
+    FactBasedCopyDraft,
+    FactBasedCopyRejected,
+    assemble_fact_based_copy,
+)
 from growthtwin.modules.ai_gateway.ollama import (
     MAX_RESPONSE_BYTES,
     OLLAMA_HOST,
@@ -156,6 +163,86 @@ class ExactSourceClaimGroundingTests(SimpleTestCase):
 
         self.assertEqual(missing.status, ClaimGroundingStatus.NO_EVIDENCE)
         self.assertEqual(invalid_date.status, ClaimGroundingStatus.INVALID_INPUT)
+
+
+class ControlledSyntheticFactCopyTests(SimpleTestCase):
+    def setUp(self):
+        self.today = date(2026, 10, 3)
+        self.facts = (
+            ApprovedSourceFact(
+                fact_id="workshop-when",
+                source_ref="synthetic-workshop-sheet",
+                source_version="v1",
+                text="Atölye cumartesi sabahı Kadıköy'de düzenleniyor.",
+                owner_approval_asserted=True,
+            ),
+            ApprovedSourceFact(
+                fact_id="workshop-level",
+                source_ref="synthetic-workshop-sheet",
+                source_version="v1",
+                text="Etkinlik başlangıç seviyesindeki yetişkinlere yöneliktir.",
+                owner_approval_asserted=True,
+            ),
+        )
+        self.claims = tuple(
+            ProposedFactualClaim(fact.text, fact.fact_id) for fact in self.facts
+        )
+
+    def test_assembles_exact_facts_without_adding_generated_copy(self):
+        result = assemble_fact_based_copy(
+            self.claims,
+            self.facts,
+            as_of=self.today,
+        )
+
+        self.assertIsInstance(result, FactBasedCopyDraft)
+        self.assertEqual(result.text, " ".join(fact.text for fact in self.facts))
+        self.assertTrue(result.review_required)
+        self.assertFalse(result.publishable)
+        self.assertTrue(all(verdict.matched_exactly for verdict in result.verdicts))
+
+    def test_one_unsupported_claim_rejects_the_entire_draft(self):
+        unsupported = ProposedFactualClaim(
+            "Atölye tamamen ücretsizdir.", self.facts[0].fact_id
+        )
+        claims = (self.claims[0], unsupported)
+
+        result = assemble_fact_based_copy(claims, self.facts, as_of=self.today)
+
+        self.assertIsInstance(result, FactBasedCopyRejected)
+        self.assertEqual(result.reason, CopyAssemblyRejectionReason.CLAIMS_NOT_GROUNDED)
+        self.assertEqual(len(result.verdicts), 2)
+        self.assertFalse(hasattr(result, "text"))
+
+    def test_empty_or_excessive_claim_list_is_rejected(self):
+        empty = assemble_fact_based_copy((), self.facts, as_of=self.today)
+        excessive = assemble_fact_based_copy(
+            self.claims * 3,
+            self.facts,
+            as_of=self.today,
+        )
+
+        self.assertEqual(empty.reason, CopyAssemblyRejectionReason.INVALID_INPUT)
+        self.assertEqual(excessive.reason, CopyAssemblyRejectionReason.INVALID_INPUT)
+
+    def test_assembled_copy_limit_is_enforced(self):
+        long_fact = replace(
+            self.facts[0],
+            text="A" * MAX_ASSEMBLED_COPY_LENGTH,
+            fact_id="long-fact",
+        )
+        short_fact = replace(self.facts[1], text="B", fact_id="short-fact")
+        long_claim = ProposedFactualClaim(long_fact.text, long_fact.fact_id)
+        short_claim = ProposedFactualClaim(short_fact.text, short_fact.fact_id)
+
+        result = assemble_fact_based_copy(
+            (long_claim, short_claim),
+            (long_fact, short_fact),
+            as_of=self.today,
+        )
+
+        self.assertIsInstance(result, FactBasedCopyRejected)
+        self.assertEqual(result.reason, CopyAssemblyRejectionReason.COPY_TOO_LONG)
 
 
 class CreativeGenerationBoundaryTests(SimpleTestCase):

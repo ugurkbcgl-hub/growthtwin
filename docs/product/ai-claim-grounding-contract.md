@@ -65,6 +65,13 @@ expiry date, or permitted by an ad platform. It remains disconnected from all
 product routes. Its tests use only fabricated facts and an explicit evaluation
 date.
 
+`apps/web/growthtwin/modules/ai_gateway/fact_copy.py` demonstrates bounded
+assembly: it joins at most five explicit statements after each exact-match
+verdict succeeds, otherwise returning a rejection with verdicts and no text.
+It adds no generated connective wording and rejects output over 1,200
+characters. This limits additions by the helper but cannot detect omitted
+claims in the caller's inventory; it is not a complete creative safety gate.
+
 ## Required synthetic evaluation before implementation selection
 
 - Include supported facts, unsupported additions, prompt-injection text,
