@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 21:43 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 21:49 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -22,8 +22,11 @@ release gates before external beta or production use.
   merged as `f1158118bf3c7c1d7ce9f369a1015d1ac490107d`; PR CI `37121534148`
   and post-merge CI `37121664437` passed. PR #224 merged as
   `60e19f8b40fcc415f16c9defa9e164292230cd9b`; PR CI `37122112785` and
-  post-merge CI `37122235037` passed. Current work is on
-  `feat/synthetic-fact-copy-assembly`; PR/CI status is pending.
+  post-merge CI `37122235037` passed. PR #225 (`feat/synthetic-fact-copy-assembly`)
+  merged as `52b13168199d45b5fb7a3bc79473872a89a93ff0`; PR CI
+  `37145361284` and post-merge CI `37145519975` passed. `main` is current at
+  `52b13168199d45b5fb7a3bc79473872a89a93ff0`; no PRs were open at the last
+  check. This continuity-only refresh is on `docs/post-fact-assembly-state`.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -60,17 +63,19 @@ release gates before external beta or production use.
 - A draft claim-grounding contract now describes approved-source provenance,
   exact safe reuse, and fail-closed treatment of unsupported claims. It is not
   an accepted ADR, semantic truth proof, or authorization for real data.
-- The current branch adds a persistence-free exact-source claim matcher.
+- The provider-neutral gateway includes a persistence-free exact-source claim
+  matcher.
   It checks one caller-listed claim against one owner-approved, non-expired
   fact, rejecting paraphrases and missing/ambiguous evidence. It cannot verify
   source truth, policy, legal compliance, or completeness of the claim list;
   it is not connected to web routes. All 21 focused `ai_gateway` tests and Ruff
   format/lint passed locally with in-memory SQLite test settings.
-- The current branch adds bounded, persistence-free fact-copy assembly: it
+- Bounded, persistence-free fact-copy assembly is implemented: it
   joins at most five caller-listed exact-matched statements, returning no text
   when any verdict fails or output exceeds 1,200 characters. It does not
   create copy or prove the claim inventory complete. All 25 focused gateway
-  tests and Ruff checks passed locally; code is not connected to web routes.
+  tests and Ruff checks passed locally; PR and post-merge CI passed. It is not
+  connected to web routes.
 
 ## Open risks and limits
 
@@ -98,10 +103,9 @@ release gates before external beta or production use.
 
 ## Next action
 
-Review and merge the controlled fact-copy assembly PR after local review and
-required CI pass. Then evaluate whether this highly constrained approach is
-useful across synthetic advertiser types and define how claim-list completeness
-can be enforced; keep deterministic website generation active. Use only
-synthetic fixtures; leave real data, web-route AI activation, account
-connections, publishing, spend, paid services, and the configured local
-database untouched.
+Evaluate the constrained exact-fact assembly on synthetic examples from several
+advertiser types. Decide whether a fixed non-factual call-to-action/template
+can make the output useful without introducing unsupported claims; define how
+the source-fact set is selected and approved, and keep all AI routes disabled.
+Use only synthetic fixtures; leave real data, account connections,
+publication, spend, paid services, and the configured local database untouched.
