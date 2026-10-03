@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 14:54 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 15:00 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -15,9 +15,12 @@ release gates before external beta or production use.
 ## Verified repository and product state
 
 - PR #221 (`eval/synthetic-creative-benchmark`) merged as
-  `32a5cc889d27514e78f960ad6e4d433ac392921c`. Required PR CI `37120780177` and
-  post-merge CI `37120891350` passed. Current follow-up is on feature branch
-  `eval/claim-screen-benchmark`; its PR/CI status is pending.
+  `32a5cc889d27514e78f960ad6e4d433ac392921c`; PR CI `37120780177` and
+  post-merge CI `37120891350` passed. PR #222 (`eval/claim-screen-benchmark`)
+  merged as `b464bf1f745b1a68576d4a8f471bbde7ed65db83`; PR CI `37121217179`
+  and post-merge CI `37121322397` passed. Current work is on branch
+  `design/claim-grounding-contract`; a design draft is being prepared and its
+  PR/CI status is not yet available.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -51,6 +54,9 @@ release gates before external beta or production use.
   duplicate angles. The benchmark runner now reports exact forbidden fixture
   phrases on accepted-shaped output. This is not semantic claim validation;
   no model passed. The website generator remains deterministic.
+- A draft claim-grounding contract now describes approved-source provenance,
+  exact safe reuse, and fail-closed treatment of unsupported claims. It is not
+  an accepted ADR, semantic truth proof, or authorization for real data.
 
 ## Open risks and limits
 
@@ -78,9 +84,9 @@ release gates before external beta or production use.
 
 ## Next action
 
-Review and merge the claim-screen benchmark PR after local review and required
-CI pass. Then define how generated claims can be checked against approved
-source facts before any offline model experiment; keep deterministic website
+Review and merge the claim-grounding design PR after local review and required
+CI pass. Then define a persistence-free fact/claim contract and synthetic
+evaluator without claiming semantic truth; keep deterministic website
 generation active. Use only synthetic fixtures; leave real data, web-route AI
 activation, account connections, publishing, spend, paid services, and the
 configured local database untouched.
