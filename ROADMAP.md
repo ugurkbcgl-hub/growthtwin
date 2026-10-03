@@ -99,7 +99,9 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 
 **Completed in PRs #217–218:** define a provider-neutral creative-generation contract, validate bounded structured drafts, and route the anonymous fixed-sample and authenticated workspace copy paths through the deterministic local template adapter. Workspace versions record the generator identifier and preserve it across edits/restores; older versions are untouched. Generated results always remain review-required and non-publishable. No external AI provider, account, migration, publication, or spend is connected. The `synthetic_only` marker is a caller assertion, not authorization to process real data.
 
-**Current local-provider slice (PR #219):** add an opt-in Ollama adapter pinned to loopback, with structured JSON output and bounded request/response validation. The local Qwen3 1.7B smoke result was slow and repetitive with one unsupported phrase; it remains disconnected from web routes and is not selected for product use. See [AI provider evaluation](AI_PROVIDERS.md).
+**Completed in PR #219:** add an opt-in Ollama adapter pinned to loopback, with structured JSON output and bounded request/response validation. Two single-run local Qwen3 1.7B/4B smoke tests were slow and repetitive; the adapter rejects repeated angles and remains disconnected from web routes. Neither model is selected for product use. See [AI provider evaluation](AI_PROVIDERS.md).
+
+**Next:** define and run a repeatable synthetic content-quality benchmark across task types and candidate models. Measure usefulness, factual grounding, variant diversity, schema validity, latency, and review effort before connecting any model to product routes.
 
 **Completed in PR #135:** give each authenticated workspace campaign a report page with reach, impressions, clicks, other interactions, contact requests, and media spend. Mark values unavailable until a verified channel source exists; show source and update status, with no fabricated metrics. Keep this distinct from the public prototype's simulated sample report. See [ADR-0015](docs/adr/0015-authenticated-campaign-report-empty-state.md).
 
