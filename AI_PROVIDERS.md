@@ -58,3 +58,34 @@ Conclusion: the hosted DeepSeek model was useful for a first marketing draft and
 - Groq rate limits: https://console.groq.com/docs/rate-limits
 - OpenRouter pricing: https://openrouter.ai/pricing
 - Hugging Face inference provider pricing: https://huggingface.co/docs/inference-providers/en/pricing
+
+## Ollama structured-output smoke test — 2026-10-03
+
+The current workstation was checked read-only: Ollama 0.35.1 is installed with
+`qwen3:0.6b`, `qwen3:1.7b`, and `qwen3:4b` already present; no model was
+downloaded for this check. The exact `qwen3:1.7b` tag is Q4_K_M, about 1.4 GB,
+and its Ollama library page lists Apache-2.0. This confirms the model artifact's
+listed license only; it is not legal review or production approval.
+
+One local `/api/chat` request used the fixed synthetic Ankara home-maintenance
+brief, a JSON schema, `think: false`, `stream: false`, temperature 0.2, and a
+512-token cap. It returned three schema-shaped variants in roughly 30 seconds.
+The variants repeated the same angle and nearly the same copy, and one sentence
+added an unsupported “compatible solutions” claim. This single run is not a
+quality benchmark, but the copy was not useful enough for the product flow. The
+gateway now rejects repeated normalized angles; schema validity alone remains
+insufficient. Keep the Ollama adapter opt-in and disconnected from web routes;
+the deterministic synthetic template remains the user-facing generator.
+
+No real advertiser/customer data, hosted endpoint, credential, database write,
+account connection, publication, or spend was involved. A prior attempt through
+the generic URL opener timed out; the adapter now opens a direct HTTP connection
+to the fixed loopback address, with no proxy or redirect handling. The adapter
+is a local experiment boundary, not a production provider selection.
+
+## Official Ollama references checked 2026-10-03
+
+- Chat API and JSON-schema `format`: https://docs.ollama.com/api/chat
+- Structured-output guidance: https://docs.ollama.com/capabilities/structured-outputs
+- Exact Qwen3 1.7B model tag: https://ollama.com/library/qwen3:1.7b
+- Exact Qwen3 1.7B license: https://ollama.com/library/qwen3:1.7b/blobs/d18a5cc71b84

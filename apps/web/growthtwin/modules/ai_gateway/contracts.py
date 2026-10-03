@@ -97,6 +97,7 @@ def validate_generation_result(
         raise CreativeGenerationRejected("Reklam metni seçenek sayısı geçersiz.")
 
     seen_keys: set[str] = set()
+    seen_angles: set[str] = set()
     bounds = {
         "key": GENERATOR_ID_MAX_LENGTH,
         "angle": GENERATOR_ID_MAX_LENGTH,
@@ -118,6 +119,10 @@ def validate_generation_result(
         if variant.key in seen_keys:
             raise CreativeGenerationRejected("Reklam metni anahtarı tekrarlanıyor.")
         seen_keys.add(variant.key)
+        normalized_angle = " ".join(variant.angle.split()).casefold()
+        if normalized_angle in seen_angles:
+            raise CreativeGenerationRejected("Reklam metni açıları tekrarlanıyor.")
+        seen_angles.add(normalized_angle)
 
     return result
 
