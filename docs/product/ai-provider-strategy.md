@@ -163,9 +163,12 @@ provider's current commercial/API terms. Do not send real data to free trials.
    creative fixtures; add image/video suites separately when their workflows
    and budget limits are defined.
 4. **Owner approved USD 5 total on 2026-10-03:** use synthetic fixtures only,
-   without automatic replenishment. The first OpenAI text candidate and its
-   account/local budget gates are documented in `AI_PROVIDERS.md`. Reassess
-   before using the USD 0.50 headroom or adding other paid candidates. Never
-   use free-tier endpoints for private data.
+   without automatic replenishment. The owner has an OpenRouter account and
+   approved it for evaluation. A bounded OpenRouter path to GPT-6 Luna and its
+   account/local budget gates are documented in `AI_PROVIDERS.md`. OpenRouter's
+   current minimum top-up plus purchase fee exceeds the approval, so use only
+   existing credits unless the owner explicitly increases the cash budget.
+   Reassess before spending the USD 0.50 headroom or adding other paid
+   candidates. Never use free-tier endpoints for private data.
 5. Revisit provider choice and model versions before an externally accessible
    pilot; no result in this document selects a production vendor.
