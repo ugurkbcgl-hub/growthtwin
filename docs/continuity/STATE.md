@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 11:56 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 12:09 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,10 +14,10 @@ gates before external beta or production use.
 
 ## Verified repository and staging state
 
-- Verified at 11:56 +0300: `main` is `c13ba96ae610778ad9a924919a7bfabb71f0b12a` after PR #211, the main worktree was clean, and no PRs were open at that time. PR #210 required CI `37110361879` and post-merge CI `37110487277` passed; PR #211 required CI `37110674347` and post-merge CI `37110805928` passed. Current docs follow-up is on branch `docs/record-heroku-dyno-metadata-dependencies`.
-- PR #206 updated `/health/` to prefer `HEROKU_BUILD_COMMIT`, fall back to `HEROKU_SLUG_COMMIT`, and report `unknown` when neither is available. Four focused tests, Ruff, PR CI `37105816655`, and post-merge `main` CI `37106314635` passed. It is now deployed to staging in release v15.
-- The authenticated Heroku CLI shows release v15 deployed from `c13ba96` with succeeded status. A GET to staging `/health/` at 11:54 +0300 returned HTTP 200 with `{"status":"ok","version":"unknown"}`. The deploy's release command reported no migrations to apply.
-- At 11:53 +0300, both `runtime-dyno-build-metadata` and `runtime-dyno-metadata` were enabled on the staging app. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) requires the base Lab for environment metadata and the additional build-metadata Lab for `HEROKU_BUILD_COMMIT`; metadata becomes available on the next deploy. The base Lab was enabled after v15, so the revision remains unverified. Conflicting metadata config-var names were absent before enablement. Config-var values were never displayed. No resource was added.
+- Verified at 12:09 +0300: `main` is `8e29944e024554098bd1c0a90e4b7b799362370a` after PR #212, the main worktree was clean, and no PRs were open at that time. PR #212 required CI `37111641208` and post-merge CI `37111781360` passed. The final documentation refresh is on branch `docs/record-heroku-v16-deployment`.
+- PR #206 updated `/health/` to prefer `HEROKU_BUILD_COMMIT`, fall back to `HEROKU_SLUG_COMMIT`, and report `unknown` when neither is available. Four focused tests, Ruff, PR CI `37105816655`, and post-merge `main` CI `37106314635` passed. It is deployed to staging.
+- The authenticated Heroku CLI shows release v16 deployed from `8e29944e024554098bd1c0a90e4b7b799362370a` with succeeded status. A GET to staging `/health/` at 12:08 +0300 returned HTTP 200 and the same full commit. The release command reported no migrations to apply.
+- Both `runtime-dyno-metadata` and `runtime-dyno-build-metadata` were enabled before v16. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) describes the base Lab and additional build-metadata Lab. No conflicting metadata config-var names existed before enablement. Config-var values were never displayed. No resource was added.
 - The authenticated synthetic report was visually checked at narrow and desktop widths using a temporary local-only account and fixed synthetic campaign; no visible layout issue was found. No real data, account connection, publication, or spend was used. The local server is not guaranteed to remain running after this session.
 
 ## Open risks and limits
@@ -28,4 +28,4 @@ gates before external beta or production use.
 
 ## Next action
 
-Merge the docs follow-up after required CI passes, then deploy the reviewed `main` commit to the existing staging app and verify release status plus `/health/` commit alignment. Do not reveal config-var values or add infrastructure.
+Rerun the pinned profile-edit E2E against v16 with the existing disposable synthetic account. Enter its password only at the hidden local terminal prompt; never record it. Then keep backup/restore and rollback as separate Phase 0 gates. Do not expose config-var values or use real data.
