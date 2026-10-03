@@ -220,48 +220,66 @@ refactor, no provider credentials were added, and web routes remain unchanged.
 ## Owner-approved bounded text evaluation — 2026-10-03
 
 The owner approved up to **USD 5 total** for synthetic provider testing. Do not
-automatically replenish this budget; stop and reassess before any increase. The
-first paid candidate is OpenAI GPT-6 Luna for text only; this is an evaluation
-candidate, not a production selection. The official price checked on
-2026-10-03 is USD 0.10 per million input tokens and USD 0.50 per million output
-tokens. The OpenAI model page says its free tier is unsupported, so a paid API
-project and its current account eligibility must be checked before use.
+automatically replenish this budget; stop and reassess before any increase. On
+2026-10-03 the owner said they have an OpenRouter account and approved using it
+for this experiment. The first candidate remains OpenAI GPT-6 Luna for text,
+accessed through OpenRouter; this is an evaluation route, not a production
+selection. OpenRouter's official catalog checked on 2026-10-03 lists USD 0.10
+per million input tokens and USD 0.50 per million output tokens. OpenRouter
+currently lists both OpenAI and Amazon Bedrock as upstream endpoints for this
+model; the request enforces zero data retention and denies provider data
+collection, so the actual eligible endpoint is determined by those constraints
+and is recorded when returned.
 
-The opt-in runner `apps/web/scripts/evaluate_openai_synthetic.py` is fixed to
-one model, three existing synthetic briefs, three repetitions per brief, at
-most 512 output tokens, 4,096 request bytes, no tools, no retries, and
-`store: false`. It uses only `OPENAI_API_KEY` from the process environment and
-never prints the key or full request. A shared SQLite ledger outside the
-repository reserves cost before each call and stops at USD 4.50, preserving
-USD 0.50 as headroom. An interrupted/ambiguous call keeps its reservation.
-The runner also refuses to send a request until
+The opt-in runner `apps/web/scripts/evaluate_openrouter_synthetic.py` is fixed
+to one model, three existing synthetic briefs, three repetitions per brief, at
+most 512 output tokens, 4,096 request bytes, no tools, and no retries. It sets
+OpenRouter's `provider.zdr=true`, `data_collection=deny`,
+`require_parameters=true`, and per-token maximum prices. It uses only
+`OPENROUTER_API_KEY` from the process environment and never prints the key or
+full request. A shared SQLite ledger outside the repository reserves cost
+before each call and stops at USD 4.50. An interrupted/ambiguous call keeps its
+reservation. The runner also refuses to send a request until
 `GROWTHTWIN_AI_EVAL_HARD_LIMIT_CONFIRMED=1` is present. That flag is only an
-operator assertion, not proof of an account setting. The local ledger is the
-same for future provider runners; do not delete/reset it while this approval is
-active. Each completed request is reconciled using conservative token prices,
-and the runner prints estimated spend, outstanding reservation, and remaining
+operator assertion, not proof of an account setting. The local ledger is shared
+with other evaluation candidates; do not delete/reset it while this approval is
+active. Completed calls are reconciled against OpenRouter's reported request
+cost, and the runner prints spend, outstanding reservation, and remaining
 local allocation.
 
-Before the first billable call, configure a dedicated OpenAI API project for
-this experiment, set and verify a USD 5 monthly hard spend limit, confirm it has
-no other traffic or existing spend that consumes the limit, and keep the API
-key in the local secret environment. OpenAI documents that hard-limit
-enforcement is not instantaneous and spend can slightly exceed the limit;
-therefore the USD 4.50 local reservation ledger preserves a USD 0.50 buffer.
-The provider setting and local reservation ledger are independent safeguards,
-not a mathematical guarantee of a USD 5 ceiling. If the dashboard cannot
-confirm the project limit, do not run the hosted script. Never send advertiser,
-customer, patient, account, or other private data in this evaluation.
+Before the first billable call, create a dedicated OpenRouter API key for this
+experiment, set a USD 4.50 spend limit with no automatic reset, confirm the
+key/account has sufficient existing credits, and keep auto-recharge off. Store
+the key for the current Windows account with
+`apps/web/scripts/setup_openrouter_key.ps1`; the runner reads it into the child
+process only and clears it afterward. Start the evaluation with
+`apps/web/scripts/run_openrouter_synthetic.ps1`. That wrapper asks for an
+explicit `RUN` confirmation of the key limit, sufficient existing credits, and
+disabled auto-recharge. The key-specific spend limit and local reservation
+ledger are independent safeguards. If the dashboard cannot confirm the key
+limit or existing credit balance, do not run the hosted script. Never send
+advertiser, customer, patient, account, or other private data in this
+evaluation.
 
-OpenAI says API content is not used to train models by default, but standard
-abuse-monitoring logs can retain request/response content for up to 30 days.
-`store: false` disables Responses application-state storage; it does not
-disable standard abuse-monitoring retention. This trial therefore uses only
-the repository's synthetic fixtures.
+OpenRouter's current Terms of Service list a USD 5 minimum credit purchase, and
+the Standard account currently charges a 5.5% credit-purchase fee with a
+minimum USD 0.80 fee. A new card purchase would therefore cost at least USD
+5.80 before any applicable tax, exceeding the owner's USD 5 total approval.
+Do not buy credits or enable auto-recharge under this approval. Proceed only if
+the existing account already has sufficient credits. The owner must explicitly
+approve a larger cash budget before any top-up.
 
-Official source pages checked 2026-10-03: [GPT-6 Luna model and pricing](https://developers.openai.com/api/docs/models/gpt-6-luna), [API spend limits](https://developers.openai.com/api/docs/guides/spend-limits), [data controls](https://developers.openai.com/api/docs/guides/your-data), and [structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+OpenRouter says request-level `zdr=true` restricts routing to eligible
+zero-retention endpoints, while `data_collection=deny` filters endpoints that
+collect inputs. This does not make the request local, guarantee Türkiye/EU
+processing, or establish KVKK compliance. OpenRouter forwards inputs to the
+selected model provider, whose separate policies also matter. This trial
+therefore uses only repository synthetic fixtures; if no endpoint satisfies
+the request constraints, the evaluation must fail closed.
 
-**Next:** after confirming the dedicated project hard limit and configuring the
-key securely, run the fixed synthetic text candidate within the USD 4.50 local
-allocation. Reassess before using the remaining USD 0.50 or adding Google or
-Anthropic candidates.
+Official source pages checked 2026-10-03: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
+
+**Next:** after confirming the dedicated OpenRouter key's non-resetting USD
+4.50 limit, sufficient existing credits, and secure local key configuration,
+run the fixed synthetic text evaluation within the shared USD 4.50 allocation.
+Do not top up credits or spend the remaining USD 0.50 without new approval.
