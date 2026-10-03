@@ -52,10 +52,11 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 ## Current blockers
 
 - Configured local database and Heroku database backup/restore remain unverified. The configured local database's data composition has not been established; do not dump or restore it until synthetic-only content is verified.
+- A read-only inventory of the configured local `growthtwin` database ran via `scripts/dev.ps1`, with no `DATABASE_URL` override and the helper's loopback PostgreSQL settings. Aggregate results: 1 account with a test-marked username and an email that is blank or in a reserved example domain; 0 demo profiles; 8 anonymous campaign drafts not matching the current fixed synthetic sample; 9 sessions; and 1 workspace campaign whose base matched the fixed sample but which has creative versions. No username, email, or content value was printed. The old drafts and creative versions remain unclassified; no full data-bearing dump or restore was attempted.
 - The stopped synthetic PostgreSQL rehearsal directory remains at `%TEMP%\gwt_full_rehearsal_a656127cec`. Its exact direct-child path, non-reparse-point status, contents, and absence of a PostgreSQL process using that directory were checked. Recursive cleanup was blocked by tool policy; it was left untouched and no alternate deletion method was attempted.
 - Rollback was verified only between v15 and v16, whose application code is identical. Recovery across app-code, config-var, schema, or database-state changes remains unverified.
 - Final Heroku usage, tax, and Scheduler one-off costs remain unverified.
 
 ## Next action
 
-Begin a read-only inventory of the configured local `growthtwin` database that can establish whether its content is synthetic without printing personal values. Only if the contents are demonstrably synthetic, plan a full dump/restore into a newly named isolated target; otherwise leave the source untouched. Do not retry recursive deletion through an alternate tool after the cleanup request was blocked. Do not expose config-var values or use real data.
+Keep full backup/restore of the configured local database deferred while legacy drafts and workspace creative values remain unclassified. Leave this database untouched; continue any product work with newly created synthetic fixtures in an isolated environment. Do not retry recursive deletion through an alternate tool after the cleanup request was blocked. Do not expose config-var values or use real data.
