@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 14:42 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 14:47 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -16,9 +16,9 @@ release gates before external beta or production use.
 
 - At the start of this work, `main` was clean at
   `d0d7c7beb45cae30f79c1602920f372fcd0b18b3`, PRs #217–220 were merged, no PRs
-  were open, and #220 post-merge CI `37119816584` passed. Current work is on
-  feature branch `eval/synthetic-creative-benchmark`; its PR/CI state must be
-  checked after creation.
+  were open, and #220 post-merge CI `37119816584` passed. Current work is PR
+  #221, `eval/synthetic-creative-benchmark`; required CI run `37120608079`
+  passed. PR #221 is awaiting merge after local review.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -73,8 +73,7 @@ release gates before external beta or production use.
 
 ## Next action
 
-Review and merge the synthetic benchmark PR only after local review and
-required CI pass. Then choose the next already-available local candidate or
+After PR #221 merges, choose the next already-available local candidate or
 improve prompt/model settings and rerun the explicit gate in `AI_PROVIDERS.md`;
 keep deterministic website generation active. Use only synthetic fixtures;
 leave real data, web-route AI activation, account connections, publishing,
