@@ -1,4 +1,32 @@
-# AI provider evaluation
+# AI provider evaluation and current direction
+
+> **Current recommendation (2026-10-03):** Do not bind GrowthTwin to Ollama,
+> a workstation GPU, or a single provider. Use the application-owned,
+> provider-neutral gateway to route text, image, video, and asset-analysis
+> tasks to separately replaceable hosted APIs. Compare OpenAI, Gemini, and
+> Anthropic for text; Google and OpenAI for images and short video. This is a
+> synthetic-evaluation shortlist, not a production provider selection or
+> permission to incur API charges. See the [provider-combination strategy](docs/product/ai-provider-strategy.md)
+> for task routing, data conditions, evidence, and gates.
+
+The existing website still uses deterministic templates. No provider API is
+connected to a product route. The local Ollama adapter is optional for
+developer experiments only; recent local candidates failed the small
+synthetic creative gate. Future provider work must start with synthetic data,
+an explicit spend cap, and separate review of the provider's current terms.
+
+## Architecture recommendation
+
+- Use a server-side task router over independent provider adapters; do not
+  expose provider SDKs, model names, or credentials to product views.
+- Select one permitted provider per task based on measured quality, accepted
+  result cost, latency, availability, and the request's data class. Do not
+  fan out every advertiser input to multiple providers by default.
+- Use deterministic claim/source rules as authority. A second model can
+  identify possible issues but cannot prove a claim true or clear it for
+  publication.
+- Preserve the historical experiments below as evidence, not as vendor
+  rankings. Their single-run results are directional only.
 
 This is a development-only comparison. Free access, quotas, model lists, and terms can change. No provider has been selected for production. The project goal is now a cross-industry advertising campaign autopilot, so the dental-clinic examples below are useful safety probes but do not represent the full product workload or establish general model quality.
 

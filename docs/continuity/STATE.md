@@ -1,111 +1,71 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 21:49 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 22:02 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
-## Objective and scope
+## Objective
 
-Build a polished, low-effort, self-service paid-advertising platform for
-advertisers in Türkiye across sectors. Local development and model experiments
-remain synthetic-only. Do not enter real advertiser/customer/patient data,
-connect live accounts, publish ads, spend media budget, or add paid
-infrastructure. Phase 0 recovery, privacy, provider, and platform checks remain
-release gates before external beta or production use.
+Build a polished, self-service paid-advertising platform for Türkiye across
+industries. The product runtime must not depend on the owner's local PC/GPU.
+Develop and evaluate with synthetic data; no real advertiser data, live ad
+accounts, publication, spend, or unapproved paid infrastructure.
 
-## Verified repository and product state
+## Verified repository state at start of this work
 
-- PR #221 (`eval/synthetic-creative-benchmark`) merged as
-  `32a5cc889d27514e78f960ad6e4d433ac392921c`; PR CI `37120780177` and
-  post-merge CI `37120891350` passed. PR #222 (`eval/claim-screen-benchmark`)
-  merged as `b464bf1f745b1a68576d4a8f471bbde7ed65db83`; PR CI `37121217179`
-  and post-merge CI `37121322397` passed. PR #223 (`design/claim-grounding-contract`)
-  merged as `f1158118bf3c7c1d7ce9f369a1015d1ac490107d`; PR CI `37121534148`
-  and post-merge CI `37121664437` passed. PR #224 merged as
-  `60e19f8b40fcc415f16c9defa9e164292230cd9b`; PR CI `37122112785` and
-  post-merge CI `37122235037` passed. PR #225 (`feat/synthetic-fact-copy-assembly`)
-  merged as `52b13168199d45b5fb7a3bc79473872a89a93ff0`; PR CI
-  `37145361284` and post-merge CI `37145519975` passed. `main` is current at
-  `52b13168199d45b5fb7a3bc79473872a89a93ff0`; no PRs were open at the last
-  check. This continuity-only refresh is on `docs/post-fact-assembly-state`.
-- The `ai_gateway` now has an immutable provider-neutral request/result
-  contract, fail-closed structured-output/length/source/key/diversity checks,
-  and a deterministic synthetic adapter. Both public fixed-sample and
-  authenticated workspace copy flows use that template adapter. Workspace
-  versions record the generator id and preserve it through edits/restores.
-- An opt-in `OllamaCreativeGenerator` is limited to direct loopback HTTP, with
-  no proxy, redirect, credential, or streaming behavior. It is not connected to
-  web routes. Generated results remain review-required and non-publishable.
-  `synthetic_only` is a caller assertion, not authorization to process real
-  data.
-- Local validation on 2026-10-03: 75 focused Django tests passed using the
-  in-memory SQLite test settings; Ruff lint and format checks passed. One
-  Qwen3 1.7B structured-output run took about 30 seconds and returned repetitive
-  copy with an unsupported phrase. One Qwen3 4B run took about 80 seconds and
-  was rejected for repeating variant angles. Neither model is selected for
-  product use; the website continues to use the deterministic template.
-- Ollama 0.35.1 and Qwen3 0.6B/1.7B/4B were already installed; no model was
-  downloaded. The exact Qwen3 1.7B tag's Ollama library page lists Apache-2.0;
-  this is not legal review. Evaluation details and official references are in
-  [AI_PROVIDERS.md](../../AI_PROVIDERS.md).
-- A repeatable stdout-only local benchmark runner was added and run on three
-  synthetic briefs against Qwen3 1.7B and 4B (one run per cell). All six runs
-  were rejected: 1.7B repeated angles in all cases; 4B timed out twice at 120
-  seconds and repeated a key once. No output was accepted for usefulness,
-  claim-grounding, or review-effort scoring. No model was selected; web routes
-  remain on the deterministic template. Results and a future-candidate gate
-  are in `AI_PROVIDERS.md`.
-- Follow-up included Qwen3 0.6B: two briefs were rejected for invalid keys; an
-  initial injection-brief output was structurally accepted but copied the
-  untrusted `ücretsiz` offer. Its immediate 9.52-second rerun was rejected for
-  duplicate angles. The benchmark runner now reports exact forbidden fixture
-  phrases on accepted-shaped output. This is not semantic claim validation;
-  no model passed. The website generator remains deterministic.
-- A draft claim-grounding contract now describes approved-source provenance,
-  exact safe reuse, and fail-closed treatment of unsupported claims. It is not
-  an accepted ADR, semantic truth proof, or authorization for real data.
-- The provider-neutral gateway includes a persistence-free exact-source claim
-  matcher.
-  It checks one caller-listed claim against one owner-approved, non-expired
-  fact, rejecting paraphrases and missing/ambiguous evidence. It cannot verify
-  source truth, policy, legal compliance, or completeness of the claim list;
-  it is not connected to web routes. All 21 focused `ai_gateway` tests and Ruff
-  format/lint passed locally with in-memory SQLite test settings.
-- Bounded, persistence-free fact-copy assembly is implemented: it
-  joins at most five caller-listed exact-matched statements, returning no text
-  when any verdict fails or output exceeds 1,200 characters. It does not
-  create copy or prove the claim inventory complete. All 25 focused gateway
-  tests and Ruff checks passed locally; PR and post-merge CI passed. It is not
-  connected to web routes.
+- `main` was `e0ec0d949ba5724463ee11aae4e24cf9a3932728`; remote `origin/main`
+  matched. The working tree was clean before edits.
+- Previous handoff PR #226 is merged. The latest main CI run observed before
+  edits was run `37145844015`, success. No open pull requests were returned by
+  GitHub at that check.
+- Work is on `docs/multi-provider-ai-strategy`, created from the verified
+  `origin/main`. Current changes are documentation only; PR/CI are not yet
+  created/run at this handoff snapshot.
 
-## Open risks and limits
+## Completed in this work
 
-- Heroku staging was last checked earlier on 2026-10-03 at 13:37 +0300; release
-  v18 pointed to the v16 rollback target. Staging was not changed or rechecked
-  during this local AI work. That rollback tested same-application-code only;
-  configured-database recovery and rollback across code/schema changes remain
-  unverified.
-- Heroku billing last displayed $0.00 current usage and a $1.37 September
-  invoice marked Pending; neither is a final cost. Tax and Scheduler one-off
-  cost remain unknown.
-- The configured local `growthtwin` inventory had one test-marked account, no
-  demo profiles, eight anonymous drafts not matching the current sample, nine
-  sessions, and one workspace campaign with stored creative versions. Older
-  drafts and creative values remain unclassified. No data-bearing dump/restore
-  was attempted; this AI work did not touch the configured PostgreSQL database.
-- A stopped synthetic PostgreSQL rehearsal folder remains in `%TEMP%`; cleanup
-  was blocked by tool policy and no alternate deletion method was attempted.
-- Session cleanup is best-effort, not a real-data retention guarantee. Keep
-  local/staging content synthetic. There is still no platform account, API,
-  publication, spend, live forecast, or verified report source.
-- The Qwen3 results are one-run smoke tests, not quality or safety evidence.
-  Schema correctness does not establish factual grounding, legal/platform
-  compliance, or useful creative quality.
+- Reviewed `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, continuity instructions,
+  current state, AI provider history, ADR-0004/0009, and the claim-grounding
+  draft. Current product generation is deterministic; Ollama is opt-in and
+  disconnected from routes. Recent Qwen3 local evaluation failed the creative
+  gate. No production AI provider is selected.
+- Checked current official OpenAI, Gemini/Vertex AI, and Anthropic model/API,
+  pricing, data handling, media, and model lifecycle pages on 2026-10-03.
+- Added `docs/product/ai-provider-strategy.md`: recommends an application-owned
+  task router and replaceable hosted providers, with OpenAI/Gemini/Anthropic
+  as text candidates and Google/OpenAI as image/video candidates. It describes
+  provider/data-class gates, deterministic claim authority, synthetic
+  evaluation dimensions, and explicit approval for any billable evaluation.
+- Updated `AI_PROVIDERS.md`, `PROJECT.md`, and `ROADMAP.md` to clarify that
+  local inference is optional, the website remains on templates, and no
+  provider account/API/paid use is activated.
+- Refreshed this state snapshot; changes are not yet committed or reviewed by
+  CI.
+
+## Current risks and limits
+
+- Provider/model IDs, API features, prices, regions, and terms change. The
+  shortlist is not a production recommendation; recheck official terms before
+  evaluation or selection.
+- OpenAI API content is not used for training by default, but standard abuse
+  monitoring may retain data for up to 30 days; video does not support its
+  retention controls per the checked docs. Google's free Gemini API may use
+  submitted content to improve products; paid service rules differ and still
+  include limited safety/legal retention. None of these is a KVKK review or
+  confirmation of Türkiye-only processing.
+- The owner has not approved a new AI evaluation spend. Existing approximately
+  USD 12 Heroku staging approval does not cover provider API charges.
+- Existing AI gateway only has a text creative contract and local/synthetic
+  adapters. Image/video/document integrations, task routing, real-data
+  readiness, and provider availability failover are not implemented.
+- Current hosted/API vendor performance has not been measured on GrowthTwin's
+  own task suite. No candidate may receive real advertiser material or be
+  connected to routes based on these documents alone.
 
 ## Next action
 
-Evaluate the constrained exact-fact assembly on synthetic examples from several
-advertiser types. Decide whether a fixed non-factual call-to-action/template
-can make the output useful without introducing unsupported claims; define how
-the source-fact set is selected and approved, and keep all AI routes disabled.
-Use only synthetic fixtures; leave real data, account connections,
-publication, spend, paid services, and the configured local database untouched.
+Review and merge the documentation PR after required CI passes. Then implement
+provider-neutral task profiles and a repeatable synthetic benchmark interface
+for the text shortlist without provider credentials or web-route calls. Ask
+for a bounded spend decision only when a live, billable vendor comparison is
+actually required; keep image/video and customer-file ingestion behind their
+separate readiness gates.

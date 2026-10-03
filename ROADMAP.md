@@ -38,7 +38,7 @@ This work is required before expanding the authenticated workspace beyond its cu
 - Treat owner-provided credit anchors (100 credits = USD 10; USD 100 for 1,000 purchased credits plus 20% bonus = 1,200 credits) and free initial credits as pricing requirements to cost and validate; distinguish creation credits, GrowthTwin campaign fees, platform media spend, tax and currency. The precise rate card and outcome/refund guarantee remain unresolved pending economics and legal review.
 - Research Türkiye channel availability separately from GrowthTwin's API/SaaS approval. Score objective/format, OAuth and app review, forecast/report coverage, account/currency, lead sync, policies, maintenance and cost. Initial official-source findings and unknown channels are recorded in the blueprint; do not describe a candidate as integrated until access is verified.
 - Define the pre-purchase calculator's channel-level budget, estimated reach/impressions/engagement ranges, assumptions, source and freshness, confidence, fees and platform spend. Never invent or present uncertain results as guarantees.
-- Define AI evaluation by text, image, video and customer-document tasks, including copyright/likeness, data classes, provider terms, source traceability, claims and evaluation on synthetic data. No production provider is selected.
+- Follow the [AI provider-combination strategy](docs/product/ai-provider-strategy.md): the local GPU is optional, not a runtime dependency; compare replaceable hosted text, image and video candidates by task on synthetic inputs. Include copyright/likeness, data class, provider terms, source traceability, claims, accepted-result cost and failure behavior. No production provider is selected and no paid API use is authorized by the shortlist.
 - Separate advertiser service requests from generated campaign leads; decide collection, purpose, destination, consent, account/role access, delivery/retry/audit, retention and deletion.
 - Record Turkish advertising, KVKK/cross-border transfer, commercial electronic message, IP and sector-policy review as launch gates. Product policy checks are versioned and explainable; they do not replace counsel.
 - Define spend/schedule/content boundaries, user authorization, tenant ownership, data recipients, category-specific retention/deletion/export, backup and restore. Keep all development and staging data synthetic.
@@ -184,7 +184,7 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 ## Deferred until evidence supports them
 
 - Broad simultaneous channel coverage, vertical-specific workflow depth, native mobile clients, organic-content calendars, long-form video generation, full CRM, vector search, microservices, a separate queue service, and automatic cross-channel budget allocation.
-- Production AI/provider selection and production hosting.
+- Production AI/provider selection and production hosting. The provider-neutral architecture and synthetic candidate shortlist are documented, but no live API integration or provider call is selected; any billable evaluation requires a separate bounded owner-approved budget.
 
 ## Existing Phase 0 tasks retained as gates
 
