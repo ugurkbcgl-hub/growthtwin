@@ -1,8 +1,8 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-10-03 13:03 +0300 (Europe/Istanbul)
+Review date: 2026-10-03 13:22 +0300 (Europe/Istanbul)
 
-The staging profile-edit E2E was rerun and passed against the approved staging app's v16 release with a disposable least-privilege synthetic account and fabricated profile values. The temporary account password was reset for this run and was not recorded. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
+The staging profile-edit E2E passed against the approved staging app's v16 release, was repeated on v15 during a controlled release rollback on 2026-10-03, and passed again after returning to v16. A disposable least-privilege synthetic account and fabricated profile values were used. The temporary account password was reset and not recorded. No live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
 ## Verified baseline
 
@@ -13,7 +13,7 @@ The staging profile-edit E2E was rerun and passed against the approved staging a
 - The earlier 11:01 +0300 staging health check still reflected release v14 (`69476a62`) and returned `version: unknown`. Subsequent Heroku CLI release checks observed v15 and then v16.
 - PR #206 updates health revision lookup to prefer `HEROKU_BUILD_COMMIT`, then legacy `HEROKU_SLUG_COMMIT`; it is deployed. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) requires both `runtime-dyno-metadata` and the additional `runtime-dyno-build-metadata` flag for `HEROKU_BUILD_COMMIT`. Both were enabled before v16. The v16 health response reports `8e29944e024554098bd1c0a90e4b7b799362370a`, matching `main`; config-var values were not revealed. The release command reported no migrations to apply.
 - The staging E2E runner exists at `apps/web/e2e/run_staging.py`, pinned to the approved HTTPS host. The passing staging check reused `e2e.profile_edit_flow.run_profile_edit_flow` through a one-time local helper; it verified login, profile save and persistence after reload, logout, and logged-out access protection. It used the disposable account `growthtwin-e2e-20260930`; no password was recorded.
-- The approved resources remain one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), and Standard Free Scheduler, with a previously observed estimate near USD 12/month. This is not an invoice; actual charges, tax, and Scheduler one-off dyno cost remain unverified. No resource was added in this work.
+- The approved resources remain one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), and Standard Free Scheduler, with a previously observed estimate near USD 12/month. On 2026-10-03, Heroku billing displayed $0.00 current usage and the September invoice at $1.37 Pending. This is not a finalized usage total; tax and Scheduler one-off dyno costs remain unverified. No resource was added in this work.
 
 ## Verification sequence and stop points
 
@@ -37,23 +37,25 @@ On 2026-10-01, the configured local `growthtwin` database was identified through
 
 On 2026-10-01, an additional temporary PostgreSQL 18.6 cluster bound to loopback was initialized. Django migrations were applied to a new source database, one fabricated auth account with an unusable password was added, and a full custom-format dump was restored into a separate empty database. The synthetic marker was found exactly once; `manage.py check --database default` and `manage.py migrate --check --noinput` both passed on the restored target. The server was stopped. No configured local `growthtwin` or Heroku database was used. The cluster directory and dump remain under `%TEMP%` at `gwt_full_rehearsal_a656127cec`; cleanup was attempted only after confirming the exact resolved path, but the command tool's automatic policy blocked the recursive removal. Its contents are synthetic rehearsal data only.
 
-This verifies a Django-shaped, data-bearing local round-trip, not a backup of the configured `growthtwin` database or Heroku staging. Clear the stopped temporary rehearsal directory before continuing to rollback planning.
+This verifies a Django-shaped, data-bearing local round-trip, not a backup of the configured `growthtwin` database or Heroku staging. The stopped temporary rehearsal directory remains because a recursive cleanup request was blocked by tool policy; it is not the source or target for any subsequent restore.
 
-### 3. Deployment rollback — planning only; no deploy performed
+### 3. Deployment rollback — verified between same-code releases
 
-First obtain a current release list and code revision from the authorized Heroku dashboard or an installed authenticated CLI. Select a known-good reviewed release, then check schema/migration compatibility before rollback. Never roll back across an irreversible migration without a tested recovery plan.
+On 2026-10-03, v16 (`8e29944`) was rolled back to v15 (`c13ba96`), creating v17. Heroku reported no migrations to apply. `/health/` returned HTTP 200 and revision `c13ba96ae610778ad9a924919a7bfabb71f0b12a`; the profile-edit E2E passed on v15. The app was then rolled back to v16, creating v18; Heroku again reported no migrations. `/health/` returned HTTP 200 and revision `8e29944e024554098bd1c0a90e4b7b799362370a`, and the profile-edit E2E passed again. Git confirms v15/v16 differ only in documentation, with no application code or migration changes. This verifies the Heroku release rollback mechanism for same-code releases and confirms v16 was restored. It does not prove recovery across an app-code or schema change, and Heroku rollback does not restore database contents.
 
-Pass evidence: restore the selected release through the approved deployment mechanism, verify health and deployed revision, run staging E2E, and record application/database recovery ordering. No rollback has been performed or verified; the health endpoint still cannot report the running revision.
+Pass evidence: both rollback releases were created successfully, matching health revisions were checked, no migrations ran, and synthetic profile E2E passed on both versions. No add-on was provisioned or removed.
 
 ### 4. Cost and CI gate — partially verified
 
-The GitHub merge gate is verified above, and PR/post-merge CI results are recorded in the continuity state. The authenticated dashboard currently estimates about USD 12/month for the approved resources. This is not actual billed usage; tax treatment and Scheduler one-off dyno charges remain unverified. No resource was created for this check.
+The GitHub merge gate is verified above, and PR/post-merge CI results are recorded in the continuity state. The authenticated billing page displayed $0.00 current usage and a September invoice of $1.37 Pending. This is not a finalized total; tax treatment and Scheduler one-off dyno charges remain unverified. No resource was created for this check.
 
 ## Current blockers
 
-- Staging `/health/` returned HTTP 200 with a revision matching the v16 deployment. The pinned profile-edit E2E passed on v16. Backup/restore and rollback remain unverified.
-- Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
+- Configured local database and Heroku database backup/restore remain unverified. The configured local database's data composition has not been established; do not dump or restore it until synthetic-only content is verified.
+- The stopped synthetic PostgreSQL rehearsal directory remains at `%TEMP%\gwt_full_rehearsal_a656127cec`. Its exact direct-child path, non-reparse-point status, contents, and absence of a PostgreSQL process using that directory were checked. Recursive cleanup was blocked by tool policy; it was left untouched and no alternate deletion method was attempted.
+- Rollback was verified only between v15 and v16, whose application code is identical. Recovery across app-code, config-var, schema, or database-state changes remains unverified.
+- Final Heroku usage, tax, and Scheduler one-off costs remain unverified.
 
 ## Next action
 
-Clean the stopped temporary PostgreSQL rehearsal directory `gwt_full_rehearsal_a656127cec` under `%TEMP%` after rechecking its exact resolved path and confirming the server is stopped. Then continue with configured-database backup/restore and controlled rollback as separate Phase 0 gates. Do not expose config-var values or use real data.
+Begin a read-only inventory of the configured local `growthtwin` database that can establish whether its content is synthetic without printing personal values. Only if the contents are demonstrably synthetic, plan a full dump/restore into a newly named isolated target; otherwise leave the source untouched. Do not retry recursive deletion through an alternate tool after the cleanup request was blocked. Do not expose config-var values or use real data.
