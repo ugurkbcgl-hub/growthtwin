@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 23:05 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 23:11 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -12,10 +12,11 @@ ad accounts, publication, media spend, or production AI use.
 
 ## Repository and PR state
 
-- `main` is clean at `7df3a9fb737d38137410c5302489d67ba0124095`.
+- `main` is clean at `bd6eb4c9dbe0931093887c6bd06d662858c457da`.
 - PR #231 merged. Required PR CI `37149972884` and post-merge main CI
   `37150107533` passed, including Django tests and browser E2E. No open PRs
-  were returned at the latest check.
+  were returned at the latest check. PR #232 refreshed this handoff; its
+  required CI `37150316060` and post-merge main CI `37150467156` also passed.
 
 ## AI and product status
 
