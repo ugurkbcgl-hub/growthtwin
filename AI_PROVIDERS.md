@@ -138,6 +138,23 @@ account access, publication, or spend. Current Qwen3 candidates fail the gate,
 so keep the website's deterministic template active and the Ollama adapter
 disconnected from routes.
 
+## Persistence-free exact-source claim prototype — 2026-10-03
+
+`apps/web/growthtwin/modules/ai_gateway/claim_grounding.py` is an offline
+experiment. It matches one listed claim to one non-expired source fact only
+when their full text matches after Unicode compatibility normalization, case
+folding, and whitespace collapse. The owner-approval flag and provenance
+identifiers are caller-supplied assertions. It rejects paraphrases
+and missing/unknown/ambiguous/unapproved/expired evidence. Its source reference
+and version are caller-provided labels, not authenticity checks.
+
+This does not locate every factual sentence in a creative, establish that a
+claim inventory is complete, validate the truth or legality of a source, or
+check platform policy. It is not connected to website routes and cannot
+authorize publication. Local validation on the feature branch: all 21 focused
+`ai_gateway` tests passed with the in-memory SQLite test settings; Ruff format
+and lint passed.
+
 ## Official Ollama references checked 2026-10-03
 
 - Chat API and JSON-schema `format`: https://docs.ollama.com/api/chat

@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 15:00 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 15:11 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -18,9 +18,10 @@ release gates before external beta or production use.
   `32a5cc889d27514e78f960ad6e4d433ac392921c`; PR CI `37120780177` and
   post-merge CI `37120891350` passed. PR #222 (`eval/claim-screen-benchmark`)
   merged as `b464bf1f745b1a68576d4a8f471bbde7ed65db83`; PR CI `37121217179`
-  and post-merge CI `37121322397` passed. Current work is on branch
-  `design/claim-grounding-contract`; a design draft is being prepared and its
-  PR/CI status is not yet available.
+  and post-merge CI `37121322397` passed. PR #223 (`design/claim-grounding-contract`)
+  merged as `f1158118bf3c7c1d7ce9f369a1015d1ac490107d`; PR CI `37121534148`
+  and post-merge CI `37121664437` passed. Current work is on branch
+  `feat/synthetic-claim-evidence`; PR/CI status is pending.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -57,6 +58,12 @@ release gates before external beta or production use.
 - A draft claim-grounding contract now describes approved-source provenance,
   exact safe reuse, and fail-closed treatment of unsupported claims. It is not
   an accepted ADR, semantic truth proof, or authorization for real data.
+- The current branch adds a persistence-free exact-source claim matcher.
+  It checks one caller-listed claim against one owner-approved, non-expired
+  fact, rejecting paraphrases and missing/ambiguous evidence. It cannot verify
+  source truth, policy, legal compliance, or completeness of the claim list;
+  it is not connected to web routes. All 21 focused `ai_gateway` tests and Ruff
+  format/lint passed locally with in-memory SQLite test settings.
 
 ## Open risks and limits
 
@@ -84,9 +91,9 @@ release gates before external beta or production use.
 
 ## Next action
 
-Review and merge the claim-grounding design PR after local review and required
-CI pass. Then define a persistence-free fact/claim contract and synthetic
-evaluator without claiming semantic truth; keep deterministic website
-generation active. Use only synthetic fixtures; leave real data, web-route AI
+Review and merge the exact-source claim matcher PR after local review and
+required CI pass. Then prototype controlled copy assembly over exact approved
+fact text and assess its utility on synthetic briefs; keep deterministic
+website generation active. Use only synthetic fixtures; leave real data, web-route AI
 activation, account connections, publishing, spend, paid services, and the
 configured local database untouched.

@@ -47,6 +47,24 @@ other regulated or high-impact claims need explicit policy rules and qualified
 review appropriate to the market. This contract does not replace Turkish legal
 or platform-policy review.
 
+## Persistence-free prototype
+
+The current feature branch adds `apps/web/growthtwin/modules/ai_gateway/claim_grounding.py`.
+It evaluates one explicitly listed claim against one fact at a time and accepts
+only normalized full-text equality (Unicode NFKC, case folding, and whitespace
+collapse) with a non-expired fact record whose owner-approval flag is asserted
+by its caller. Unknown or duplicate fact identifiers, unapproved/expired
+facts, paraphrases, missing evidence, and oversized values fail closed. The
+`source_ref` and version are provenance labels only; they do not prove source
+authenticity.
+
+This helper does not discover claims in creative copy or prove that the caller
+listed every claim. Its owner-approval flag is not identity-verified. It also
+does not establish that a source is true, lawful, current beyond its supplied
+expiry date, or permitted by an ad platform. It remains disconnected from all
+product routes. Its tests use only fabricated facts and an explicit evaluation
+date.
+
 ## Required synthetic evaluation before implementation selection
 
 - Include supported facts, unsupported additions, prompt-injection text,
@@ -73,6 +91,9 @@ or platform-policy review.
 - What evidence and false-accept threshold are required before any broader
   paraphrase verifier can be evaluated?
 
-The next implementation decision should define a persistence-free fact and
-claim contract plus a fail-closed synthetic evaluator. It must not claim to
+The next implementation decision should demonstrate a deterministic way to
+control every factual sentence in assembled copy (for example, fixed safe
+templates over exact approved fact text) and evaluate whether it remains useful
+on varied synthetic briefs. Do not connect a general generator to routes while
+claim inventory completeness is unverified. The prototype must not claim to
 prove semantic truth or authorize publication.
