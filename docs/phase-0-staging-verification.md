@@ -1,17 +1,17 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-10-03 11:32 +0300 (Europe/Istanbul)
+Review date: 2026-10-03 11:56 +0300 (Europe/Istanbul)
 
 The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
 ## Verified baseline
 
 - Historical baseline for the 2026-10-01 verification: `main` was `69476a62d2d289761d1aeef8c672e66dadc28b6d` after PR #176, and the staging E2E below passed against that commit as release v14.
-- Current read-only recheck on 2026-10-03: the authenticated Heroku Activity page still shows latest release v14, deployed 2026-09-30 from `69476a62`. Current repository `main` is `950749d68952e4197b486db8d0674e585facae6e` after PR #209, with post-merge CI `37109187034` passed. Staging is behind current `main`.
+- Current CLI recheck on 2026-10-03: the latest Heroku release is v15, deployed from `c13ba96` and succeeded. Current repository `main` was `c13ba96ae610778ad9a924919a7bfabb71f0b12a` after PR #211, with post-merge CI `37110805928` passed. A documentation-only follow-up is being prepared on a feature branch.
 - GitHub branch protection is enabled on `main`; the required context is `Django system check`, PR branches must be up to date, and admin enforcement is enabled.
 - A direct GET to the approved staging `/health/` endpoint on 2026-09-30 returned HTTP 200 and `{"status":"ok","version":"unknown"}`. This verifies endpoint and database readiness, but the application response does not identify its code revision.
 - The 2026-09-30 authenticated Heroku CLI release list showed latest code deployment v14, commit `69476a62`; the 2026-10-03 authenticated dashboard Activity page independently still shows v14 as latest. The current staging `/health/` returned HTTP 200 with `version: unknown` at 2026-10-03 11:01 +0300.
-- PR #206 updates health revision lookup to prefer `HEROKU_BUILD_COMMIT`, then legacy `HEROKU_SLUG_COMMIT`; it is merged to current `main` but not deployed to staging. An authenticated, read-only Heroku CLI query on 2026-10-03 confirmed `runtime-dyno-build-metadata` is disabled for this app. Config var values were not revealed; no staging setting or deployment was changed.
+- PR #206 updates health revision lookup to prefer `HEROKU_BUILD_COMMIT`, then legacy `HEROKU_SLUG_COMMIT`; it is deployed to staging. Heroku's official [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) requires both `runtime-dyno-metadata` and the additional `runtime-dyno-build-metadata` flag for `HEROKU_BUILD_COMMIT`. Both are enabled now, but the base flag was enabled after v15. Config-var values were not revealed. v15's release command reported no migrations to apply.
 - The staging E2E runner exists at `apps/web/e2e/run_staging.py`, pinned to the approved HTTPS host. The passing staging check reused `e2e.profile_edit_flow.run_profile_edit_flow` through a one-time local helper; it verified login, profile save and persistence after reload, logout, and logged-out access protection. It used the disposable account `growthtwin-e2e-20260930`; no password was recorded.
 - The approved resources remain one Basic dyno (~USD 0.010/hour), one Essential-0 Postgres (~USD 0.007/hour), and Standard Free Scheduler, with a previously observed estimate near USD 12/month. This is not an invoice; actual charges, tax, and Scheduler one-off dyno cost remain unverified. No resource was added in this work.
 
@@ -51,9 +51,9 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Current blockers
 
-- The current staging health response still reports version `unknown`; PR #206's revision reporting fix has not been deployed. The build-metadata Labs feature is disabled, so `HEROKU_BUILD_COMMIT` will not be available on a future deploy unless that Labs setting is enabled.
+- After v15, staging `/health/` returned HTTP 200 with `version: unknown`. Both required metadata Labs are now enabled; deploy a new reviewed commit to make their variables available and verify revision reporting.
 - Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
 
 ## Next action
 
-Review a separately authorized staging action to enable `runtime-dyno-build-metadata` and deploy the reviewed `main` revision so `/health/` can report its build commit; verify the release and health response afterward. Do not expose config-var values. Keep the stopped synthetic rehearsal folder cleanup as a separate local-only task and do not touch configured `growthtwin` or staging data.
+After the documentation follow-up passes required CI and is merged, deploy that reviewed `main` commit to staging; verify the new release, `/health/` revision, and that it matches the commit. Do not expose config-var values. Keep the stopped synthetic rehearsal folder cleanup as a separate local-only task and do not touch configured `growthtwin` or staging data.
