@@ -16,6 +16,16 @@ def health(request):
     return JsonResponse(
         {
             "status": "ok",
-            "version": os.environ.get("HEROKU_SLUG_COMMIT", "unknown"),
+            "version": _deployed_revision(),
         }
     )
+
+
+def _deployed_revision():
+    """Prefer current Heroku build metadata; retain the legacy slug fallback."""
+
+    for variable in ("HEROKU_BUILD_COMMIT", "HEROKU_SLUG_COMMIT"):
+        revision = os.environ.get(variable, "").strip()
+        if revision:
+            return revision
+    return "unknown"
