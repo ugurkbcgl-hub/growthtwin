@@ -77,6 +77,11 @@ gateway now rejects repeated normalized angles; schema validity alone remains
 insufficient. Keep the Ollama adapter opt-in and disconnected from web routes;
 the deterministic synthetic template remains the user-facing generator.
 
+A second single request against the already-installed `qwen3:4b` model used the
+same brief and settings. It took about 80 seconds and was rejected because the
+variants repeated their angle. Neither smoke test is a reliability benchmark;
+the 4B run did not establish better quality than 1.7B.
+
 No real advertiser/customer data, hosted endpoint, credential, database write,
 account connection, publication, or spend was involved. A prior attempt through
 the generic URL opener timed out; the adapter now opens a direct HTTP connection
