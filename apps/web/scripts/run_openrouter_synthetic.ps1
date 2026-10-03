@@ -53,7 +53,7 @@ if ($RunnerArguments -contains "--estimate") {
     exit $pythonExitCode
 }
 
-$confirmation = Read-Host "Confirm: this dedicated key has a USD 4.50 limit with no reset, existing credits are sufficient, and auto-recharge is off. Type RUN to continue"
+$confirmation = Read-Host "Confirm: this dedicated key has a USD 16 limit with no reset, the account has sufficient existing credits, and auto-recharge is off. Type RUN to continue"
 if ($confirmation -cne "RUN") {
     Write-Output "Evaluation cancelled before any provider request."
     exit 2

@@ -155,5 +155,25 @@ class OpenAIEvaluationBoundaryTests(SimpleTestCase):
                         "SELECT cap_usd, spent_usd, reserved_usd FROM budget"
                     ).fetchone()
 
-        self.assertEqual(row, (4.5, 0.00025, 0.0))
-        self.assertEqual(state, (4.5, 0.00025, 0.0))
+        self.assertEqual(row, (16.0, 0.00025, 0.0))
+        self.assertEqual(state, (16.0, 0.00025, 0.0))
+
+    def test_budget_stops_at_confirmed_prepaid_balance(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            with mock.patch.dict(
+                os.environ,
+                {
+                    "LOCALAPPDATA": temp_dir,
+                    "GROWTHTWIN_AI_EVAL_HARD_LIMIT_CONFIRMED": "1",
+                },
+                clear=True,
+            ):
+                path = reserve_evaluation_cost(0.001)
+                with closing(sqlite3.connect(path)) as connection:
+                    with connection as db:
+                        db.execute(
+                            "UPDATE budget SET spent_usd = 15.995, reserved_usd = 0"
+                        )
+
+                with self.assertRaisesRegex(RuntimeError, "prepaid evaluation balance"):
+                    reserve_evaluation_cost(0.01)

@@ -5,8 +5,9 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 
-# Keep USD 0.50 unallocated as headroom for provider usage-reporting delay.
-APPROVED_EVALUATION_BUDGET_USD = 4.5
+# The owner confirmed USD 16 of existing OpenRouter credits on 2026-10-04.
+# Do not replenish this balance automatically or add new credits.
+APPROVED_EVALUATION_BUDGET_USD = 16.0
 
 
 def _ledger_path() -> Path:
@@ -50,7 +51,10 @@ def reserve_evaluation_cost(amount_usd: float) -> Path:
                 if cap_usd != APPROVED_EVALUATION_BUDGET_USD:
                     raise RuntimeError("Evaluation ledger cap does not match approval.")
             if spent_usd + reserved_usd + amount_usd > APPROVED_EVALUATION_BUDGET_USD:
-                raise RuntimeError("Approved $4.50 evaluation allocation is exhausted.")
+                raise RuntimeError(
+                    f"Approved ${APPROVED_EVALUATION_BUDGET_USD:.2f} "
+                    "prepaid evaluation balance is exhausted."
+                )
             db.execute(
                 "UPDATE budget SET reserved_usd = reserved_usd + ? WHERE singleton = 1",
                 (amount_usd,),
