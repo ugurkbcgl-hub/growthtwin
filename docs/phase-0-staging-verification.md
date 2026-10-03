@@ -1,8 +1,8 @@
 # Phase 0 staging verification readiness
 
-Review date: 2026-10-03 12:09 +0300 (Europe/Istanbul)
+Review date: 2026-10-03 13:03 +0300 (Europe/Istanbul)
 
-The staging profile-edit E2E was run and passed against the approved staging app with a disposable least-privilege synthetic account and fabricated profile values. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
+The staging profile-edit E2E was rerun and passed against the approved staging app's v16 release with a disposable least-privilege synthetic account and fabricated profile values. The temporary account password was reset for this run and was not recorded. No restore, rollback, live account, campaign, spend, or new paid resource was used. Continue using synthetic values only.
 
 ## Verified baseline
 
@@ -17,11 +17,11 @@ The staging profile-edit E2E was run and passed against the approved staging app
 
 ## Verification sequence and stop points
 
-### 1. Staging browser E2E — passed for the profile-edit flow
+### 1. Staging browser E2E — passed for the profile-edit flow on v14 and v16
 
-Verified 2026-09-30 against release v14 (`69476a62`) on the approved HTTPS host. The account is a normal active user, not staff or superuser. It was used only with fabricated profile values. The account remains available for future staging checks; its password is not recorded in this repository or handoff.
+Initially verified 2026-09-30 against release v14 (`69476a62`), then rerun 2026-10-03 against release v16 (`8e29944`) on the approved HTTPS host. The account is a normal active user, not staff or superuser. It was used only with fabricated profile values. Before the rerun, its password was reset through Django's `changepassword` management command on the existing Heroku app; the password is not recorded in this repository or handoff.
 
-The existing profile flow was invoked through a one-time local helper because staging-account setup required a password handoff. The standard runner remains available from `apps/web`: `python -m e2e.run_staging`.
+The standard runner at `apps/web/e2e/run_staging.py` completed successfully with `python -m e2e.run_staging`.
 
 Pass evidence: the browser flow completed login, saved the synthetic profile, verified persistence after reload, logged out, and confirmed protected profile access redirects to login. Browser context was closed; no state was persisted locally. This proves only the demo profile flow, not campaign authorization or publishing.
 
@@ -51,9 +51,9 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Current blockers
 
-- After v16, staging `/health/` returned HTTP 200 with a revision matching current `main`. The pinned profile-edit E2E has not been rerun on v16; backup/restore and rollback remain unverified.
+- Staging `/health/` returned HTTP 200 with a revision matching the v16 deployment. The pinned profile-edit E2E passed on v16. Backup/restore and rollback remain unverified.
 - Backup/restore and rollback remain unverified and require a safe target/recovery procedure.
 
 ## Next action
 
-Rerun the pinned profile-edit E2E against v16 with the existing disposable synthetic account; enter its password only at the hidden local terminal prompt and do not record it. Then keep backup/restore and rollback as separate Phase 0 gates. Do not expose config-var values or use real data.
+Clean the stopped temporary PostgreSQL rehearsal directory `gwt_full_rehearsal_a656127cec` under `%TEMP%` after rechecking its exact resolved path and confirming the server is stopped. Then continue with configured-database backup/restore and controlled rollback as separate Phase 0 gates. Do not expose config-var values or use real data.
