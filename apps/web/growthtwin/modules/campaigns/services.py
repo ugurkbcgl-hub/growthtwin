@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
 
+from growthtwin.modules.ai_gateway.synthetic import generate_synthetic_creative_draft
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.synthetic_rules import (
     ALLOWED_SYNTHETIC_BUDGETS_MINOR,
@@ -13,7 +14,6 @@ from growthtwin.modules.content.creative import (
     CREATIVE_BODY_MAX_LENGTH,
     CREATIVE_CTA_MAX_LENGTH,
     CREATIVE_HEADLINE_MAX_LENGTH,
-    draft_creative_variants,
     source_fingerprint,
 )
 from growthtwin.modules.content.planning import CampaignBrief
@@ -56,13 +56,13 @@ def generate_creative_version_for_owner(*, owner, draft_id):
         versions = list(draft.creative_versions or [])
         if versions and versions[-1].get("source_hash") == source_hash:
             return draft, versions[-1]
+        generated = generate_synthetic_creative_draft(brief)
         version = {
             "version": len(versions) + 1,
             "source_hash": source_hash,
             "created_at": timezone.now().isoformat(),
-            "variants": [
-                variant.as_record() for variant in draft_creative_variants(brief)
-            ],
+            "generator_id": generated.generator_id,
+            "variants": [variant.as_record() for variant in generated.variants],
         }
         versions.append(version)
         draft.creative_versions = versions
@@ -169,6 +169,8 @@ def edit_creative_variant_for_owner(
             "edited_variant_key": key,
             "variants": edited_variants,
         }
+        if "generator_id" in current:
+            version["generator_id"] = current["generator_id"]
         versions.append(version)
         draft.creative_versions = versions
         draft.preferred_creative_key = ""
@@ -222,6 +224,8 @@ def restore_creative_version_for_owner(*, owner, draft_id, version_number):
             "restored_from_version": version_number,
             "variants": [dict(variant) for variant in historical["variants"]],
         }
+        if "generator_id" in historical:
+            version["generator_id"] = historical["generator_id"]
         versions.append(version)
         draft.creative_versions = versions
         draft.preferred_creative_key = ""

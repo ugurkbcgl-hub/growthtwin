@@ -8,8 +8,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from growthtwin.modules.ai_gateway.synthetic import generate_synthetic_creative_draft
 from growthtwin.modules.content.creative import (
-    draft_creative_variants,
     source_fingerprint,
 )
 from growthtwin.modules.content.planning import CampaignBrief, CampaignPlan
@@ -74,7 +74,8 @@ def campaign_brief(campaign):
 def creative_records(campaign, brief):
     """Load saved variants or derive non-persistent examples for older drafts."""
     return campaign.creative_variants or [
-        variant.as_record() for variant in draft_creative_variants(brief)
+        variant.as_record()
+        for variant in generate_synthetic_creative_draft(brief).variants
     ]
 
 
@@ -188,7 +189,8 @@ def save_creatives(request, campaign_id):
     form = CreativeVariantsForm(request.POST, variants=variants)
     if request.POST.get("action") == "regenerate":
         campaign.creative_variants = [
-            variant.as_record() for variant in draft_creative_variants(brief)
+            variant.as_record()
+            for variant in generate_synthetic_creative_draft(brief).variants
         ]
         campaign.creative_source_hash = source_fingerprint(brief)
         campaign.save(update_fields=("creative_variants", "creative_source_hash"))
@@ -251,7 +253,8 @@ def home(request):
             )
             brief = campaign_brief(campaign)
             campaign.creative_variants = [
-                variant.as_record() for variant in draft_creative_variants(brief)
+                variant.as_record()
+                for variant in generate_synthetic_creative_draft(brief).variants
             ]
             campaign.creative_source_hash = source_fingerprint(brief)
             campaign.save(update_fields=("creative_variants", "creative_source_hash"))
