@@ -155,6 +155,14 @@ authorize publication. Local validation on the feature branch: all 21 focused
 `ai_gateway` tests passed with the in-memory SQLite test settings; Ruff format
 and lint passed.
 
+`apps/web/growthtwin/modules/ai_gateway/fact_copy.py` adds a synthetic
+controlled-assembly experiment: join up to five explicitly supplied claims
+only if every claim exactly matches a caller-asserted, non-expired fact; return
+no text if any claim fails or the assembled text exceeds 1,200 characters.
+This does not prove the list contains every claim, verify facts, or produce
+polished ad copy. All 25 focused `ai_gateway` tests passed with in-memory
+SQLite settings; Ruff format and lint passed. It is not connected to web routes.
+
 ## Official Ollama references checked 2026-10-03
 
 - Chat API and JSON-schema `format`: https://docs.ollama.com/api/chat
