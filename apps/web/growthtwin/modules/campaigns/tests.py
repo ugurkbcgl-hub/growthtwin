@@ -319,6 +319,7 @@ class CampaignPreviewViewTests(TestCase):
 
         self.assertEqual(first_version, second_version)
         self.assertEqual(first_draft.pk, second_draft.pk)
+        self.assertEqual(first_version["generator_id"], "synthetic-template-v1")
         self.assertEqual(len(second_draft.creative_versions), 1)
 
     def test_owner_can_restore_previous_creative_as_a_new_version(self):
@@ -358,6 +359,7 @@ class CampaignPreviewViewTests(TestCase):
         self.assertEqual(restored["revision_type"], "owner_restore")
         self.assertEqual(restored["based_on_version"], 2)
         self.assertEqual(restored["restored_from_version"], 1)
+        self.assertEqual(restored["generator_id"], original["generator_id"])
         self.assertEqual(restored["variants"], original_history[0]["variants"])
         self.assertEqual(draft.preferred_creative_key, "")
         self.assertIsNone(draft.preferred_creative_version)
