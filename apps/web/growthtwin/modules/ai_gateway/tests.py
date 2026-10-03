@@ -1,6 +1,8 @@
 """Focused checks for the provider-neutral synthetic generation boundary."""
 
+import json
 from dataclasses import replace
+from unittest.mock import patch
 
 from django.test import SimpleTestCase
 
@@ -8,6 +10,13 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationRejected,
     CreativeGenerationResult,
     generate_creative_draft,
+)
+from growthtwin.modules.ai_gateway.ollama import (
+    MAX_RESPONSE_BYTES,
+    OLLAMA_HOST,
+    OLLAMA_PATH,
+    OLLAMA_PORT,
+    OllamaCreativeGenerator,
 )
 from growthtwin.modules.ai_gateway.synthetic import (
     SYNTHETIC_CREATIVE_REQUEST,
@@ -23,6 +32,16 @@ class FixedGenerator:
 
     def generate(self, request):
         return self.result
+
+
+class StubHTTPResponse:
+    def __init__(self, payload):
+        self.payload = payload
+        self.status = 200
+
+    def read(self, limit=-1):
+        body = json.dumps(self.payload).encode("utf-8")
+        return body if limit < 0 else body[:limit]
 
 
 class CreativeGenerationBoundaryTests(SimpleTestCase):
@@ -74,6 +93,22 @@ class CreativeGenerationBoundaryTests(SimpleTestCase):
         with self.assertRaises(CreativeGenerationRejected):
             generate_creative_draft(request, FixedGenerator(result))
 
+    def test_duplicate_variant_angles_are_rejected(self):
+        request = SYNTHETIC_CREATIVE_REQUEST
+        variants = SyntheticTemplateGenerator().generate(request).variants
+        duplicate = replace(
+            variants[1],
+            angle=f"  {variants[0].angle.lower()}  ",
+        )
+        result = CreativeGenerationResult(
+            generator_id="fixture",
+            source_hash=request.source_hash,
+            variants=(variants[0], duplicate),
+        )
+
+        with self.assertRaises(CreativeGenerationRejected):
+            generate_creative_draft(request, FixedGenerator(result))
+
     def test_overlong_copy_is_rejected(self):
         request = SYNTHETIC_CREATIVE_REQUEST
         result = SyntheticTemplateGenerator().generate(request)
@@ -93,3 +128,95 @@ class CreativeGenerationBoundaryTests(SimpleTestCase):
 
         with self.assertRaises(CreativeGenerationRejected):
             generate_creative_draft(request, FixedGenerator(result))
+
+    @patch("growthtwin.modules.ai_gateway.ollama.HTTPConnection")
+    def test_ollama_uses_local_structured_request_and_validates_result(
+        self, http_connection
+    ):
+        request = SYNTHETIC_CREATIVE_REQUEST
+        result = SyntheticTemplateGenerator().generate(request)
+        content = json.dumps(
+            {"variants": [variant.as_record() for variant in result.variants]},
+            ensure_ascii=False,
+        )
+        http_connection.return_value.getresponse.return_value = StubHTTPResponse(
+            {"message": {"content": content}}
+        )
+
+        generated = generate_creative_draft(
+            request,
+            OllamaCreativeGenerator(model="qwen3:1.7b"),
+        )
+
+        self.assertEqual(generated.generator_id, "ollama-qwen3:1.7b")
+        self.assertEqual(generated.variants, result.variants)
+        http_connection.assert_called_once_with(
+            OLLAMA_HOST,
+            OLLAMA_PORT,
+            timeout=60,
+        )
+        request_arguments = http_connection.return_value.request.call_args
+        self.assertEqual(request_arguments.args[:2], ("POST", OLLAMA_PATH))
+        payload = json.loads(request_arguments.kwargs["body"])
+        self.assertFalse(payload["stream"])
+        self.assertEqual(payload["format"]["required"], ["variants"])
+        http_connection.return_value.close.assert_called_once()
+
+    @patch("growthtwin.modules.ai_gateway.ollama.HTTPConnection")
+    def test_ollama_never_receives_non_synthetic_requests(self, http_connection):
+        request = replace(SYNTHETIC_CREATIVE_REQUEST, synthetic_only=False)
+
+        with self.assertRaises(CreativeGenerationRejected):
+            OllamaCreativeGenerator(model="qwen3:1.7b").generate(request)
+
+        http_connection.assert_not_called()
+
+    @patch("growthtwin.modules.ai_gateway.ollama.HTTPConnection")
+    def test_ollama_rejects_oversized_brief_before_network_request(
+        self, http_connection
+    ):
+        too_long = replace(
+            SYNTHETIC_CREATIVE_REQUEST.brief,
+            text="x" * 2001,
+        )
+        request = replace(SYNTHETIC_CREATIVE_REQUEST, brief=too_long)
+
+        with self.assertRaises(CreativeGenerationRejected):
+            OllamaCreativeGenerator(model="qwen3:1.7b").generate(request)
+
+        http_connection.assert_not_called()
+
+    @patch("growthtwin.modules.ai_gateway.ollama.HTTPConnection")
+    def test_ollama_malformed_response_fails_closed_without_details(
+        self, http_connection
+    ):
+        http_connection.return_value.getresponse.return_value = StubHTTPResponse(
+            {"message": {"content": "not json"}}
+        )
+
+        with self.assertRaisesRegex(
+            CreativeGenerationRejected, "yanıtı alınamadı veya doğrulanamadı"
+        ):
+            OllamaCreativeGenerator(model="qwen3:1.7b").generate(
+                SYNTHETIC_CREATIVE_REQUEST
+            )
+
+    @patch("growthtwin.modules.ai_gateway.ollama.HTTPConnection")
+    def test_ollama_oversized_response_fails_closed(self, http_connection):
+        response = http_connection.return_value.getresponse.return_value
+        response.status = 200
+        response.read.return_value = b"x" * (MAX_RESPONSE_BYTES + 1)
+
+        with self.assertRaises(CreativeGenerationRejected):
+            OllamaCreativeGenerator(model="qwen3:1.7b").generate(
+                SYNTHETIC_CREATIVE_REQUEST
+            )
+
+        response.read.assert_called_once_with(MAX_RESPONSE_BYTES + 1)
+        http_connection.return_value.close.assert_called_once()
+
+    def test_ollama_rejects_unvalidated_model_name_and_timeout(self):
+        with self.assertRaises(ValueError):
+            OllamaCreativeGenerator(model="https://example.invalid")
+        with self.assertRaises(ValueError):
+            OllamaCreativeGenerator(model="qwen3:1.7b", timeout_seconds=0)
