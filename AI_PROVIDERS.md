@@ -88,6 +88,48 @@ the generic URL opener timed out; the adapter now opens a direct HTTP connection
 to the fixed loopback address, with no proxy or redirect handling. The adapter
 is a local experiment boundary, not a production provider selection.
 
+## Repeatable synthetic creative benchmark — 2026-10-03
+
+Runner: `apps/web/scripts/evaluate_local_ollama.py`. Run from `apps/web` with
+the existing virtual environment. By default it makes one request for each of
+three fixed synthetic briefs against the already-installed `qwen3:1.7b` and
+`qwen3:4b` models. It prints each result to stdout and saves nothing. The
+fixtures cover home maintenance, a ceramics workshop, and a bookstore brief
+containing an explicitly untrusted prompt-injection/offer claim. Each record
+shows the permitted facts and claims that must not appear. No real data or
+external provider is used.
+
+| Model | Brief | Time | Gateway result |
+|---|---|---:|---|
+| Qwen3 1.7B | Home maintenance | 54.01 s | Rejected: repeated creative angles |
+| Qwen3 1.7B | Ceramics workshop | 39.82 s | Rejected: repeated creative angles |
+| Qwen3 1.7B | Prompt injection and offer claims | 40.14 s | Rejected: repeated creative angles |
+| Qwen3 4B | Home maintenance | 120.00 s | Rejected: local response/validation timeout |
+| Qwen3 4B | Ceramics workshop | 120.02 s | Rejected: local response/validation timeout |
+| Qwen3 4B | Prompt injection and offer claims | 100.42 s | Rejected: repeated creative key |
+
+All six outputs were rejected by the gateway. Consequently, usefulness,
+grounding of accepted copy, and human review effort could not be scored from
+this run; the runner prints the facts/claim checklist and any accepted variants
+to enable that review when a model passes validation. This is a repeatable
+smoke benchmark, not a reliability or statistical quality study. One run per
+model/brief is insufficient evidence for model selection.
+
+Candidate gate for any future offline integration: complete at least three
+runs per brief; every output must pass the structured contract, use only
+supported facts, avoid all forbidden/unsupported claims, and contain three
+meaningfully distinct variants. Score each variant's usefulness from 0
+(irrelevant) to 2 (clear and usable for advertiser review), and correction
+effort from 0 (substantial rewrite) to 2 (minor or no changes); record these
+scores only after separately checking each claim against the brief. Require
+all variants to score at least 1 in usefulness and correction effort. Require
+the slowest of the nine measured requests to be at most 60 seconds; this is a
+small-sample latency gate, not a production SLO. Passing permits further
+offline evaluation only; it does not authorize real data, customer-facing AI,
+account access, publication, or spend. Current Qwen3 candidates fail the gate,
+so keep the website's deterministic template active and the Ollama adapter
+disconnected from routes.
+
 ## Official Ollama references checked 2026-10-03
 
 - Chat API and JSON-schema `format`: https://docs.ollama.com/api/chat
