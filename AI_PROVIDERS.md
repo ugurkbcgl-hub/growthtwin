@@ -217,12 +217,15 @@ Manual factuality/usefulness/diversity review is still required; exact phrase
 screens are not general safety checks. No model was evaluated during this
 refactor, no provider credentials were added, and web routes remain unchanged.
 
-## Owner-approved bounded text evaluation — 2026-10-03
+## Owner-approved bounded text evaluation — 2026-10-04
 
-The owner approved up to **USD 5 total** for synthetic provider testing. Do not
-automatically replenish this budget; stop and reassess before any increase. On
-2026-10-03 the owner said they have an OpenRouter account and approved using it
-for this experiment. The first candidate remains OpenAI GPT-6 Luna for text,
+On 2026-10-03, the owner first approved up to USD 5 for synthetic provider
+testing. On 2026-10-04, the owner confirmed an existing USD 16 OpenRouter
+credit balance and replaced the USD 5 limit with a direction to track usage
+against the current balance. Treat USD 16 as the maximum available for this
+evaluation; do not top up credits or enable auto-recharge. Stop if the balance
+is exhausted and reassess before any new funding. The first candidate remains
+OpenAI GPT-6 Luna for text,
 accessed through OpenRouter; this is an evaluation route, not a production
 selection. OpenRouter's official catalog checked on 2026-10-03 lists USD 0.10
 per million input tokens and USD 0.50 per million output tokens. OpenRouter
@@ -238,8 +241,8 @@ OpenRouter's `provider.zdr=true`, `data_collection=deny`,
 `require_parameters=true`, and per-token maximum prices. It uses only
 `OPENROUTER_API_KEY` from the process environment and never prints the key or
 full request. A shared SQLite ledger outside the repository reserves cost
-before each call and stops at USD 4.50. An interrupted/ambiguous call keeps its
-reservation. The runner also refuses to send a request until
+before each call and stops at USD 16 total cumulative estimated usage. An
+interrupted/ambiguous call keeps its reservation. The runner also refuses to send a request until
 `GROWTHTWIN_AI_EVAL_HARD_LIMIT_CONFIRMED=1` is present. That flag is only an
 operator assertion, not proof of an account setting. The local ledger is shared
 with other evaluation candidates; do not delete/reset it while this approval is
@@ -248,7 +251,7 @@ cost, and the runner prints spend, outstanding reservation, and remaining
 local allocation.
 
 Before the first billable call, create a dedicated OpenRouter API key for this
-experiment, set a USD 4.50 spend limit with no automatic reset, confirm the
+experiment, set a USD 16 spend limit with no automatic reset, confirm the
 key/account has sufficient existing credits, and keep auto-recharge off. Store
 the key for the current Windows account with
 `apps/web/scripts/setup_openrouter_key.ps1`; the runner reads it into the child
@@ -263,11 +266,10 @@ evaluation.
 
 OpenRouter's current Terms of Service list a USD 5 minimum credit purchase, and
 the Standard account currently charges a 5.5% credit-purchase fee with a
-minimum USD 0.80 fee. A new card purchase would therefore cost at least USD
-5.80 before any applicable tax, exceeding the owner's USD 5 total approval.
-Do not buy credits or enable auto-recharge under this approval. Proceed only if
-the existing account already has sufficient credits. The owner must explicitly
-approve a larger cash budget before any top-up.
+minimum USD 0.80 fee. No purchase is needed for the owner's stated existing USD
+16 balance. Do not buy credits or enable auto-recharge. If existing credits are
+no longer sufficient, stop and get a new budget decision before funding the
+account.
 
 OpenRouter says request-level `zdr=true` restricts routing to eligible
 zero-retention endpoints, while `data_collection=deny` filters endpoints that
@@ -280,6 +282,6 @@ the request constraints, the evaluation must fail closed.
 Official source pages checked 2026-10-03: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
 
 **Next:** after confirming the dedicated OpenRouter key's non-resetting USD
-4.50 limit, sufficient existing credits, and secure local key configuration,
-run the fixed synthetic text evaluation within the shared USD 4.50 allocation.
-Do not top up credits or spend the remaining USD 0.50 without new approval.
+16 limit, sufficient existing credits, auto-recharge disabled, and secure local
+key configuration, run the fixed synthetic text evaluation. Track cumulative
+usage in the shared local USD 16 ledger; stop when its balance is exhausted.
