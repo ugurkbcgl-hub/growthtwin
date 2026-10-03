@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 14:26 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 14:47 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,10 +14,11 @@ release gates before external beta or production use.
 
 ## Verified repository and product state
 
-- `main` is clean at `56ecad7b66e95379d0392688acf1d9ca5f91805c`. PR #217, #218,
-  and #219 are merged; no PRs were open at the verification time. Required PR
-  CI and post-merge CI passed: #217 (`37117805803`, `37117931162`), #218
-  (`37118174068`, `37118316828`), and #219 (`37119217743`, `37119348560`).
+- At the start of this work, `main` was clean at
+  `d0d7c7beb45cae30f79c1602920f372fcd0b18b3`, PRs #217–220 were merged, no PRs
+  were open, and #220 post-merge CI `37119816584` passed. Current work is PR
+  #221, `eval/synthetic-creative-benchmark`; required CI run `37120608079`
+  passed. PR #221 is awaiting merge after local review.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -38,6 +39,13 @@ release gates before external beta or production use.
   downloaded. The exact Qwen3 1.7B tag's Ollama library page lists Apache-2.0;
   this is not legal review. Evaluation details and official references are in
   [AI_PROVIDERS.md](../../AI_PROVIDERS.md).
+- A repeatable stdout-only local benchmark runner was added and run on three
+  synthetic briefs against Qwen3 1.7B and 4B (one run per cell). All six runs
+  were rejected: 1.7B repeated angles in all cases; 4B timed out twice at 120
+  seconds and repeated a key once. No output was accepted for usefulness,
+  claim-grounding, or review-effort scoring. No model was selected; web routes
+  remain on the deterministic template. Results and a future-candidate gate
+  are in `AI_PROVIDERS.md`.
 
 ## Open risks and limits
 
@@ -65,11 +73,8 @@ release gates before external beta or production use.
 
 ## Next action
 
-Define and run a repeatable synthetic creative-quality benchmark across several
-brief types and candidate models. Score usefulness, claim grounding, variant
-diversity, schema validity, latency, and review effort; keep the current
-deterministic website generator in place until a candidate meets explicit
-criteria. Re-read `AI_PROVIDERS.md` before model/provider changes, use only
-synthetic fixtures, and leave real data, web-route AI activation, account
-connections, publishing, spend, paid services, and the configured local
-database untouched.
+After PR #221 merges, choose the next already-available local candidate or
+improve prompt/model settings and rerun the explicit gate in `AI_PROVIDERS.md`;
+keep deterministic website generation active. Use only synthetic fixtures;
+leave real data, web-route AI activation, account connections, publishing,
+spend, paid services, and the configured local database untouched.
