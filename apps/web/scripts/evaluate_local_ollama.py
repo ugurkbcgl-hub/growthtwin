@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import unicodedata
 from dataclasses import dataclass
 from time import perf_counter
 
@@ -78,12 +79,29 @@ CASES = (
 )
 
 
+def find_forbidden_claims(case: EvaluationCase, variants) -> list[str]:
+    """Flag exact prohibited-phrase occurrences for this synthetic fixture."""
+
+    generated = " ".join(
+        value for variant in variants for value in variant.as_record().values()
+    )
+    normalized_output = " ".join(
+        unicodedata.normalize("NFKC", generated).casefold().split()
+    )
+    return [
+        claim
+        for claim in case.forbidden_claims
+        if " ".join(unicodedata.normalize("NFKC", claim).casefold().split())
+        in normalized_output
+    ]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--models",
         nargs="+",
-        default=("qwen3:1.7b", "qwen3:4b"),
+        default=("qwen3:0.6b", "qwen3:1.7b", "qwen3:4b"),
         help="Already-installed local Ollama model tags; the default downloads nothing.",
     )
     parser.add_argument(
@@ -133,6 +151,9 @@ def main():
                         "seconds": round(perf_counter() - started, 2),
                         "outcome": "structured_draft_review_required",
                         "publishable": result.publishable,
+                        "detected_forbidden_claims": find_forbidden_claims(
+                            case, result.variants
+                        ),
                         "allowed_facts": case.allowed_facts,
                         "forbidden_claims": case.forbidden_claims,
                         "variants": [

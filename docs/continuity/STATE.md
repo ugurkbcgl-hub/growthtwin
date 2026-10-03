@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-03 14:47 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-03 14:54 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective and scope
@@ -14,11 +14,10 @@ release gates before external beta or production use.
 
 ## Verified repository and product state
 
-- At the start of this work, `main` was clean at
-  `d0d7c7beb45cae30f79c1602920f372fcd0b18b3`, PRs #217–220 were merged, no PRs
-  were open, and #220 post-merge CI `37119816584` passed. Current work is PR
-  #221, `eval/synthetic-creative-benchmark`; required CI run `37120608079`
-  passed. PR #221 is awaiting merge after local review.
+- PR #221 (`eval/synthetic-creative-benchmark`) merged as
+  `32a5cc889d27514e78f960ad6e4d433ac392921c`. Required PR CI `37120780177` and
+  post-merge CI `37120891350` passed. Current follow-up is on feature branch
+  `eval/claim-screen-benchmark`; its PR/CI status is pending.
 - The `ai_gateway` now has an immutable provider-neutral request/result
   contract, fail-closed structured-output/length/source/key/diversity checks,
   and a deterministic synthetic adapter. Both public fixed-sample and
@@ -46,6 +45,12 @@ release gates before external beta or production use.
   claim-grounding, or review-effort scoring. No model was selected; web routes
   remain on the deterministic template. Results and a future-candidate gate
   are in `AI_PROVIDERS.md`.
+- Follow-up included Qwen3 0.6B: two briefs were rejected for invalid keys; an
+  initial injection-brief output was structurally accepted but copied the
+  untrusted `ücretsiz` offer. Its immediate 9.52-second rerun was rejected for
+  duplicate angles. The benchmark runner now reports exact forbidden fixture
+  phrases on accepted-shaped output. This is not semantic claim validation;
+  no model passed. The website generator remains deterministic.
 
 ## Open risks and limits
 
@@ -73,8 +78,9 @@ release gates before external beta or production use.
 
 ## Next action
 
-After PR #221 merges, choose the next already-available local candidate or
-improve prompt/model settings and rerun the explicit gate in `AI_PROVIDERS.md`;
-keep deterministic website generation active. Use only synthetic fixtures;
-leave real data, web-route AI activation, account connections, publishing,
-spend, paid services, and the configured local database untouched.
+Review and merge the claim-screen benchmark PR after local review and required
+CI pass. Then define how generated claims can be checked against approved
+source facts before any offline model experiment; keep deterministic website
+generation active. Use only synthetic fixtures; leave real data, web-route AI
+activation, account connections, publishing, spend, paid services, and the
+configured local database untouched.
