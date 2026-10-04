@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 17:22 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 17:28 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -16,11 +16,12 @@ live ad accounts, publication, media spend, or production AI use.
   post-merge CI `37208468991` passed.
 - PR #247 fixed the unverified-response branch in the benchmark loop, merged to
   `main` as `000f014`; required CI `37208553129` passed. Post-merge CI
-  `37208716235` was still running at last check.
-- Current documentation PR #248 is on
-  `docs/openrouter-cross-vendor-handoff` at `49472a8`, based on `000f014`;
-  required CI was running at last check. Recheck its PR and CI status, branch,
-  working tree, latest commit, and other open PRs before acting.
+  `37208716235` passed.
+- PR #248 updated evaluation and project state, merged as `f95c390`; required
+  CI `37209047939` and post-merge CI `37209193594` passed. At 2026-10-04
+  17:28 +0300, `main` was clean at `f95c390` and no open PRs were returned.
+  Recheck the live branch, worktree, latest commit, open PRs, and CI before
+  acting.
 
 ## AI and product status
 
