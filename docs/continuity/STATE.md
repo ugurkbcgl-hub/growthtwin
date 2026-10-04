@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 18:47 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 18:49 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -24,8 +24,9 @@ accounts, publication, media spend, or production AI use.
 - PR #255 merged as `7ed51ee`; required CI `37213371584` and post-merge CI
   `37213592296` passed.
 - PR #256 adds one bounded synthetic image-evaluation path on
-  `eval/openrouter-image-synthetic`. Required CI `37214309287` is running;
-  review and merge only after it passes. Never push directly to `main`.
+  `eval/openrouter-image-synthetic`. Required CI is running for final commit
+  `a30cd76`; verify it passes before merge. No image request has been made.
+  Never push directly to `main`.
 
 ## AI/provider status
 
