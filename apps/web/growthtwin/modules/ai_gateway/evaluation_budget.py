@@ -8,6 +8,8 @@ from pathlib import Path
 # The owner confirmed USD 16 of existing OpenRouter credits on 2026-10-04.
 # Do not replenish this balance automatically or add new credits.
 APPROVED_EVALUATION_BUDGET_USD = 16.0
+DEFAULT_PER_REQUEST_LIMIT_USD = 0.01
+MAX_PER_REQUEST_LIMIT_USD = 0.10
 
 
 def _ledger_path() -> Path:
@@ -15,11 +17,20 @@ def _ledger_path() -> Path:
     return Path(root) / "GrowthTwin" / "ai-evaluation-budget.sqlite3"
 
 
-def reserve_evaluation_cost(amount_usd: float) -> Path:
+def reserve_evaluation_cost(
+    amount_usd: float,
+    *,
+    per_request_limit_usd: float = DEFAULT_PER_REQUEST_LIMIT_USD,
+) -> Path:
     """Atomically reserve a known upper bound before a billable call."""
 
-    if type(amount_usd) not in (int, float) or not 0 < amount_usd <= 0.01:
-        raise ValueError("Evaluation calls must have a positive small cost bound.")
+    if (
+        type(per_request_limit_usd) not in (int, float)
+        or not 0 < per_request_limit_usd <= MAX_PER_REQUEST_LIMIT_USD
+        or type(amount_usd) not in (int, float)
+        or not 0 < amount_usd <= per_request_limit_usd
+    ):
+        raise ValueError("Evaluation call exceeds its approved local reservation.")
     if os.environ.get("GROWTHTWIN_AI_EVAL_HARD_LIMIT_CONFIRMED") != "1":
         raise RuntimeError(
             "Set the provider project's hard spend limit before billable evaluation."

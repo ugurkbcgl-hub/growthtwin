@@ -492,3 +492,41 @@ Official references checked 2026-10-04:
   [commercial-use explanation](https://help.runwayml.com/hc/en-us/articles/21668707517587-Can-I-use-the-content-I-made-in-Runway-for-commercial-purposes),
   [Enterprise third-party model data commitments](https://help.runwayml.com/hc/en-us/articles/51248305153683-Enterprise-FAQ-Third-party-Models-in-Runway),
   and [API output URL lifetime](https://docs.dev.runwayml.com/assets/outputs/).
+
+### OpenRouter visual API and privacy gate — 2026-10-04
+
+Follow-up against the existing approved OpenRouter evaluation key found a
+usable image-only path. The dedicated Image API returns base64 image bytes and
+usage/cost metadata; its public image-model and endpoint catalogs expose exact
+capabilities and routing. The live public catalog currently lists
+`google/gemini-3.1-flash-lite-image` with 1K image generation, including 9:16,
+and exactly one output per call. Its Google Vertex endpoint
+(`google-vertex/global`) appears in OpenRouter's ZDR-eligible endpoint
+catalog. Google publishes USD 0.0336 for a 1K output image; allow a
+conservative USD 0.10 maximum reservation for one image plus prompt and
+size-token variance. The fixed runner in progress pins only to that exact
+endpoint, makes no retries, keeps the asset under local application data, and
+settles only from returned usage. This is a narrow visual-runner exception to
+the existing text runner's USD 0.01 per-call reservation; the total shared USD
+16 cap remains unchanged. No live account balance was checked.
+
+Do not use OpenRouter's asynchronous Video Generation API under the current
+privacy baseline: its official guide explicitly says video generation is not
+ZDR-eligible because output must be retained for retrieval, and it will not
+route when ZDR is enforced. No privacy/account setting was changed to bypass
+this. A video comparison needs a separately approved provider path with terms
+and handling that satisfy the project boundary.
+
+Official references checked 2026-10-04: OpenRouter [Image Generation API and
+provider routing](https://openrouter.ai/docs/guides/overview/multimodal/image-generation),
+[Gemini 3.1 Flash Lite Image pricing](https://ai.google.dev/gemini-api/docs/pricing),
+[ZDR eligible endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-endpoints-zdr),
+and [Video Generation API and ZDR limitation](https://openrouter.ai/docs/guides/overview/multimodal/video-generation).
+
+**Next:** Review the estimate-first image runner on its feature branch and wait
+for required CI. If it passes, use the standing synthetic-evaluation
+authorization for exactly one USD 0.10-reserved call and inspect the local
+image manually. Preserve the text runner's default USD 0.01 call limit; the
+image exception is limited to this endpoint and the shared USD 16 cap. Do not
+attempt video via OpenRouter, use real user files, or connect any model to
+product routes.
