@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 14:05 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 14:11 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -11,11 +11,13 @@ live ad accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- PR #239 (`feature/local-jsonl-evaluation-capture`) was reviewed and merged
-  to `main` as `e8740e58e24e876ee43b948bd7dbeb19852e01a4`. Its required CI
-  `37197149607` and post-merge `main` CI `37197326006` passed, including
-  Django tests and browser E2E. The working copy is on a clean `main` at
-  `e8740e5`; no open PRs were returned after the merge. Verify live
+- PR #239 (`feature/local-jsonl-evaluation-capture`) merged to `main` as
+  `e8740e58e24e876ee43b948bd7dbeb19852e01a4`; required CI `37197149607` and
+  post-merge `main` CI `37197326006` passed. PR #240 refreshed this handoff
+  and merged as `15cec7ae1099255a9deb814b624101e50e90c60b`; its required CI
+  `37197561977` and post-merge `main` CI `37197710180` passed, including
+  Django tests and browser E2E. At 2026-10-04 14:11 +0300, the working copy
+  was clean `main` at `15cec7a` and no open PRs were returned. Recheck live
   Git/PR/CI state before acting.
 
 ## AI and product status
