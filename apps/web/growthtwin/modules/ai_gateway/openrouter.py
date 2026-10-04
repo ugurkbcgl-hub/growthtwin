@@ -25,6 +25,7 @@ GEMINI_EVALUATION_MODEL = "google/gemini-3.8-flash"
 OPENROUTER_TIMEOUT_SECONDS = 30
 MAX_RESPONSE_BYTES = 65_536
 MAX_OUTPUT_TOKENS = 512
+GEMINI_MAX_OUTPUT_TOKENS = 1_024
 MAX_REQUEST_BYTES = 4_096
 OUTPUT_PRICE_PER_MILLION = 0.50
 MAX_INPUT_PRICE_PER_MILLION = 0.125
@@ -32,6 +33,10 @@ MODEL_PRICE_CAPS = {
     OPENROUTER_MODEL: (MAX_INPUT_PRICE_PER_MILLION, OUTPUT_PRICE_PER_MILLION),
     # Standard catalog prices (without temporary discounts) bound this trial.
     GEMINI_EVALUATION_MODEL: (0.75, 3.75),
+}
+MODEL_OUTPUT_TOKEN_CAPS = {
+    OPENROUTER_MODEL: MAX_OUTPUT_TOKENS,
+    GEMINI_EVALUATION_MODEL: GEMINI_MAX_OUTPUT_TOKENS,
 }
 
 
@@ -54,6 +59,7 @@ class OpenRouterCreativeGenerator:
             raise ValueError("Set OPENROUTER_API_KEY in a secure local environment.")
         self._api_key = key
         self.model = model
+        self.max_output_tokens = MODEL_OUTPUT_TOKEN_CAPS[model]
         self.max_input_price_per_million, self.output_price_per_million = (
             MODEL_PRICE_CAPS[model]
         )
@@ -102,7 +108,7 @@ class OpenRouterCreativeGenerator:
                         "content": json.dumps(brief_payload, ensure_ascii=False),
                     },
                 ],
-                "max_tokens": MAX_OUTPUT_TOKENS,
+                "max_tokens": self.max_output_tokens,
                 "stream": False,
                 "response_format": {
                     "type": "json_schema",
@@ -135,7 +141,7 @@ class OpenRouterCreativeGenerator:
         if not isinstance(body, bytes) or len(body) > MAX_REQUEST_BYTES:
             raise ValueError("Request exceeds the fixed evaluation bound.")
         input_bound = len(body) * 2
-        output_bound = MAX_OUTPUT_TOKENS
+        output_bound = self.max_output_tokens
         return (
             input_bound * self.max_input_price_per_million
             + output_bound * self.output_price_per_million
@@ -176,7 +182,7 @@ class OpenRouterCreativeGenerator:
                 or type(output_tokens) is not int
                 or input_tokens < 0
                 or input_tokens > len(body) * 2
-                or not 0 <= output_tokens <= MAX_OUTPUT_TOKENS
+                or not 0 <= output_tokens <= self.max_output_tokens
                 or type(actual_cost) not in (int, float)
                 or not 0 <= actual_cost <= self.maximum_reserved_cost(body)
                 or finish_reason != "stop"

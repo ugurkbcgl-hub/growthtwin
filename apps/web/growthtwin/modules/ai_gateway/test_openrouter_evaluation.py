@@ -10,6 +10,8 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationRequest,
 )
 from growthtwin.modules.ai_gateway.openrouter import (
+    GEMINI_EVALUATION_MODEL,
+    GEMINI_MAX_OUTPUT_TOKENS,
     MAX_OUTPUT_TOKENS,
     MAX_REQUEST_BYTES,
     OPENROUTER_MODEL,
@@ -47,6 +49,17 @@ class OpenRouterEvaluationBoundaryTests(SimpleTestCase):
         self.assertEqual(payload["provider"]["data_collection"], "deny")
         self.assertTrue(payload["provider"]["require_parameters"])
         self.assertNotIn("synthetic-test-key", body.decode("utf-8"))
+
+    def test_gemini_uses_a_larger_but_per_call_bounded_output_cap(self):
+        generator = OpenRouterCreativeGenerator(
+            api_key="synthetic-test-key", model=GEMINI_EVALUATION_MODEL
+        )
+        body = generator.request_body(synthetic_request())
+        payload = json.loads(body)
+
+        self.assertEqual(generator.max_output_tokens, GEMINI_MAX_OUTPUT_TOKENS)
+        self.assertEqual(payload["max_tokens"], GEMINI_MAX_OUTPUT_TOKENS)
+        self.assertLessEqual(generator.maximum_reserved_cost(body), 0.01)
 
     @mock.patch("growthtwin.modules.ai_gateway.openrouter.HTTPSConnection")
     def test_non_synthetic_request_fails_before_network(self, connection):
