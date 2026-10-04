@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 12:35 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 12:42 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -11,15 +11,14 @@ live ad accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- `main` is clean at `aa99ec27ce333e05cfe6ec16daf4350c44c8afc0` (PR #235).
-- PR #235, which set the cumulative OpenRouter evaluation ledger to USD 16,
-  is merged. Required CI `37154223644` and post-merge `main` CI `37154378786`
-  both passed. No other open PRs were returned before this documentation
-  refresh branch was created.
-- Current documentation branch: `docs/openrouter-balance-owner-check`, based
-  on `aa99ec2`. It removes stale USD 5 evaluation-budget claims and records
-  that the owner, not the assistant, checks OpenRouter balance/settings.
-  Verify this branch's PR and CI live before treating it as merged.
+- The verified base was clean `main` at
+  `206fcf9ca` (PR #236). PR #235 set the cumulative OpenRouter evaluation
+  ledger to USD 16; its required CI `37154223644` and post-merge `main` CI
+  `37154378786` passed. PR #236 removed stale USD 5 evaluation-budget claims
+  and recorded that the owner checks OpenRouter balance/settings. Its required
+  CI `37192777132` and post-merge `main` CI `37192892848` passed. No other open
+  PRs were returned after PR #236 merged. A documentation-only branch updates
+  this snapshot; verify live Git/PR/CI state before acting.
 
 ## AI and product status
 
@@ -59,8 +58,10 @@ live ad accounts, publication, media spend, or production AI use.
 
 ## Next action
 
-Finish and merge the current documentation-only PR after required CI passes.
-Then wait for the owner to verify the OpenRouter key/account limits and signal
-readiness. Only then run the local hidden-key setup and, after its explicit
-`RUN` confirmation, the bounded synthetic evaluation; review the cumulative
-ledger and stop at its USD 16 cap.
+Wait for the owner to verify the dedicated OpenRouter key's USD 16 no-reset
+limit, current available balance, and disabled auto-recharge, and to signal
+readiness. The assistant must not access the account. Then run the local
+hidden-key setup and, after the owner's explicit `RUN` confirmation, the
+bounded synthetic evaluation; review the cumulative ledger and stop at its
+USD 16 cap. Before proceeding, recheck the live repository branch, working
+tree, latest commit, open PRs, and CI status.
