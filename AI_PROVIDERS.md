@@ -506,13 +506,16 @@ catalog. Google publishes USD 0.0336 for a 1K output image; allow a
 conservative USD 0.10 maximum reservation for one image plus prompt and
 size-token variance. The merged fixed runner pins only to that exact endpoint,
 makes no retries, keeps any asset under local application data, and settles
-only from returned usage. Its first authorized call on 2026-10-04 did not produce verifiable
-output; the local run record confirms only that the call started. No image or
-provider cost record was saved, so the charge is unknown and the USD 0.10 local
-reservation remains held. Do not retry pending safe diagnosis and renewed
-authorization. This is a narrow visual-runner exception to the existing text
-runner's USD 0.01 per-call reservation; the total shared USD 16 cap remains
-unchanged. No live account balance was checked.
+only from returned usage. Its first authorized call on 2026-10-04 did not
+produce verifiable output; the local run record confirms only that the call
+started. The runner suppressed failure details without saving a safe category, so the cause cannot
+be determined from available evidence. No image or provider cost record was
+saved, so the charge is unknown and the USD 0.10 local reservation remains
+held. The runner is being updated to record only sanitized failure categories
+and HTTP status, without response bodies or secrets. Do not retry pending this
+safe diagnostic update and renewed authorization. This is a narrow visual-
+runner exception to the existing text runner's USD 0.01 per-call reservation;
+the total shared USD 16 cap remains unchanged. No live account balance was checked.
 
 Do not use OpenRouter's asynchronous Video Generation API under the current
 privacy baseline: its official guide explicitly says video generation is not
@@ -527,10 +530,10 @@ provider routing](https://openrouter.ai/docs/guides/overview/multimodal/image-ge
 [ZDR eligible endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-endpoints-zdr),
 and [Video Generation API and ZDR limitation](https://openrouter.ai/docs/guides/overview/multimodal/video-generation).
 
-**Next:** Diagnose the failed image call using local code and sanitized
-operational evidence only. Preserve the USD 0.10 reservation and do not retry,
-inspect the account balance, or change privacy settings. Any further billable
-call requires renewed owner authorization. Preserve the text runner's default
-USD 0.01 call limit; the image exception is limited to this endpoint and the
-shared USD 16 cap. Do not attempt video via OpenRouter, use real user files,
+**Next:** Merge the sanitized diagnostic update after required CI, then decide
+whether another synthetic call is justified. Preserve the USD 0.10 reservation
+for the unresolved attempt and do not retry, inspect the account balance, or
+change privacy settings. Any further billable call requires renewed owner
+authorization. Preserve the text runner's default USD 0.01 call limit; the
+image exception is limited to this endpoint and the shared USD 16 cap. Do not attempt video via OpenRouter, use real user files,
 or connect any model to product routes.
