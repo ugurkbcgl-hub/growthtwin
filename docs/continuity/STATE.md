@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 14:11 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 14:33 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -16,9 +16,14 @@ live ad accounts, publication, media spend, or production AI use.
   post-merge `main` CI `37197326006` passed. PR #240 refreshed this handoff
   and merged as `15cec7ae1099255a9deb814b624101e50e90c60b`; its required CI
   `37197561977` and post-merge `main` CI `37197710180` passed, including
-  Django tests and browser E2E. At 2026-10-04 14:11 +0300, the working copy
-  was clean `main` at `15cec7a` and no open PRs were returned. Recheck live
-  Git/PR/CI state before acting.
+  Django tests and browser E2E. PR #241 corrected the verified repository
+  snapshot and merged as `3142c4c6e6b34473a08c2d49f0fbff155e7cc9a9`; its
+  required CI `37197887034` and post-merge CI `37198017987` passed. PR #242
+  refreshed the OpenRouter evaluation status and merged as
+  `cd1b3aee795045cee167a987eb9fc2a7c6a0072e`; its required CI `37198866107`
+  and post-merge CI `37199002685` passed. At 2026-10-04 14:33 +0300, the
+  working copy was clean `main` at `cd1b3ae` and no open PRs were returned.
+  Recheck live Git/PR/CI state before acting.
 
 ## AI and product status
 
