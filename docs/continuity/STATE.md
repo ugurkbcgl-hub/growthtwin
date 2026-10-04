@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 18:23 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 18:25 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -22,8 +22,9 @@ accounts, publication, media spend, or production AI use.
 - PR #254 merged as `03d1f49`; required CI `37212660663` passed. Post-merge CI
   `37212801135` is running; verify it before treating the integration as fully
   green.
-- Current image/video research documentation is on a feature branch. Review its
-  PR and required CI before merge; never push directly to `main`.
+- PR #255 contains the image/video research documentation on
+  `docs/image-video-provider-research`. Its required CI is running; review and
+  merge only after it passes. Never push directly to `main`.
 
 ## AI/provider status
 
