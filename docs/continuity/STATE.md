@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 18:20 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 18:23 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -19,9 +19,11 @@ accounts, publication, media spend, or production AI use.
   `37211905675` passed.
 - PR #253 merged as `dd0c0af`; required CI `37212140811` and post-merge CI
   `37212274710` passed.
-- A docs-only update is now being prepared from a feature branch. Verify its PR,
-  CI, final `main` commit, and open PR state before acting. Never push directly
-  to `main`.
+- PR #254 merged as `03d1f49`; required CI `37212660663` passed. Post-merge CI
+  `37212801135` is running; verify it before treating the integration as fully
+  green.
+- Current image/video research documentation is on a feature branch. Review its
+  PR and required CI before merge; never push directly to `main`.
 
 ## AI/provider status
 
@@ -51,11 +53,12 @@ store credentials or provider output in Git.
 
 ## Next action
 
-Review PR #254 (docs-only) and required CI if open; merge only after CI passes
-under the owner's standing authorization. Then research image/video advertising
-models using current official provider docs and public pricing. Compare format
-controls, output rights/usage terms, data handling, regional processing, and
-evaluation cost before any paid calls. Do not check account balance or alter
-account settings. Keep all trials synthetic, local, review-only, and outside
-product routes. Preserve USD 0.00078075 until the earlier GPT request's log is
-reconciled.
+Complete the current docs-only image/video research PR after CI; verify its
+post-merge CI. Then design one synthetic visual storyboard and inspect the
+existing local evaluation tooling for a secret-safe image/video path. Before
+any paid request, verify model-specific terms and processing, prepare an exact
+offline cost estimate with bounded variants/retries, and ensure the evaluation
+fits the previously approved cap. Do not check OpenRouter balance or account
+settings. Keep any trial output local, review-only, and outside product routes.
+Preserve USD 0.00078075 until the earlier GPT request's generation log is
+matched.

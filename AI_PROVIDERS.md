@@ -445,3 +445,45 @@ provider documentation and public pricing. Compare output control, supported
 formats, data handling, geography, and a synthetic-only cost estimate before
 any paid call. Keep outputs local/review-only and the website unchanged. Do not
 check account balance or change OpenRouter settings.
+
+### Image and video provider research — 2026-10-04
+
+This is a desk review of official provider documentation, not an account,
+contract, regional-processing, or output-quality verification. Prices are USD
+list prices checked on 2026-10-04 and can change. No image/video calls were
+made.
+
+| Candidate | Capability and control | Published cost indication | Data, geography, and rights notes |
+| --- | --- | --- | --- |
+| Google Gemini 3 Pro Image (`gemini-3-pro-image`) | Image generation/editing; 1K/2K and 4K output documented. Use an API parameter/format review and fixture before selecting ad sizes. | Paid standard output: about $0.134 per 1K/2K image or $0.24 per 4K image, plus prompt/input tokens. | Gemini API is listed as available in Türkiye; that is service availability, not evidence of Türkiye data residency. Paid Services do not use prompts/responses to improve Google products, but limited abuse monitoring and transient/cached handling remain. Google claims no ownership of generated content, may generate similar content for others, and leaves lawful use to the customer. |
+| OpenAI GPT Image 2.5 Flare/Sunburst | Image generation and editing; configurable quality, size, format, compression, backgrounds, and multiple outputs. Strong controls for composing/iterating variants. | Token-priced: $30/M image output tokens, $8/M image input tokens, plus text tokens. Actual image cost varies with model, quality, and size; calculate from usage, not a flat estimate. | API content is not used to train by default; standard abuse-monitoring content retention can be up to 30 days. The current published data-residency regions reviewed here do not include Türkiye. The official docs do not establish Türkiye processing for this workload. Verify the applicable API terms and usage rights before any customer-content use. |
+| Google Veo 3.1 (Gemini API) | Text/image-to-video, audio, 720p/1080p and documented short clips; API guide supports 9:16 and 16:9. Prompt-language guide says English is fully supported and other languages are unevaluated. Generated videos carry SynthID and Gemini API outputs remain downloadable for two days. | Standard with audio: $0.40/sec at 720p/1080p ($0.60/sec at 4K); Fast: $0.10/sec at 720p and $0.12/sec at 1080p; Lite: $0.05/sec at 720p and $0.08/sec at 1080p. An 8-second Fast 720p clip is $0.80 before retries or other inputs. | No free generation tier shown in current pricing. Paid data-use terms exclude prompts/responses from product improvement but retain limited abuse monitoring. Türkiye appears in the Gemini API available-country list, which does not establish processing or storage location. Regional person-generation limits include MENA; confirm the precise classification/configuration before a real workload. |
+| Runway Dev API (model-routing alternative) | Single API exposes several image/video models and creative workflows; reduces integration count but routes across third-party model families. | $0.01/credit; e.g., Gen-4 Turbo is 5 credits/sec ($0.05/sec), Gen-4.5 is 12 credits/sec ($0.12/sec), with additional image/video models priced separately. | Model choice, upstream processing/retention, location, output rights, and contractual responsibility need model-specific review. Do not infer these from Runway's API price page or choose the router until those terms are verified. |
+
+### Provisional direction
+
+Keep text and visual providers replaceable behind separate capabilities. Gemini
+Image and OpenAI GPT Image are initial image candidates; for video, compare
+direct Gemini Veo 3.1 against a specific Runway model only after verifying its
+upstream data and rights terms. No vendor is selected for production. No
+customer files, real brands, or personal data may be used for evaluation.
+
+At current list prices, eight-second Veo Fast 720p ($0.80) is the cheapest
+documented short video option among the reviewed direct APIs; one generated
+image is materially cheaper. A paid comparison is not yet authorized by this
+research: first define a single synthetic storyboard, a local-only output
+path, max variants, request/retry caps, and a strict per-run reservation. Then
+check provider terms and local credentials without printing secrets; only make
+calls if an exact no-network estimate fits the already approved evaluation
+budget. Keep downloaded media out of Git and expire temporary video files.
+
+Official references checked 2026-10-04:
+
+- Google [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing),
+  [Veo generation guide](https://ai.google.dev/gemini-api/docs/veo),
+  [Gemini API terms](https://ai.google.dev/gemini-api/terms), and
+  [available regions](https://ai.google.dev/gemini-api/docs/available-regions).
+- OpenAI [image generation guide](https://developers.openai.com/api/docs/guides/image-generation),
+  [API data controls](https://platform.openai.com/docs/models/default-usage-policies-by-endpoint),
+  and [API deprecations](https://developers.openai.com/api/docs/deprecations).
+- Runway [API pricing](https://docs.dev.runwayml.com/guides/pricing/).
