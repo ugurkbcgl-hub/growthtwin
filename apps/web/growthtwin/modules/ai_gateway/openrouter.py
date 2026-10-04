@@ -21,18 +21,30 @@ from growthtwin.modules.content.planning import CampaignBrief
 OPENROUTER_HOST = "openrouter.ai"
 OPENROUTER_PATH = "/api/v1/chat/completions"
 OPENROUTER_MODEL = "openai/gpt-6-luna"
+GEMINI_EVALUATION_MODEL = "google/gemini-3.8-flash"
 OPENROUTER_TIMEOUT_SECONDS = 30
 MAX_RESPONSE_BYTES = 65_536
 MAX_OUTPUT_TOKENS = 512
 MAX_REQUEST_BYTES = 4_096
 OUTPUT_PRICE_PER_MILLION = 0.50
 MAX_INPUT_PRICE_PER_MILLION = 0.125
+MODEL_PRICE_CAPS = {
+    OPENROUTER_MODEL: (MAX_INPUT_PRICE_PER_MILLION, OUTPUT_PRICE_PER_MILLION),
+    # Standard catalog prices (without temporary discounts) bound this trial.
+    GEMINI_EVALUATION_MODEL: (0.75, 3.75),
+}
 
 
 class OpenRouterCreativeGenerator:
     """Single-request hosted adapter with no retries or product-route use."""
 
-    def __init__(self, *, api_key: str | None = None):
+    def __init__(
+        self, *, api_key: str | None = None, model: str = OPENROUTER_MODEL
+    ):
+        if model not in MODEL_PRICE_CAPS:
+            raise ValueError(
+                "The requested OpenRouter evaluation model is not allowed."
+            )
         key = api_key if api_key is not None else os.environ.get("OPENROUTER_API_KEY")
         if (
             not isinstance(key, str)
@@ -43,7 +55,11 @@ class OpenRouterCreativeGenerator:
         ):
             raise ValueError("Set OPENROUTER_API_KEY in a secure local environment.")
         self._api_key = key
-        self.generator_id = f"openrouter-{OPENROUTER_MODEL.replace('/', '-')}"
+        self.model = model
+        self.max_input_price_per_million, self.output_price_per_million = (
+            MODEL_PRICE_CAPS[model]
+        )
+        self.generator_id = f"openrouter-{model.replace('/', '-')}"
         self.last_usage: dict[str, int] | None = None
         self.last_cost_usd: float | None = None
         self.last_model: str | None = None
@@ -80,7 +96,7 @@ class OpenRouterCreativeGenerator:
         }
         body = json.dumps(
             {
-                "model": OPENROUTER_MODEL,
+                "model": self.model,
                 "messages": [
                     {"role": "system", "content": CREATIVE_SYSTEM_PROMPT},
                     {
@@ -103,8 +119,8 @@ class OpenRouterCreativeGenerator:
                     "zdr": True,
                     "require_parameters": True,
                     "max_price": {
-                        "prompt": MAX_INPUT_PRICE_PER_MILLION,
-                        "completion": OUTPUT_PRICE_PER_MILLION,
+                        "prompt": self.max_input_price_per_million,
+                        "completion": self.output_price_per_million,
                     },
                 },
             },
@@ -123,8 +139,8 @@ class OpenRouterCreativeGenerator:
         input_bound = len(body) * 2
         output_bound = MAX_OUTPUT_TOKENS
         return (
-            input_bound * MAX_INPUT_PRICE_PER_MILLION
-            + output_bound * OUTPUT_PRICE_PER_MILLION
+            input_bound * self.max_input_price_per_million
+            + output_bound * self.output_price_per_million
         ) / 1_000_000
 
     def generate(self, request: CreativeGenerationRequest) -> CreativeGenerationResult:
@@ -168,8 +184,8 @@ class OpenRouterCreativeGenerator:
                 or finish_reason != "stop"
                 or not isinstance(actual_model, str)
                 or not (
-                    actual_model == OPENROUTER_MODEL
-                    or actual_model.startswith(f"{OPENROUTER_MODEL}:")
+                    actual_model == self.model
+                    or actual_model.startswith(f"{self.model}:")
                 )
             ):
                 raise ValueError
