@@ -108,43 +108,49 @@ def _generate(api_key: str) -> tuple[bytes, float]:
         )
         response = connection.getresponse()
         response_body = response.read(MAX_RESPONSE_BYTES + 1)
-        if len(response_body) > MAX_RESPONSE_BYTES:
-            raise ValueError("Image provider response exceeded the size limit.")
         if response.status != 200:
             raise ImageEvaluationFailure("http_error", response.status)
+        if len(response_body) > MAX_RESPONSE_BYTES:
+            raise ImageEvaluationFailure("response_too_large")
     finally:
         connection.close()
 
     try:
         result = json.loads(response_body)
-        data = result["data"]
-        cost = result["usage"]["cost"]
-        encoded = data[0]["b64_json"]
-    except (
-        KeyError,
-        IndexError,
-        TypeError,
-        json.JSONDecodeError,
-    ) as error:
-        raise ValueError(
-            "Image response or provider cost was not verifiable."
-        ) from error
+    except json.JSONDecodeError as error:
+        raise ImageEvaluationFailure("invalid_response_json") from error
+    if not isinstance(result, dict):
+        raise ImageEvaluationFailure("invalid_response_shape")
 
-    if (
-        not isinstance(data, list)
-        or len(data) != 1
-        or type(cost) not in (int, float)
-        or not 0 <= cost <= RESERVATION_USD
-        or not isinstance(encoded, str)
-        or len(encoded) > MAX_IMAGE_BYTES * 2
-    ):
-        raise ValueError("Image count, cost, or encoded output exceeded its bound.")
+    data = result.get("data")
+    if not isinstance(data, list) or not data:
+        raise ImageEvaluationFailure("missing_image_data")
+    if len(data) != 1:
+        raise ImageEvaluationFailure("image_count_mismatch")
+
+    usage = result.get("usage")
+    if not isinstance(usage, dict) or "cost" not in usage:
+        raise ImageEvaluationFailure("missing_usage_cost")
+    cost = usage["cost"]
+    if type(cost) not in (int, float):
+        raise ImageEvaluationFailure("invalid_usage_cost")
+    if not 0 <= cost <= RESERVATION_USD:
+        raise ImageEvaluationFailure("usage_cost_out_of_bounds")
+
+    image_record = data[0]
+    if not isinstance(image_record, dict):
+        raise ImageEvaluationFailure("invalid_image_record")
+    encoded = image_record.get("b64_json")
+    if not isinstance(encoded, str):
+        raise ImageEvaluationFailure("missing_encoded_image")
+    if len(encoded) > MAX_IMAGE_BYTES * 2:
+        raise ImageEvaluationFailure("encoded_image_too_large")
     try:
         image_bytes = base64.b64decode(encoded, validate=True)
     except (binascii.Error, ValueError) as error:
-        raise ValueError("Image output was not valid base64.") from error
+        raise ImageEvaluationFailure("invalid_image_base64") from error
     if len(image_bytes) > MAX_IMAGE_BYTES or not image_bytes.startswith(PNG_SIGNATURE):
-        raise ValueError("Image output was not a bounded PNG file.")
+        raise ImageEvaluationFailure("invalid_image_format")
     return image_bytes, float(cost)
 
 
