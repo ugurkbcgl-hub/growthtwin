@@ -1,17 +1,18 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-05 00:40 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-05 01:00 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
 Build a self-service paid-advertising platform for Türkiye across industries.
-Continue local synthetic product development. No real advertiser data, live ad
-accounts, publication, media spend, or production AI use.
+Current handoff scope: do not begin product features until Phase 0 is complete.
+Use synthetic data only. No real advertiser data, live ad accounts,
+publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Verified base `main`: `183df04` (PR #265, fixed image media-type handling).
+- Verified base `main`: `986aab8` (PR #266, refreshed image media fix handoff).
 - PR #256 required CI `37214462925` and post-merge CI `37214622803` passed.
   PR #257 required CI `37214916337` and post-merge CI `37215065615` passed.
   PR #258 required CI `37215352318` and post-merge CI `37215534053` passed.
@@ -26,6 +27,10 @@ accounts, publication, media spend, or production AI use.
   `37236726475` and post-merge CI `37236885525` passed, including Django tests
   and browser E2E. Local Ruff lint/format and `git diff --check` passed. Never
   push directly to `main`.
+- PR #266 merged as `986aab894cdb728744026292e661d0d0d3908f8d`; required CI
+  `37237129966` and post-merge CI `37237255078` passed. At verification, the
+  working tree was clean and no PRs were open. This handoff is being prepared
+  on `docs/low-usage-handoff-20261005`; do not push directly to `main`.
 
 ## AI/provider status
 
@@ -67,8 +72,11 @@ or use real data without applicable authorization.
 
 ## Next action
 
-Continue non-billable local work from the roadmap. Preserve the unresolved
-USD 0.00078075 GPT reservation and never inspect the OpenRouter account
-balance. Any further billable synthetic image call requires renewed explicit
-authorization. Keep AI disconnected from product routes and do not attempt
-video through OpenRouter.
+Resolve the Phase 0 data-safety blocker before any new product-feature work:
+obtain privacy-preserving, owner-approved evidence that the unclassified
+legacy drafts and workspace creative values in the configured local database
+are synthetic. Until then, leave that database untouched and do not inspect or
+dump those values. Preserve the unresolved USD 0.00078075 GPT reservation;
+do not inspect the OpenRouter account balance or make another billable call
+without renewed explicit authorization. Keep AI disconnected from product
+routes and do not use OpenRouter video.
