@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 13:57 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 14:05 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -11,11 +11,11 @@ live ad accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- The verified base was clean `main` at
-  `436439bb5576bcc3b4cf877ff45abce65254b3af` (PR #238). PR #238's required CI
-  `37195565589` and post-merge `main` CI `37195695139` passed. PRs #235–237
-  and their required/post-merge CI also passed. No open PRs were returned
-  before this local-result-capture feature branch was created. Verify live
+- PR #239 (`feature/local-jsonl-evaluation-capture`) was reviewed and merged
+  to `main` as `e8740e58e24e876ee43b948bd7dbeb19852e01a4`. Its required CI
+  `37197149607` and post-merge `main` CI `37197326006` passed, including
+  Django tests and browser E2E. The working copy is on a clean `main` at
+  `e8740e5`; no open PRs were returned after the merge. Verify live
   Git/PR/CI state before acting.
 
 ## AI and product status
@@ -42,11 +42,11 @@ live ad accounts, publication, media spend, or production AI use.
   zero reserved, and USD 15.9985335 remaining under the local USD 16 cap.
   Outputs are review-required/non-publishable; manual quality scores are
   pending. The run output was not persisted, and no second run was made.
-- The current feature branch adds per-run local JSONL capture under
+- Merged PR #239 adds per-run local JSONL capture under
   `%LOCALAPPDATA%\GrowthTwin\evaluations`, before any next hosted run. Records
   omit the brief/request body and API key; result rows include generated
   synthetic variants and manual-review slots. No API request was made for this
-  change. The feature branch and its PR/CI status must be checked live.
+  change.
 - The preflight estimate was at most USD 0.005834 for nine calls. Four focused
   OpenRouter tests and broader focused gateway tests passed in recorded runs;
   PR and post-merge CI also passed. No real data or production route was used.
@@ -66,9 +66,9 @@ live ad accounts, publication, media spend, or production AI use.
 
 ## Next action
 
-Review, validate, and merge the current JSONL-capture feature through its PR.
-Do not make another hosted call in this step. Once merged and the owner signals
-account readiness, use a captured synthetic run to manually score usefulness,
-source grounding, diversity, brand fit, and correction effort. The assistant
-must not inspect OpenRouter balance/auto-recharge settings. Recheck live
-branch, worktree, latest commit, open PRs, and CI status before acting.
+After the owner confirms account-side readiness (dedicated key limit, existing
+balance, and auto-recharge setting), make one bounded synthetic run with the
+merged JSONL capture and manually score usefulness, source grounding,
+diversity, brand fit, and correction effort. The assistant must not inspect
+OpenRouter balance/auto-recharge settings. Recheck live branch, worktree, latest
+commit, open PRs, and CI status before acting.
