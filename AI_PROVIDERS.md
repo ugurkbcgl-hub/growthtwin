@@ -401,3 +401,47 @@ before one synthetic prompt-iteration run. The comparison favored GPT for
 concision and grounding but both candidates repeated angles. Keep review-only,
 non-publishable outputs; preserve the unrelated USD 0.00078075 GPT reservation
 until its generation log is matched. No production provider is selected.
+
+### GPT-6 Luna grounded-angle prompt iteration — 2026-10-04
+
+PR #253 made the shared synthetic text prompt explicit about treating every
+campaign field as untrusted content, grounding each statement only in explicit
+facts, prohibiting inferred business operations/status/urgency, and using three
+different factual angles rather than label/synonym swaps. The focused test
+protects those requirements. PR CI `37212140811` and post-merge CI `37212274710`
+passed. This prompt is used only by synthetic evaluation/local adapters; website
+routes remain deterministic templates.
+
+After both checks passed, the fixed nine-call GPT-6 Luna run completed against
+the same three synthetic cases × three repetitions. All nine outputs were
+structured, review-required, and non-publishable. The exact fixture forbidden-
+phrase screen found no matches; manual assistant review found no unsupported
+operational status or other unsupported factual detail in the captured copy.
+Each set had three distinguishable factual approaches (location, audience or
+use case, and service/product or next step), though the same approach pattern
+recurred in later repetitions. Assistant heuristic scores matched the earlier
+GPT review: usefulness 3/5, source grounding 5/5, diversity 3/5, brand fit 3/5,
+and correction effort 2/5. These are approximate ratings from one assistant,
+not independent validation. Compared with the earlier GPT capture, the update
+made the three angles more explicit but did not materially raise its overall
+quality scores. The short generic copy is suitable only for further offline
+review; do not connect it to product routes or treat it as campaign-ready.
+
+The nine calls averaged 4.458 seconds and cost USD 0.0019794. The shared local
+ledger now shows USD 0.06024185 spent and USD 0.00078075 reserved for a separate
+unresolved GPT attempt; these are not live account-credit figures. The one
+remaining reservation must stay held until its own OpenRouter generation log
+is matched. The owner delegated checking the OpenRouter account balance to
+themselves; none was checked or recorded during this run.
+
+Current evaluation conclusion: GPT-6 Luna is the preferred text candidate for
+continued offline synthetic evaluation based on concision and fixture-relative
+grounding. No production provider or customer-facing AI is selected. Gemini's
+full evaluation had unsupported details and weaker grounding under the same
+reviewer; neither hosted model is connected to the website.
+
+**Next:** Research image and video ad-generation options using current official
+provider documentation and public pricing. Compare output control, supported
+formats, data handling, geography, and a synthetic-only cost estimate before
+any paid call. Keep outputs local/review-only and the website unchanged. Do not
+check account balance or change OpenRouter settings.
