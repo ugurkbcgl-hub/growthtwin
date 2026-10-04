@@ -1,71 +1,59 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 17:28 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 17:46 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
-Build a polished self-service paid-advertising platform for Türkiye across
-industries. Continue local synthetic development. No real advertiser data,
-live ad accounts, publication, media spend, or production AI use.
+Build a self-service paid-advertising platform for the Türkiye market across
+industries. Continue local synthetic product development. No real advertiser
+data, live ad accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- PR #246 added bounded candidate selection for the synthetic OpenRouter
-  benchmark, merged to `main` as `fcdc3e9`; required CI `37203552127` and
-  post-merge CI `37208468991` passed.
-- PR #247 fixed the unverified-response branch in the benchmark loop, merged to
-  `main` as `000f014`; required CI `37208553129` passed. Post-merge CI
-  `37208716235` passed.
-- PR #248 updated evaluation and project state, merged as `f95c390`; required
-  CI `37209047939` and post-merge CI `37209193594` passed. At 2026-10-04
-  17:28 +0300, `main` was clean at `f95c390` and no open PRs were returned.
-  Recheck the live branch, worktree, latest commit, open PRs, and CI before
-  acting.
+- Starting point verified on 2026-10-04: clean `main` at `fb68bb6`; PRs #246–249
+  are merged and their required/post-merge CI passed. No open PRs were returned.
+- A feature branch now gives Gemini a model-specific 1,024 output-token bound;
+  GPT-6 Luna remains at 512. Focused no-network tests (5), estimate, and Ruff
+  passed locally. The nine-call Gemini estimate is USD 0.061142; no network
+  calls were made by these checks.
+- The Gemini change has not yet been reviewed or merged. Verify this branch's
+  PR and required CI before any provider call.
 
-## AI and product status
+## AI/provider status
 
-- The website uses deterministic templates. No provider is connected to product
-  routes and no production model is selected.
-- GPT-6 Luna's captured synthetic baseline and prompt-iteration comparison were
-  heuristically reviewed by the assistant, not independently by a person.
-  Diversity moved from 2.33/5 to 3/5; usefulness 3/5, fixture-relative
-  grounding 5/5, brand fit 3/5, and correction effort 2/5 were unchanged.
-  Results remain generic review drafts, not production candidates.
-- The full post-prompt GPT-6 Luna run completed 9/9 for USD 0.0017208, average
-  latency 3.803 seconds; Azure was returned upstream in all calls. A separate
-  attempt stopped after six calls on unverified response/accounting; USD
-  0.00078075 remains reserved.
-- PR #246 permits selecting Gemini 3.8 Flash for this synthetic evaluation
-  only. Its first attempted call yielded no verifiable benchmark result; the
-  remaining eight were not sent. PR #247 fixed the resulting local benchmark
-  exception. USD 0.004761 remains reserved for the call with unknown provider
-  cost.
-- The shared local USD 16 ledger reports USD 0.0057997 spent and USD 0.00554175
-  reserved; USD 15.98865855 remains inside that local allocation. This is not
-  a live credit balance.
-- A read-only current-key API check contradicted the owner's earlier
-  confirmation: the returned limit/reset configuration did not match the
-  approved USD 16 limit with no reset. No more hosted calls until corrected and
-  reverified. Account usage/remaining-credit amounts are intentionally omitted
-  from repository history.
-- Use only repository synthetic cases. `zdr=true` and
-  `data_collection=deny` do not guarantee Türkiye/EU processing or KVKK
-  compliance.
+- Deterministic website templates remain active; no provider is connected to
+  product routes and no production model is selected.
+- OpenRouter's read-only account-key/API inspection after the owner's update
+  confirmed the approved USD 16 cap with no reset. No account balance or usage
+  amount is recorded here.
+- OpenRouter's generation log matched both Gemini calls to Google Vertex at
+  their local timestamps. They returned 496 and 497 output tokens,
+  `finish_reason=length`, at USD 0.00221 each. No response text was opened.
+  The two local reservations were reconciled to this dashboard evidence.
+- Shared evaluation ledger: USD 0.0102197 spent and USD 0.00078075 reserved.
+  The remaining reservation belongs to an earlier GPT call and remains held
+  pending separate reconciliation. These local ledger amounts are not live
+  account credits.
+- Earlier Gemini attempts did not produce usable validated outputs. The
+  token-bound fix is intended to address truncation only; candidate quality is
+  still unproven.
 
-## Risks and gates
+## Risks and boundaries
 
-- Never store credentials in chat, source, Git, logs, or handoff files. Do not
-  top up, enable auto-recharge, use real advertiser/customer/patient data,
-  connect live ad accounts, publish, spend media budget, or route AI through a
-  product route.
-- The first Gemini result has unknown cost; retain its USD 0.004761 reservation
-  unless usage is reconciled. Do not reset the shared ledger.
+Use only fixed synthetic cases; `zdr=true` and `data_collection=deny` do not
+establish Türkiye/EU processing or KVKK compliance. Do not top up or enable
+auto-recharge, send private data, connect live ad accounts, publish, spend
+media budget, or connect AI to product routes. Keep the account cap and local
+ledger safeguards intact. Never store secrets or generated private content in
+Git.
 
 ## Next action
 
-Correct the dedicated OpenRouter evaluation key to the authorized USD 16
-no-reset limit and verify it with the read-only current-key endpoint; only then
-diagnose the unverified Gemini response/accounting path and consider rerunning
-the fixed suite. Keep the existing reservation held, use synthetic fixtures,
-and manually review any valid outputs before drawing a candidate conclusion.
+Review and merge the Gemini-specific 1,024-token cap only after required CI
+passes, then run the one fixed nine-call synthetic evaluation once. Stop at the
+first truncation or unverified response/accounting result. If it completes,
+review the captured synthetic variants manually for claims, usefulness,
+diversity, and correction effort; do not select a production provider from a
+single run. Preserve the unrelated USD 0.00078075 reservation until its own
+OpenRouter generation log can be matched.

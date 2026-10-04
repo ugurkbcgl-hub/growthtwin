@@ -17,7 +17,6 @@ from growthtwin.modules.ai_gateway.evaluation_budget import (
     settle_evaluation_cost,
 )
 from growthtwin.modules.ai_gateway.openrouter import (
-    MAX_OUTPUT_TOKENS,
     MODEL_PRICE_CAPS,
     OPENROUTER_MODEL,
     OpenRouterCreativeGenerator,
@@ -204,7 +203,7 @@ def main() -> int:
                 )
                 return 4
             try:
-                if generator.last_usage["output_tokens"] > MAX_OUTPUT_TOKENS:
+                if generator.last_usage["output_tokens"] > generator.max_output_tokens:
                     raise ValueError("Provider usage exceeded the fixed token cap.")
                 successful_record = {
                     **record.as_record(),
