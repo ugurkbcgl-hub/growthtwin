@@ -207,6 +207,7 @@ def run_text_benchmark(
                             variants=(),
                         )
                     )
+                    continue
                 except CreativeGenerationRejected:
                     records.append(
                         TextBenchmarkRecord(
