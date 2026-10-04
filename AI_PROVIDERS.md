@@ -468,14 +468,16 @@ direct Gemini Veo 3.1 against a specific Runway model only after verifying its
 upstream data and rights terms. No vendor is selected for production. No
 customer files, real brands, or personal data may be used for evaluation.
 
-At current list prices, eight-second Veo Fast 720p ($0.80) is the cheapest
-documented short video option among the reviewed direct APIs; one generated
-image is materially cheaper. A paid comparison is not yet authorized by this
-research: first define a single synthetic storyboard, a local-only output
-path, max variants, request/retry caps, and a strict per-run reservation. Then
-check provider terms and local credentials without printing secrets; only make
-calls if an exact no-network estimate fits the already approved evaluation
-budget. Keep downloaded media out of Git and expire temporary video files.
+At current list prices, an eight-second Veo Fast 720p output is an illustrative
+USD 0.80 cost benchmark; this desk review is not a comprehensive market price
+comparison. The prior capped-evaluation authorization remains in force, but
+this research alone neither selects a model nor triggers a paid call. First
+define a single synthetic storyboard, a local-only output path, maximum
+variants, request/retry caps, and a strict per-run reservation. Then check
+provider terms and local credentials without printing secrets; make calls only
+if an exact no-network estimate fits the existing local budget controls and
+the previously approved cap. Keep downloaded media out of Git and expire
+temporary video files.
 
 Official references checked 2026-10-04:
 
