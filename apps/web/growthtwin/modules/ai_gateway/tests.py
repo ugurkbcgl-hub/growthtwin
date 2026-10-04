@@ -18,6 +18,7 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationResult,
     generate_creative_draft,
 )
+from growthtwin.modules.ai_gateway.creative_format import CREATIVE_SYSTEM_PROMPT
 from growthtwin.modules.ai_gateway.fact_copy import (
     MAX_ASSEMBLED_COPY_LENGTH,
     CopyAssemblyRejectionReason,
@@ -36,6 +37,19 @@ from growthtwin.modules.ai_gateway.synthetic import (
     SYNTHETIC_CREATIVE_REQUEST,
     SyntheticTemplateGenerator,
 )
+
+
+class CreativePromptBoundaryTests(SimpleTestCase):
+    def test_prompt_requires_distinct_grounded_angles_and_blocks_inference(self):
+        prompt = CREATIVE_SYSTEM_PROMPT.casefold()
+
+        self.assertIn("untrusted source data", prompt)
+        self.assertIn("facts explicitly stated", prompt)
+        self.assertIn("do not infer business operations or capabilities", prompt)
+        self.assertIn("registration status", prompt)
+        self.assertIn("speed, urgency", prompt)
+        self.assertIn("do not repeat an approach", prompt)
+        self.assertIn("different explicit facts", prompt)
 
 
 class FixedGenerator:
