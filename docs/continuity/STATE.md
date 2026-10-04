@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 19:00 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 19:01 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -11,11 +11,11 @@ accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Current `main`: `4bb188d` (PR #256, bounded synthetic image evaluator).
-- PR #256 required CI `37214462925` passed; post-merge CI `37214622803`
-  passed. No open PRs were found before this documentation update.
-- Current work is on `docs/image-eval-outcome-20261004`; prepare a documentation
-  PR, review it locally, and merge only after required CI succeeds. Never push
+- Current `main`: `a09d65f` (PR #257, image-call outcome documentation).
+- PR #256 required CI `37214462925` and post-merge CI `37214622803` passed.
+  PR #257 required CI `37214916337` and post-merge CI `37215065615` passed.
+- Current work is on `fix/sanitized-image-eval-diagnostics`; review its code and
+  docs, then use a PR and merge only after required CI succeeds. Never push
   directly to `main`.
 
 ## Completed and current AI/provider status
@@ -26,9 +26,14 @@ accounts, publication, media spend, or production AI use.
 - The owner authorized one synthetic image request using the pinned
   `google/gemini-3.1-flash-lite-image` / `google-vertex/global` path after PR
   #256 and main CI passed. The call did not produce verifiable output. A local
-  record confirms only call start; there is no image or provider-cost result.
-  Charge is unknown; its USD 0.10 local reservation remains held. The previous confirmed shared ledger snapshot also had USD 0.06024185 spent and USD 0.00078075 reserved for an earlier unresolved GPT call; no post-image ledger total is verified. No retry is
-  authorized without renewed user approval.
+  record confirms only call start; the runner suppressed diagnostic details,
+  so the cause cannot be determined. There is no image or provider-cost result.
+  Charge is unknown; its USD 0.10 local reservation remains held. A code
+  change will record only sanitized failure categories/status, not response
+  bodies or secrets, for any future explicitly authorized call. The previous
+  confirmed shared ledger snapshot had USD 0.06024185 spent and USD 0.00078075
+  reserved for an earlier unresolved GPT call; no post-image ledger total is
+  verified. No retry is authorized without renewed user approval.
 - The owner checks the OpenRouter account balance; it was not inspected. No
   top-up, auto-recharge, privacy-setting change, or real-data use occurred.
 - OpenRouter video remains excluded because its async video API is not
@@ -45,8 +50,8 @@ credits, or change privacy settings without applicable authorization.
 
 ## Next action
 
-Submit the documentation update describing the unresolved image-call outcome.
-Then inspect the local runner implementation and sanitized operational state to
-identify why it failed without revealing credentials, reading account balance,
-or making another provider request. Keep the USD 0.10 reservation held. Ask
-for renewed authorization before any further billable attempt.
+Review PR for sanitized image-call failure diagnostics and merge only after
+required CI passes. The prior call's root cause is unknown because its failure
+category was not recorded. Keep the USD 0.10 reservation held. Do not make
+another provider request without renewed authorization; do not inspect the
+account balance.

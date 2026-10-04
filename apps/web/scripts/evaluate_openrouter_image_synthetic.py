@@ -38,6 +38,27 @@ SYNTHETIC_PROMPT = (
 )
 
 
+class ImageEvaluationFailure(Exception):
+    """Safe, non-sensitive category for a failed image request."""
+
+    def __init__(self, category: str, http_status: int | None = None) -> None:
+        super().__init__(category)
+        self.category = category
+        self.http_status = http_status
+
+
+def _failure_category(error: Exception) -> tuple[str, int | None]:
+    if isinstance(error, ImageEvaluationFailure):
+        return error.category, error.http_status
+    if isinstance(error, TimeoutError):
+        return "network_timeout", None
+    if isinstance(error, OSError):
+        return "network_or_local_io_error", None
+    if isinstance(error, (ValueError, KeyError, IndexError, TypeError)):
+        return "invalid_or_unverifiable_response", None
+    return "unclassified_failure", None
+
+
 def _local_directory() -> Path:
     local_data = os.environ.get("LOCALAPPDATA")
     local_root = Path(local_data) if local_data else Path.home() / "AppData/Local"
@@ -90,7 +111,7 @@ def _generate(api_key: str) -> tuple[bytes, float]:
         if len(response_body) > MAX_RESPONSE_BYTES:
             raise ValueError("Image provider response exceeded the size limit.")
         if response.status != 200:
-            raise RuntimeError("Image provider request failed; no retry was made.")
+            raise ImageEvaluationFailure("http_error", response.status)
     finally:
         connection.close()
 
@@ -210,10 +231,23 @@ def main() -> int:
     print("Sending one synthetic image request; no retries or alternate providers.")
     try:
         image_bytes, actual_cost = _generate(api_key)
-    except Exception:
+    except Exception as error:
+        category, http_status = _failure_category(error)
+        failure_record: dict[str, object] = {
+            "record_type": "failed",
+            "failed_at_utc": datetime.now(timezone.utc).isoformat(),
+            "failure_category": category,
+            "publishable": False,
+        }
+        if http_status is not None:
+            failure_record["http_status"] = http_status
+        try:
+            _append_jsonl(capture_path, failure_record)
+        except OSError:
+            pass
         print(
-            "Image request did not produce verifiable output; its local "
-            "reservation remains held. Sensitive details were suppressed.",
+            f"Image request failed ({category}); its local reservation remains "
+            "held. Sensitive details were suppressed and no retry was made.",
             file=sys.stderr,
         )
         return 1
