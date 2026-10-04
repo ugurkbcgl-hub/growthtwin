@@ -184,7 +184,7 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 ## Deferred until evidence supports them
 
 - Broad simultaneous channel coverage, vertical-specific workflow depth, native mobile clients, organic-content calendars, long-form video generation, full CRM, vector search, microservices, a separate queue service, and automatic cross-channel budget allocation.
-- Production AI/provider selection and production hosting. The provider-neutral architecture and synthetic candidate shortlist are documented. The owner-approved USD 5 evaluation budget allows bounded synthetic provider comparison after the documented account-side and local cost controls are verified; no production selection is implied.
+- Production AI/provider selection and production hosting. The provider-neutral architecture and synthetic candidate shortlist are documented. The owner-reported USD 16 existing OpenRouter balance supports bounded synthetic evaluation only, after the owner verifies account-side settings and the local cost controls are ready; no production selection is implied. Do not top up or enable auto-recharge.
 
 ## Existing Phase 0 tasks retained as gates
 
