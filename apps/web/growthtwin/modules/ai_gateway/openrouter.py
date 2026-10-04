@@ -38,9 +38,7 @@ MODEL_PRICE_CAPS = {
 class OpenRouterCreativeGenerator:
     """Single-request hosted adapter with no retries or product-route use."""
 
-    def __init__(
-        self, *, api_key: str | None = None, model: str = OPENROUTER_MODEL
-    ):
+    def __init__(self, *, api_key: str | None = None, model: str = OPENROUTER_MODEL):
         if model not in MODEL_PRICE_CAPS:
             raise ValueError(
                 "The requested OpenRouter evaluation model is not allowed."
