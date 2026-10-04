@@ -271,6 +271,24 @@ minimum USD 0.80 fee. No purchase is needed for the owner's stated existing USD
 no longer sufficient, stop and get a new budget decision before funding the
 account.
 
+### First bounded hosted run — 2026-10-04
+
+The owner confirmed readiness after handling the account-side checks; the
+assistant did not inspect the OpenRouter account. The fixed synthetic runner
+completed all nine GPT-6 Luna calls. Responses were returned as
+review-required, non-publishable drafts. The fixture's exact forbidden-phrase
+screen reported no matches in the run output; this is not semantic claim
+validation or a safety clearance. Manual usefulness, factual grounding,
+diversity, brand fit, and correction-effort scores remain unassessed, so this
+run does not pass the creative candidate gate or select a provider.
+
+OpenRouter-reported call costs totaled USD 0.0014665. The shared local ledger
+reports cap USD 16.00, spent USD 0.0014665, and USD 0 reserved. These are
+evaluation-ledger figures, not a live account-balance check. The run output
+was not persisted; only this bounded summary and the local usage ledger remain.
+No advertiser, customer, patient, or account data was sent, and no output was
+published or connected to a product route.
+
 OpenRouter says request-level `zdr=true` restricts routing to eligible
 zero-retention endpoints, while `data_collection=deny` filters endpoints that
 collect inputs. This does not make the request local, guarantee Türkiye/EU
@@ -279,12 +297,12 @@ selected model provider, whose separate policies also matter. This trial
 therefore uses only repository synthetic fixtures; if no endpoint satisfies
 the request constraints, the evaluation must fail closed.
 
-Official source pages checked 2026-10-03: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
+Official source pages checked 2026-10-04: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
 
-**Next:** after confirming the dedicated OpenRouter key's non-resetting USD
-16 limit, sufficient existing credits, auto-recharge disabled, and secure local
-key configuration, run the fixed synthetic text evaluation. The owner checks
-the OpenRouter account balance and auto-recharge setting; the assistant does
-not access the account. Treat the stated USD 16 as owner-reported until the
-owner confirms the check. Track cumulative usage in the shared local USD 16
-ledger; stop when its balance is exhausted.
+**Next:** manually review the generated drafts for usefulness, grounding,
+diversity, brand fit, and correction effort before deciding whether to repeat
+or compare another model. The owner checks OpenRouter account balance and
+auto-recharge settings; the assistant does not access the account. Track
+cumulative use in the shared local USD 16 ledger and stop at its cap. Do not
+repeat hosted calls until a durable local-only result-capture path is available
+or the owner explicitly accepts that the next run's output will not be saved.
