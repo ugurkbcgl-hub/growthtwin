@@ -18,6 +18,7 @@ from growthtwin.modules.ai_gateway.evaluation_budget import (
 )
 from growthtwin.modules.ai_gateway.openrouter import (
     MAX_OUTPUT_TOKENS,
+    MODEL_PRICE_CAPS,
     OPENROUTER_MODEL,
     OpenRouterCreativeGenerator,
 )
@@ -26,7 +27,7 @@ from growthtwin.modules.ai_gateway.profiles import CREATIVE_COPY_PROFILE
 REPETITIONS = 3
 
 
-def _new_result_capture() -> tuple[Path, str]:
+def _new_result_capture(model: str) -> tuple[Path, str]:
     """Create an exclusive JSONL file under local user data, outside Git."""
 
     local_data = os.environ.get("LOCALAPPDATA")
@@ -49,7 +50,7 @@ def _new_result_capture() -> tuple[Path, str]:
                     "run_id": run_id,
                     "started_at_utc": datetime.now(timezone.utc).isoformat(),
                     "provider": "openrouter",
-                    "model": OPENROUTER_MODEL,
+                    "model": model,
                     "profile_id": CREATIVE_COPY_PROFILE.profile_id,
                     "synthetic_only": True,
                     "publishable": False,
@@ -82,10 +83,16 @@ def main() -> int:
         action="store_true",
         help="Print the upper reservation for one fixed run; make no network calls.",
     )
+    parser.add_argument(
+        "--model",
+        choices=tuple(MODEL_PRICE_CAPS),
+        default=OPENROUTER_MODEL,
+        help="Select one explicitly allowed synthetic evaluation candidate.",
+    )
     args = parser.parse_args()
     try:
         generator = OpenRouterCreativeGenerator(
-            api_key="estimate-only" if args.estimate else None
+            api_key="estimate-only" if args.estimate else None, model=args.model
         )
     except ValueError as error:
         print(str(error), file=sys.stderr)
@@ -98,7 +105,7 @@ def main() -> int:
             for case in CASES
         )
         print(
-            f"One fixed {OPENROUTER_MODEL} synthetic run: 9 calls, "
+            f"One fixed {generator.model} synthetic run: 9 calls, "
             f"at most ${total_reservation:.6f} reserved by the local ledger. "
             "Estimate only; no API request or spend occurred."
         )
@@ -109,7 +116,7 @@ def main() -> int:
         "three repetitions per brief; no retries, tools, brief storage, or route use."
     )
     try:
-        result_path, run_id = _new_result_capture()
+        result_path, run_id = _new_result_capture(generator.model)
     except OSError as error:
         print(
             f"Could not prepare local result capture; no provider request was sent: {error}",
@@ -165,7 +172,7 @@ def main() -> int:
                     "repetitions_requested": REPETITIONS,
                     "repetition": repetition,
                     "provider": "openrouter",
-                    "model": OPENROUTER_MODEL,
+                    "model": generator.model,
                     "response_model": generator.last_model,
                     "upstream_provider": generator.last_provider,
                     "usage": None,
@@ -207,7 +214,7 @@ def main() -> int:
                     "repetitions_requested": REPETITIONS,
                     "repetition": repetition,
                     "provider": "openrouter",
-                    "model": OPENROUTER_MODEL,
+                    "model": generator.model,
                     "response_model": generator.last_model,
                     "upstream_provider": generator.last_provider,
                     "usage": generator.last_usage,
@@ -294,7 +301,7 @@ def main() -> int:
         )
         return 7
     print(
-        f"Completed {completed} synthetic calls against {OPENROUTER_MODEL}. "
+        f"Completed {completed} synthetic calls against {generator.model}. "
         "Manually review claims, usefulness, diversity, and correction effort. "
         f"Result file: {result_path}"
     )
