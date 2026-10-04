@@ -26,6 +26,7 @@ MAX_RESPONSE_BYTES = 24_000_000
 MAX_IMAGE_BYTES = 16_000_000
 TIMEOUT_SECONDS = 180
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+JPEG_SIGNATURE = b"\xff\xd8\xff"
 SYNTHETIC_PROMPT = (
     "Create one polished vertical advertising photograph for a fictional "
     "Turkish coffee roaster. Show a plain, unbranded 250 g terracotta coffee "
@@ -93,7 +94,21 @@ def _request_body() -> bytes:
     return body
 
 
-def _generate(api_key: str) -> tuple[bytes, float]:
+def _image_format(image_bytes: bytes) -> tuple[str, str]:
+    if image_bytes.startswith(PNG_SIGNATURE):
+        return "image/png", ".png"
+    if image_bytes.startswith(JPEG_SIGNATURE):
+        return "image/jpeg", ".jpg"
+    if (
+        len(image_bytes) >= 12
+        and image_bytes[:4] == b"RIFF"
+        and image_bytes[8:12] == b"WEBP"
+    ):
+        return "image/webp", ".webp"
+    raise ImageEvaluationFailure("invalid_image_format")
+
+
+def _generate(api_key: str) -> tuple[bytes, str, float]:
     connection = HTTPSConnection("openrouter.ai", timeout=TIMEOUT_SECONDS)
     try:
         connection.request(
@@ -149,9 +164,15 @@ def _generate(api_key: str) -> tuple[bytes, float]:
         image_bytes = base64.b64decode(encoded, validate=True)
     except (binascii.Error, ValueError) as error:
         raise ImageEvaluationFailure("invalid_image_base64") from error
-    if len(image_bytes) > MAX_IMAGE_BYTES or not image_bytes.startswith(PNG_SIGNATURE):
+    if not image_bytes:
         raise ImageEvaluationFailure("invalid_image_format")
-    return image_bytes, float(cost)
+    if len(image_bytes) > MAX_IMAGE_BYTES:
+        raise ImageEvaluationFailure("decoded_image_too_large")
+    detected_media_type, extension = _image_format(image_bytes)
+    declared_media_type = image_record.get("media_type")
+    if declared_media_type is not None and declared_media_type != detected_media_type:
+        raise ImageEvaluationFailure("image_media_type_mismatch")
+    return image_bytes, extension, float(cost)
 
 
 def main() -> int:
@@ -236,7 +257,7 @@ def main() -> int:
 
     print("Sending one synthetic image request; no retries or alternate providers.")
     try:
-        image_bytes, actual_cost = _generate(api_key)
+        image_bytes, image_extension, actual_cost = _generate(api_key)
     except Exception as error:
         category, http_status = _failure_category(error)
         failure_record: dict[str, object] = {
@@ -260,7 +281,9 @@ def main() -> int:
 
     try:
         settle_evaluation_cost(ledger_path, RESERVATION_USD, actual_cost)
-        image_path = output_directory / f"image-{timestamp}-{run_id[:8]}.png"
+        image_path = output_directory / (
+            f"image-{timestamp}-{run_id[:8]}{image_extension}"
+        )
         with image_path.open("xb") as image_file:
             image_file.write(image_bytes)
             image_file.flush()

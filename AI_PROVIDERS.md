@@ -504,29 +504,22 @@ and exactly one output per call. Its Google Vertex endpoint
 (`google-vertex/global`) appears in OpenRouter's ZDR-eligible endpoint
 catalog. Google publishes USD 0.0336 for a 1K output image; allow a
 conservative USD 0.10 maximum reservation for one image plus prompt and
-size-token variance. The merged fixed runner pins only to that exact endpoint,
-makes no retries, keeps any asset under local application data, and settles
-only from returned usage. Two separately authorized one-call attempts ran on
-2026-10-04. The first produced no verifiable output; its initial run record
-confirms only call start because the old runner did not record a safe failure
-category. The second produced no image or provider-cost result; its local
-record safely reports `invalid_or_unverifiable_response` and no HTTP status.
-The provider charge for either attempt is unknown. Keep both USD 0.10 local
-reservations held. The verified local budget ledger records USD 0.06024185
-spent and USD 0.20078075 reserved, including USD 0.00078075 for an unresolved
-earlier GPT call. These figures describe the local ledger, not provider
-billing or the OpenRouter account balance. The updated runner records only
-sanitized failure categories/status for future attempts, without response
-bodies or secrets. A follow-up review of the official Image API documentation
-found that `usage.cost` is returned only when available, while this runner
-requires it to settle the local reservation. That is one possible explanation
-for the second attempt's generic `invalid_or_unverifiable_response`, but the
-captured record does not identify the failing response field, so the actual
-cause remains unknown. The runner now distinguishes missing/invalid usage,
-malformed response JSON/shape, absent or malformed image data, and HTTP errors
-without retaining response content. These categories improve future
-diagnostics; they do not retroactively explain either attempt. A third
-billable call requires renewed owner authorization.
+size-token variance. The fixed runner pins only to that endpoint and does not
+retry. Two separately authorized one-call attempts ran on 2026-10-04. The
+OpenRouter Logs page shows both matching model/provider calls completed and
+were charged USD 0.0336 each. The local runner did not save either image or
+settle the local cost because it rejected the response. The second run record
+contains only `invalid_or_unverifiable_response`; the first only records the
+call start. The exact returned MIME type is unavailable, so the precise
+historical rejection point is not proven. The runner incorrectly required PNG
+bytes despite the Image API's documented `media_type` and non-PNG image
+formats; this is now fixed to validate and retain PNG, JPEG, or WebP with its
+matching extension. Both USD 0.10 reservations have been reconciled against
+the visible provider log costs. The local ledger now reports USD 0.12744185
+spent and USD 0.00078075 reserved for an earlier unresolved GPT call. This is
+local evaluation bookkeeping, not the account balance. No balance was
+inspected. Failure records continue to omit response bodies and secrets. Any
+further billable call requires renewed owner authorization.
 This is a narrow visual-runner exception to the existing text runner's USD
 0.01 per-call reservation; the total shared USD 16 cap remains unchanged. No
 live account balance was checked.
@@ -544,9 +537,9 @@ provider routing](https://openrouter.ai/docs/guides/overview/multimodal/image-ge
 [ZDR eligible endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-endpoints-zdr),
 and [Video Generation API and ZDR limitation](https://openrouter.ai/docs/guides/overview/multimodal/video-generation).
 
-**Next:** Continue non-billable local work. Preserve the USD 0.20 in image
-reservations and USD 0.00078075 earlier GPT reservation; do not inspect the
-account balance or change privacy settings. Any further billable call requires
+**Next:** Continue non-billable local work. Preserve the USD 0.00078075
+reservation for the unresolved earlier GPT call; do not inspect the account
+balance or change privacy settings. Any further billable call requires
 renewed owner authorization. Preserve the text runner's default USD 0.01 call
 limit; the image exception is limited to this endpoint and the shared USD 16
 cap. Do not attempt video via OpenRouter, use real user files, or connect any
