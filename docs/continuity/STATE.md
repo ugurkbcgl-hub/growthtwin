@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 18:20 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 18:31 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -19,9 +19,12 @@ accounts, publication, media spend, or production AI use.
   `37211905675` passed.
 - PR #253 merged as `dd0c0af`; required CI `37212140811` and post-merge CI
   `37212274710` passed.
-- A docs-only update is now being prepared from a feature branch. Verify its PR,
-  CI, final `main` commit, and open PR state before acting. Never push directly
-  to `main`.
+- PR #254 merged as `03d1f49`; required CI `37212660663` and post-merge CI
+  `37212801135` passed.
+- PR #255 contains image/video research and corrections to stale provider
+  status in `PROJECT.md` and `docs/product/ai-provider-strategy.md`, on
+  `docs/image-video-provider-research`. Its latest required CI is running;
+  review and merge only after it passes. Never push directly to `main`.
 
 ## AI/provider status
 
@@ -51,11 +54,11 @@ store credentials or provider output in Git.
 
 ## Next action
 
-Review PR #254 (docs-only) and required CI if open; merge only after CI passes
-under the owner's standing authorization. Then research image/video advertising
-models using current official provider docs and public pricing. Compare format
-controls, output rights/usage terms, data handling, regional processing, and
-evaluation cost before any paid calls. Do not check account balance or alter
-account settings. Keep all trials synthetic, local, review-only, and outside
-product routes. Preserve USD 0.00078075 until the earlier GPT request's log is
-reconciled.
+After PR #255 and its post-merge CI pass, design one synthetic storyboard and a
+secret-safe local-only image/video evaluation path using a provider covered by
+the existing evaluation credential. Confirm exact model-specific terms and
+the offline maximum reservation first. Do not exceed the current local per-
+request cap until that safeguard is deliberately reconciled with the approved
+total cap. Do not inspect OpenRouter balance or settings; keep outputs local,
+review-only, and outside product routes. Preserve USD 0.00078075 until the
+earlier GPT request's generation log is matched.

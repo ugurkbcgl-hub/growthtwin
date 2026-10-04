@@ -162,15 +162,19 @@ provider's current commercial/API terms. Do not send real data to free trials.
 3. Score the text candidates first using the existing multi-industry claim and
    creative fixtures; add image/video suites separately when their workflows
    and budget limits are defined.
-4. **Hosted evaluation is paused:** the owner authorized spending against the
-   existing OpenRouter balance with a USD 16 evaluation cap and no auto-
-   recharge/top-up. A later read-only current-key check contradicted the
-   confirmed USD 16 no-reset setting. Correct and reverify the dedicated key
-   before any further provider calls. The shared local ledger is not a live
-   account balance. Synthetic GPT-6 Luna evaluations and a prompt iteration are
-   recorded in `AI_PROVIDERS.md`; they remain generic review drafts and do not
-   select a provider. A first bounded Gemini attempt stopped with its response
-   and cost unverified; retain the reservation and diagnose before retrying.
-   Never use real advertiser data or free-tier endpoints for private data.
+4. **Text evaluation completed; visual evaluation remains unbuilt:** on
+   2026-10-04 the owner verified a dedicated USD 16 no-reset key cap and
+   authorized synthetic-only provider evaluation against existing credits,
+   with no top-up or auto-recharge. The owner handles checking account balance;
+   do not inspect or persist it. The shared local ledger is separate from the
+   provider account. GPT-6 Luna's text comparisons and prompt iteration are
+   recorded in `AI_PROVIDERS.md`; results remain generic review drafts and do
+   not select a production provider. Gemini did not pass the comparative
+   quality gate. Current official image/video research and cost controls are
+   also recorded there. The existing runner supports text only; before any
+   visual call, design a visual-capable local-only path with a synthetic brief,
+   bounded variants/retries, explicit maximum cost, and safe local output
+   retention. Never send advertiser/customer/patient data or use free-tier
+   endpoints with private data.
 5. Revisit provider choice and model versions before an externally accessible
    pilot; no result in this document selects a production vendor.
