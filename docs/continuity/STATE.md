@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 18:31 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 18:49 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -21,10 +21,12 @@ accounts, publication, media spend, or production AI use.
   `37212274710` passed.
 - PR #254 merged as `03d1f49`; required CI `37212660663` and post-merge CI
   `37212801135` passed.
-- PR #255 contains image/video research and corrections to stale provider
-  status in `PROJECT.md` and `docs/product/ai-provider-strategy.md`, on
-  `docs/image-video-provider-research`. Its latest required CI is running;
-  review and merge only after it passes. Never push directly to `main`.
+- PR #255 merged as `7ed51ee`; required CI `37213371584` and post-merge CI
+  `37213592296` passed.
+- PR #256 adds one bounded synthetic image-evaluation path on
+  `eval/openrouter-image-synthetic`. Required CI is running for final commit
+  `a30cd76`; verify it passes before merge. No image request has been made.
+  Never push directly to `main`.
 
 ## AI/provider status
 
@@ -40,6 +42,12 @@ accounts, publication, media spend, or production AI use.
 - Shared local evaluation ledger: USD 0.06024185 spent, USD 0.00078075 reserved
   for an unresolved earlier GPT call. These are not live account credits. The
   owner handles checking the OpenRouter balance; it was not checked.
+- Official image catalog review found a single-output, 1K 9:16 Google Gemini
+  3.1 Flash Lite Image route pinned to the ZDR-eligible `google-vertex/global`
+  endpoint. A local-only runner estimates USD 0.0336 list cost and reserves at
+  most USD 0.10 for one call. It has not made a provider request. OpenRouter's
+  asynchronous video API is not ZDR-eligible and is excluded; account privacy
+  settings were not changed.
 - Website routes remain deterministic; no provider is connected to product
   routes.
 
@@ -54,11 +62,11 @@ store credentials or provider output in Git.
 
 ## Next action
 
-After PR #255 and its post-merge CI pass, design one synthetic storyboard and a
-secret-safe local-only image/video evaluation path using a provider covered by
-the existing evaluation credential. Confirm exact model-specific terms and
-the offline maximum reservation first. Do not exceed the current local per-
-request cap until that safeguard is deliberately reconciled with the approved
-total cap. Do not inspect OpenRouter balance or settings; keep outputs local,
-review-only, and outside product routes. Preserve USD 0.00078075 until the
-earlier GPT request's generation log is matched.
+After PR #256 and its post-merge CI pass, make exactly one synthetic 1K image
+request through the pinned ZDR-eligible provider, using its USD 0.10 local
+reservation and the existing approved shared budget. Inspect the saved asset
+locally, record the result and cost, then decide whether any further visual
+evaluation is justified. Do not attempt video through OpenRouter, inspect its
+balance or change privacy settings, or connect outputs to product routes.
+Preserve USD 0.00078075 until the earlier GPT request's generation log is
+matched.
