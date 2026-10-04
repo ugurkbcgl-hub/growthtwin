@@ -517,7 +517,16 @@ spent and USD 0.20078075 reserved, including USD 0.00078075 for an unresolved
 earlier GPT call. These figures describe the local ledger, not provider
 billing or the OpenRouter account balance. The updated runner records only
 sanitized failure categories/status for future attempts, without response
-bodies or secrets. A third billable call requires renewed owner authorization.
+bodies or secrets. A follow-up review of the official Image API documentation
+found that `usage.cost` is returned only when available, while this runner
+requires it to settle the local reservation. That is one possible explanation
+for the second attempt's generic `invalid_or_unverifiable_response`, but the
+captured record does not identify the failing response field, so the actual
+cause remains unknown. The runner now distinguishes missing/invalid usage,
+malformed response JSON/shape, absent or malformed image data, and HTTP errors
+without retaining response content. These categories improve future
+diagnostics; they do not retroactively explain either attempt. A third
+billable call requires renewed owner authorization.
 This is a narrow visual-runner exception to the existing text runner's USD
 0.01 per-call reservation; the total shared USD 16 cap remains unchanged. No
 live account balance was checked.
