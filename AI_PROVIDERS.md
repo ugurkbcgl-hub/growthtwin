@@ -511,8 +511,11 @@ produce verifiable output; the local run record confirms only that the call
 started. The runner suppressed failure details without saving a safe category, so the cause cannot
 be determined from available evidence. No image or provider cost record was
 saved, so the charge is unknown and the USD 0.10 local reservation remains
-held. The runner is being updated to record only sanitized failure categories
-and HTTP status, without response bodies or secrets. Do not retry pending this
+held. The local budget ledger now records USD 0.06024185 spent and USD
+0.10078075 reserved, including the unresolved earlier GPT reservation and this
+image call's USD 0.10 reservation. These are not provider account figures. The
+runner records only sanitized failure categories and HTTP status for future
+calls, without response bodies or secrets. Do not retry pending this
 safe diagnostic update and renewed authorization. This is a narrow visual-
 runner exception to the existing text runner's USD 0.01 per-call reservation;
 the total shared USD 16 cap remains unchanged. No live account balance was checked.
@@ -530,9 +533,8 @@ provider routing](https://openrouter.ai/docs/guides/overview/multimodal/image-ge
 [ZDR eligible endpoints](https://openrouter.ai/docs/api/api-reference/endpoints/list-endpoints-zdr),
 and [Video Generation API and ZDR limitation](https://openrouter.ai/docs/guides/overview/multimodal/video-generation).
 
-**Next:** Merge the sanitized diagnostic update after required CI, then decide
-whether another synthetic call is justified. Preserve the USD 0.10 reservation
-for the unresolved attempt and do not retry, inspect the account balance, or
+**Next:** Continue non-billable local work. Preserve the USD 0.10 reservation
+for the unresolved attempt; do not retry, inspect the account balance, or
 change privacy settings. Any further billable call requires renewed owner
 authorization. Preserve the text runner's default USD 0.01 call limit; the
 image exception is limited to this endpoint and the shared USD 16 cap. Do not attempt video via OpenRouter, use real user files,
