@@ -8,6 +8,7 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationRejected,
     CreativeGenerationRequest,
     CreativeGenerationResult,
+    ProviderResponseUnverified,
     validate_generation_result,
 )
 from growthtwin.modules.ai_gateway.creative_format import (
@@ -193,7 +194,7 @@ class OpenRouterCreativeGenerator:
             HTTPException,
             OSError,
         ):
-            raise CreativeGenerationRejected(
+            raise ProviderResponseUnverified(
                 "OpenRouter yanıtı alınamadı veya doğrulanamadı."
             ) from None
         finally:

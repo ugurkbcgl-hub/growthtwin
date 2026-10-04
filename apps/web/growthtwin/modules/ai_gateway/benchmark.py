@@ -14,6 +14,7 @@ from growthtwin.modules.ai_gateway.contracts import (
     CreativeGenerationRejected,
     CreativeGenerationRequest,
     CreativeGenerator,
+    ProviderResponseUnverified,
     generate_creative_draft,
 )
 from growthtwin.modules.ai_gateway.profiles import TextTaskProfile
@@ -182,6 +183,30 @@ def run_text_benchmark(
                 started = perf_counter()
                 try:
                     result = generate_creative_draft(case.request, generator)
+                except ProviderResponseUnverified:
+                    records.append(
+                        TextBenchmarkRecord(
+                            profile_id=profile.profile_id,
+                            task_id=profile.task_id,
+                            output_contract_id=profile.output_contract_id,
+                            minimum_repetitions_per_case=profile.minimum_repetitions_per_case,
+                            repetitions_requested=repetitions,
+                            candidate_id=candidate_id,
+                            case_id=case.case_id,
+                            repetition=repetition,
+                            latency_ms=round((perf_counter() - started) * 1000),
+                            outcome="candidate_error",
+                            failure_kind="provider_response_unverified",
+                            allowed_facts=case.allowed_facts,
+                            forbidden_claims=case.forbidden_claims,
+                            detected_forbidden_claims=(),
+                            manual_review=tuple(
+                                (dimension, None)
+                                for dimension in profile.manual_review_dimensions
+                            ),
+                            variants=(),
+                        )
+                    )
                 except CreativeGenerationRejected:
                     records.append(
                         TextBenchmarkRecord(
