@@ -1,81 +1,69 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 14:33 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 17:19 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
-Build a polished, self-service paid-advertising platform for Türkiye across
+Build a polished self-service paid-advertising platform for Türkiye across
 industries. Continue local synthetic development. No real advertiser data,
 live ad accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- PR #239 (`feature/local-jsonl-evaluation-capture`) merged to `main` as
-  `e8740e58e24e876ee43b948bd7dbeb19852e01a4`; required CI `37197149607` and
-  post-merge `main` CI `37197326006` passed. PR #240 refreshed this handoff
-  and merged as `15cec7ae1099255a9deb814b624101e50e90c60b`; its required CI
-  `37197561977` and post-merge `main` CI `37197710180` passed, including
-  Django tests and browser E2E. PR #241 corrected the verified repository
-  snapshot and merged as `3142c4c6e6b34473a08c2d49f0fbff155e7cc9a9`; its
-  required CI `37197887034` and post-merge CI `37198017987` passed. PR #242
-  refreshed the OpenRouter evaluation status and merged as
-  `cd1b3aee795045cee167a987eb9fc2a7c6a0072e`; its required CI `37198866107`
-  and post-merge CI `37199002685` passed. At 2026-10-04 14:33 +0300, the
-  working copy was clean `main` at `cd1b3ae` and no open PRs were returned.
-  Recheck live Git/PR/CI state before acting.
+- PR #246 added bounded candidate selection for the synthetic OpenRouter
+  benchmark, merged to `main` as `fcdc3e9`; required CI `37203552127` and
+  post-merge CI `37208468991` passed.
+- PR #247 fixed the unverified-response branch in the benchmark loop, merged to
+  `main` as `000f014`; required CI `37208553129` passed. Post-merge CI
+  `37208716235` was still running at last check.
+- This handoff update is on `docs/openrouter-cross-vendor-handoff`, based on
+  `000f014`. Recheck its PR and CI status, branch, working tree, latest commit,
+  and other open PRs before acting.
 
 ## AI and product status
 
-- The website still uses deterministic templates. No AI provider is connected
-  to a product route; no production provider is selected.
-- PR #231/#234 provide opt-in OpenAI/OpenRouter text adapters. OpenRouter's
-  fixed runner uses three synthetic briefs × three calls, up to 512 output
-  tokens, a 4,096-byte request cap, no tools/retries, structured output,
-  `zdr=true`, `data_collection=deny`, and per-token price caps. Results remain
-  non-publishable and require review.
-- PR #234 added Windows current-user DPAPI key setup. The key is now stored in
-  the current Windows user's DPAPI-protected local secret folder; its value is
-  never to be read into chat, logs, or Git.
-- On 2026-10-04, the owner reported USD 16 of existing OpenRouter credits and
-  directed usage tracking against that balance. PR #235 sets a shared local
-  cumulative USD 16 ledger and calls for a dedicated USD 16 no-reset key cap.
-  No top-up or auto-recharge is authorized.
-- The owner keeps OpenRouter account balance and auto-recharge checks in their
-  hands and signaled readiness before the first run. The assistant did not
-  access the account; do not claim its live balance/settings were verified.
-- On 2026-10-04, the fixed nine-call synthetic GPT-6 Luna run completed.
-  OpenRouter-reported costs and the shared ledger show USD 0.0014665 spent,
-  zero reserved, and USD 15.9985335 remaining under the local USD 16 cap.
-  Outputs are review-required/non-publishable; manual quality scores are
-  pending. The run output was not persisted, and no second run was made.
-- Merged PR #239 adds per-run local JSONL capture under
-  `%LOCALAPPDATA%\GrowthTwin\evaluations`, before any next hosted run. Records
-  omit the brief/request body and API key; result rows include generated
-  synthetic variants and manual-review slots. No API request was made for this
-  change.
-- The preflight estimate was at most USD 0.005834 for nine calls. Four focused
-  OpenRouter tests and broader focused gateway tests passed in recorded runs;
-  PR and post-merge CI also passed. No real data or production route was used.
-- Provider retention controls do not establish local/Türkiye processing or
-  KVKK compliance. Use repository synthetic fixtures only.
+- The website uses deterministic templates. No provider is connected to product
+  routes and no production model is selected.
+- GPT-6 Luna's captured synthetic baseline and prompt-iteration comparison were
+  heuristically reviewed by the assistant, not independently by a person.
+  Diversity moved from 2.33/5 to 3/5; usefulness 3/5, fixture-relative
+  grounding 5/5, brand fit 3/5, and correction effort 2/5 were unchanged.
+  Results remain generic review drafts, not production candidates.
+- The full post-prompt GPT-6 Luna run completed 9/9 for USD 0.0017208, average
+  latency 3.803 seconds; Azure was returned upstream in all calls. A separate
+  attempt stopped after six calls on unverified response/accounting; USD
+  0.00078075 remains reserved.
+- PR #246 permits selecting Gemini 3.8 Flash for this synthetic evaluation
+  only. Its first attempted call yielded no verifiable benchmark result; the
+  remaining eight were not sent. PR #247 fixed the resulting local benchmark
+  exception. USD 0.004761 remains reserved for the call with unknown provider
+  cost.
+- The shared local USD 16 ledger reports USD 0.0057997 spent and USD 0.00554175
+  reserved; USD 15.98865855 remains inside that local allocation. This is not
+  a live credit balance.
+- A read-only current-key API check contradicted the owner's earlier
+  confirmation: the returned limit/reset configuration did not match the
+  approved USD 16 limit with no reset. No more hosted calls until corrected and
+  reverified. Account usage/remaining-credit amounts are intentionally omitted
+  from repository history.
+- Use only repository synthetic cases. `zdr=true` and
+  `data_collection=deny` do not guarantee Türkiye/EU processing or KVKK
+  compliance.
 
 ## Risks and gates
 
-- Before any billable run, the owner verifies the dedicated key's USD 16
-  no-reset limit, sufficient existing balance, and disabled auto-recharge;
-  the assistant does not inspect the OpenRouter dashboard.
-- Never send keys, real advertiser/customer/patient data, or private account
-  data to this evaluation. Do not top up, enable auto-recharge, publish ads,
-  connect advertiser accounts, or use a production AI provider.
-- The hosted run requires the key to be entered only in the hidden local
-  prompt from `apps/web/scripts/setup_openrouter_key.ps1`, not in chat.
+- Never store credentials in chat, source, Git, logs, or handoff files. Do not
+  top up, enable auto-recharge, use real advertiser/customer/patient data,
+  connect live ad accounts, publish, spend media budget, or route AI through a
+  product route.
+- The first Gemini result has unknown cost; retain its USD 0.004761 reservation
+  unless usage is reconciled. Do not reset the shared ledger.
 
 ## Next action
 
-After the owner confirms account-side readiness (dedicated key limit, existing
-balance, and auto-recharge setting), make one bounded synthetic run with the
-merged JSONL capture and manually score usefulness, source grounding,
-diversity, brand fit, and correction effort. The assistant must not inspect
-OpenRouter balance/auto-recharge settings. Recheck live branch, worktree, latest
-commit, open PRs, and CI status before acting.
+Correct the dedicated OpenRouter evaluation key to the authorized USD 16
+no-reset limit and verify it with the read-only current-key endpoint; only then
+diagnose the unverified Gemini response/accounting path and consider rerunning
+the fixed suite. Keep the existing reservation held, use synthetic fixtures,
+and manually review any valid outputs before drawing a candidate conclusion.
