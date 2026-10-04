@@ -283,5 +283,8 @@ Official source pages checked 2026-10-03: OpenRouter [GPT-6 Luna model/pricing](
 
 **Next:** after confirming the dedicated OpenRouter key's non-resetting USD
 16 limit, sufficient existing credits, auto-recharge disabled, and secure local
-key configuration, run the fixed synthetic text evaluation. Track cumulative
-usage in the shared local USD 16 ledger; stop when its balance is exhausted.
+key configuration, run the fixed synthetic text evaluation. The owner checks
+the OpenRouter account balance and auto-recharge setting; the assistant does
+not access the account. Treat the stated USD 16 as owner-reported until the
+owner confirms the check. Track cumulative usage in the shared local USD 16
+ledger; stop when its balance is exhausted.
