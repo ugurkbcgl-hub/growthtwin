@@ -333,37 +333,51 @@ OpenRouter's public catalog and endpoint list allowed this synthetic-only
 candidate to be selected under standard-price caps of USD 0.75 input and USD
 3.75 output per million tokens. PR #246 added it as an explicitly selected
 evaluation option; GPT-6 Luna remains the default and no model is connected to
-product routes. The first attempt exposed a local benchmark-loop defect; PR
-#247 fixed the loop. A second run reached the provider but also failed closed.
+product routes. PR #247 fixed the local benchmark-loop error found in the first
+attempt.
 
 The owner corrected the dedicated key settings. On 2026-10-04, read-only API
 and dashboard inspection verified the key's USD 16 cap and no automatic reset;
-no setting was mutated in this session. Do not persist account balance or
-usage amounts. OpenRouter's generation log showed both Gemini calls at the
-matching local times routed to Google Vertex. The first generated 496 output
-tokens and the second 497; each log showed USD 0.00221 and `finish_reason=length`.
-The adapter correctly rejected them because the response was truncated and its
-usage/cost metadata could not be verified from the chat response. No generated
-text was opened or copied. The dashboard evidence allowed the two USD 0.004761
-local reservations to be reconciled to their logged costs; the separate USD
-0.00078075 reservation from an earlier GPT attempt remains unresolved. The
-current local shared ledger is USD 0.0102197 spent and USD 0.00078075 reserved
-under the USD 16 local evaluation allocation; these are not live account
-credits.
+no account setting was changed in this session. Account balance and usage
+amounts are not persisted. OpenRouter generation and upstream logs matched four
+requests from the 17:51 Europe/Istanbul run to Google Vertex, all HTTP 200. The
+first three returned 653, 873, and 830 output tokens with `finish_reason=stop`;
+the fourth returned 1,009 output tokens with `finish_reason=length`. Its
+visible dashboard cost was USD 0.00414. The matching local reservation was
+reconciled against the timestamp, provider, sequence, and token count. Five
+remaining requests were not sent. No generated text was copied from provider
+logs.
 
-The adapter now retains GPT-6 Luna's 512-token bound and assigns Gemini its
-own 1,024-token cap. That bounds its per-call local reservation below USD
-0.01; the fixed nine-call run estimate is USD 0.061142. A no-network focused
-test, estimate, and Ruff check passed locally. The next run must use only the
-fixed synthetic fixtures, no retries, no real data, and remain review-required
-and non-publishable. A passing transport/shape check is not a provider-quality
-selection; manual claim, usefulness, diversity, and correction-effort review
-still applies.
+PR #250 increased Gemini's cap from 512 to 1,024 tokens while retaining the
+512-token GPT-6 Luna cap. This allowed three structured, review-required
+synthetic drafts, but the fourth request was truncated at 1,009 tokens and the
+runner stopped correctly. The three completed home-maintenance repetitions
+had no configured forbidden-phrase matches. Manual heuristic review (not
+independent human validation) found broadly grounded but generic copy; several
+claims imply the business offers the stated service as described in the brief,
+while “hemen” introduces unsupported immediacy. Angles repeated a local-service,
+service-description, and quote-request pattern across repetitions. Provisional
+assistant scores: usefulness 3/5, source-grounding 4/5, diversity 2/5, brand
+fit 3/5, correction effort 2/5. No provider candidate passes selection; the
+full nine-call, three-brief gate remains incomplete.
 
-OpenRouter says request-level `zdr=true` restricts routing to eligible ZDR
-endpoints and `data_collection=deny` filters endpoints that store inputs for
-training. These controls do not establish Türkiye/EU processing, KVKK
-compliance, or privacy outside the inference provider.
+The adapter now proposes 1,536 output tokens for Gemini only; GPT remains at
+512. Preflight estimates the fixed nine-call run at USD 0.078422 and each
+individual synthetic brief below the USD 0.01 reservation ceiling (maximum USD
+0.008919). This is a no-network estimate, not actual spend. The shared local
+ledger currently reports USD 0.0242432 spent and USD 0.00078075 reserved for
+an unrelated earlier GPT call; these are not account-credit figures. Four
+Gemini run costs in this latest trial were settled using adapter cost metadata
+for the first three and the matching OpenRouter log for the fourth. Its
+reservation was held during the run and reconciled only after checking the
+upstream/generation logs.
+
+OpenRouter's request-level `zdr=true` restricts routing to eligible ZDR
+endpoints, and `data_collection=deny` filters endpoints that collect inputs.
+These settings do not establish Türkiye/EU processing, KVKK compliance, or
+privacy outside the inference provider. Use only repository synthetic cases.
+Outputs remain review-required and non-publishable; website routes remain on
+deterministic templates.
 
 Official references checked 2026-10-04: OpenRouter [Gemini 3.8 Flash model,
 pricing, structured output and providers](https://openrouter.ai/google/gemini-3.8-flash/providers),
@@ -372,9 +386,11 @@ pricing, structured output and providers](https://openrouter.ai/google/gemini-3.
 [ZDR scope](https://openrouter.ai/blog/insights/zero-data-retention/), and
 [read-only current-key endpoint](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-key).
 
-**Next:** Merge the reviewed Gemini-specific output-token cap after required CI
-passes, then run the fixed nine-call synthetic evaluation once. Stop if any
-call is truncated, its provider/cost metadata is unverified, or the account
-budget guard fails; do not retry automatically. Preserve the unrelated USD
-0.00078075 reservation until its own generation log can be matched. No
-production provider is selected.
+**Next:** Review and merge PR #251 only after required CI passes. Then run the
+fixed nine-call synthetic evaluation once at the 1,536-token Gemini cap. Stop
+at the first truncated or unverifiable response and reconcile any reservation
+only when a matching provider log supplies cost evidence. If the run completes,
+review outputs manually and assess all three cases; do not select a production
+provider from this single small-sample benchmark. Keep the unrelated USD
+0.00078075 reservation held until its own OpenRouter generation log can be
+matched.
