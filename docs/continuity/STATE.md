@@ -28,9 +28,10 @@ accounts, publication, media spend, or production AI use.
   assistant review found unsupported details and repeated angles. Provisional
   scores: usefulness 3/5, grounding 3/5, diversity 2/5, brand fit 3/5,
   correction effort 2/5. Gemini does not pass the candidate gate.
-- GPT-6 Luna's earlier assistant-side heuristic review scored usefulness 3/5,
-  fixture-relative grounding 5/5, diversity 3/5, brand fit 3/5, and correction
-  effort 2/5. Side-by-side review using the same rubric remains to be done.
+- Offline side-by-side review used the same assistant/rubric on both captured
+  runs. GPT-6 Luna was shorter and more closely grounded; both candidates had
+  repeated location/category/lead angles, and the GPT capture showed no equally
+  clear unsupported detail. Neither is production-ready.
 - Shared local ledger: USD 0.05826245 spent; USD 0.00078075 reserved for an
   unresolved earlier GPT call. These are not live account credits. The owner
   verified the approved USD 16 key cap with no reset. Balance was not checked.
@@ -48,9 +49,10 @@ provider output in Git.
 ## Next action
 
 Review PR #252 (docs-only) and required CI if it is open; merge only after CI
-passes under the owner's standing authorization. Then compare captured local
-Gemini and GPT variants side by side under one rubric and reviewer, focusing
-on claims, usefulness, diversity, brand fit, and correction effort. Do not
-make another provider call until that review identifies a decision-changing
-question. Preserve the unrelated USD 0.00078075 GPT reservation until its own
-OpenRouter generation log is reconciled.
+passes under the owner's standing authorization. Then refine the GPT-6 Luna evaluation prompt in a feature branch: require
+three materially different approaches and explicitly prohibit invented
+availability, urgency, business capabilities, or other unsupported particulars.
+Add focused prompt-boundary tests, estimate without network, and pass CI before
+one synthetic prompt-iteration run. Do not connect the prompt to product routes
+or select a production provider. Preserve the unrelated USD 0.00078075 GPT
+reservation until its OpenRouter generation log is reconciled.

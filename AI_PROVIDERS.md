@@ -365,13 +365,20 @@ review (not independent human validation) found the output mostly relevant but
 generic and repetitive across repetitions. It also found unsupported details:
 for example, a ceramics draft claimed registration was open, and a home-service
 draft said the service meets customer needs. Provisional assistant scores for
-the complete run: usefulness 3/5, source-grounding 3/5, diversity 2/5, brand
-fit 3/5, correction effort 2/5. This run does not meet the candidate gate and
-does not justify selecting Gemini. Earlier GPT-6 Luna heuristic scores were
-usefulness 3/5, fixture-relative grounding 5/5, diversity 3/5, brand fit 3/5,
-and correction effort 2/5. The scoring is approximate and not independently
-validated, so compare the actual captured variants side by side using the same
-reviewer and criteria before deciding whether to spend on another run.
+the complete Gemini run: usefulness 3/5, source-grounding 3/5, diversity 2/5,
+brand fit 3/5, correction effort 2/5. The run does not pass the candidate gate
+or justify selecting Gemini.
+
+An offline side-by-side review of the captured 9/9 Gemini and full 9/9 GPT-6
+Luna runs used the same assistant and rubric. GPT-6 Luna's copy was shorter and
+stayed closer to the brief; no comparably clear factual addition appeared in
+that capture. Both candidates repeated similar location, service/category, and
+lead/visit angles, so the comparison did not resolve the diversity weakness.
+The earlier standalone GPT heuristic scores (usefulness 3/5, grounding 5/5,
+diversity 3/5, brand fit 3/5, correction effort 2/5) remain approximate and
+were not independently validated. The direct comparison favors GPT for
+concision and grounding, but neither run establishes production readiness.
+
 
 OpenRouter's request-level `zdr=true` restricts routing to eligible ZDR
 endpoints, and `data_collection=deny` filters endpoints that collect inputs.
@@ -386,9 +393,11 @@ pricing, structured output and providers](https://openrouter.ai/google/gemini-3.
 [ZDR scope](https://openrouter.ai/blog/insights/zero-data-retention/), and
 [read-only current-key endpoint](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-key).
 
-**Next:** Compare the captured Gemini and GPT-6 Luna variants with the same
-criteria and reviewer, focusing on unsupported claims, usefulness, diversity,
-brand fit, and correction effort. Use only captured local synthetic results;
-do not make more provider calls until this comparison shows a useful question
-that can change the decision. No production provider is selected. Preserve the
-unrelated USD 0.00078075 GPT reservation until its generation log is matched.
+**Next:** Refine the GPT-6 Luna evaluation prompt in a feature branch to ask
+for three distinct approaches while explicitly prohibiting invented availability,
+urgency, business capabilities, and unsupported particulars. Add focused tests
+that protect the prompt boundary, run the no-network estimate, and pass PR/CI
+before one synthetic prompt-iteration run. The comparison favored GPT for
+concision and grounding but both candidates repeated angles. Keep review-only,
+non-publishable outputs; preserve the unrelated USD 0.00078075 GPT reservation
+until its generation log is matched. No production provider is selected.
