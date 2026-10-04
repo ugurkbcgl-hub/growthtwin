@@ -1,59 +1,62 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 17:46 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 17:55 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
-Build a self-service paid-advertising platform for the Türkiye market across
-industries. Continue local synthetic product development. No real advertiser
-data, live ad accounts, publication, media spend, or production AI use.
+Build a self-service paid-advertising platform for Türkiye across industries.
+Continue local synthetic product development. No real advertiser data, live ad
+accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Starting point verified on 2026-10-04: clean `main` at `fb68bb6`; PRs #246–249
-  are merged and their required/post-merge CI passed. No open PRs were returned.
-- A feature branch now gives Gemini a model-specific 1,024 output-token bound;
-  GPT-6 Luna remains at 512. Focused no-network tests (5), estimate, and Ruff
-  passed locally. The nine-call Gemini estimate is USD 0.061142; no network
-  calls were made by these checks.
-- The Gemini change has not yet been reviewed or merged. Verify this branch's
-  PR and required CI before any provider call.
+- PR #250 merged as `2ab4ea4`; required PR CI `37210497789` and post-merge CI
+  `37210643009` passed. Recheck branch and open PR state before acting.
+- Its Gemini-only 1,024-token cap let three synthetic calls complete, but the
+  fourth response ended at 1,009 tokens with `finish_reason=length`; the runner
+  stopped and sent no further calls.
+- Current feature branch proposes 1,536 output tokens for Gemini, retains 512
+  for GPT-6 Luna, and keeps every request's upper reservation below USD 0.01.
+  Local focused tests, estimate, lint, and formatting passed on the merged
+  1,024-token version. Rerun the focused checks after the cap change, then
+  review PR/CI; do not call the provider until required CI succeeds.
 
 ## AI/provider status
 
 - Deterministic website templates remain active; no provider is connected to
   product routes and no production model is selected.
-- OpenRouter's read-only account-key/API inspection after the owner's update
-  confirmed the approved USD 16 cap with no reset. No account balance or usage
-  amount is recorded here.
-- OpenRouter's generation log matched both Gemini calls to Google Vertex at
-  their local timestamps. They returned 496 and 497 output tokens,
-  `finish_reason=length`, at USD 0.00221 each. No response text was opened.
-  The two local reservations were reconciled to this dashboard evidence.
-- Shared evaluation ledger: USD 0.0102197 spent and USD 0.00078075 reserved.
-  The remaining reservation belongs to an earlier GPT call and remains held
-  pending separate reconciliation. These local ledger amounts are not live
-  account credits.
-- Earlier Gemini attempts did not produce usable validated outputs. The
-  token-bound fix is intended to address truncation only; candidate quality is
-  still unproven.
+- OpenRouter dashboard logs match the Gemini run's four Vertex upstream calls
+  at HTTP 200. Three returned `stop` with 653/873/830 tokens; one returned
+  1,009 tokens and `length`, cost USD 0.00414. The local reservation for that
+  failed-closed call was reconciled to the matching log. Five calls remained
+  unsent.
+- The three completed synthetic home-maintenance repetitions had no configured
+  forbidden-phrase match. Manual assistant review found generic, similar-angle
+  copy and one unsupported immediacy word; provisional scores: usefulness 3/5,
+  grounding 4/5, diversity 2/5, brand fit 3/5, correction effort 2/5. The
+  two other synthetic briefs are unevaluated; this does not pass the candidate
+  gate.
+- Shared local evaluation ledger: USD 0.0242432 spent, USD 0.00078075 reserved
+  for an unrelated earlier GPT call. These are not live account credits.
+- Read-only account inspection verified the approved USD 16 API-key cap with no
+  reset. Do not record account balance/usage or change account settings.
 
 ## Risks and boundaries
 
-Use only fixed synthetic cases; `zdr=true` and `data_collection=deny` do not
-establish Türkiye/EU processing or KVKK compliance. Do not top up or enable
-auto-recharge, send private data, connect live ad accounts, publish, spend
-media budget, or connect AI to product routes. Keep the account cap and local
-ledger safeguards intact. Never store secrets or generated private content in
-Git.
+Use only the fixed synthetic cases; `zdr=true` and `data_collection=deny` do
+not establish Türkiye/EU processing or KVKK compliance. No credit top-up or
+auto-recharge, private data, live ad-account connection, publication, media
+spend, or AI product-route use. Keep key and local-ledger safeguards intact.
+Never store credentials or provider output in Git.
 
 ## Next action
 
-Review and merge the Gemini-specific 1,024-token cap only after required CI
-passes, then run the one fixed nine-call synthetic evaluation once. Stop at the
-first truncation or unverified response/accounting result. If it completes,
-review the captured synthetic variants manually for claims, usefulness,
-diversity, and correction effort; do not select a production provider from a
-single run. Preserve the unrelated USD 0.00078075 reservation until its own
-OpenRouter generation log can be matched.
+Verify PR #251 and its required CI. If successful, merge under the owner's
+standing authorization, wait for post-merge CI, then run the one fixed
+nine-call evaluation with the 1,536 Gemini token cap. Stop at the first
+truncated/unverifiable response, leave further calls unsent, and reconcile
+reservations only against matching provider cost evidence. If all nine finish,
+manually assess outputs from all three synthetic briefs; do not select a
+production provider from one run. Keep USD 0.00078075 for the unrelated GPT
+call reserved until its own log is reconciled.
