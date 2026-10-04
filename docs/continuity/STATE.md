@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-04 23:02 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-04 23:09 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -11,13 +11,14 @@ accounts, publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Verified base `main`: `161da58` (PR #259, refreshed handoff snapshot).
+- Verified base `main`: `dab2205` (PR #260, reconciled local evaluation ledger).
 - PR #256 required CI `37214462925` and post-merge CI `37214622803` passed.
   PR #257 required CI `37214916337` and post-merge CI `37215065615` passed.
   PR #258 required CI `37215352318` and post-merge CI `37215534053` passed.
   PR #259 required CI `37215728911` and post-merge CI `37215872411` passed.
-- This ledger reconciliation is on
-  `docs/reconcile-local-image-eval-ledger`; use a PR and merge only after
+  PR #260 required CI `37230669981` and post-merge CI `37230830736` passed.
+- AI-provider roadmap reconciliation is on
+  `docs/reconcile-ai-provider-roadmap-20261004`; use a PR and merge only after
   required CI succeeds. Never push directly to `main`.
 
 ## AI/provider status
