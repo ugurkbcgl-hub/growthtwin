@@ -162,20 +162,20 @@ provider's current commercial/API terms. Do not send real data to free trials.
 3. Score the text candidates first using the existing multi-industry claim and
    creative fixtures; add image/video suites separately when their workflows
    and budget limits are defined.
-4. **Text evaluation completed; first image evaluation prepared:** on
-   2026-10-04 the owner verified a dedicated USD 16 no-reset key cap and
-   authorized synthetic-only provider evaluation against existing credits,
-   with no top-up or auto-recharge. The owner handles checking account balance;
-   do not inspect or persist it. The shared local ledger is separate from the
-   provider account. GPT-6 Luna's text comparisons and prompt iteration are
-   recorded in `AI_PROVIDERS.md`; results remain generic review drafts and do
-   not select a production provider. Gemini did not pass the comparative
-   quality gate. Current official image/video research and cost controls are
-   also recorded there. A feature branch adds one fixed synthetic 1K image
-   call, pinned to the OpenRouter Google Vertex ZDR endpoint, with a USD 0.10
-   local reservation and local-only output. Complete required CI before the
-   single image call. OpenRouter's video endpoint is not ZDR-eligible, so do
-   not make a video request through it. Never send advertiser/customer/patient
-   data or use free-tier endpoints with private data.
+4. **Text evaluation completed; image call unresolved:** on 2026-10-04 the
+   owner verified a dedicated USD 16 no-reset key cap and authorized a single
+   synthetic-only image call against existing credits, with no top-up or
+   auto-recharge. The owner handles checking account balance; do not inspect
+   or persist it. The shared local ledger is separate from the provider
+   account. GPT-6 Luna's text comparisons and prompt iteration are recorded in
+   `AI_PROVIDERS.md`; results remain generic review drafts and do not select a
+   production provider. Gemini did not pass the comparative quality gate.
+   Current official image/video research and cost controls are also recorded
+   there. PR #256 merged after required CI passed. The authorized image call
+   did not produce verifiable output or a cost record; its USD 0.10 local
+   reservation remains held. Diagnose from local code and sanitized evidence;
+   do not retry absent renewed authorization. OpenRouter's video endpoint is
+   not ZDR-eligible. Never send advertiser/customer/patient data or use
+   free-tier endpoints with private data.
 5. Revisit provider choice and model versions before an externally accessible
    pilot; no result in this document selects a production vendor.
