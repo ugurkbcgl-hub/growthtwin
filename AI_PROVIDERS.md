@@ -289,13 +289,13 @@ was not persisted; only this bounded summary and the local usage ledger remain.
 No advertiser, customer, patient, or account data was sent, and no output was
 published or connected to a product route.
 
-A local JSONL capture is being added to the opt-in runner before any further
-hosted evaluation. It records the run metadata, each synthetic benchmark
-result, generated variants, provider-reported token/cost metadata, reservation
-and settlement events, and the final local ledger summary under the current
-user's `%LOCALAPPDATA%\GrowthTwin\evaluations` directory. It does not record
-the brief/request body or API key and fails closed if the result file cannot be
-initialized. This implementation has not been used for another provider call.
+Merged PR #239 adds a local JSONL capture to the opt-in runner before any
+further hosted evaluation. It records the run metadata, each synthetic
+benchmark result, generated variants, provider-reported token/cost metadata,
+reservation and settlement events, and the final local ledger summary under
+the current user's `%LOCALAPPDATA%\GrowthTwin\evaluations` directory. It does
+not record the brief/request body or API key and fails closed if the result
+file cannot be initialized. No provider call has been made with this capture.
 
 OpenRouter says request-level `zdr=true` restricts routing to eligible
 zero-retention endpoints, while `data_collection=deny` filters endpoints that
@@ -307,9 +307,10 @@ the request constraints, the evaluation must fail closed.
 
 Official source pages checked 2026-10-04: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
 
-**Next:** once the local JSONL capture change is merged, use it for a bounded
-synthetic run only after owner-controlled account readiness is confirmed. Then
-manually review usefulness, grounding, diversity, brand fit, and correction
-effort. The owner checks OpenRouter balance and auto-recharge settings; the
-assistant does not access the account. Track cumulative use in the shared
-local USD 16 ledger and stop at its cap.
+**Next:** use the merged local JSONL capture for one bounded synthetic run only
+after the owner confirms the dedicated key's USD 16 no-reset limit, sufficient
+existing balance, and disabled auto-recharge. Then manually review usefulness,
+grounding, diversity, brand fit, and correction effort. The owner checks
+OpenRouter balance and auto-recharge settings; the assistant does not access
+the account. Track cumulative use in the shared local USD 16 ledger and stop at
+its cap. A no-network estimate of the nine-call run is at most USD 0.005834.
