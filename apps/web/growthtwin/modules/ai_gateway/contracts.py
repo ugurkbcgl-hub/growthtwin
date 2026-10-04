@@ -64,6 +64,10 @@ class CreativeGenerationRejected(ValueError):
     """Raised when a request or provider result does not meet the boundary."""
 
 
+class ProviderResponseUnverified(CreativeGenerationRejected):
+    """Raised when a provider response or its accounting metadata is unverified."""
+
+
 class CreativeGenerator(Protocol):
     """One replaceable implementation of the bounded creative-generation port."""
 
