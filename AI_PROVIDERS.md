@@ -440,11 +440,11 @@ grounding. No production provider or customer-facing AI is selected. Gemini's
 full evaluation had unsupported details and weaker grounding under the same
 reviewer; neither hosted model is connected to the website.
 
-**Next:** Research image and video ad-generation options using current official
-provider documentation and public pricing. Compare output control, supported
-formats, data handling, geography, and a synthetic-only cost estimate before
-any paid call. Keep outputs local/review-only and the website unchanged. Do not
-check account balance or change OpenRouter settings.
+**Follow-up:** The official image/video desk review and provisional candidate
+comparison are recorded in the next section. Any model selection or paid call
+still requires a bounded synthetic evaluation and review of model-specific
+terms. Keep outputs local/review-only and the website unchanged; do not check
+account balance or change OpenRouter settings.
 
 ### Image and video provider research — 2026-10-04
 
