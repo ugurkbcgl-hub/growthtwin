@@ -162,13 +162,15 @@ provider's current commercial/API terms. Do not send real data to free trials.
 3. Score the text candidates first using the existing multi-industry claim and
    creative fixtures; add image/video suites separately when their workflows
    and budget limits are defined.
-4. **Owner confirmed USD 16 of existing OpenRouter credits on 2026-10-04** and
-   replaced the earlier USD 5 evaluation cap with spend tracking against the
-   current balance. Use synthetic fixtures only; no credit top-up or
-   auto-recharge. A bounded OpenRouter path to GPT-6 Luna and its account/local
-   budget gates are documented in `AI_PROVIDERS.md`. Stop when the existing
-   credits or shared USD 16 ledger are exhausted; reassess before new funding
-   or adding another paid candidate. Never use free-tier endpoints for private
-   data.
+4. **Hosted evaluation is paused:** the owner authorized spending against the
+   existing OpenRouter balance with a USD 16 evaluation cap and no auto-
+   recharge/top-up. A later read-only current-key check contradicted the
+   confirmed USD 16 no-reset setting. Correct and reverify the dedicated key
+   before any further provider calls. The shared local ledger is not a live
+   account balance. Synthetic GPT-6 Luna evaluations and a prompt iteration are
+   recorded in `AI_PROVIDERS.md`; they remain generic review drafts and do not
+   select a provider. A first bounded Gemini attempt stopped with its response
+   and cost unverified; retain the reservation and diagnose before retrying.
+   Never use real advertiser data or free-tier endpoints for private data.
 5. Revisit provider choice and model versions before an externally accessible
    pilot; no result in this document selects a production vendor.

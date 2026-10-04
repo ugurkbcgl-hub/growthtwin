@@ -305,12 +305,77 @@ selected model provider, whose separate policies also matter. This trial
 therefore uses only repository synthetic fixtures; if no endpoint satisfies
 the request constraints, the evaluation must fail closed.
 
-Official source pages checked 2026-10-04: OpenRouter [GPT-6 Luna model/pricing](https://openrouter.ai/openai/gpt-6-luna), [structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs), [ZDR and data collection controls](https://openrouter.ai/docs/guides/get-started/sovereign-ai), [API-key spend limit](https://openrouter.ai/docs/api/api-reference/api-keys/create-keys), [Standard purchase pricing](https://openrouter.ai/pricing), [credit purchase fee](https://openrouter.ai/blog/insights/governing-team-ai-spend/), and [Terms of Service / minimum credits](https://openrouter.ai/terms).
+### Captured GPT-6 Luna prompt comparison — 2026-10-04
 
-**Next:** use the merged local JSONL capture for one bounded synthetic run only
-after the owner confirms the dedicated key's USD 16 no-reset limit, sufficient
-existing balance, and disabled auto-recharge. Then manually review usefulness,
-grounding, diversity, brand fit, and correction effort. The owner checks
-OpenRouter balance and auto-recharge settings; the assistant does not access
-the account. Track cumulative use in the shared local USD 16 ledger and stop at
-its cap. A no-network estimate of the nine-call run is at most USD 0.005834.
+PR #244 updated the shared creative prompt to request three materially
+distinct angles and avoid invented benefits or offers. The captured baseline
+and full post-change rerun used the same three synthetic cases × three
+repetitions. Assistant-side heuristic review (not independent human validation)
+recorded usefulness 3/5, grounding to supplied facts 5/5, diversity 2.33/5
+before and 3/5 after, brand fit 3/5, and correction effort 2/5 in both runs.
+Grounding is only relative to supplied fixture text and does not establish
+truth. The prompt yielded a modest diversity improvement; output remains
+generic review drafts and does not pass a production gate. The bookstore
+prompt-injection note did not override the brief in this small run; exact
+phrase screening is not a semantic safety assessment.
+
+The full captured post-change GPT-6 Luna run completed 9/9 at USD 0.0017208,
+average latency 3.803 seconds, with Azure returned as upstream for all calls.
+Prior captured baseline cost USD 0.001527. A separate post-prompt attempt
+stopped after six calls because response/accounting could not be verified; the
+six calls cost USD 0.0010854 and USD 0.00078075 remains reserved. PR #245
+classifies provider/accounting failures separately from creative contract
+rejection.
+
+### Cross-vendor Gemini evaluation attempt — 2026-10-04
+
+OpenRouter's current public model and endpoint catalogs were checked before
+this attempt. `google/gemini-3.8-flash` advertises JSON-schema output and the
+public ZDR endpoint listing included a Google endpoint. The runner now allows
+this model as an explicitly selected candidate with standard-price input and
+output caps of USD 0.75/USD 3.75 per million tokens; the temporary catalog
+discount is not used for the cap. The nine-call upper reservation is USD
+0.043848. PR #246 adds only this candidate to the bounded evaluation route;
+GPT-6 Luna remains default and no model is connected to product routes.
+
+The first Gemini run stopped before a benchmark record was produced. A missing
+loop continuation in the unverified-response handler caused a local benchmark
+exception; PR #247 fixed this. One request was attempted and the remaining eight
+were not sent. The provider response/cost could not be verified, so the USD
+0.004761 reservation remains held. The local shared ledger reports USD
+0.0057997 spent and USD 0.00554175 reserved (including the earlier USD
+0.00078075 hold), leaving USD 15.98865855 under its local USD 16 allocation.
+These are ledger values, not live account credits.
+
+A read-only current-key check on 2026-10-04 contradicted the earlier owner
+confirmation: the returned key limit/reset configuration did not match the
+approved USD 16 with no reset. No additional provider calls may be sent until
+the key setting is corrected and verified. Account usage and remaining credit
+amounts are intentionally not persisted in repository history. No balance
+purchase, auto-recharge change, key mutation, real data, or product-route call
+occurred.
+
+OpenRouter says `zdr=true` restricts routing to eligible ZDR endpoints and
+`data_collection=deny` filters endpoints that store inputs for training. These
+controls do not establish Türkiye/EU processing, KVKK compliance, or privacy
+outside the inference provider.
+
+Official model and policy references checked 2026-10-04: OpenRouter [Gemini 3.8
+Flash model, pricing, structured output and providers](https://openrouter.ai/google/gemini-3.8-flash/providers),
+[model catalog and ZDR filter](https://openrouter.ai/docs/api/api-reference/models/get-models),
+[current ZDR endpoint list](https://openrouter.ai/api/v1/endpoints/zdr),
+[ZDR scope](https://openrouter.ai/blog/insights/zero-data-retention/), and
+[read-only current-key endpoint](https://openrouter.ai/docs/api/api-reference/api-keys/get-current-key).
+
+**Next:** hold further hosted calls. On 2026-10-04, a read-only current-key
+check contradicted the earlier owner confirmation: the key's limit/reset
+configuration did not match the approved USD 16 with no reset. Do not send more
+requests until that setting is corrected and verified. PR #246 added Gemini
+3.8 Flash as a bounded, explicitly selected synthetic candidate; PR #247
+fixed an unverified-response benchmark loop defect. The first Gemini attempt
+stopped after one call, with the other eight unsent; the call's provider usage
+and cost were unverified and its USD 0.004761 reservation remains held. The
+shared local ledger records USD 0.0057997 spent and USD 0.00554175 reserved,
+leaving USD 15.98865855 under its local USD 16 cap. These are not live account
+credits. First reconcile the approved key setting, then diagnose the provider
+response/accounting path before another run. No production model is selected.
