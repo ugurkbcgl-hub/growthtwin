@@ -64,7 +64,6 @@ def _request_body() -> bytes:
         "n": 1,
         "resolution": "1K",
         "aspect_ratio": "9:16",
-        "output_format": "png",
         "provider": {"only": [PROVIDER], "allow_fallbacks": False},
     }
     body = json.dumps(payload, ensure_ascii=True, separators=(",", ":")).encode()
