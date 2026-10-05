@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-05 18:11 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-05 18:13 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -18,8 +18,9 @@ publication, media spend, or production AI use.
   `37238542795` passed, including Django tests and browser E2E. At this
   verification, no PRs were open. The current handoff branch
   `docs/low-usage-handoff-20261005-1508` was created from this `main` commit;
-  the working tree was clean before this documentation update. Verify the
-  delivery PR and its CI again before acting.
+  the working tree was clean before this documentation update. PR #268 carries
+  this snapshot and was open when checked; verify its current state and CI
+  before acting.
 - PR #266 merged as `986aab894cdb728744026292e661d0d0d3908f8d`; required CI
   `37237129966` and post-merge CI `37237255078` passed.
 - PR #256 required CI `37214462925` and post-merge CI `37214622803` passed.
