@@ -59,4 +59,4 @@ The GitHub merge gate is verified above, and PR/post-merge CI results are record
 
 ## Next action
 
-Keep full backup/restore of the configured local database deferred while legacy drafts and workspace creative values remain unclassified. Leave this database untouched; continue any product work with newly created synthetic fixtures in an isolated environment. Do not retry recursive deletion through an alternate tool after the cleanup request was blocked. Do not expose config-var values or use real data.
+Keep full backup/restore of the configured local database deferred while legacy drafts and workspace creative values remain unclassified. Leave this database untouched. For the current handoff scope, do not begin product features until Phase 0 is complete. The next action is to obtain privacy-preserving, owner-approved evidence that the unclassified legacy drafts and workspace creative values are synthetic; do not inspect or export their contents to establish this. Do not retry recursive deletion through an alternate tool after the cleanup request was blocked. Do not expose config-var values or use real data.
