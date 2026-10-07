@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-07 06:49 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-07 19:46 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -12,13 +12,16 @@ publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Verified `origin/main`: `209b13a2bd1abff90e453f038b6e5435e8af1c09` (PR #268).
+- Verified `origin/main`: `a407c3b17fd5eebb39f45191db72aef532c68750` (PR #269).
+- PR #269 merged at 2026-10-07 06:52 +0300. Required CI run `37568618655`
+  and post-merge CI `37568776587` passed, including Django tests and browser
+  E2E. No PRs were open at this verification. The current handoff branch
+  `docs/low-usage-handoff-20261007-1645` was created from this `main` commit;
+  its working tree was clean before this documentation update. Recheck the
+  delivery PR and CI before acting.
 - PR #268 merged at 2026-10-05 19:09 +0300. Required CI runs
   `37331142933` and `37331246980`, and post-merge CI `37338587867` passed,
-  including Django tests and browser E2E. At this verification, no PRs were
-  open. The current handoff branch `docs/low-usage-handoff-20261007` was
-  created from this `main` commit; its working tree was clean before this
-  documentation update. Recheck the delivery PR and CI before acting.
+  including Django tests and browser E2E.
 - PR #267 (`docs: refresh low-usage GrowthTwin handoff`) merged at
   2026-10-05 01:03 +0300. Required CI `37238412605` and post-merge CI
   `37238542795` passed, including Django tests and browser E2E.
