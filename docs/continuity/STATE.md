@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-05 18:13 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-07 06:49 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -12,17 +12,16 @@ publication, media spend, or production AI use.
 
 ## Repository and CI state
 
-- Verified `origin/main`: `5cf013134107eb399048946b016d2853cad5228d` (PR #267).
+- Verified `origin/main`: `209b13a2bd1abff90e453f038b6e5435e8af1c09` (PR #268).
+- PR #268 merged at 2026-10-05 19:09 +0300. Required CI runs
+  `37331142933` and `37331246980`, and post-merge CI `37338587867` passed,
+  including Django tests and browser E2E. At this verification, no PRs were
+  open. The current handoff branch `docs/low-usage-handoff-20261007` was
+  created from this `main` commit; its working tree was clean before this
+  documentation update. Recheck the delivery PR and CI before acting.
 - PR #267 (`docs: refresh low-usage GrowthTwin handoff`) merged at
   2026-10-05 01:03 +0300. Required CI `37238412605` and post-merge CI
-  `37238542795` passed, including Django tests and browser E2E. At this
-  verification, no PRs were open. The current handoff branch
-  `docs/low-usage-handoff-20261005-1508` was created from this `main` commit;
-  the working tree was clean before this documentation update. PR #268 carries
-  this snapshot and was open when checked; verify its current state and CI
-  before acting.
-- PR #266 merged as `986aab894cdb728744026292e661d0d0d3908f8d`; required CI
-  `37237129966` and post-merge CI `37237255078` passed.
+  `37238542795` passed, including Django tests and browser E2E.
 - PR #256 required CI `37214462925` and post-merge CI `37214622803` passed.
   PR #257 required CI `37214916337` and post-merge CI `37215065615` passed.
   PR #258 required CI `37215352318` and post-merge CI `37215534053` passed.
@@ -38,9 +37,8 @@ publication, media spend, or production AI use.
   and browser E2E. Local Ruff lint/format and `git diff --check` passed. Never
   push directly to `main`.
 - PR #266 merged as `986aab894cdb728744026292e661d0d0d3908f8d`; required CI
-  `37237129966` and post-merge CI `37237255078` passed. At verification, the
-  working tree was clean and no PRs were open. This handoff is being prepared
-  on `docs/low-usage-handoff-20261005`; do not push directly to `main`.
+  `37237129966` and post-merge CI `37237255078` passed. At the earlier
+  verification, the working tree was clean and no PRs were open.
 
 ## AI/provider status
 
