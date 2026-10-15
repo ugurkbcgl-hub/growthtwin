@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 18:36 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-15 18:40 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,13 +13,13 @@ use.
 
 ## Repository and CI state
 
-- Current work is on `feat/progressive-campaign-detail-r10`, based on verified
-  local `main`/`origin/main` commit `33fbac0186fa2d3eff515b79b21e453dc74d19e5`
-  (PR #272). The pre-change main worktree was clean.
+- Current documentation refresh is on `docs/r10-post-merge-handoff`, based on
+  verified local `main`/`origin/main` commit
+  `ee12f76ee2d051bf109cc2b5f9d2ff9a06984511`; the worktree was clean at start.
 - PR #273, [progressive campaign review details](https://github.com/ugurkbcgl-hub/growthtwin/pull/273),
-  is open from this branch. At 2026-10-15 18:36 +0300, required CI
-  `Django system check` run `38761752773` was in progress; no merge decision has
-  been made. The feature commit before this handoff update is `14c16e0`.
+  merged at 2026-10-15 18:38 +0300. Required CI `38761815431` and post-merge
+  CI `38762126704` passed, including Django tests and browser E2E.
+- Verified `origin/main`: `ee12f76ee2d051bf109cc2b5f9d2ff9a06984511` (PR #273).
 - This slice defines measurable synthetic usability criteria for R-10 and
   progressively discloses creative source/character metadata and deeper
   readiness/search details while leaving safety, eligibility, budget and
@@ -28,7 +28,8 @@ use.
   unreachable, so no manual visual review or participant usability test was
   performed. No forms were submitted or database/provider/external account
   data touched.
-- Verified `origin/main`: `33fbac0186fa2d3eff515b79b21e453dc74d19e5` (PR #272).
+- PR #272 (`docs: refresh GrowthTwin current handoff`) merged at
+  2026-10-15 18:14 +0300; its post-merge CI `38759064122` passed.
 - PR #272 (`docs: refresh GrowthTwin current handoff`) merged at
   2026-10-15 18:14 +0300; its post-merge CI `38759064122` passed.
 - PR #271 (`docs: refresh GrowthTwin data provenance handoff`) merged at
@@ -115,11 +116,10 @@ or use real data without applicable authorization.
 
 ## Next action
 
-Check PR #273's required CI. If it passes, complete review and merge under the
-owner's standing authorization; if it fails, fix only the blocking issue. Then
-reopen the local synthetic campaign screen for visual review and prepare the
-R-10 beginner/pro task script for participant usability observation. Do not
-add real-data intake, live forecast, fee calculation, platform connection, or
+Reopen the local synthetic campaign screen for visual review and prepare the
+R-10 beginner/pro task script for participant usability observation. The
+server on `127.0.0.1:8002` was unavailable during the last check. Do not add
+real-data intake, live forecast, fee calculation, platform connection, or
 publication. Keep configured-database recovery deferred: the
 2026-10-15 authorized read-only inventory still could not establish provenance
 for 8 legacy anonymous drafts, 1 workspace draft, or its creative version.
