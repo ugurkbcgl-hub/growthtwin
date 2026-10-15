@@ -1,6 +1,7 @@
 """Browser coverage for the authenticated synthetic campaign workspace."""
 
 import secrets
+from pathlib import Path
 
 from django.contrib.auth import get_user_model
 from django.test import LiveServerTestCase
@@ -91,6 +92,16 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 self.assertEqual(
                     page.get_by_text("Tercih edilen taslak · sürüm 1").count(), 1
                 )
+                with page.expect_download() as download_info:
+                    page.get_by_role("link", name="Seçili taslağı indir (.txt)").click()
+                download = download_info.value
+                self.assertEqual(
+                    download.suggested_filename,
+                    f"growthtwin-draft-{draft_id}-v1.txt",
+                )
+                downloaded_text = Path(download.path()).read_text(encoding="utf-8")
+                self.assertIn("YAYINLANMADI", downloaded_text)
+                self.assertIn("TERCİH EDİLEN METİN · Sürüm 1", downloaded_text)
                 self.assert_no_horizontal_overflow(page)
 
                 detail_url = reverse("campaigns:detail", args=[draft_id])

@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 19:17 +03:00 (Europe/Istanbul).
+Last verified: 2026-10-15 19:34 +03:00 (Europe/Istanbul).
 Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,12 +13,25 @@ before choosing each next implementation step.
 
 ## Repository and CI
 
-- At snapshot time, `main` was clean at `23caa58609dfab30275fac993a85d861ecf8bca2`, from PR #276. Recheck the main tip and open PRs before further edits; this handoff refresh itself may create a newer commit.
-- PR #276, [R-10 usability observation preparation](https://github.com/ugurkbcgl-hub/growthtwin/pull/276), merged on 2026-10-15. Required CI run `38767091718` and post-merge CI run `38767410913` both passed, including Django tests and browser E2E.
-- Local source changes passed `git diff --check`. No test was run locally for the documentation-only change.
+- Base `main`: `8b92b44d867aecea7cc3c4659e4eacd4495729e2` (PR #277).
+  Post-merge CI `38768174145` completed successfully; the open PR list was empty.
+- Current implementation branch: `feat/workspace-campaign-draft-download`.
+  The owner-only draft download is prepared for PR review; recheck live PR/CI
+  and the main tip because this snapshot is written before its own commit.
+- Local verification: 7 download tests and 4 workspace browser tests passed
+  together; after adding a changed-preference regression, all 8 download tests
+  passed. Ruff and `git diff --check` passed. Tests used isolated in-memory
+  SQLite with fabricated accounts, not the existing local database.
+- Independent read-only code review found no actionable issues. Required PR
+  and post-merge CI for this implementation must be checked live.
 
 ## Product progress
 
+- Current owners can download their selected, current creative and plan as a
+  plain UTF-8 review file. It contains budget/fee caveats, separate Search
+  starter assets and unresolved readiness items. Stale source/version/selection
+  links are rejected; other owners receive 404; responses are private/no-store.
+  This is not a Google Ads import file or publication approval.
 - The authenticated campaign detail prototype has progressive disclosure for
   creative source/character details, campaign suitability evidence, forecast
   search details, and launch-readiness checks. The default view keeps campaign
@@ -49,8 +62,11 @@ before choosing each next implementation step.
 
 ## Next action
 
-Run moderated usability observations with at least one first-time advertiser
-and one experienced advertiser using the linked script. Record anonymized task
-completion, correctness, time, effort, and misunderstandings; compare results
-to R-10 acceptance criteria, then prioritize the highest-impact product fix.
-Do not call R-10 validated until both participant types have been observed.
+After verifying/finishing the download PR, implement the first explicitly
+simulated channel lifecycle in the authenticated workspace: start a rehearsal,
+stop it, and safely retry without duplicate actions, using a fake adapter and
+owner-scoped records. Read ADR-0008 and the action-policy contracts first.
+Keep the unpublished/no-spend status visible and do not invent performance
+metrics. R-10 participant observations remain pending acceptance evidence;
+they do not block this independent engineering work. Real channel test-account
+integration follows only after checking access and the applicable gates.
