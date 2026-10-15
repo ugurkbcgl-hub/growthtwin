@@ -67,7 +67,10 @@
       {% for asset in plan.headlines %}
         <article class="asset-card">
           <p>{{ asset.text }}</p>
-          <small>{{ asset.text|length }}/{{ asset.max_characters }} · Kaynak: {{ asset.source_fields|join:", " }}</small>
+          <details class="asset-provenance">
+            <summary>Metin ayrıntıları</summary>
+            <small>{{ asset.text|length }}/{{ asset.max_characters }} karakter · Kaynak alanlar: {{ asset.source_fields|join:", " }}</small>
+          </details>
         </article>
       {% empty %}<p>Başlık üretmek için işletme adı ve şehir gerekli.</p>{% endfor %}
     </section>
@@ -77,7 +80,10 @@
       {% for asset in plan.descriptions %}
         <article class="asset-card">
           <p>{{ asset.text }}</p>
-          <small>{{ asset.text|length }}/{{ asset.max_characters }} · Kaynak: {{ asset.source_fields|join:", " }}</small>
+          <details class="asset-provenance">
+            <summary>Metin ayrıntıları</summary>
+            <small>{{ asset.text|length }}/{{ asset.max_characters }} karakter · Kaynak alanlar: {{ asset.source_fields|join:", " }}</small>
+          </details>
         </article>
       {% empty %}<p>Açıklama üretmek için hizmet brief'i gerekli.</p>{% endfor %}
     </section>
@@ -207,9 +213,12 @@
     </section>
 
     <section class="notice notice-muted" aria-labelledby="forecast-title">
-      <h2 id="forecast-title">Tahmin ve arama terimleri</h2>
-      <p><strong>Gösterim, tıklama, maliyet ve dönüşüm:</strong> {{ plan.forecast_reason }}</p>
-      <p><strong>Anahtar kelime önerisi:</strong> {{ plan.keyword_ideas_reason }}</p>
+      <h2 id="forecast-title">Sonuç tahmini</h2>
+      <p><strong>Gerçek tahmin yok:</strong> {{ plan.forecast_reason }}</p>
+      <details class="technical-details">
+        <summary>Uzman ayrıntısı: arama terimleri</summary>
+        <p><strong>Anahtar kelime önerileri:</strong> {{ plan.keyword_ideas_reason }}</p>
+      </details>
     </section>
 
     {% if plan.missing_requirements %}
@@ -222,14 +231,16 @@
     {% endif %}
 
     <section class="notice notice-muted" aria-labelledby="launch-readiness-title">
-      <h2 id="launch-readiness-title">Gerçek reklam yayını için gerekenler</h2>
-      <p>Bu sayfa yalnızca sentetik bir önizleme sunar. Prototipte reklam hesabı bağlama, reklam yayımlama veya para harcama özelliği yoktur.</p>
-      <ul>
-        <li>İşletmenin gerçek bilgileri ve reklamda kullanılacak iddialar doğrulanmalı.</li>
-        <li>Türkiye’de kullanılabilir reklam kanalı ve hesaba erişim izni doğrulanmalı.</li>
-        <li>Reklamverenin açık onayı ve uygulanabilir toplam harcama sınırı belirlenmeli.</li>
-        <li>Gerçek erişim tahmini ve sonuç raporu için kanal verisi bağlanmalı.</li>
-      </ul>
+      <details class="technical-details">
+        <summary id="launch-readiness-title">Gerçek reklam yayını için gerekenleri gör</summary>
+        <p>Bu sayfa yalnızca sentetik bir önizleme sunar. Prototipte reklam hesabı bağlama, reklam yayımlama veya para harcama özelliği yoktur.</p>
+        <ul>
+          <li>İşletmenin gerçek bilgileri ve reklamda kullanılacak iddialar doğrulanmalı.</li>
+          <li>Türkiye’de kullanılabilir reklam kanalı ve hesaba erişim izni doğrulanmalı.</li>
+          <li>Reklamverenin açık onayı ve uygulanabilir toplam harcama sınırı belirlenmeli.</li>
+          <li>Gerçek erişim tahmini ve sonuç raporu için kanal verisi bağlanmalı.</li>
+        </ul>
+      </details>
     </section>
 
     <div class="draft-actions">

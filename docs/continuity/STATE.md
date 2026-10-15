@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 18:14 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-15 18:36 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,7 +13,29 @@ use.
 
 ## Repository and CI state
 
-- Verified `origin/main`: `7b939dab5ffb12ba968b922e8342fd5022a4cb47` (PR #271).
+- Current work is on `feat/progressive-campaign-detail-r10`, based on verified
+  local `main`/`origin/main` commit `33fbac0186fa2d3eff515b79b21e453dc74d19e5`
+  (PR #272). The pre-change main worktree was clean.
+- PR #273, [progressive campaign review details](https://github.com/ugurkbcgl-hub/growthtwin/pull/273),
+  is open from this branch. At 2026-10-15 18:36 +0300, required CI
+  `Django system check` run `38761752773` was in progress; no merge decision has
+  been made. The feature commit before this handoff update is `14c16e0`.
+- This slice defines measurable synthetic usability criteria for R-10 and
+  progressively discloses creative source/character metadata and deeper
+  readiness/search details while leaving safety, eligibility, budget and
+  unavailable-result facts visible. Source review and `git diff --check`
+  passed; no tests ran. The local browser server on `127.0.0.1:8002` was
+  unreachable, so no manual visual review or participant usability test was
+  performed. No forms were submitted or database/provider/external account
+  data touched.
+- Verified `origin/main`: `33fbac0186fa2d3eff515b79b21e453dc74d19e5` (PR #272).
+- PR #272 (`docs: refresh GrowthTwin current handoff`) merged at
+  2026-10-15 18:14 +0300; its post-merge CI `38759064122` passed.
+- PR #271 (`docs: refresh GrowthTwin data provenance handoff`) merged at
+  2026-10-15 18:12 +0300. Required CI `38757852740` and post-merge CI
+  `38758208720` passed, including Django tests and browser E2E.
+- Earlier verification recorded `origin/main` as
+  `7b939dab5ffb12ba968b922e8342fd5022a4cb47` (PR #271).
 - PR #271 (`docs: refresh GrowthTwin data provenance handoff`) merged at
   2026-10-15 18:12 +0300. Required CI `38757852740` and post-merge CI
   `38758208720` passed, including Django tests and browser E2E. No PRs were
@@ -93,12 +115,12 @@ or use real data without applicable authorization.
 
 ## Next action
 
-Continue Phase 1.5 with a narrow usability review of the authenticated
-campaign creation/detail flow for beginner and professional advertisers,
-following decision R-10. Define acceptance for one shared synthetic flow with
-progressive detail before changing screens; do not add real-data intake, live
-forecast, fee calculation, platform connection, or publication. Keep
-configured-database recovery deferred: the
+Check PR #273's required CI. If it passes, complete review and merge under the
+owner's standing authorization; if it fails, fix only the blocking issue. Then
+reopen the local synthetic campaign screen for visual review and prepare the
+R-10 beginner/pro task script for participant usability observation. Do not
+add real-data intake, live forecast, fee calculation, platform connection, or
+publication. Keep configured-database recovery deferred: the
 2026-10-15 authorized read-only inventory still could not establish provenance
 for 8 legacy anonymous drafts, 1 workspace draft, or its creative version.
 Do not edit, export, back up, or restore that database. No OpenRouter call or
