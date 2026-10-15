@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 18:07 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-15 18:14 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,13 +13,15 @@ use.
 
 ## Repository and CI state
 
-- Verified `origin/main`: `9ff9664764fcd3457aa156bc96a76ae9672850a8` (PR #270).
-- PR #270 merged at 2026-10-07 19:51 +0300. Required CI run `37654996009`
-  and post-merge CI `37655317683` passed, including Django tests and browser
-  E2E. No PRs were open at this verification. The current handoff branch
-  `docs/low-usage-handoff-20261013-1827` was created from this `main` commit;
-  its working tree was clean before this documentation update. Recheck the
-  delivery PR and CI before acting.
+- Verified `origin/main`: `7b939dab5ffb12ba968b922e8342fd5022a4cb47` (PR #271).
+- PR #271 (`docs: refresh GrowthTwin data provenance handoff`) merged at
+  2026-10-15 18:12 +0300. Required CI `38757852740` and post-merge CI
+  `38758208720` passed, including Django tests and browser E2E. No PRs were
+  open at this verification.
+- PR #270 merged at 2026-10-07 19:51 +0300. Required CI `37654996009` and
+  post-merge CI `37655317683` passed, including Django tests and browser E2E.
+  The previous `docs/low-usage-handoff-20261013-1827` snapshot was clean
+  before its handoff edits; recheck delivery state before acting.
 - PR #269 merged at 2026-10-07 06:52 +0300. Required CI run `37568618655`
   and post-merge CI `37568776587` passed, including Django tests and browser
   E2E.
@@ -91,9 +93,12 @@ or use real data without applicable authorization.
 
 ## Next action
 
-Continue Phase 1.5 by reviewing the existing service blueprint and decision
-register, then take the next small local synthetic UX slice from the current
-system gap analysis. Keep configured-database recovery deferred: the
+Continue Phase 1.5 with a narrow usability review of the authenticated
+campaign creation/detail flow for beginner and professional advertisers,
+following decision R-10. Define acceptance for one shared synthetic flow with
+progressive detail before changing screens; do not add real-data intake, live
+forecast, fee calculation, platform connection, or publication. Keep
+configured-database recovery deferred: the
 2026-10-15 authorized read-only inventory still could not establish provenance
 for 8 legacy anonymous drafts, 1 workspace draft, or its creative version.
 Do not edit, export, back up, or restore that database. No OpenRouter call or
