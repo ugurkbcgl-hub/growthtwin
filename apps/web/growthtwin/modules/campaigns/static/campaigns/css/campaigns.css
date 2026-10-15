@@ -198,6 +198,10 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 .asset-card { margin: .75rem 0; padding: 1rem 1.1rem; }
 .asset-card p { margin-bottom: .5rem; font-size: 1.08rem; font-weight: 650; overflow-wrap: anywhere; }
 .asset-card small { color: var(--muted); }
+.asset-provenance { margin-top: .6rem; }
+.asset-provenance summary, .technical-details summary { width: fit-content; cursor: pointer; color: var(--green-dark); font-size: .9rem; font-weight: 700; }
+.asset-provenance small { display: block; margin-top: .4rem; }
+.technical-details { margin-top: .7rem; }
 .creative-edit { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--line); }
 .creative-edit summary { width: fit-content; cursor: pointer; color: var(--green-dark); font-weight: 700; }
 .creative-edit .campaign-form { margin-top: .9rem; }

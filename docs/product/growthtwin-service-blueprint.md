@@ -328,7 +328,9 @@ Bu kapıdan önce mevcut yerel ürün prototipi kullanılabilir, ancak yalnız s
 - Masaüstü/mobil etkileşimli prototip: iki kreatif modu, belge yükleme benzetimi, basit/pro akış, satın alma öncesi hesaplayıcı, ücret kırılımı, kampanya detayı ve birleşik rapor.
 - Ürün araştırması için sentetik kullanıcı senaryoları ve görevler; acemi/pro katılımcı ile kullanılabilirlik gözlemi.
 - Kredi cüzdanı ve tüketim tahmini simüle edilir; gerçek ödeme veya platform hesabı bağlantısı yok.
-- **Kabul:** Yeni kullanıcı brief'ten satın alma öncesi plan/creative/report akışını yardımsız tamamlar; uzman ise önemli denetimleri bulur; yanlış tahmin/gerçek sonuç karışmaz.
+- **R-10 tasarım ölçütü:** Aynı kampanya ve yetki modeli kullanılır; ayrı ve farklı davranan acemi/pro iş akışları oluşturulmaz. İlk görünüm hedefi, medya sınırını, süreyi ve taslağın yayınlanmadığını sade dille açıklar. Kaynak, karakter sınırı, sürüm ve varsayım gibi uzman denetimleri gerektiğinde açılabilir; uygunluk, veri yokluğu, ücret/medya bütçesi ayrımı ve yayın/harcama yapılmadığı bilgisi saklanamaz. Açılır ayrıntı bulunabilir ve klavye/ekran okuyucu ile kullanılabilir olmalıdır.
+- **Kullanılabilirlik kabulü:** Sentetik görevde yeni kullanıcı yardımsız hedefi, toplam medya tavanını, plan tarihlerini ve taslağın yayınlanmadığını doğru anlatır. Uzman kullanıcı kreatif sürümünü, metin kaynağı/karakter sınırını, kanal uygunluk kararını ve tahmin/veri yokluğu varsayımlarını en fazla iki etkileşimle bulur. Hiçbir kullanıcı sentetik taslağı gerçek sonuç, yayın veya garanti olarak yorumlamaz. Bu ölçütler katılımcı gözlemiyle doğrulanana dek tasarım hipotezidir; kaynak kod incelemesi kullanılabilirlik testi sayılmaz.
+- **Genel kabul:** Yeni kullanıcı brief'ten satın alma öncesi plan/creative/report akışını yardımsız tamamlar; uzman önemli denetimleri bulur; tahmin ile gerçek sonuç karışmaz.
 
 ### Aşama C — Güvenli yerel temel ve çok formatlı içerik
 
