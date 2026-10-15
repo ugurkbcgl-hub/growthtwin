@@ -330,6 +330,7 @@ Bu kapıdan önce mevcut yerel ürün prototipi kullanılabilir, ancak yalnız s
 - Kredi cüzdanı ve tüketim tahmini simüle edilir; gerçek ödeme veya platform hesabı bağlantısı yok.
 - **R-10 tasarım ölçütü:** Aynı kampanya ve yetki modeli kullanılır; ayrı ve farklı davranan acemi/pro iş akışları oluşturulmaz. İlk görünüm hedefi, medya sınırını, süreyi ve taslağın yayınlanmadığını sade dille açıklar. Kaynak, karakter sınırı, sürüm ve varsayım gibi uzman denetimleri gerektiğinde açılabilir; uygunluk, veri yokluğu, ücret/medya bütçesi ayrımı ve yayın/harcama yapılmadığı bilgisi saklanamaz. Açılır ayrıntı bulunabilir ve klavye/ekran okuyucu ile kullanılabilir olmalıdır.
 - **Kullanılabilirlik kabulü:** Sentetik görevde yeni kullanıcı yardımsız hedefi, toplam medya tavanını, plan tarihlerini ve taslağın yayınlanmadığını doğru anlatır. Uzman kullanıcı kreatif sürümünü, metin kaynağı/karakter sınırını, kanal uygunluk kararını ve tahmin/veri yokluğu varsayımlarını en fazla iki etkileşimle bulur. Hiçbir kullanıcı sentetik taslağı gerçek sonuç, yayın veya garanti olarak yorumlamaz. Bu ölçütler katılımcı gözlemiyle doğrulanana dek tasarım hipotezidir; kaynak kod incelemesi kullanılabilirlik testi sayılmaz.
+- **R-10 gözlem hazırlığı (2026-10-15):** [Katılımcı görev metni ve ölçüm formu](r10-usability-observation.md) hazırlandı. Yerel sentetik kampanya ekranı görsel olarak kontrol edildi; katılımcı oturumu yapılmadı ve kullanılabilirlik kabulü henüz doğrulanmadı.
 - **Genel kabul:** Yeni kullanıcı brief'ten satın alma öncesi plan/creative/report akışını yardımsız tamamlar; uzman önemli denetimleri bulur; tahmin ile gerçek sonuç karışmaz.
 
 ### Aşama C — Güvenli yerel temel ve çok formatlı içerik
@@ -383,7 +384,7 @@ Bu kapıdan önce mevcut yerel ürün prototipi kullanılabilir, ancak yalnız s
 | R-07 | Açık | Gerçek veri ve hesap açma zamanı | Sistem tamamen hazır olana dek ertelenecek | Bölüm 12 readiness kanıtı ve owner onayı |
 | R-08 | Açık | İçerik araçları/provider ve kredi tüketimi | Üretim sağlayıcısı yok | Modality değerlendirme, lisans, privacy, cost, kalite, latency |
 | R-09 | Açık | CRM/lead alıcısı ve izin akışı | Kararlaştırılmadı | Lead kullanım amacı, alıcı, channel, consent, data retention ve API |
-| R-10 | Öneri | Basit ve profesyonel kip tek motor üzerinde | İkisini progresif açıklamayla sun | Prototip kullanım testi ve uzman kullanıcı değerlendirmesi |
+| R-10 | Öneri | Basit ve profesyonel kip tek motor üzerinde | İkisini progresif açıklamayla sun | [Prototip kullanım testi ve uzman kullanıcı değerlendirmesi](r10-usability-observation.md); katılımcı gözlemleri bekleniyor |
 | R-11 | Öneri | Büyütme otomatikliği başlangıçta onaylı ve capped | Hatalı spend riski azaltılır | Aşama G sonrası gerçek test verisi ve owner yetki politikası |
 
 ## 15. Araştırma ve kaynak notları
