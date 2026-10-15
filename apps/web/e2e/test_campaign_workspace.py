@@ -59,6 +59,30 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                     "Farklı reklam metinleri", page.locator("body").inner_text()
                 )
                 self.assertIn("Kısa tanıtım", page.locator("body").inner_text())
+                provenance = page.locator(".asset-provenance").first
+                self.assertTrue(
+                    provenance.get_by_text("Metin ayrıntıları").is_visible()
+                )
+                self.assertFalse(provenance.locator("small").is_visible())
+                provenance.get_by_text("Metin ayrıntıları").click()
+                self.assertTrue(provenance.locator("small").is_visible())
+                self.assertIn("Sonuç tahmini", page.locator("body").inner_text())
+                self.assertIn("Gerçek tahmin yok", page.locator("body").inner_text())
+                readiness = page.get_by_text(
+                    "Gerçek reklam yayını için gerekenleri gör", exact=True
+                )
+                self.assertTrue(readiness.is_visible())
+                self.assertFalse(
+                    page.get_by_text(
+                        "Reklamverenin açık onayı", exact=False
+                    ).is_visible()
+                )
+                readiness.click()
+                self.assertTrue(
+                    page.get_by_text(
+                        "Reklamverenin açık onayı", exact=False
+                    ).is_visible()
+                )
                 page.get_by_role("button", name="Bu taslağı tercih et").nth(1).click()
                 self.assertIn(
                     "Tercih yalnızca inceleme içindir",
