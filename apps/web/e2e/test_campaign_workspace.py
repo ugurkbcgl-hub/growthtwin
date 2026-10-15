@@ -366,3 +366,50 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
             "({viewport: window.innerWidth, document: document.documentElement.scrollWidth})"
         )
         self.assertEqual(dimensions["document"], dimensions["viewport"])
+
+    def test_rehearsal_failure_retry_stop_and_new_start(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch()
+            try:
+                page = browser.new_page(viewport={"width": 390, "height": 844})
+                page.goto(f"{self.live_server_url}{reverse('campaigns:list')}")
+                page.locator("input[name='username']").fill(self.owner.username)
+                page.locator("input[name='password']").fill(self.owner_password)
+                page.get_by_role("button", name="Giriş yap").click()
+                page.wait_for_url(f"**{reverse('campaigns:list')}")
+                page.get_by_role("link", name="Yeni kampanya oluştur").click()
+                page.locator("#id_workspace").select_option(str(self.workspace.pk))
+                page.locator("#id_synthetic_confirmation").check()
+                page.get_by_role(
+                    "button", name="Sentetik örnekle taslağı hazırla"
+                ).click()
+                page.wait_for_url("**/workspace/campaigns/*/")
+                page.get_by_role("button", name="Bu taslağı tercih et").first.click()
+                panel = page.locator("#publishing-rehearsal")
+                panel.get_by_text("Hata sonrası toparlanmayı dene", exact=True).click()
+                panel.get_by_role(
+                    "button", name="Bağlantı hatasıyla prova başlat"
+                ).click()
+                self.assertIn("Prova başarısız", panel.inner_text())
+                panel.get_by_role(
+                    "button", name="Başlatma adımını yeniden dene"
+                ).click()
+                self.assertIn("Prova çalışıyor", panel.inner_text())
+                self.assertIn("para harcamaz", panel.inner_text())
+                panel.get_by_role("button", name="Provayı durdur", exact=True).click()
+                self.assertIn("Bu prova kapatıldı", panel.inner_text())
+                panel.get_by_role("button", name="Yayın provasını başlat").click()
+                self.assertIn("Prova çalışıyor", panel.inner_text())
+                panel.get_by_role("button", name="Provayı durdur", exact=True).click()
+                panel.get_by_text(
+                    "Prova işlem geçmişi (son 20 kayıt)", exact=True
+                ).click()
+                self.assertEqual(panel.locator("ol li").count(), 5)
+                self.assertIn(
+                    "Önizleme · yayınlanmadı", page.locator("body").inner_text()
+                )
+                self.assert_no_horizontal_overflow(page)
+                page.set_viewport_size({"width": 1440, "height": 1000})
+                self.assert_no_horizontal_overflow(page)
+            finally:
+                browser.close()

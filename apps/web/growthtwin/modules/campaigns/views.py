@@ -27,6 +27,10 @@ from growthtwin.modules.campaigns.forms import (
 )
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
+from growthtwin.modules.campaigns.rehearsal import (
+    perform_campaign_rehearsal,
+    rehearsal_context,
+)
 from growthtwin.modules.campaigns.report_metrics import (
     ReportingWindow,
     unavailable_campaign_report_metrics,
@@ -195,6 +199,12 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             "creative_version_count": len(versions),
             "download_variant": preferred_current_variant(draft),
             "download_stale": request.GET.get("download") == "stale",
+            "rehearsal": rehearsal_context(draft),
+            "rehearsal_notice": (
+                request.GET.get("rehearsal")
+                if request.GET.get("rehearsal") in {"updated", "changed"}
+                else ""
+            ),
             "preferred_creative_key": (
                 draft.preferred_creative_key
                 if (
@@ -436,6 +446,31 @@ def campaign_edit(request, draft_id):
         request,
         "campaigns/edit.html",
         {"draft": draft, "form": form},
+    )
+
+
+@login_required
+@require_POST
+def campaign_rehearsal(request, draft_id):
+    """Apply an owner-scoped fake-channel action without external dispatch."""
+
+    get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user), pk=draft_id
+    )
+    result = "updated"
+    try:
+        perform_campaign_rehearsal(
+            owner=request.user,
+            draft_id=draft_id,
+            action=request.POST.get("action", ""),
+            expected_revision=int(request.POST.get("revision", "")),
+            expected_fingerprint=request.POST.get("fingerprint", ""),
+        )
+    except (ValueError, ValidationError):
+        result = "changed"
+    return redirect(
+        f"{reverse('campaigns:detail', args=[draft_id])}"
+        f"?rehearsal={result}#publishing-rehearsal"
     )
 
 

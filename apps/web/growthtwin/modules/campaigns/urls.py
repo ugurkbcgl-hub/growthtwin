@@ -11,6 +11,7 @@ urlpatterns = [
     path("new/", views.campaign_create, name="create"),
     path("<int:draft_id>/", views.campaign_detail, name="detail"),
     path("<int:draft_id>/download/", views.campaign_download, name="download"),
+    path("<int:draft_id>/rehearsal/", views.campaign_rehearsal, name="rehearsal"),
     path("<int:draft_id>/report/", views.campaign_report, name="report"),
     path("<int:draft_id>/edit/", views.campaign_edit, name="edit"),
     path(

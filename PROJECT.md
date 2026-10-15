@@ -24,6 +24,14 @@ a review artifact; it does not enable real-data export, platform import or
 publication. R-10 participant observations remain pending and do not block
 independent development of the remaining campaign lifecycle.
 
+The authenticated workspace also provides a synthetic publishing rehearsal:
+start, deliberately fail, retry and stop through an in-process fake adapter.
+Owner-scoped state and event records reject stale/duplicate form revisions;
+changed inputs block retry, while stop remains available. A running rehearsal
+is a stored simulation state, not an active advertisement or worker. No real
+account, provider, media spend or performance data is connected. See
+[ADR-0021](docs/adr/0021-workspace-publishing-rehearsal.md).
+
 Build a polished, low-effort, self-service advertising platform for the Türkiye market. It should be useful to anyone who wants to advertise: individuals, creators, small and large businesses, and organizations across industries. Dental clinics are one possible customer example, not a special product boundary.
 
 GrowthTwin's long-term capability benchmark is an integrated, AI-assisted advertising workflow: understand the advertiser's brand and offer; turn a plain-language goal into a campaign plan; generate and refine platform-ready copy, image, and video ads; launch approved campaigns through connected ad accounts; report results across channels; and recommend or perform bounded improvements based on measured performance. Omneky is a product capability reference for this breadth, not a commitment to copy every feature or channel in the first release. Public vendor feature claims do not establish GrowthTwin's access to those platforms, API eligibility in Türkiye, or feature parity.

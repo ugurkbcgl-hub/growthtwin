@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 19:34 +03:00 (Europe/Istanbul).
+Last verified: 2026-10-15 20:04 +03:00 (Europe/Istanbul).
 Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,20 +13,29 @@ before choosing each next implementation step.
 
 ## Repository and CI
 
-- Base `main`: `8b92b44d867aecea7cc3c4659e4eacd4495729e2` (PR #277).
-  Post-merge CI `38768174145` completed successfully; the open PR list was empty.
-- Current implementation branch: `feat/workspace-campaign-draft-download`.
-  The owner-only draft download is prepared for PR review; recheck live PR/CI
-  and the main tip because this snapshot is written before its own commit.
-- Local verification: 7 download tests and 4 workspace browser tests passed
-  together; after adding a changed-preference regression, all 8 download tests
-  passed. Ruff and `git diff --check` passed. Tests used isolated in-memory
-  SQLite with fabricated accounts, not the existing local database.
-- Independent read-only code review found no actionable issues. Required PR
-  and post-merge CI for this implementation must be checked live.
+- Base `main`: `42b0ac2` (PR #278). Post-merge CI `38770575474` passed;
+  the open PR list was empty.
+- Current implementation branch: `feat/workspace-publishing-rehearsal`.
+  The new lifecycle is prepared for PR review; recheck live PR/CI and main tip
+  because this snapshot is written before its own commit.
+- Local verification: 76 campaign tests (75 passed, 1 PostgreSQL-only skipped),
+  plus 5 HTTP and 5 workspace browser tests passed together. Ruff and migration
+  consistency checks passed. Tests used isolated in-memory SQLite and fabricated
+  accounts. PostgreSQL concurrency must be confirmed in CI.
+- Independent read-only review found no actionable issues. Required PR and
+  post-merge CI for this implementation must be checked live.
+- Migration 0005 creates rehearsal and event tables only. It was applied to
+  disposable test databases; it has not been applied to the existing local or
+  Heroku database. The previous local server was not listening on port 8002
+  during this turn; do not report it running without rechecking/restarting.
 
 ## Product progress
 
+- Owner-scoped synthetic publishing rehearsal now supports start, injected
+  failure, retry with the same operation ID, terminal stop and a fresh start.
+  Revision + fingerprint checks prevent stale/duplicate actions, and the UI
+  shows the last 20 recorded events. Running is only a simulation state.
+  ADR-0021 defines the boundary; no external API, worker, real report or spend.
 - Current owners can download their selected, current creative and plan as a
   plain UTF-8 review file. It contains budget/fee caveats, separate Search
   starter assets and unresolved readiness items. Stale source/version/selection
@@ -62,11 +71,11 @@ before choosing each next implementation step.
 
 ## Next action
 
-After verifying/finishing the download PR, implement the first explicitly
-simulated channel lifecycle in the authenticated workspace: start a rehearsal,
-stop it, and safely retry without duplicate actions, using a fake adapter and
-owner-scoped records. Read ADR-0008 and the action-policy contracts first.
-Keep the unpublished/no-spend status visible and do not invent performance
-metrics. R-10 participant observations remain pending acceptance evidence;
-they do not block this independent engineering work. Real channel test-account
-integration follows only after checking access and the applicable gates.
+After verifying/finishing the rehearsal PR, establish the Google Ads test-account
+integration prerequisites: read the current feasibility research and official
+API access requirements, check whether a dedicated test manager/account,
+developer-token access and OAuth client are available without revealing secrets,
+and record the exact missing setup before writing a real adapter. A test account
+cannot establish real serving/results. R-10 observations remain pending and do
+not block independent engineering; real advertiser data/publishing/spend remain
+behind the separate launch gates.
