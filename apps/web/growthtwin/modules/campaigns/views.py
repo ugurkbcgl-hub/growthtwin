@@ -5,14 +5,20 @@ from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import number_format
-from django.views.decorators.http import require_POST
+from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_GET, require_POST
 
 from growthtwin.modules.campaigns.eligibility import (
     synthetic_campaign_eligibility_preview,
+)
+from growthtwin.modules.campaigns.exports import (
+    campaign_review_text,
+    preferred_current_variant,
 )
 from growthtwin.modules.campaigns.forms import (
     CampaignDraftEditForm,
@@ -187,6 +193,8 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             "creative_variant_rows": variant_rows,
             "creative_is_stale": creative_is_stale,
             "creative_version_count": len(versions),
+            "download_variant": preferred_current_variant(draft),
+            "download_stale": request.GET.get("download") == "stale",
             "preferred_creative_key": (
                 draft.preferred_creative_key
                 if (
@@ -209,6 +217,34 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             ),
         },
     )
+
+
+@never_cache
+@login_required
+@require_GET
+def campaign_download(request, draft_id):
+    """Download the owner's current selected synthetic draft for review."""
+
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user), pk=draft_id
+    )
+    try:
+        text = campaign_review_text(
+            draft,
+            version_number=int(request.GET.get("version", "")),
+            variant_key=request.GET.get("variant", ""),
+        )
+    except (ValueError, ValidationError):
+        return redirect(
+            f"{reverse('campaigns:detail', args=[draft.pk])}?download=stale"
+        )
+    response = HttpResponse(text, content_type="text/plain; charset=utf-8")
+    response["Content-Disposition"] = (
+        f'attachment; filename="growthtwin-draft-{draft.pk}'
+        f'-v{draft.preferred_creative_version}.txt"'
+    )
+    response["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 @login_required

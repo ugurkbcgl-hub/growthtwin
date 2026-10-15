@@ -67,6 +67,22 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 ## Phase 2 — Local campaign vertical slice
 
+**Delivery focus (2026-10-15):** R-10 participant observations remain an open
+acceptance item, but do not block independent engineering work. Complete the
+first campaign journey in this order: downloadable current draft; a clearly
+simulated channel lifecycle with safe retry and stop; controlled channel test
+account integration once access is available; then the separate real-data and
+production launch gates. Do not label the complete product ready while these
+gates are open.
+
+**Draft download (2026-10-15):** authenticated owners can download a UTF-8 text
+review file containing the current preferred creative version, current plan,
+media/fee distinction, separate Search starter assets and unresolved readiness
+items. Changed source, version or preference invalidates an old download link.
+The response is private/no-store and does not export other creative history or
+account information. It is a synthetic review copy, not a platform-import
+payload or publication authorization. No provider, migration or spend is added.
+
 **Goal:** connect the website to deterministic campaign records and evaluate draft generation without creating external side effects.
 
 **Synthetic-prototype gate completed:** authenticated workspace ownership and owner-scoped campaign drafts exist for local synthetic scenarios. The [current system gap analysis](docs/product/current-system-gap-analysis.md) tracks the implementation boundary. Anonymous session drafts remain separate and are never backfilled automatically. Before real data or customer files, define the complete purpose-specific campaign/brand lifecycle, retention, export, deletion, tenant roles, and recovery guarantees; do not invent a universal retention period. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).

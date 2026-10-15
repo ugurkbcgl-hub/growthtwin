@@ -243,6 +243,21 @@
       </details>
     </section>
 
+    <section class="summary-card" aria-labelledby="download-title">
+      <h2 id="download-title">Taslağını yanında götür</h2>
+      <p>Planı, örnek medya tavanını ve tercih ettiğin metni tek bir metin dosyasında indir. Dosya inceleme içindir; reklam yayımlamaz ve Google Ads'e doğrudan aktarılamaz.</p>
+      {% if download_stale %}
+        <p class="notice" role="status">Metin veya tercihin değişti. Güncel metni kontrol edip yeniden seçtikten sonra indir.</p>
+      {% endif %}
+      {% if download_variant %}
+        <a class="button button-secondary" href="{% url 'campaigns:download' draft.pk %}?version={{ draft.preferred_creative_version }}&amp;variant={{ draft.preferred_creative_key|urlencode }}">Seçili taslağı indir (.txt)</a>
+        <p class="pacing-note">Sürüm {{ draft.preferred_creative_version }} · {{ download_variant.headline }}</p>
+      {% else %}
+        <p>İndirmek için önce yukarıdaki güncel metinlerden birini “Bu taslağı tercih et” ile seç.</p>
+        <a class="back-link" href="#creative-variants-title">Metin seçeneklerine git ↑</a>
+      {% endif %}
+    </section>
+
     <div class="draft-actions">
       <a class="button button-secondary" href="{% url 'campaigns:report' draft.pk %}">Kampanya raporunu aç</a>
       <a class="button button-secondary" href="{% url 'campaigns:edit' draft.pk %}">Örnek bütçe ve süreyi düzenle</a>
