@@ -1,24 +1,28 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-07 19:46 +0300 (Europe/Istanbul). Repository:
+Last verified: 2026-10-15 18:07 +0300 (Europe/Istanbul). Repository:
 `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
 
 Build a self-service paid-advertising platform for Türkiye across industries.
-Current handoff scope: do not begin product features until Phase 0 is complete.
-Use synthetic data only. No real advertiser data, live ad accounts,
-publication, media spend, or production AI use.
+Continue local product development with synthetic data; Phase 0 operational
+checks remain pre-beta/production gates, not blockers for local UX work. No real
+advertiser data, live ad accounts, publication, media spend, or production AI
+use.
 
 ## Repository and CI state
 
-- Verified `origin/main`: `a407c3b17fd5eebb39f45191db72aef532c68750` (PR #269).
-- PR #269 merged at 2026-10-07 06:52 +0300. Required CI run `37568618655`
-  and post-merge CI `37568776587` passed, including Django tests and browser
+- Verified `origin/main`: `9ff9664764fcd3457aa156bc96a76ae9672850a8` (PR #270).
+- PR #270 merged at 2026-10-07 19:51 +0300. Required CI run `37654996009`
+  and post-merge CI `37655317683` passed, including Django tests and browser
   E2E. No PRs were open at this verification. The current handoff branch
-  `docs/low-usage-handoff-20261007-1645` was created from this `main` commit;
+  `docs/low-usage-handoff-20261013-1827` was created from this `main` commit;
   its working tree was clean before this documentation update. Recheck the
   delivery PR and CI before acting.
+- PR #269 merged at 2026-10-07 06:52 +0300. Required CI run `37568618655`
+  and post-merge CI `37568776587` passed, including Django tests and browser
+  E2E.
 - PR #268 merged at 2026-10-05 19:09 +0300. Required CI runs
   `37331142933` and `37331246980`, and post-merge CI `37338587867` passed,
   including Django tests and browser E2E.
@@ -42,6 +46,10 @@ publication, media spend, or production AI use.
 - PR #266 merged as `986aab894cdb728744026292e661d0d0d3908f8d`; required CI
   `37237129966` and post-merge CI `37237255078` passed. At the earlier
   verification, the working tree was clean and no PRs were open.
+- On 2026-10-15, `origin/main` still resolved to
+  `9ff9664764fcd3457aa156bc96a76ae9672850a`; GitHub reported no open PRs.
+  Latest main CI run `37655317683` succeeded. Main branch protection remains
+  enabled, strict, and requires `Django system check`.
 
 ## AI/provider status
 
@@ -83,11 +91,12 @@ or use real data without applicable authorization.
 
 ## Next action
 
-Resolve the Phase 0 data-safety blocker before any new product-feature work:
-obtain privacy-preserving, owner-approved evidence that the unclassified
-legacy drafts and workspace creative values in the configured local database
-are synthetic. Until then, leave that database untouched and do not inspect or
-dump those values. Preserve the unresolved USD 0.00078075 GPT reservation;
-do not inspect the OpenRouter account balance or make another billable call
-without renewed explicit authorization. Keep AI disconnected from product
-routes and do not use OpenRouter video.
+Continue Phase 1.5 by reviewing the existing service blueprint and decision
+register, then take the next small local synthetic UX slice from the current
+system gap analysis. Keep configured-database recovery deferred: the
+2026-10-15 authorized read-only inventory still could not establish provenance
+for 8 legacy anonymous drafts, 1 workspace draft, or its creative version.
+Do not edit, export, back up, or restore that database. No OpenRouter call or
+balance check was needed; the owner remains responsible for balance checks,
+and any billable evaluation must stay synthetic and within previously approved
+limits. Do not connect AI to product routes or use OpenRouter video.
