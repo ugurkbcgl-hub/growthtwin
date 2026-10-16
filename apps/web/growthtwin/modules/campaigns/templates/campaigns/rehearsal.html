@@ -1,0 +1,69 @@
+<section id="publishing-rehearsal" class="summary-card asset-section" aria-labelledby="rehearsal-title">
+  <p class="eyebrow">Sentetik yayın provası</p>
+  <h2 id="rehearsal-title">Başlatmayı ve durdurmayı dene</h2>
+  <p>Bu prova yalnızca uygulama içindeki adımları canlandırır. Google Ads'e bağlanmaz, reklam yayımlamaz ve para harcamaz. Gerçek sonuç veya performans verisi üretmez.</p>
+  <p class="ready-note" role="status">{{ rehearsal.state_label }}</p>
+  {% if rehearsal_notice == "changed" %}
+    <p class="notice" role="status">İşlem uygulanmadı. Prova durumu, kampanya bilgileri veya metin tercihi değişmiş olabilir. Aşağıdaki güncel durumu kontrol ederek devam et.</p>
+  {% endif %}
+  {% if rehearsal.stale %}
+    <p class="notice">Kampanya veya seçilen metin bu provadan sonra değişti. Eski provayı durdurup güncel bilgilerle yeni bir prova başlat.</p>
+  {% endif %}
+  {% if rehearsal.state == "running" %}
+    <p>Başlatma adımı tamamlandı. Bu yalnızca kayıtlı prova durumudur; arka planda reklam çalışmaz.</p>
+  {% elif rehearsal.state == "failed" %}
+    <p>Deneme amacıyla bağlantı hatası oluşturuldu. Aynı prova işlemini yeniden deneyebilir veya durdurabilirsin.</p>
+  {% elif rehearsal.state == "stopped" %}
+    <p>Bu prova kapatıldı. Yeniden başlatmak yeni bir prova oluşturur; eski istekler bu provayı açamaz.</p>
+  {% endif %}
+  <div class="draft-actions">
+    {% if rehearsal.can_start %}
+      <form method="post" action="{% url 'campaigns:rehearsal' draft.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="revision" value="{{ rehearsal.revision }}">
+        <input type="hidden" name="fingerprint" value="{{ rehearsal.fingerprint }}">
+        <button class="button button-secondary" type="submit" name="action" value="start">Yayın provasını başlat</button>
+      </form>
+    {% elif rehearsal.state == "idle" or rehearsal.state == "stopped" %}
+      <p>Önce eksik plan bilgilerini tamamla ve güncel metinlerden birini tercih et.</p>
+      <a class="back-link" href="#creative-variants-title">Metin seçeneklerine git ↑</a>
+    {% endif %}
+    {% if rehearsal.can_retry %}
+      <form method="post" action="{% url 'campaigns:rehearsal' draft.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="revision" value="{{ rehearsal.revision }}">
+        <input type="hidden" name="fingerprint" value="{{ rehearsal.fingerprint }}">
+        <button class="button button-secondary" type="submit" name="action" value="retry">Başlatma adımını yeniden dene</button>
+      </form>
+    {% endif %}
+    {% if rehearsal.can_stop %}
+      <form method="post" action="{% url 'campaigns:rehearsal' draft.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="revision" value="{{ rehearsal.revision }}">
+        <button class="button button-danger" type="submit" name="action" value="stop">Provayı durdur</button>
+      </form>
+    {% endif %}
+  </div>
+  {% if rehearsal.can_start %}
+    <details class="technical-details">
+      <summary>Hata sonrası toparlanmayı dene</summary>
+      <p>Başlatma sırasında yapay bir bağlantı hatası gösterilir. Sonrasında yeniden deneme ve durdurma adımlarını deneyebilirsin.</p>
+      <form method="post" action="{% url 'campaigns:rehearsal' draft.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="revision" value="{{ rehearsal.revision }}">
+        <input type="hidden" name="fingerprint" value="{{ rehearsal.fingerprint }}">
+        <button class="button button-secondary" type="submit" name="action" value="start_failure">Bağlantı hatasıyla prova başlat</button>
+      </form>
+    </details>
+  {% endif %}
+  {% if rehearsal.events %}
+    <details class="technical-details">
+      <summary>Prova işlem geçmişi (son 20 kayıt)</summary>
+      <ol>
+        {% for event in rehearsal.events %}
+          <li>{{ event.created_at|date:"d.m.Y H:i:s T" }} · {{ event.get_action_display }} · {{ event.get_state_display }}</li>
+        {% endfor %}
+      </ol>
+    </details>
+  {% endif %}
+</section>

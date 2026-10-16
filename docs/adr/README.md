@@ -32,4 +32,5 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0018 — Explicit unavailable report metric reasons](0018-explicit-unavailable-report-metric-reasons.md) — Accepted for local synthetic-data development only
 - [0019 — Report observation coverage and retrieval metadata](0019-report-observation-coverage.md) — Accepted for local synthetic-data development only
 - [0020 — Owner editing for synthetic creative drafts](0020-workspace-synthetic-creative-editing.md) — Accepted for local synthetic-data development only
+- [0021 — Owner-scoped synthetic publishing rehearsal](0021-workspace-publishing-rehearsal.md) — Accepted for local synthetic-data development only
 - [Google Search report metric mapping](../product/google-search-report-metric-mapping.md) — Official-source research only; no API access or connection

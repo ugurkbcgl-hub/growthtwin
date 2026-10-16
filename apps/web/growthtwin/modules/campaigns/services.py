@@ -251,12 +251,17 @@ def create_campaign_draft_for_owner(*, owner, workspace_id, **values):
     return draft
 
 
+@transaction.atomic
 def update_campaign_draft_for_owner(
     *, owner, draft_id, media_budget_minor, flight_start, flight_end
 ):
     """Update only bounded campaign settings through the owning user."""
 
-    draft = WorkspaceCampaignDraft.objects.owned_by(owner).get(pk=draft_id)
+    draft = (
+        WorkspaceCampaignDraft.objects.owned_by(owner)
+        .select_for_update()
+        .get(pk=draft_id)
+    )
     if media_budget_minor not in ALLOWED_SYNTHETIC_BUDGETS_MINOR:
         raise ValidationError(
             {"media_budget_minor": "Bilinmeyen sentetik bütçe seçeneği."}

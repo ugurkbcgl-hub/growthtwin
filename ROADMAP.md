@@ -83,6 +83,16 @@ The response is private/no-store and does not export other creative history or
 account information. It is a synthetic review copy, not a platform-import
 payload or publication authorization. No provider, migration or spend is added.
 
+**Synthetic publishing rehearsal (2026-10-15):** the owner can start a fake
+channel operation, deliberately simulate a connection failure, retry the same
+operation and stop it. The revision/fingerprint boundary rejects duplicate or
+stale forms; input changes prevent retry of the old plan. New starts after stop
+create a new operation. State and event records cascade with draft deletion.
+The page shows the last 20 events and keeps no-real-ad/no-spend language visible.
+This is the local lifecycle slice in [ADR-0021](docs/adr/0021-workspace-publishing-rehearsal.md),
+not live dispatch safety or distributed provider reconciliation. Next verify
+test-account/API access prerequisites before implementing a real channel adapter.
+
 **Goal:** connect the website to deterministic campaign records and evaluate draft generation without creating external side effects.
 
 **Synthetic-prototype gate completed:** authenticated workspace ownership and owner-scoped campaign drafts exist for local synthetic scenarios. The [current system gap analysis](docs/product/current-system-gap-analysis.md) tracks the implementation boundary. Anonymous session drafts remain separate and are never backfilled automatically. Before real data or customer files, define the complete purpose-specific campaign/brand lifecycle, retention, export, deletion, tenant roles, and recovery guarantees; do not invent a universal retention period. See [ADR-0007](docs/adr/0007-workspace-ownership-and-retention.md).

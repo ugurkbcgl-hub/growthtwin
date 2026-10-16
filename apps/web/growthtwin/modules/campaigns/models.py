@@ -73,3 +73,51 @@ class WorkspaceCampaignDraft(models.Model):
                 name="campaign_draft_flight_dates_ordered",
             ),
         ]
+
+
+class CampaignRehearsal(models.Model):
+    """Synthetic lifecycle only; never authorizes external dispatch."""
+
+    class State(models.TextChoices):
+        IDLE = "idle", "Henüz başlamadı"
+        RUNNING = "running", "Prova çalışıyor"
+        FAILED = "failed", "Prova başarısız"
+        STOPPED = "stopped", "Prova durduruldu"
+
+    draft = models.OneToOneField(
+        WorkspaceCampaignDraft, on_delete=models.CASCADE, related_name="rehearsal"
+    )
+    state = models.CharField(max_length=16, choices=State.choices, default=State.IDLE)
+    revision = models.PositiveIntegerField(default=0)
+    operation_id = models.UUIDField(null=True, blank=True)
+    fingerprint = models.CharField(max_length=64, blank=True, default="")
+    receipt = models.CharField(max_length=100, blank=True, default="")
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class CampaignRehearsalEvent(models.Model):
+    """Compact, immutable application history with no creative or private payload."""
+
+    class Action(models.TextChoices):
+        START = "start", "Prova başlatıldı"
+        START_FAILURE = "start_failure", "Başarısızlık denendi"
+        RETRY = "retry", "Prova yeniden denendi"
+        STOP = "stop", "Prova durduruldu"
+
+    rehearsal = models.ForeignKey(
+        CampaignRehearsal, on_delete=models.CASCADE, related_name="events"
+    )
+    revision = models.PositiveIntegerField()
+    action = models.CharField(max_length=16, choices=Action.choices)
+    state = models.CharField(max_length=16, choices=CampaignRehearsal.State.choices)
+    operation_id = models.UUIDField()
+    receipt = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-revision",)
+        constraints = [
+            models.UniqueConstraint(
+                fields=("rehearsal", "revision"), name="rehearsal_unique_event_revision"
+            )
+        ]

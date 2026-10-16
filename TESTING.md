@@ -12,6 +12,14 @@ Keep verification proportional to the change. Local product prototypes use synth
 
 ## Product verification layers
 
+Synthetic workspace rehearsal coverage checks owner isolation, POST/CSRF,
+start/failure/retry/stop, stale input fingerprints, repeated form revisions,
+terminal stop and cascading cleanup. A PostgreSQL-only concurrent duplicate
+start test exercises separate connections against the draft row lock in CI;
+local SQLite skips it. Browser coverage exercises failure, recovery, stop,
+new start and event history at narrow/desktop widths. The fake channel performs
+no network calls, produces no real metrics and incurs no spend.
+
 1. **Unit:** campaign states, advertiser authorization, budgets, content validation, and transition rules.
 2. **Integration:** PostgreSQL constraints and tenant isolation; AI schema and provider contracts with fakes; platform authorization, idempotency, retries, and result reconciliation with sandbox accounts or controlled fakes.
 3. **End-to-end:** brief → campaign preview → configured automation state → report. Until a real destination is selected, publishing/results are synthetic and clearly labeled.
