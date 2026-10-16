@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-15 20:04 +03:00 (Europe/Istanbul).
+Last verified: 2026-10-16 22:36 +03:00 (Europe/Istanbul).
 Repository: `https://github.com/ugurkbcgl-hub/growthtwin`.
 
 ## Objective
@@ -13,21 +13,21 @@ before choosing each next implementation step.
 
 ## Repository and CI
 
-- Base `main`: `42b0ac2` (PR #278). Post-merge CI `38770575474` passed;
-  the open PR list was empty.
-- Current implementation branch: `feat/workspace-publishing-rehearsal`.
-  The new lifecycle is prepared for PR review; recheck live PR/CI and main tip
-  because this snapshot is written before its own commit.
+- Base `main`: `bbbbdae` (PR #279, merged after review and required CI success
+  in run `38774396819`). Post-merge CI `38956058546` passed.
+- Current documentation branch: `docs/rehearsal-handoff-and-google-prerequisites`.
+  PR #280 records this handoff. Recheck its live CI and main tip because this
+  snapshot precedes its own commit.
 - Local verification: 76 campaign tests (75 passed, 1 PostgreSQL-only skipped),
   plus 5 HTTP and 5 workspace browser tests passed together. Ruff and migration
   consistency checks passed. Tests used isolated in-memory SQLite and fabricated
-  accounts. PostgreSQL concurrency must be confirmed in CI.
-- Independent read-only review found no actionable issues. Required PR and
-  post-merge CI for this implementation must be checked live.
+  accounts. Required CI also passed against PostgreSQL.
+- Independent read-only review found no actionable issues.
 - Migration 0005 creates rehearsal and event tables only. It was applied to
   disposable test databases; it has not been applied to the existing local or
-  Heroku database. The previous local server was not listening on port 8002
-  during this turn; do not report it running without rechecking/restarting.
+  Heroku database. A temporary isolated review server was prepared previously,
+  but authenticated manual rehearsal review was not completed. Server availability
+  has not been rechecked; automated browser coverage passed.
 
 ## Product progress
 
@@ -71,11 +71,12 @@ before choosing each next implementation step.
 
 ## Next action
 
-After verifying/finishing the rehearsal PR, establish the Google Ads test-account
-integration prerequisites: read the current feasibility research and official
-API access requirements, check whether a dedicated test manager/account,
-developer-token access and OAuth client are available without revealing secrets,
-and record the exact missing setup before writing a real adapter. A test account
-cannot establish real serving/results. R-10 observations remain pending and do
-not block independent engineering; real advertiser data/publishing/spend remain
-behind the separate launch gates.
+Verify the owner's Google Ads test-manager/client and Google Cloud API/OAuth
+setup using the [test-account readiness checklist](../product/google-ads-test-account-readiness.md).
+Official setup guidance was rechecked on 2026-10-16. No matching Google Ads/OAuth
+variables were present in the inspected process; root and apps/web `.env` files
+were absent. Other stores/accounts were not inspected, so availability remains
+unverified. Do not request secrets in chat. Establish test-only targeting and
+credential handling before a first read-only API call or adapter implementation.
+R-10 observations remain pending; real advertiser data/publishing/spend remain
+behind separate launch gates.
