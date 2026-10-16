@@ -14,9 +14,10 @@ before choosing each next implementation step.
 ## Repository and CI
 
 - Base `main`: `bbbbdae` (PR #279, merged after review and required CI success
-  in run `38774396819`). Post-merge CI `38956058546` is pending at this snapshot.
+  in run `38774396819`). Post-merge CI `38956058546` passed.
 - Current documentation branch: `docs/rehearsal-handoff-and-google-prerequisites`.
-  Recheck live PR/CI and main tip because this snapshot precedes its own commit.
+  PR #280 records this handoff. Recheck its live CI and main tip because this
+  snapshot precedes its own commit.
 - Local verification: 76 campaign tests (75 passed, 1 PostgreSQL-only skipped),
   plus 5 HTTP and 5 workspace browser tests passed together. Ruff and migration
   consistency checks passed. Tests used isolated in-memory SQLite and fabricated
