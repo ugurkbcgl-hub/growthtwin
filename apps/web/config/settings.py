@@ -136,3 +136,25 @@ X_FRAME_OPTIONS = "DENY"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "demo:profile-edit"
 LOGOUT_REDIRECT_URL = "login"
+
+# Callback URLs may contain one-time codes. Apply before handler formatting;
+# reverse-proxy access logs still require separate controls before deployment.
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {
+        "oauth_callback": {
+            "()": "growthtwin.modules.connections.logging.OAuthCallbackFilter"
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "filters": ["oauth_callback"],
+        },
+    },
+    "loggers": {
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "django.server": {"handlers": ["console"], "level": "INFO", "propagate": False},
+    },
+}
