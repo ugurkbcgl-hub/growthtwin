@@ -1,47 +1,72 @@
 # Google Ads test integration prerequisites
 
-Reviewed: 2026-10-16, Europe/Istanbul. Scope: setup evidence only; no account
-creation, credentials issued, API call, publication or spend performed.
+Reviewed: 2026-10-17, Europe/Istanbul. Setup is partly complete; no API
+connection, publication or media spend has been verified.
 
-## Verified local status
+## Verified setup
 
-PR #279 adds an in-process synthetic rehearsal, not a Google Ads adapter.
-The inspected process has no `GOOGLE_ADS_*` or `GOOGLE_CLIENT_*` variables.
-Neither repository-root `.env` nor `apps/web/.env` exists. This limited check
-does not establish that credentials or accounts do not exist elsewhere.
-No personal credential stores, remote configuration or advertiser data were read.
+During the owner-authorized browser setup on October 17:
 
-| Prerequisite | Evidence still needed |
-| --- | --- |
-| Dedicated test manager and child client | Account owner and test-account status verified in Google Ads; no production account substituted |
-| Developer token | Approved storage location and access availability, without displaying the value |
-| Google Cloud project and OAuth credentials | Project identity, API setup, authentication approach and access to the dedicated test account |
-| Test customer and manager routing | Correct test client and manager selected; identifiers kept out of public handoff notes |
-| Credential handling | Storage, restricted access, revocation and sanitized errors established before integration |
+- Dedicated test manager and child were created; the child overview showed
+  zero campaigns. Account identifiers are deliberately omitted here.
+- Dedicated Cloud project was created with owner-approved billing association;
+  Google Ads API was enabled and its access page displayed Test access.
+- OAuth branding is External / Testing. One web client exists and the owner's
+  signed-in account was added as the single test user.
+- Client credentials were saved outside Git with Windows user-scoped DPAPI;
+  encryption/decryption round-trip succeeded in the writer process. A later
+  folder rename failed with an access error. Runtime access from Django has
+  NOT been established; confirm store location/identity before loading.
+- Authorized redirect URIs and JavaScript origins remain empty. No OAuth grant,
+  refresh token, test-account API read or provider adapter has been verified.
 
-All account-specific prerequisites remain **unverified**, not confirmed absent.
+These are dated setup observations, not proof that the application is connected.
+Do not record private IDs, email addresses or credential values in this repository.
 
-## Ordered implementation gate
+## Corrected API access prerequisite
 
-1. Inspect the signed-in Google Ads and Cloud setup with the owner; record only
-   readiness status. If sign-in is needed, the owner enters credentials directly.
-2. Establish a separate test manager/client hierarchy and authorized API identity.
-   Verify the Google Ads test label before any account operation.
-3. Design a dedicated test-only configuration that rejects production targets,
-   defaults to disabled and never falls back to another customer or credential.
-4. Make the first narrowly scoped read-only request only after authentication and
-   the target are verified. Then separately review a paused synthetic campaign
-   creation/stop rehearsal. Record results without tokens or customer payloads.
+Google's current developer-token migration guide says developer tokens were
+sunset on September 9, 2026. Access is now attached to the Cloud project owning
+OAuth credentials. Do not create a production manager just to obtain a token.
+The previous checklist's developer-token prerequisite is superseded. Recheck
+Cloud access before calls; Test access does not authorize production targets.
 
-The current official guidance requires a separate test hierarchy and permits
-the Cloud project's OAuth credentials for test accounts. Test accounts neither
-serve ads nor incur media charges; their empty serving metrics cannot validate
-delivery or business results. Test setup does not close production launch gates.
+## Implemented offline foundation
 
-## Official references checked
+`growthtwin.modules.connections.google_oauth` prepares a fixed Google consent
+URL with PKCE S256 and a five-minute random state. An in-memory lock consumes
+an attempt once, bound to server-supplied owner, workspace and session values.
+There is one attempt per binding and a 100-entry cap; restart invalidates all
+attempts. It is only suitable for a single isolated local process.
 
-- [Test accounts](https://developers.google.com/google-ads/api/docs/best-practices/test-accounts)
-- [OAuth overview](https://developers.google.com/google-ads/api/docs/oauth/overview)
+Proposed local callback: `http://127.0.0.1:8002/connections/google/callback/`.
+This is a constant for future integration, NOT an installed Django route or a
+registered Google redirect URI. No network or credential operation is performed.
+The adwords OAuth scope is broad; it must not be described as read-only.
 
-The earlier [Türkiye feasibility assessment](google-ads-search-turkiye-api-feasibility.md)
-remains dated research; recheck access rules before applying for production use.
+Django console handlers now discard records mentioning this callback path,
+including slashless/encoded requests and exception records with this request
+path. This does not protect proxy/router logs, arbitrary application loggers,
+provider response bodies, or DEBUG exception pages.
+
+## Next implementation gate
+
+1. Implement authenticated, CSRF-protected start and dedicated callback routes,
+   enforce workspace ownership and isolated loopback-only operation with DEBUG
+   disabled. Never redirect an unauthenticated callback to a secret-bearing
+   login `next` URL. Return clean status redirects with no-store/no-referrer.
+2. Establish a credential-store interface and verify encrypted runtime access,
+   token storage, sanitized failures and disconnect/revocation. Do not store
+   tokens or PKCE verifiers in plaintext Django sessions.
+3. Register the exact implemented redirect URI and request the owner's Google
+   account grant. Verify test-only customer routing before the first narrow
+   read; do not enumerate unrelated advertiser data.
+4. Verify test-account status through the API before a separately reviewed
+   paused synthetic campaign creation/stop rehearsal. Live serving, meaningful
+   metrics, real advertiser data and media spend remain separate release gates.
+
+## Official references
+
+- [Developer token migration](https://developers.google.com/google-ads/api/docs/api-policy/developer-token), checked 2026-10-17; main guide supersedes its stale summary box.
+- [Web-server OAuth](https://developers.google.com/identity/protocols/oauth2/web-server), checked 2026-10-17.
+- [Test accounts](https://developers.google.com/google-ads/api/docs/best-practices/test-accounts), earlier review 2026-10-16.

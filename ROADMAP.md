@@ -179,6 +179,8 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 
 ## Phase 3 — First publishing and reporting integration
 
+October 17 setup: dedicated Google test accounts, Cloud Test API access, OAuth web client and one test user are prepared. Offline state/PKCE validation and Django callback-log filtering are implemented; no callback route, token exchange, API read or publication is active. Next implement the local connection boundary described in [test integration readiness](docs/product/google-ads-test-account-readiness.md).
+
 **Goal:** prove one authorized destination before expanding channel coverage.
 
 - Choose the first paid-ad platform only after checking access and eligibility in Türkiye, app review, supported campaign/creative formats, authorization requirements, reporting coverage, policy constraints, and maintenance cost.
