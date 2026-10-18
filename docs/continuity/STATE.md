@@ -1,54 +1,51 @@
 # GrowthTwin — current handoff
 
-Last verified: 2026-10-17 14:43 +03:00 (Europe/Istanbul).
-Repository: https://github.com/ugurkbcgl-hub/growthtwin
+Updated: 2026-10-18, Europe/Istanbul.
 
 ## Objective
 
-Self-service paid advertising for Türkiye across industries: brief, creative,
-plan, authorized publishing and reporting. Current work prepares Google test
-account integration; live campaigns and real advertiser data remain gated.
+Self-service advertising for Türkiye across industries. Current slice is an
+isolated Google authorization flow, not live publishing or a beta launch.
 
-## Repository and checks
+## Repository
 
-- Base main: `1038a8e` (merged PR #280); post-merge CI `38956701478` passed.
-- Working branch: `feat/google-oauth-safety-foundation`. This snapshot precedes
-  its commit/PR; recheck live Git and CI before continuing.
-- Offline OAuth foundation added: fixed loopback callback constant, PKCE S256,
-  five-minute random state, owner/workspace/session binding and atomic one-time
-  consumption in a bounded single-process store. No HTTP route or transport yet.
-- Ten focused local synthetic tests passed; formatting/lint passed. Independent
-  review caught slashless callback logging leakage; filter and regression case
-  updated. Recheck final PR CI. No external API or existing database was touched.
-- Prior PR #279 delivered owner-scoped synthetic start/fail/retry/stop rehearsal;
-  this remains a fake adapter, not a live advertisement. Existing-database
-  migration/recovery status has not been changed or reverified.
+Base main `6dfabe1` (PR #281 merged; post-merge CI success verified).
+Current branch `feat/local-google-oauth-connection`; this snapshot precedes its
+commit/PR, so recheck live Git and CI. No existing database was modified.
 
-## Google setup observed October 17
+## Completed locally
 
-Dedicated test manager/child and Cloud project exist; child had zero campaigns.
-Google Ads API enabled, Cloud access Test. OAuth External/Testing, web client
-created, one owner test user saved and visibly verified. Redirect URIs still
-empty; no account grant or refresh token. Client credentials encrypted outside
-Git with Windows DPAPI and verified by the writer process; subsequent folder
-rename failed. Django credential access is unverified. Do not print secrets.
+- Status/start/callback/disconnect routes, disabled by default; explicit owner
+  and workspace, loopback-only, DEBUG off, CSRF on POST actions.
+- Existing state/PKCE boundary now connects to fixed Google token endpoints;
+  token storage uses Windows user-scoped DPAPI outside Git. Disconnect revokes
+  before deleting locally. No Ads API or publishing transport exists.
+- Real stored client could be decrypted/validated without revealing values.
+  Separate fabricated Windows encryption/write/read round-trip passed.
+- 31 focused synthetic tests and Ruff checks passed locally. Unit-test network
+  and storage were mocked. No real OAuth exchange/revocation was attempted.
+- Final delegated follow-ups were interrupted by agent credit errors; primary
+  agent reviewed the files and reran focused verification.
 
-Google's current guide sunsets developer tokens; use Cloud project access,
-not a new production manager/token application. See the updated
-[test integration checklist](../product/google-ads-test-account-readiness.md).
+## Google setup
 
-## Risks and boundaries
+October 17: test manager/child, Cloud Test API access, OAuth External/Testing
+web client and one owner test user verified. Redirect URI remains unregistered;
+no Google grant or refresh token verified. Developer tokens are no longer a
+prerequisite under current Google guidance. See
+[test connection readiness](../product/google-ads-test-account-readiness.md).
 
-No live account connection, publication, spend or real metrics. OAuth adwords
-scope is broad; enforce test targets separately. The new memory store is not
-multiworker-safe. Django log filtering does not cover upstream proxy logs or
-DEBUG pages. Legacy database provenance/recovery and participant usability
-observations remain unresolved. Do not inspect/modify legacy data without a
-defined authorized recovery plan.
+## Risks
+
+Single isolated Windows process only. No staging/proxy/multiworker activation.
+OAuth scope is broad; do not confuse stored authorization with verified test
+account routing. Credential IDs must not be reused for another synthetic
+owner/database. Proxy logging and production secret storage are not implemented.
+Legacy database provenance/recovery and real participant usability remain open.
+Real advertiser data, live campaigns and media spend remain behind release gates.
 
 ## Next action
 
-Implement the test-only Django start/callback routes and encrypted credential
-store boundary using the offline OAuth primitive, then verify locally before
-registering its exact redirect URI in Google. Enforce authenticated ownership,
-CSRF start, DEBUG off, sanitized callback responses/logs and no provider writes.
+Prepare an isolated synthetic local instance, review the new connection screen,
+then register its exact callback in Google and obtain an explicit account grant.
+Verify encrypted save before making a separately scoped test-account API read.

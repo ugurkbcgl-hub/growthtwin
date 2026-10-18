@@ -1,0 +1,13 @@
+"""Keep all connection responses private, including framework-level errors."""
+
+
+class LocalOAuthHeadersMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if request.path.startswith("/connections/google"):
+            response["Cache-Control"] = "no-store, private"
+            response["Referrer-Policy"] = "no-referrer"
+        return response

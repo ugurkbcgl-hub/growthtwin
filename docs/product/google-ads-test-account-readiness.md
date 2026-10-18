@@ -1,72 +1,79 @@
-# Google Ads test integration prerequisites
+# Google Ads local test connection
 
-Reviewed: 2026-10-17, Europe/Istanbul. Setup is partly complete; no API
-connection, publication or media spend has been verified.
+Updated: 2026-10-18, Europe/Istanbul.
 
-## Verified setup
+## Observed setup
 
-During the owner-authorized browser setup on October 17:
+On October 17 the owner-authorized Google setup created a test manager/child,
+a dedicated Cloud project with Test API access, an External/Testing OAuth web
+client and one test user. No campaign was created. Redirect URIs remain empty;
+no completed Google grant or Ads API read has been verified.
 
-- Dedicated test manager and child were created; the child overview showed
-  zero campaigns. Account identifiers are deliberately omitted here.
-- Dedicated Cloud project was created with owner-approved billing association;
-  Google Ads API was enabled and its access page displayed Test access.
-- OAuth branding is External / Testing. One web client exists and the owner's
-  signed-in account was added as the single test user.
-- Client credentials were saved outside Git with Windows user-scoped DPAPI;
-  encryption/decryption round-trip succeeded in the writer process. A later
-  folder rename failed with an access error. Runtime access from Django has
-  NOT been established; confirm store location/identity before loading.
-- Authorized redirect URIs and JavaScript origins remain empty. No OAuth grant,
-  refresh token, test-account API read or provider adapter has been verified.
+Client credentials are outside Git in the current Windows user's LocalAppData
+`GrowthTwinsecrets/google-ads-oauth-client.dpapi`. They use user-scoped DPAPI.
+The application's loader successfully decrypted/validated that client without
+printing values. A separate fabricated payload passed encrypted write/read.
+Do not relocate the file based on the previously attempted failed folder rename.
 
-These are dated setup observations, not proof that the application is connected.
-Do not record private IDs, email addresses or credential values in this repository.
+## Implemented local connection
 
-## Corrected API access prerequisite
+Routes are present but disabled by default:
 
-Google's current developer-token migration guide says developer tokens were
-sunset on September 9, 2026. Access is now attached to the Cloud project owning
-OAuth credentials. Do not create a production manager just to obtain a token.
-The previous checklist's developer-token prerequisite is superseded. Recheck
-Cloud access before calls; Test access does not authorize production targets.
+- `/connections/google/`: status and explicit start/disconnect forms.
+- `/connections/google/start/`: authenticated, CSRF-protected POST.
+- `/connections/google/callback/`: single-use state/PKCE validation, exchange
+  at Google's fixed token endpoint and encrypted refresh-token storage.
+- `/connections/google/disconnect/`: CSRF-protected POST; revoke before local
+  deletion. Failed revocation retains the encrypted file for recovery.
 
-## Implemented offline foundation
+The exact callback to register after local review is
+`http://127.0.0.1:8002/connections/google/callback/`.
+It has NOT yet been registered in Google.
 
-`growthtwin.modules.connections.google_oauth` prepares a fixed Google consent
-URL with PKCE S256 and a five-minute random state. An in-memory lock consumes
-an attempt once, bound to server-supplied owner, workspace and session values.
-There is one attempt per binding and a 100-entry cap; restart invalidates all
-attempts. It is only suitable for a single isolated local process.
+Runtime requires Windows, DEBUG false, host `127.0.0.1:8002`, loopback peer,
+no forwarded headers, and all of these explicit environment settings:
 
-Proposed local callback: `http://127.0.0.1:8002/connections/google/callback/`.
-This is a constant for future integration, NOT an installed Django route or a
-registered Google redirect URI. No network or credential operation is performed.
-The adwords OAuth scope is broad; it must not be described as read-only.
+- `GOOGLE_ADS_LOCAL_OAUTH_ENABLED=true`
+- `GOOGLE_ADS_LOCAL_OWNER_ID`: disposable authenticated local user's ID
+- `GOOGLE_ADS_LOCAL_WORKSPACE_ID`: workspace owned by that user
 
-Django console handlers now discard records mentioning this callback path,
-including slashless/encoded requests and exception records with this request
-path. This does not protect proxy/router logs, arbitrary application loggers,
-provider response bodies, or DEBUG exception pages.
+Use an isolated synthetic database and a single process without autoreload.
+Never enable on staging, behind a proxy, or with multiple workers. A restart
+invalidates pending five-minute challenges. Owner/workspace/session binding
+and atomic in-process consumption prevent normal replay and cross-session use.
+Credentials are bound to owner/workspace; do not repurpose those IDs or the
+synthetic database without disconnecting and removing authorization first.
 
-## Next implementation gate
+Google's adwords scope is broad, not read-only. This implementation has no Ads
+API transport or publishing operation and does not verify an ad account as a
+test target. Do not add Ads requests before verifying explicit test routing.
+OAuth client configuration alone cannot establish actual account authorization.
 
-1. Implement authenticated, CSRF-protected start and dedicated callback routes,
-   enforce workspace ownership and isolated loopback-only operation with DEBUG
-   disabled. Never redirect an unauthenticated callback to a secret-bearing
-   login `next` URL. Return clean status redirects with no-store/no-referrer.
-2. Establish a credential-store interface and verify encrypted runtime access,
-   token storage, sanitized failures and disconnect/revocation. Do not store
-   tokens or PKCE verifiers in plaintext Django sessions.
-3. Register the exact implemented redirect URI and request the owner's Google
-   account grant. Verify test-only customer routing before the first narrow
-   read; do not enumerate unrelated advertiser data.
-4. Verify test-account status through the API before a separately reviewed
-   paused synthetic campaign creation/stop rehearsal. Live serving, meaningful
-   metrics, real advertiser data and media spend remain separate release gates.
+No secrets are stored in sessions or returned to the browser. Google HTTP
+redirects are rejected and token/revocation endpoints are fixed. Provider
+errors are sanitized; failed storage attempts best-effort revocation. If that
+also fails, remove the app permission through the Google account before retry.
+A file's presence is only a local record, not proof the remote grant is valid.
 
-## Official references
+Django callback-bearing console records are discarded; all connection responses
+receive no-store and no-referrer. This does not protect proxy/router logs or
+arbitrary application logging. Do not turn DEBUG on for a live grant.
 
-- [Developer token migration](https://developers.google.com/google-ads/api/docs/api-policy/developer-token), checked 2026-10-17; main guide supersedes its stale summary box.
-- [Web-server OAuth](https://developers.google.com/identity/protocols/oauth2/web-server), checked 2026-10-17.
-- [Test accounts](https://developers.google.com/google-ads/api/docs/best-practices/test-accounts), earlier review 2026-10-16.
+## Verification and next step
+
+31 focused synthetic state, route and backend tests passed locally. Network and
+storage were mocked in unit tests; the separate Windows checks above verified
+only local encrypted storage. No real Google exchange/revocation was executed.
+
+Next: start an isolated local instance with a disposable owner/workspace,
+review the connection screen, then register the exact callback and obtain the
+owner's Google account grant. Confirm encrypted save before the first explicitly
+test-targeted read. Real advertising, media spend and beta launch remain gated.
+
+## Current official guidance
+
+Developer tokens were sunset; access is attached to the OAuth Cloud project.
+Do not create a production manager merely to request a developer token.
+
+- [Developer token migration](https://developers.google.com/google-ads/api/docs/api-policy/developer-token), checked October 17.
+- [Web-server OAuth](https://developers.google.com/identity/protocols/oauth2/web-server), checked October 17.
