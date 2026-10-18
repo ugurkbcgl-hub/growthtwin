@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "growthtwin.modules.connections.middleware.LocalOAuthHeadersMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -136,6 +137,12 @@ X_FRAME_OPTIONS = "DENY"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "demo:profile-edit"
 LOGOUT_REDIRECT_URL = "login"
+
+GOOGLE_ADS_LOCAL_OAUTH_ENABLED = (
+    os.environ.get("GOOGLE_ADS_LOCAL_OAUTH_ENABLED") == "true"
+)
+GOOGLE_ADS_LOCAL_OWNER_ID = os.environ.get("GOOGLE_ADS_LOCAL_OWNER_ID", "")
+GOOGLE_ADS_LOCAL_WORKSPACE_ID = os.environ.get("GOOGLE_ADS_LOCAL_WORKSPACE_ID", "")
 
 # Callback URLs may contain one-time codes. Apply before handler formatting;
 # reverse-proxy access logs still require separate controls before deployment.
