@@ -10,7 +10,7 @@ isolated Google authorization flow, not live publishing or a beta launch.
 ## Repository
 
 Base main `6dfabe1` (PR #281 merged; post-merge CI success verified).
-Current branch `feat/local-google-oauth-connection`; this snapshot precedes its
+PR #282 merged at `58293a3`. Current branch `fix/local-oauth-form-origin`; this snapshot precedes its
 commit/PR, so recheck live Git and CI. No existing database was modified.
 
 ## Completed locally
@@ -22,7 +22,7 @@ commit/PR, so recheck live Git and CI. No existing database was modified.
   before deleting locally. No Ads API or publishing transport exists.
 - Real stored client could be decrypted/validated without revealing values.
   Separate fabricated Windows encryption/write/read round-trip passed.
-- 31 focused synthetic tests and Ruff checks passed locally. Unit-test network
+- 32 focused synthetic tests and Ruff checks passed locally. Unit-test network
   and storage were mocked. No real OAuth exchange/revocation was attempted.
 - Final delegated follow-ups were interrupted by agent credit errors; primary
   agent reviewed the files and reran focused verification.
@@ -30,7 +30,7 @@ commit/PR, so recheck live Git and CI. No existing database was modified.
 ## Google setup
 
 October 17: test manager/child, Cloud Test API access, OAuth External/Testing
-web client and one owner test user verified. Redirect URI remains unregistered;
+web client and one owner test user verified. Redirect URI was registered and Google confirmed the save;
 no Google grant or refresh token verified. Developer tokens are no longer a
 prerequisite under current Google guidance. See
 [test connection readiness](../product/google-ads-test-account-readiness.md).

@@ -6,7 +6,7 @@ Updated: 2026-10-18, Europe/Istanbul.
 
 On October 17 the owner-authorized Google setup created a test manager/child,
 a dedicated Cloud project with Test API access, an External/Testing OAuth web
-client and one test user. No campaign was created. Redirect URIs remain empty;
+client and one test user. No campaign was created. The exact loopback callback was saved in Google on October 18;
 no completed Google grant or Ads API read has been verified.
 
 Client credentials are outside Git in the current Windows user's LocalAppData
@@ -28,7 +28,7 @@ Routes are present but disabled by default:
 
 The exact callback to register after local review is
 `http://127.0.0.1:8002/connections/google/callback/`.
-It has NOT yet been registered in Google.
+Google confirmed the redirect registration with “OAuth client saved”.
 
 Runtime requires Windows, DEBUG false, host `127.0.0.1:8002`, loopback peer,
 no forwarded headers, and all of these explicit environment settings:
@@ -56,16 +56,18 @@ also fails, remove the app permission through the Google account before retry.
 A file's presence is only a local record, not proof the remote grant is valid.
 
 Django callback-bearing console records are discarded; all connection responses
-receive no-store and no-referrer. This does not protect proxy/router logs or
+receive no-store; the form uses same-origin referrers so CSRF Origin checks work, while callbacks use no-referrer. This does not protect proxy/router logs or
 arbitrary application logging. Do not turn DEBUG on for a live grant.
 
 ## Verification and next step
 
-31 focused synthetic state, route and backend tests passed locally. Network and
+32 focused synthetic state, route and backend tests passed locally. Network and
 storage were mocked in unit tests; the separate Windows checks above verified
 only local encrypted storage. No real Google exchange/revocation was executed.
 
-Next: start an isolated local instance with a disposable owner/workspace,
+An isolated synthetic instance and disposable owner were opened on October 18. A real browser found Origin null caused by no-referrer on the form; the form policy was corrected without weakening CSRF, and Google account selection was reached. Phone identity verification is pending; no account grant completed.
+
+Next: finish the owner identity verification and inspect the Google consent screen;
 review the connection screen, then register the exact callback and obtain the
 owner's Google account grant. Confirm encrypted save before the first explicitly
 test-targeted read. Real advertising, media spend and beta launch remain gated.
