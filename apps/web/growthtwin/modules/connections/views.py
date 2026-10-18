@@ -82,6 +82,18 @@ def local_owner_only(method):
 def status(request, binding):
     saved = backend.connection_exists(binding)
     message = request.session.pop("google_local_result", "")
+    diagnosis = request.session.get("google_local_diagnostic", "")
+    diagnoses = {
+        "state": "Bağlantı denemesi süresi dolmuş, oturum değişmiş veya Google izin dönüşü geçersiz. Yeni deneme gerekir.",
+        "network": "Google izin sunucusuna erişilemedi.",
+        "google_rejected": "Google izin değişimini reddetti.",
+        "invalid_client": "Google uygulama kimliğini veya anahtarını kabul etmedi.",
+        "invalid_grant": "Google geçici yetki kodunu kabul etmedi.",
+        "token_shape": "Google yanıtında beklenen izin veya yenileme bilgisi bulunamadı.",
+        "storage": "Google yanıtı alındı ancak şifreli kayıt tamamlanamadı.",
+        "unavailable": "Yerel bağlantı yapılandırması veya anahtar erişimi kontrol edilmeli.",
+        "unexpected": "Yerel bağlantı işlenirken beklenmeyen bir hata oluştu.",
+    }
     # Session values never contain provider responses, codes or credentials.
     messages = {
         "saved": "Yetkilendirme şifreli olarak kaydedildi.",
@@ -110,7 +122,7 @@ def status(request, binding):
             "Yetkilendirme kaydı mevcut. Yeniden bağlanmadan önce kaldırın."
             if saved
             else "Yetkilendirme kaydı yok.",
-            messages.get(message, ""),
+            messages.get(message, "") + " " + diagnoses.get(diagnosis, ""),
             get_token(request),
             get_token(request),
         )
@@ -121,6 +133,7 @@ def status(request, binding):
 @csrf_protect
 @sensitive_variables()
 def start(request, binding):
+    request.session.pop("google_local_diagnostic", None)
     try:
         if backend.connection_exists(binding):
             request.session["google_local_result"] = "exists"
@@ -143,10 +156,18 @@ def callback(request, binding):
         )
         backend.exchange_and_store(authorization_code, binding)
         request.session["google_local_result"] = "saved"
+        request.session.pop("google_local_diagnostic", None)
+    except AuthorizationRejected:
+        request.session["google_local_result"] = "failed"
+        request.session["google_local_diagnostic"] = "state"
+    except backend.ConnectionUnavailable as error:
+        request.session["google_local_result"] = "failed"
+        request.session["google_local_diagnostic"] = error.reason
     except Exception:
         # Always remove callback parameters from the browser, even for an
         # unexpected local storage/transport failure. No exception is echoed.
         request.session["google_local_result"] = "failed"
+        request.session["google_local_diagnostic"] = "unexpected"
     return HttpResponseRedirect(STATUS_PATH)
 
 
