@@ -237,3 +237,6 @@ Workspace Google TEST dispatch verified (2026-10-19): selected synthetic creativ
 
 
 Live Google Search readiness audited (2026-10-19): [the current gate list](docs/product/google-search-live-readiness.md) separates TEST evidence from production account/consent, destination, spend caps, privacy and recovery. A local signed owner-only validateOnly control now verifies a separate CUSTOM_PERIOD/totalAmountMicros candidate; Google TEST accepted the 5,000 TRY synthetic example without creating resources or modifying the daily-budget ledger. 79 focused tests passed. Next verify a new durable PAUSED TEST total-budget resource, retaining old daily read/stop. Live serving/spend remain closed; see ADR-0025.
+
+
+Total-budget TEST dispatch verified (2026-10-19): new profile v2 creates non-shared CUSTOM_PERIOD budgets with exact totalAmountMicros; stored v1 DAILY ledgers retain read/stop and cannot be converted/reset. Browser created a new synthetic draft, sent 5,000 TRY total PAUSED, reconciled repeat create and confirmed stop; old daily stop also passed. 82 focused tests passed. No serving/spend or production cap exhaustion evidence; see ADR-0026. Next inspect current Cloud API/OAuth production-access gates read-only before planning any upgrade or real account flow.

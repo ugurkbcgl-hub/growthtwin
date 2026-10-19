@@ -90,7 +90,7 @@ class TotalBudgetTests(TransactionTestCase):
         self.assertEqual(sum("mutateOperations" in p for p in self.calls), 1)
         self.assertEqual(GoogleDraftDispatch.objects.count(), 0)
 
-    def test_existing_daily_ledger_untouched(self):
+    def test_existing_dispatch_ledger_untouched(self):
         self.prepare()
         self.perform()
         row = GoogleDraftDispatch.objects.get()

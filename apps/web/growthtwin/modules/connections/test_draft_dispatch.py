@@ -128,7 +128,10 @@ class DraftDispatchTests(TransactionTestCase):
                     "campaignBudget": {
                         "resourceName": "customers/1111111111/campaignBudgets/456",
                         "name": draft_dispatch._name(row),
-                        "amountMicros": stored["test_profile"]["daily_micros"],
+                        "period": draft_dispatch.budget_spec(stored["test_profile"])[0],
+                        draft_dispatch.budget_spec(stored["test_profile"])[
+                            1
+                        ]: draft_dispatch.budget_spec(stored["test_profile"])[2],
                     },
                 }
             ]
@@ -154,6 +157,12 @@ class DraftDispatchTests(TransactionTestCase):
         ]
         self.assertEqual(len(creates), 1)
         operations = creates[0]["mutateOperations"]
+        budget = operations[0]["campaignBudgetOperation"]["create"]
+        self.assertEqual(budget["period"], "CUSTOM_PERIOD")
+        self.assertEqual(
+            budget["totalAmountMicros"], str(self.draft.media_budget_minor * 10000)
+        )
+        self.assertNotIn("amountMicros", budget)
         self.assertFalse(creates[0]["partialFailure"])
         for item in operations:
             value = next(iter(item.values()))["create"]
@@ -318,3 +327,65 @@ class DraftDispatchTests(TransactionTestCase):
                 for p in self.calls
             )
         )
+
+    def test_legacy_daily_ledger_read_stop_and_no_conversion(self):
+        self.prepare()
+        from uuid import uuid4
+
+        legacy = draft_dispatch.profile(self.package)
+        legacy.update(version="workspace-paused-test-v1", daily_micros="333330000")
+        legacy.pop("period")
+        legacy.pop("total_micros")
+        row = GoogleDraftDispatch.objects.create(
+            draft=self.draft,
+            approval=GoogleDraftApproval.objects.get(),
+            operation_id=uuid4(),
+            configuration_key="target-key",
+            payload_json=json.dumps(
+                {
+                    "package": json.loads(self.package.payload_json),
+                    "test_profile": legacy,
+                    "geo_resource": "geoTargetConstants/123",
+                }
+            ),
+        )
+        original = row.payload_json
+        self.assertEqual(self.perform("read").state, "paused")
+        with self.assertRaises(ValidationError):
+            self.perform("create")
+        self.assertEqual(self.perform("stop").state, "stopped")
+        row.refresh_from_db()
+        self.assertEqual(row.payload_json, original)
+        response = self.client.get(
+            "/connections/google/draft-review/",
+            {"draft": self.draft.pk},
+            HTTP_HOST="127.0.0.1:8002",
+        )
+        self.assertContains(response, "günlük ortalama")
+        self.assertContains(response, 'value="create" disabled')
+        self.assertFalse(
+            any(
+                "mutateOperations" in p
+                and "campaignBudgetOperation" in p["mutateOperations"][0]
+                for p in self.calls
+            )
+        )
+
+    def test_wrong_total_period_or_amount_never_reports_verified(self):
+        self.prepare()
+        self.perform()
+        original = self.remote
+        for field, value in (("period", "DAILY"), ("totalAmountMicros", "9990000")):
+
+            def drift(binding, operation, payload):
+                result = original(binding, operation, payload)
+                if "FROM campaign WHERE" in payload.get("query", ""):
+                    result["results"][0]["campaignBudget"][field] = value
+                return result
+
+            self.remote_mock.side_effect = drift
+            self.assertEqual(self.perform("read").state, "uncertain")
+
+    def test_unknown_budget_version_fails_closed(self):
+        with self.assertRaises(ValidationError):
+            draft_dispatch.budget_spec({"version": "unknown"})

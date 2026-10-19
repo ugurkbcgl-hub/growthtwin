@@ -111,28 +111,49 @@ def review(request, binding):
             salt=SALT + "-dispatch",
         )
         row = GoogleDraftDispatch.objects.filter(draft=draft).first()
+        stored_note = "Henüz gönderim kaydı yok."
+        legacy = False
+        if row:
+            stored_profile = json.loads(row.payload_json)["test_profile"]
+            stored_period, _, stored_amount, _ = draft_dispatch.budget_spec(
+                stored_profile
+            )
+            legacy = stored_period == "DAILY"
+            stored_note = format_html(
+                "Kayıtlı test bütçesi: {} TRY / {}. {}",
+                Decimal(stored_amount) / 1000000,
+                "günlük ortalama" if legacy else "kampanya toplamı",
+                "Bu günlük kayıt korunur. Toplam bütçeli test için çalışma alanından yeni sentetik taslak oluşturun."
+                if legacy
+                else "Tekrar gönderme yeni bir test oluşturmaz.",
+            )
+        create_button = format_html(
+            '<button name="action" value="create" {}>Onaylı sürümü toplam bütçeli test hesabına gönder</button>',
+            "disabled" if legacy else "",
+        )
         dispatch_form = (
             format_html(
-                "<h2>Duraklatılmış test gönderimi</h2><p>Özgün adres: {}. TEST adresi açıkça {} olarak değişir; bu bir reklamveren sayfası veya doğrulanmış hizmet değildir.</p>"
-                "<p>Günlük sanal bütçe: {} TRY. Başlangıç: {} 00:00:00; bitiş dahil: {} 23:59:59 (Türkiye saat dilimi, hesapta doğrulanır). Ankara / Türkiye şehir kaydı Google’dan tekil ve etkin olarak doğrulanır; konum seçimi PRESENCE.</p>"
-                "<p>Günlük bütçe toplam planın gün sayısına (iki uç dahil) bölünüp kuruşa aşağı yuvarlanmasıdır; toplam harcama garantisi değildir. "
+                "<h2>Toplam bütçeli duraklatılmış test</h2><p>Özgün adres: {}. TEST adresi açıkça {} olarak değişir; bu bir reklamveren sayfası veya doğrulanmış hizmet değildir.</p>"
+                "<p>Yeni test için toplam sanal bütçe: {} TRY. Başlangıç: {} 00:00:00; bitiş dahil: {} 23:59:59 (Türkiye saat dilimi, hesapta doğrulanır). Ankara / Türkiye şehir kaydı Google’dan tekil ve etkin olarak doğrulanır; konum seçimi PRESENCE.</p>"
+                "<p>Yeni test paylaşılmayan CUSTOM_PERIOD toplam bütçesi kullanır; günlük bütçeye otomatik geçilmez. Bu test gerçek harcama veya hesap genelindeki sınırların kanıtı değildir. "
                 "Anahtar kelime yalnızca “growthtwin synthetic test” / EXACT. Tüm reklam kaynakları PAUSED oluşturulur. Canlı yayın ve medya harcaması yoktur.</p>"
-                '<p>Gönderim durumu: {}</p><form method="post" action="/connections/google/draft-dispatch/">'
+                '<p>{}</p><p>Gönderim durumu: {}</p><form method="post" action="/connections/google/draft-dispatch/">'
                 '<input type="hidden" name="csrfmiddlewaretoken" value="{}"><input type="hidden" name="draft" value="{}">'
                 '<input type="hidden" name="review" value="{}">'
-                '<label><input type="checkbox" name="confirm" value="yes"> Yukarıdaki adres ve test ayarlarıyla, onaylı sürümü Google TEST hesabına duraklatılmış göndermeyi onaylıyorum.</label>'
-                '<button name="action" value="create">Onaylı sürümü test hesabına gönder</button>'
+                '<label><input type="checkbox" name="confirm" value="yes"> Yukarıdaki adres, kesin toplam bütçe ve tarihlerle onaylı sürümü yalnız Google TEST hesabına duraklatılmış göndermeyi onaylıyorum.</label>{}'
                 '<button name="action" value="read">Gönderilen testi kontrol et</button>'
                 '<button name="action" value="stop">Testi durdur ve doğrula</button></form>',
                 plan["original_url"],
                 plan["test_url"],
-                Decimal(plan["daily_micros"]) / 1000000,
+                Decimal(plan["total_micros"]) / 1000000,
                 plan["start"],
                 plan["end"],
+                stored_note,
                 row.state if row else "Henüz gönderilmedi",
                 get_token(request),
                 draft.pk,
                 dispatch_token,
+                create_button,
             )
             if approved
             else ""
@@ -156,7 +177,7 @@ def review(request, binding):
             budget_form = format_html(
                 "<h2>Toplam bütçe için gönderimsiz test</h2><p>Kampanya toplamı: {} TRY. {} 00:00:00 – {} 23:59:59, Türkiye saat dilimi.</p>"
                 "<p>Bu kontrol, yukarıdaki örnek adres, konum ve reklam metniyle yalnızca Google TEST hesabında istek doğrulaması yapar. "
-                "Reklam oluşturmaz, mevcut günlük bütçeli testi değiştirmez ve ona toplam harcama sınırı uygulamaz. "
+                "Reklam oluşturmaz ve mevcut testlerin bütçe ayarlarını değiştirmez. "
                 "Başarılı sonuç gerçek yayın veya harcama izni değildir.</p>"
                 '<form method="post" action="/connections/google/total-budget-validate/">'
                 '<input type="hidden" name="csrfmiddlewaretoken" value="{}"><input type="hidden" name="draft" value="{}">'
@@ -273,13 +294,20 @@ def dispatch(request, binding):
             }:
                 raise ValidationError("Gönderim onayı güncel değil.")
         row = draft_dispatch.perform(binding, draft.pk, action, consent_key)
+        stored_profile = json.loads(row.payload_json)["test_profile"]
+        period, _, amount, _ = draft_dispatch.budget_spec(stored_profile)
         return HttpResponse(
             format_html(
-                '<p>Test gönderimi: {}. {}</p><a href="/connections/google/draft-review/?draft={}">İncelemeye dön</a>',
+                "<h1>Google test gönderimi</h1><p>Test gönderimi: {}. {}</p><p>Kayıtlı bütçe: {} TRY / {}. Dönem: {} – {}.</p>"
+                '<p>Sonuç yalnız TEST hesabı içindir; gerçek reklam yayını ve harcama yoktur.</p><a href="/connections/google/draft-review/?draft={}">İncelemeye dön</a>',
                 row.state,
                 "Sonuç belirsiz; tekrar oluşturulmaz. Kontrol et veya durdur."
                 if row.state == "uncertain"
-                else "Google durumu PAUSED olarak doğrulandı.",
+                else "Google durumu PAUSED, bütçe türü/tutarı ve tarihler doğrulandı.",
+                Decimal(amount) / 1000000,
+                period,
+                stored_profile["start"],
+                stored_profile["end"],
                 draft.pk,
             ),
             status=409 if row.state == "uncertain" else 200,

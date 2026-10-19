@@ -96,3 +96,8 @@ Migration 0008 was applied only to the preserved isolated synthetic DB. Each dra
 ## Total budget candidate validation — 2026-10-19
 
 ADR-0025 adds a separate signed local POST that constructs a CUSTOM_PERIOD / exact totalAmountMicros candidate and sends validateOnly=true only to the verified TEST child. Browser accepted the 5,000 TRY example; no Google resources or ledger rows were created/changed. The existing daily-budget test is unchanged and does not acquire a total cap. 79 focused tests passed. No daily fallback or live enable path exists. Next is a NEW durable PAUSED TEST total-budget profile, followed by the remaining [live-readiness gates](google-search-live-readiness.md).
+
+
+## Total-budget PAUSED TEST resource — 2026-10-19
+
+ADR-0026 extends new dispatch to v2 CUSTOM_PERIOD/exact totalAmountMicros. Google TEST created the new isolated synthetic draft 2 at 5,000 TRY (October 20–November 3), exact readback passed, repeat create reconciled the same record and stop confirmed PAUSED. Old draft 1 retained DAILY/333.33 TRY/November 1–15 and its read/stop also passed. No ledger conversion/reset or daily fallback exists; unknown versions/period/amount drift fail closed. 82 focused tests passed. This verifies configuration, not actual total-cap exhaustion or live spend controls. Existing validation-only endpoint stays non-creating.

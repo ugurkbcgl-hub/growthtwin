@@ -44,7 +44,7 @@ def operations(customer, candidate):
     stored = json.loads(candidate.payload_json)
     result = draft_dispatch._operations(customer, candidate)
     budget = result[0]["campaignBudgetOperation"]["create"]
-    budget.pop("amountMicros")
+    budget.pop("amountMicros", None)
     budget["period"] = "CUSTOM_PERIOD"
     budget["totalAmountMicros"] = stored["total_budget"]["total_micros"]
     budget["explicitlyShared"] = False
