@@ -79,3 +79,8 @@ platform payload and explicit dispatch consent before broadening this fixed test
 - https://developers.google.com/google-ads/api/samples/add-campaigns (checked October 19)
 - https://developers.google.com/google-ads/api/docs/api-policy/developer-token (checked October 17; Cloud-based access supersedes tokens)
 - https://developers.google.com/identity/protocols/oauth2/web-server (checked October 17)
+
+
+## Workspace review preparation — 2026-10-19
+
+ADR-0023 adds an owner-only local review package from the selected workspace creative and plan. Canonical JSON and a source/target-bound signed review prevent silent changes; POST approval stores an immutable snapshot. 62 focused tests passed and the synthetic browser approval succeeded without any Google call. Existing fixed-test dispatch is unchanged. Migration 0007 applied only to the preserved synthetic review DB. Destination example.invalid remains exact and unverified; future dispatch must explicitly resolve destination, budget/date/targeting semantics and revalidate current approval before a new durable Google operation.

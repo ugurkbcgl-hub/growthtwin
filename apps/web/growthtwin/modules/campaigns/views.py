@@ -3,8 +3,10 @@
 from datetime import timedelta
 from decimal import Decimal
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.db.models.deletion import ProtectedError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -198,6 +200,15 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             "creative_is_stale": creative_is_stale,
             "creative_version_count": len(versions),
             "download_variant": preferred_current_variant(draft),
+            "google_test_review_enabled": (
+                getattr(settings, "GOOGLE_ADS_LOCAL_OAUTH_ENABLED", False)
+                and not settings.DEBUG
+                and str(request.user.pk)
+                == str(getattr(settings, "GOOGLE_ADS_LOCAL_OWNER_ID", ""))
+                and str(draft.workspace_id)
+                == str(getattr(settings, "GOOGLE_ADS_LOCAL_WORKSPACE_ID", ""))
+                and request.get_host() == "127.0.0.1:8002"
+            ),
             "download_stale": request.GET.get("download") == "stale",
             "rehearsal": rehearsal_context(draft),
             "rehearsal_notice": (
@@ -485,5 +496,11 @@ def campaign_delete(request, draft_id):
     )
     if request.POST.get("confirm_delete") != "on":
         return redirect("campaigns:detail", draft_id=draft.pk)
-    draft.delete()
+    try:
+        draft.delete()
+    except ProtectedError:
+        return HttpResponse(
+            "Bu taslağın kayıtlı Google test onayı var. İşlem geçmişini korumak için silinmedi.",
+            status=409,
+        )
     return redirect("campaigns:list")

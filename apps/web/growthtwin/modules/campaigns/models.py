@@ -137,3 +137,25 @@ class GoogleTestCampaign(models.Model):
     resource_name = models.CharField(max_length=120, blank=True)
     observed_status = models.CharField(max_length=16, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class GoogleDraftApproval(models.Model):
+    """Append-only snapshot approval; grants only later paused TEST dispatch."""
+
+    draft = models.ForeignKey(
+        WorkspaceCampaignDraft,
+        on_delete=models.PROTECT,
+        related_name="google_test_approvals",
+    )
+    fingerprint = models.CharField(max_length=64)
+    target_key = models.CharField(max_length=64)
+    payload_json = models.TextField()
+    approved_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=("draft", "fingerprint", "target_key"),
+                name="unique_google_draft_approval",
+            )
+        ]
