@@ -79,3 +79,8 @@ Do not create a production manager merely to request a developer token.
 
 - [Developer token migration](https://developers.google.com/google-ads/api/docs/api-policy/developer-token), checked October 17.
 - [Web-server OAuth](https://developers.google.com/identity/protocols/oauth2/web-server), checked October 17.
+
+
+## Verified authorization milestone — 2026-10-19
+
+The owner completed identity verification and explicitly approved the displayed broad Ads scope. The live local callback exchanged the code and displayed encrypted save success and record present. This supersedes earlier statements above that a grant was pending. The fixed redirect is registered. The writer's executable-resolution failure was reproduced in the browser-launched environment and corrected; synthetic encrypted write/read then passed there. 35 focused tests passed. No Ads API account read or publication occurred. Preserve the current isolated database and owner/workspace IDs for the stored credential; do not recreate them under another identity. Next verify the explicit test customer's test_account flag using a read-only operation before any further account work.
