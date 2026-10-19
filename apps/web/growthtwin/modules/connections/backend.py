@@ -10,6 +10,7 @@ import os
 import subprocess
 import threading
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
@@ -22,7 +23,22 @@ _LOCK = threading.Lock()
 
 
 class ConnectionUnavailable(Exception):
-    pass
+    def __init__(self, message="Connection unavailable.", *, reason="unavailable"):
+        super().__init__(message)
+        self.reason = (
+            reason
+            if reason
+            in {
+                "unavailable",
+                "network",
+                "google_rejected",
+                "invalid_client",
+                "invalid_grant",
+                "token_shape",
+                "storage",
+            }
+            else "unavailable"
+        )
 
 
 class _NoRedirect(HTTPRedirectHandler):
@@ -66,6 +82,7 @@ def _powershell(script, payload):
     # PowerShell 7 callers can supply a module search path that omits Windows
     # PowerShell built-ins; import the inbox security module explicitly.
     script = (
+        "$env:PATHEXT='.COM;.EXE;.BAT;.CMD'\n"
         "Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Security/Microsoft.PowerShell.Security.psd1') -ErrorAction Stop\n"
         + script
     )
@@ -189,6 +206,26 @@ def _post(endpoint, fields):
             if len(body) > 65536 or response.status != 200:
                 raise ValueError
             return body
+    except HTTPError as error:
+        reason = "google_rejected"
+        try:
+            payload = json.loads(error.read(4096))
+            if isinstance(payload, dict) and payload.get("error") in {
+                "invalid_client",
+                "invalid_grant",
+            }:
+                reason = payload["error"]
+        except Exception:
+            pass
+        finally:
+            error.close()
+        raise ConnectionUnavailable(
+            "Google rejected authorization.", reason=reason
+        ) from None
+    except (URLError, TimeoutError):
+        raise ConnectionUnavailable(
+            "Google could not be reached.", reason="network"
+        ) from None
     except Exception:
         raise ConnectionUnavailable(
             "Google authorization could not be completed."
@@ -211,6 +248,7 @@ def exchange_and_store(authorization_code, binding):
             )
         client = _client()
         token = None
+        stage = "token_shape"
         try:
             token = json.loads(
                 _post(
@@ -235,8 +273,14 @@ def exchange_and_store(authorization_code, binding):
                 or set(token.get("scope", "").split()) != {ADS_SCOPE}
             ):
                 raise ValueError
+            stage = "storage"
             _write(path, {"refresh_token": token["refresh_token"], "scope": ADS_SCOPE})
-        except Exception:
+        except Exception as error:
+            reason = (
+                error.reason
+                if isinstance(error, ConnectionUnavailable) and stage != "storage"
+                else stage
+            )
             if isinstance(token, dict) and isinstance(token.get("access_token"), str):
                 try:
                     _post(
@@ -246,7 +290,8 @@ def exchange_and_store(authorization_code, binding):
                 except ConnectionUnavailable:
                     pass
             raise ConnectionUnavailable(
-                "Authorization was not saved. Check Google account permissions before retrying."
+                "Authorization was not saved. Check Google account permissions before retrying.",
+                reason=reason,
             ) from None
 
 
