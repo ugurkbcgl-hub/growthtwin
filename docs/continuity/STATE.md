@@ -15,7 +15,9 @@ after required CI 39290073430 passed. Previous main 4d3d94f CI 39290018147 passe
 current main CI 39290944848 is in progress. PR #294 now targets main, rebased
 head 93649e6, CI 39290998289 in progress. PR #295 rebased onto #294, head
 66eb69c, CI 39291003701 in progress. Current branch feat/lifecycle-ticket-issuance
-builds on #295, implementation head 69e5fd1. This snapshot precedes its own PR.
+PR #296 targets #295's branch feat/lifecycle-observation-reducer; implementation
+head 69e5fd1, initial published head 85c494e, CI 39291152837 queued. This snapshot
+precedes its own follow-up commit.
 Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
