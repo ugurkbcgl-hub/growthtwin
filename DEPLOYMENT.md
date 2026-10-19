@@ -30,19 +30,19 @@ Do not copy production data into development or staging. Promotion must never ca
 
 - App: `growthtwin-stage-270927` at `https://growthtwin-stage-270927-9d8c14f4e775.herokuapp.com/`.
 - Last dashboard observation recorded at 2026-09-27 20:06 Europe/Istanbul: one Basic web dyno (~USD 0.010/hour) and one Essential-0 PostgreSQL add-on (~USD 0.007/hour); dashboard estimate about USD 12/month.
-- The authenticated Heroku CLI was rechecked on 2026-10-03: release v16 was deployed from commit `8e29944e024554098bd1c0a90e4b7b799362370a` and succeeded. This was the CI-passing `main` commit at deployment time; a later documentation-only commit may be ahead. The previous dashboard estimate was about USD 12/month for one Basic dyno, Essential-0 Postgres, and Standard Free Scheduler, not an invoice; tax and Scheduler one-off dyno charges remain unverified.
+- The authenticated Heroku CLI was rechecked on 2026-10-03: release v16 was deployed from commit `8e29944e024554098bd1c0a90e4b7b799362370a` and succeeded. This was the CI-passing `main` commit at deployment time; later application changes are not proven deployed by this historical record. The previous dashboard estimate was about USD 12/month for one Basic dyno, Essential-0 Postgres, and Standard Free Scheduler, not an invoice; tax and Scheduler one-off dyno charges remain unverified.
 - A direct request to `/health/` on 2026-10-03 returned HTTP 200 and `{"status":"ok","version":"8e29944e024554098bd1c0a90e4b7b799362370a"}`. This confirms the deployed code revision.
 - Both `runtime-dyno-metadata` and `runtime-dyno-build-metadata` are enabled. Config-var values were never revealed; names that would conflict with Heroku's documented metadata variables were absent before enabling the base Lab. Release v16's release command reported no migrations to apply. No new resource was added.
-- The synthetic profile-edit E2E passed on 2026-09-30 against v14 (`69476a62`). No rerun has been made since then. Backup/restore and rollback are also unverified.
+- Synthetic profile E2E passed on v14 (September 30) and v15/v16 (October 3). Rollback v16 to v15 and back created v17/v18 with matching health revisions and no migrations; v15/v16 have identical application code. Data-bearing configured/Heroku recovery and rollback across code/schema changes remain unverified. This is historical profile evidence, not current campaign E2E.
 - Keep only synthetic values in the staging app and its database. Do not expose or copy config-var secrets. No extra paid dyno or service is approved for account provisioning.
 
 ## Current readiness review (2026-10-03)
 
-- A GET to the approved staging `/health/` endpoint on 2026-10-03 after release v16 returned HTTP 200 and a revision matching current `main` (`8e29944e024554098bd1c0a90e4b7b799362370a`). Runtime revision alignment is verified for this release.
+- A GET to the approved staging `/health/` endpoint on 2026-10-03 after release v16 returned HTTP 200 and a revision matching the then-deployed `main` (`8e29944e024554098bd1c0a90e4b7b799362370a`). Runtime revision alignment is verified for this release.
 - PR #206 prefers `HEROKU_BUILD_COMMIT` and falls back to deprecated `HEROKU_SLUG_COMMIT`. Heroku's [Dyno Metadata documentation](https://devcenter.heroku.com/articles/dyno-metadata) requires the base `runtime-dyno-metadata` Lab for dyno metadata variables and the additional `runtime-dyno-build-metadata` Lab for `HEROKU_BUILD_COMMIT`. Both are enabled, and v16 was deployed after both flags were enabled.
-- The pinned staging profile-edit E2E passed on 2026-09-30 against v14 with a disposable synthetic account. No rerun has been performed since.
+- The disposable synthetic profile E2E passed on v14 (September 30) and v15/v16 during the October 3 same-code rollback. Current campaign code has not been verified on staging by this record.
 - The older dashboard estimate was about USD 12 for one Basic dyno, one Essential-0 Postgres, and Standard Free Scheduler. This is not an invoice; taxes and Scheduler one-off dyno charges remain unverified. No resource was added.
-- Backup/restore and rollback remain unverified. Do not restore over the only database or add a separate resource as part of this review.
+- Configured/Heroku data recovery and rollback across application/schema changes remain unverified; the historical same-code rollback alone passed. Do not restore over the only database or add a separate resource as part of this review.
 - See the [Phase 0 staging verification sequence](docs/phase-0-staging-verification.md) for prerequisites, safe stop points, and pass evidence.
 
 ## Rollout gates

@@ -6,6 +6,11 @@ from . import draft_review, views
 
 urlpatterns = [
     path(
+        "total-budget-validate/",
+        draft_review.validate_total_budget,
+        name="google-local-total-budget-validate",
+    ),
+    path(
         "draft-status/", draft_review.dispatch_status, name="google-local-draft-status"
     ),
     path("draft-dispatch/", draft_review.dispatch, name="google-local-draft-dispatch"),

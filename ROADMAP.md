@@ -234,3 +234,6 @@ Local Google workspace preparation (2026-10-19): selected creative and plan can 
 
 
 Workspace Google TEST dispatch verified (2026-10-19): selected synthetic creative now creates a separate durable PAUSED campaign from its immutable approval. The second consent explicitly shows example.com test URL override, inclusive daily TRY budget, account-local date-times and Ankara/PRESENCE mapping. Browser create/read/stop passed; 71 focused tests passed. One intent per draft prevents re-creation after timeout/restart; independent read/stop survives source changes. Live serving/spend remain gated. See ADR-0024.
+
+
+Live Google Search readiness audited (2026-10-19): [the current gate list](docs/product/google-search-live-readiness.md) separates TEST evidence from production account/consent, destination, spend caps, privacy and recovery. A local signed owner-only validateOnly control now verifies a separate CUSTOM_PERIOD/totalAmountMicros candidate; Google TEST accepted the 5,000 TRY synthetic example without creating resources or modifying the daily-budget ledger. 79 focused tests passed. Next verify a new durable PAUSED TEST total-budget resource, retaining old daily read/stop. Live serving/spend remain closed; see ADR-0025.

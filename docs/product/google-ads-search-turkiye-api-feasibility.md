@@ -1,5 +1,7 @@
 # Google Ads Search in Türkiye: API feasibility
 
+**Historical research notice — 2026-10-19:** The September 29 token/setup and no-account statements below are a dated snapshot, not current instructions. Local TEST OAuth/create/read/stop is verified under ADR-0022–0024. Current Google guidance uses Cloud project access levels; production access/account eligibility has not been verified. Follow [live readiness](google-search-live-readiness.md) and its dated official sources; do not request a developer token solely from this historical note.
+
 **Reviewed:** 2026-09-29 (Europe/Istanbul)
 **Scope:** official-source desk research for the synthetic Google Search campaign candidate. This is not legal advice, an account eligibility decision, API approval, a forecast, or authorization to connect or publish.
 

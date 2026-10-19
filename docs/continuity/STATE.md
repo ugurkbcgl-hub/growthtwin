@@ -1,49 +1,47 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 13:29 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 13:46 Europe/Istanbul (+03:00).
 
 ## Objective
 
 Türkiye self-service advertising across industries. Local synthetic Google
-workspace draft → approval → PAUSED TEST create/read/stop now works. Live
-advertiser data, production serving and media spend remain gated.
+workspace draft approval and PAUSED TEST create/read/stop work. Live advertiser
+data, production serving and media spend remain gated.
 
 ## Repository
 
-Base main 0266140 (PR #286 merged). Current branch
-feat/workspace-google-test-dispatch; PR #287, implementation head 4f9d441.
-Latest required CI run 39237571332 reached browser E2E after prior checks passed. This documentation-only
-snapshot precedes its own commit; recheck latest head/checks and merge state live.
-Owner standing authorization permits merging reviewed green PRs.
+Base main bfc7397 (PR #287 merged); its required CI 39237793375 and main CI
+39238090433 passed. Current branch feat/google-total-budget-validation, PR #288; implementation
+head 0174b69. This follow-up adds sanitized malformed-object handling and
+records the PR. Recheck latest Git/head/checks/merge state live before work.
+Reviewed green PRs may be merged under standing owner authorization.
 
-## Verified result
+## Current verified result
 
-- Existing encrypted OAuth grant reused; no new authorization or secrets entered.
-- A second signed, explicit TEST consent shows original versus example.com URL,
-  inclusive daily TRY budget (floor to kuruş), Türkiye-account date-times,
-  Ankara/PRESENCE and fixed synthetic EXACT keyword. Original approval unchanged.
-- Exact non-manager test child, TRY, Türkiye time zone and one active Ankara/TR
-  city constant verified. Google v25 requires startDateTime/endDateTime; initial
-  validation rejected old fields without creating anything. Corrected validation
-  passed, then browser create/read/stop confirmed selected text and PAUSED.
-- New GoogleDraftDispatch ledger is one per draft, separate from the fixed test
-  ledger. Intent committed before create; uncertain/repeated requests never
-  resend. Source/approval/target checked again before the write.
-- Independent owner-only status page supports read/stop after source edits.
-  Remote drift may remain uncertain after pause; changed identity requires review.
-- 71 focused local connection/mapper tests passed, plus Ruff and migration
-  consistency checks. Reviewer found no remaining blocker for this local scope.
-  Required CI and final merge state must be checked after pushing the PR.
-- Migration 0008 applied only to the preserved isolated synthetic DB. Legacy and
-  Heroku databases untouched. No production or live campaign/spend enabled.
+- Readiness audit is docs/product/google-search-live-readiness.md: distinct real
+  account/API, advertiser financial consent, destination, total/account cap,
+  policy/privacy, recovery/deployment and report/commercial gates remain open.
+- Corrected historical DEPLOYMENT E2E/rollback claims from existing dated evidence;
+  did not recheck Heroku or inspect/export legacy data. Old gap/API research is
+  explicitly historical; local TEST integration is real, live integration is not.
+- New signed local owner CSRF POST validates a separate campaign-total-budget
+  candidate with CUSTOM_PERIOD and exact totalAmountMicros. Only validateOnly=true
+  is sent after TEST account/TRY/timezone/geo/current approval checks. No create,
+  ledger reset or daily fallback. Source/target rechecked before/after request.
+- Browser: Google v25 TEST accepted the 5,000 TRY candidate. This spends nothing,
+  creates nothing and does not apply a cap to the existing daily-budget campaign.
+- 79 focused local connection/mapper tests, Ruff and system check passed. Reviewer
+  identified network/shape failure handling; sanitized HTTP409 regression added.
+  PR and post-merge CI for this change must be checked live after publishing.
+- No new migration, paid infrastructure, production account or deployment.
 
 ## Next action
 
-Assess first live Google Search readiness against the existing launch gates:
-identify exact remaining advertiser-account authorization, real destination,
-platform-enforced spend/schedule limits, policy/privacy and recovery evidence.
-Produce one concrete bounded implementation slice; do not enable live serving
-or spend until its required inputs and explicit financial authorization exist.
+Implement and verify a NEW durable PAUSED TEST total-budget dispatch profile:
+explicitly reviewed CUSTOM_PERIOD/totalAmountMicros/dates, committed intent and
+exact readback/stop. Preserve existing daily-budget resources/ledgers and their
+read/stop access; no type conversion, reset or silent daily fallback. Real
+publication and spend still require the separate live-readiness gates.
 
 ## Local environment
 
@@ -51,7 +49,7 @@ Preserve LocalAppData/Temp/gwt-oauth-isolated-wq0dp50j/synthetic.sqlite3,
 owner/workspace identity, encrypted grant and both durable ledgers. Helper:
 LocalAppData/Temp/growthtwin_oauth_preserved.py. Never run the older fresh-DB
 bootstrap or reset existing intent. Generated local login is not recorded.
-The browser /connections/google/draft-dispatch/ displayed stopped / PAUSED.
+The latest browser /connections/google/total-budget-validate/ displayed successful validation-only. The earlier draft-dispatch result was stopped / PAUSED; the daily ledger remains unchanged.
 Status controls: /connections/google/draft-status/?draft=1. Server/helper
 availability is ephemeral; verify before use. Grant stored with user-scoped
 Windows DPAPI outside Git; reuse it rather than unnecessary reauthorization.
