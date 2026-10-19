@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19, Europe/Istanbul.
+Verified: 2026-10-19, Europe/Istanbul. Low-usage handoff: primary remaining 2%.
 
 ## Objective
 
@@ -11,7 +11,7 @@ advertiser data, production serving/spend remain gated.
 ## Repository
 
 Base main 9403ca7 (PR #285 merged after required CI). Current branch
-feat/workspace-google-draft-approval; snapshot precedes its own commit/PR.
+feat/workspace-google-draft-approval, PR #286. Head abd31c6 passed required CI 39205814580. This snapshot adds a documentation-only commit; recheck its CI and merge status. Owner standing authorization permits merging reviewed green PRs.
 Recheck Git/CI before continuing. 62 focused local connection/mapper tests,
 Ruff and browser review/approval passed. No Google requests in this new review.
 
@@ -48,3 +48,8 @@ Connect the approved immutable workspace snapshot to a separate durable PAUSED
 TEST dispatch operation, rejecting stale source/target/approval. Explicitly
 resolve the synthetic destination and Google budget/date/targeting mapping in
 review before any Google write; do not reuse/reset the fixed-test ledger.
+
+
+## Local review environment and handoff
+
+The existing synthetic review DB is under LocalAppData/Temp/gwt-oauth-isolated-wq0dp50j/synthetic.sqlite3. The reviewed local bootstrap is LocalAppData/Temp/growthtwin_oauth_preserved.py; do not run the older fresh-database bootstrap or recreate the owner/workspace IDs. It uses a generated disposable local password, not recorded here. The live review page is /connections/google/draft-review/?draft=1. Browser showed the current synthetic version approved. Helper/server availability is ephemeral and must be rechecked; never ask for Google reauthorization if the protected stored grant can be reused. No subagent remains running; mapper work was reviewed and integrated. No further implementation was started after low usage was confirmed.
