@@ -34,18 +34,19 @@ def profile(package):
         google["target_city"] != "Ankara"
         or start < date.today()
         or days < 1
-        or google["media_budget_minor"] < days
+        or google["media_budget_minor"] < 1
     ):
         raise ValidationError("Bu test için ileri tarihli Ankara planı gerekli.")
     return {
-        "version": "workspace-paused-test-v1",
+        "version": "workspace-paused-test-v2-total",
         "original_url": google["final_url"],
         "test_url": "https://example.com/",
         "destination_note": "Public documentation placeholder; not a verified advertiser landing page",
         "currency": "TRY",
         "schedule_timezone": "Europe/Istanbul (account must match)",
-        "daily_micros": str((google["media_budget_minor"] // days) * 10000),
-        "budget_semantics": "Floor(total TRY minor units / inclusive flight days) * 10000; average daily, NOT total spending cap",
+        "total_micros": str(google["media_budget_minor"] * 10000),
+        "period": "CUSTOM_PERIOD",
+        "budget_semantics": "Exact campaign total TRY minor units * 10000; non-shared CUSTOM_PERIOD; TEST account only",
         "start": start.isoformat(),
         "end": end.isoformat(),
         "geo_lookup": {"name": "Ankara", "country": "TR", "type": "City"},
@@ -65,6 +66,23 @@ def _name(row):
     return "GrowthTwin workspace test " + str(row.operation_id)
 
 
+def budget_spec(plan):
+    """Read immutable stored version; never reinterpret a daily ledger as total."""
+    if plan["version"] == "workspace-paused-test-v1":
+        return "DAILY", "amountMicros", plan["daily_micros"], "totalAmountMicros"
+    if (
+        plan["version"] == "workspace-paused-test-v2-total"
+        and plan["period"] == "CUSTOM_PERIOD"
+    ):
+        return (
+            "CUSTOM_PERIOD",
+            "totalAmountMicros",
+            plan["total_micros"],
+            "amountMicros",
+        )
+    raise ValidationError("Desteklenmeyen test bütçe sürümü.")
+
+
 def _operations(customer, row):
     stored = json.loads(row.payload_json)
     google, plan = stored["package"]["google"], stored["test_profile"]
@@ -74,9 +92,10 @@ def _operations(customer, row):
         create = next(iter(item.values()))["create"]
         if "name" in create:
             create["name"] = create["name"].replace(old_name, _name(row))
-    operations[0]["campaignBudgetOperation"]["create"]["amountMicros"] = plan[
-        "daily_micros"
-    ]
+    period, field, amount, other = budget_spec(plan)
+    budget = operations[0]["campaignBudgetOperation"]["create"]
+    budget.pop(other, None)
+    budget.update({"period": period, field: amount})
     campaign = operations[1]["campaignOperation"]["create"]
     campaign.update(
         startDateTime=plan["start"] + " 00:00:00", endDateTime=plan["end"] + " 23:59:59"
@@ -172,7 +191,7 @@ def _read(binding, row, customer, *, for_stop=False):
             "query": (
                 "SELECT campaign.resource_name, campaign.name, campaign.status, campaign.campaign_budget, "
                 "campaign.advertising_channel_type, campaign.start_date_time, campaign.end_date_time, campaign.geo_target_type_setting.positive_geo_target_type, "
-                "campaign_budget.resource_name, campaign_budget.name, campaign_budget.amount_micros, "
+                "campaign_budget.resource_name, campaign_budget.name, campaign_budget.amount_micros, campaign_budget.total_amount_micros, campaign_budget.period, "
                 "campaign_budget.explicitly_shared FROM campaign WHERE campaign.name = '"
                 + _name(row)
                 + "' LIMIT 2"
@@ -199,8 +218,11 @@ def _read(binding, row, customer, *, for_stop=False):
     ):
         raise ValueError
     if not for_stop:
+        period, field, amount, other = budget_spec(expected["test_profile"])
         if (
-            str(budget.get("amountMicros")) != expected["test_profile"]["daily_micros"]
+            budget.get("period") != period
+            or str(budget.get(field)) != amount
+            or str(budget.get(other, "0")) != "0"
             or budget.get("explicitlyShared", False) is not False
             or campaign.get("startDateTime")
             != expected["test_profile"]["start"] + " 00:00:00"
@@ -310,6 +332,12 @@ def perform(binding, draft_id, action, consent_key=""):
         row = GoogleDraftDispatch.objects.filter(draft=draft).first()
         if row and row.configuration_key != key:
             raise backend.ConnectionUnavailable("Target changed.")
+        if row and action == "create":
+            stored = json.loads(row.payload_json)["test_profile"]
+            if stored["version"] != "workspace-paused-test-v2-total":
+                raise ValidationError(
+                    "Bu taslağın günlük bütçeli test kaydı korunuyor; toplam bütçe için yeni sentetik taslak oluşturun."
+                )
         if verification.verify(binding) != key:
             raise backend.ConnectionUnavailable("Test target unavailable.")
         customer, _ = verification._targets()
