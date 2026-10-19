@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:47 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 18:49 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -12,9 +12,11 @@ and media spend remain gated.
 
 Base main 09f54cc (PR #289 merged); its required CI 39242010811 and main CI
 39242328698 passed. PR #290 remains open at 59b688a; required run 39278829487
-is queued, so it has not merged. Current branch docs/public-identity-requirements
-builds on #290; its follow-up PR must target that branch until #290 merges.
-This snapshot precedes its own commit/PR; verify latest Git/head/checks live.
+is queued, so it has not merged. Current branch docs/public-identity-requirements,
+PR #291 (implementation head 514f75b), targets #290's branch until #290 merges.
+Its initial CI 39280685026 is queued. This snapshot precedes its own follow-up
+commit; verify latest Git/head/checks live. Retarget #291 to main after #290
+merges, then check its latest-head required CI before merging it.
 Reviewed green PRs may merge under standing owner authorization.
 
 ## Verified Cloud/OAuth observations — read-only
@@ -77,5 +79,6 @@ Latest browser draft-dispatch result for draft 2: stopped / PAUSED, 5,000 TRY CU
 Status controls: /connections/google/draft-status/?draft=1. Server/helper
 availability is ephemeral; verify before use. Grant stored with user-scoped
 Windows DPAPI outside Git; reuse it rather than unnecessary reauthorization.
-No agent work is running for the requirements step. No local DB/grant was read
-or changed for its code-derived data inventory.
+Independent read-only review of the requirements and source completed with no
+actionable findings. No agent work remains running. No local DB/grant was read
+or changed for the code-derived data inventory.
