@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:57 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 18:58 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,11 +10,12 @@ and media spend remain gated.
 
 ## Repository
 
-Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Its main CI
-must be checked live. PR #291 has been retargeted to main and needs rebase to
-exclude the squash-merged #290 commits, then fresh required checks.
-Current branch feat/public-information-pages builds on #291. This snapshot
-precedes its own commit/PR. Verify latest heads, PR bases and checks; merge in
+Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Main CI
+39281752320 is queued. PR #291 was rebased/retargeted to main, head 13f1dfa;
+required CI 39281843423 is queued. Current branch feat/public-information-pages,
+PR #292, builds on #291 (base docs/public-identity-requirements); implementation
+head bd1ffe6, initial CI 39281897394 queued. This snapshot precedes its own
+follow-up commit. Verify latest heads, PR bases and checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
@@ -62,7 +63,7 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 ## CI observation at this snapshot
 
 PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291 still showed queued before rebase. Auto-merge is not enabled; linear
+PR #291 and #292 currently show queued for their new heads. Auto-merge is not enabled; linear
 history rules also reject merge commits, so use squash after checks pass.
 No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
