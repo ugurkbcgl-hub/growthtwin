@@ -82,6 +82,7 @@ def _powershell(script, payload):
     # PowerShell 7 callers can supply a module search path that omits Windows
     # PowerShell built-ins; import the inbox security module explicitly.
     script = (
+        "$env:PATHEXT='.COM;.EXE;.BAT;.CMD'\n"
         "Import-Module (Join-Path $PSHOME 'Modules/Microsoft.PowerShell.Security/Microsoft.PowerShell.Security.psd1') -ErrorAction Stop\n"
         + script
     )
