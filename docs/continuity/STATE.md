@@ -45,7 +45,16 @@ Single local Windows process only; DEBUG off, explicit owner/workspace,
 loopback host/peer and no proxy. No production or staging activation.
 Legacy recovery, usability and real advertiser release gates remain unresolved.
 
-Next: implement a narrowly scoped read for the explicit test customer/manager,
-refreshing the saved grant securely and verifying the returned test_account flag
-before any further account query or mutation. Never enumerate unrelated accounts,
-publish or spend as part of this check.
+## Verified API milestone
+
+October 19: a controlled local verifier refreshed the saved grant, then made one
+fixed GAQL Search request against only the owner-designated test child through
+its designated test manager. The response contained exactly one matching child,
+`testAccount=true` and no manager flag. No account enumeration, campaign data,
+mutations or spend. Only booleans/counts were emitted; identifiers and credentials
+were excluded from repository notes. The verifier is a temporary local script,
+not yet a product route or reusable application adapter.
+
+Next: move this fixed, read-only account-verification operation behind a tested
+application adapter and expose a clear verified-test-connection status in the
+local UI before implementing any paused synthetic campaign creation.
