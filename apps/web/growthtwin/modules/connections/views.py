@@ -1,5 +1,6 @@
 """Explicitly enabled, owner-bound loopback OAuth setup; never publishes ads."""
 
+import time
 from functools import wraps
 
 from django.conf import settings
@@ -13,7 +14,7 @@ from django.views.decorators.debug import sensitive_variables
 from growthtwin.modules.workspaces.models import Workspace
 from growthtwin.modules.workspaces.services import get_workspace_for_owner
 
-from . import backend
+from . import backend, verification
 from .google_oauth import AuthorizationRejected, LocalAuthorizationStore
 
 authorization_store = LocalAuthorizationStore()
@@ -81,6 +82,19 @@ def local_owner_only(method):
 @sensitive_variables()
 def status(request, binding):
     saved = backend.connection_exists(binding)
+    evidence = request.session.get("google_test_verification", {})
+    verified = False
+    try:
+        age = time.time() - evidence["at"]
+        verified = (
+            saved
+            and 0 <= age < 600
+            and evidence["key"] == verification.configuration_key(binding)
+        )
+    except (KeyError, TypeError, backend.ConnectionUnavailable):
+        pass
+    if not verified:
+        request.session.pop("google_test_verification", None)
     message = request.session.pop("google_local_result", "")
     diagnosis = request.session.get("google_local_diagnostic", "")
     diagnoses = {
@@ -103,6 +117,8 @@ def status(request, binding):
         ),
         "exists": "Yetkilendirme zaten kayıtlı. Yeniden bağlanmadan önce kaldırın.",
         "removed": "Yerel yetkilendirme kaldırıldı.",
+        "verified": "Google test hesabı kontrolü başarılı.",
+        "verification_failed": "Test hesabı doğrulanamadı. Hesap yapılandırmasını veya Google erişimini kontrol edin.",
     }
     return HttpResponse(
         format_html(
@@ -110,19 +126,26 @@ def status(request, binding):
             "<title>Google test bağlantısı</title><h1>Google test bağlantısı</h1>"
             "<p>Yalnızca yerel test içindir. Reklam yayımlamaz.</p>"
             "<p>Google izni yalnızca okuma yetkisi değildir. "
-            "Bu yerel akış reklam API’sine istek göndermez.</p>"
-            "<p>Reklam hesabının test durumu henüz API ile doğrulanmadı.</p>"
+            "Hesap kontrolü yalnızca yapılandırılmış hedefi okur.</p>"
+            "<p>{}</p>"
             "<p>{}</p><p>{}</p>"
+            '<form method="post" action="/connections/google/verify/">'
+            '<input type="hidden" name="csrfmiddlewaretoken" value="{}">'
+            "<button>Test hesabı bağlantısını kontrol et</button></form>"
             '<form method="post" action="/connections/google/start/">'
             '<input type="hidden" name="csrfmiddlewaretoken" value="{}">'
             "<button>Google ile yetkilendir</button></form>"
             '<form method="post" action="/connections/google/disconnect/">'
             '<input type="hidden" name="csrfmiddlewaretoken" value="{}">'
             "<button>Yetkilendirmeyi kaldır</button></form></html>",
+            "Test hesabı son 10 dakika içinde API ile doğrulandı. Bu kontrol reklam yayınına izin vermez."
+            if verified
+            else "Güncel test hesabı doğrulaması yok.",
             "Yetkilendirme kaydı mevcut. Yeniden bağlanmadan önce kaldırın."
             if saved
             else "Yetkilendirme kaydı yok.",
             messages.get(message, "") + " " + diagnoses.get(diagnosis, ""),
+            get_token(request),
             get_token(request),
             get_token(request),
         )
@@ -175,9 +198,24 @@ def callback(request, binding):
 @csrf_protect
 @sensitive_variables()
 def disconnect(request, binding):
+    request.session.pop("google_test_verification", None)
     try:
         backend.disconnect(binding)
         request.session["google_local_result"] = "removed"
     except backend.ConnectionUnavailable:
         request.session["google_local_result"] = "failed"
+    return HttpResponseRedirect(STATUS_PATH)
+
+
+@local_owner_only("POST")
+@csrf_protect
+@sensitive_variables()
+def verify_test_account(request, binding):
+    request.session.pop("google_test_verification", None)
+    try:
+        key = verification.verify(binding)
+        request.session["google_test_verification"] = {"key": key, "at": time.time()}
+        request.session["google_local_result"] = "verified"
+    except Exception:
+        request.session["google_local_result"] = "verification_failed"
     return HttpResponseRedirect(STATUS_PATH)

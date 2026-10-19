@@ -89,3 +89,8 @@ The owner completed identity verification and explicitly approved the displayed 
 ## Verified test-account API read — 2026-10-19
 
 A temporary local verifier refreshed the encrypted grant and queried only the designated test child via its designated manager, selecting customer ID, test flag and manager flag with LIMIT 1. Exactly one matching non-manager customer with testAccount=true was returned. No enumeration, campaign data, writes or spend occurred. This verifies authentication and the specific test target; it does not implement the reusable product adapter or establish live publication readiness.
+
+
+## Application connection verification — 2026-10-19
+
+The local UI now has a CSRF-protected test-account verification POST backed by the fixed read-only adapter. Set GOOGLE_ADS_LOCAL_TEST_CUSTOMER_ID and GOOGLE_ADS_LOCAL_TEST_MANAGER_ID explicitly; no target IDs are hard-coded or accepted from forms. The adapter refreshes the saved authorization and checks exactly one matching non-manager customer with testAccount=true. GET does not call Google. Successful evidence is session-local for at most ten minutes and bound to configured targets, owner/workspace and encrypted credential contents; failure/disconnect invalidates it. This recent observation is not continuous monitoring or campaign authorization. 47 focused tests and live browser verification passed; CI status must be checked on the current PR. No ad mutations or media spend.

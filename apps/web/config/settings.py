@@ -143,6 +143,12 @@ GOOGLE_ADS_LOCAL_OAUTH_ENABLED = (
 )
 GOOGLE_ADS_LOCAL_OWNER_ID = os.environ.get("GOOGLE_ADS_LOCAL_OWNER_ID", "")
 GOOGLE_ADS_LOCAL_WORKSPACE_ID = os.environ.get("GOOGLE_ADS_LOCAL_WORKSPACE_ID", "")
+GOOGLE_ADS_LOCAL_TEST_CUSTOMER_ID = os.environ.get(
+    "GOOGLE_ADS_LOCAL_TEST_CUSTOMER_ID", ""
+)
+GOOGLE_ADS_LOCAL_TEST_MANAGER_ID = os.environ.get(
+    "GOOGLE_ADS_LOCAL_TEST_MANAGER_ID", ""
+)
 
 # Callback URLs may contain one-time codes. Apply before handler formatting;
 # reverse-proxy access logs still require separate controls before deployment.

@@ -9,4 +9,5 @@ urlpatterns = [
     path("start/", views.start, name="google-local-start"),
     path("callback/", views.callback, name="google-local-callback"),
     path("disconnect/", views.disconnect, name="google-local-disconnect"),
+    path("verify/", views.verify_test_account, name="google-local-verify"),
 ]
