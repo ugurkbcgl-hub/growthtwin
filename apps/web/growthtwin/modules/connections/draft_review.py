@@ -18,7 +18,7 @@ from growthtwin.modules.campaigns.models import (
     WorkspaceCampaignDraft,
 )
 
-from . import backend, draft_dispatch, verification
+from . import backend, draft_dispatch, total_budget, verification
 from .views import local_owner_only
 
 SALT = "local-google-draft-test-review-v1"
@@ -139,6 +139,37 @@ def review(request, binding):
         )
     except ValidationError:
         dispatch_form = "Gönderim için ileri tarihli Ankara test planı gerekli."
+    budget_form = ""
+    if approved:
+        try:
+            budget_plan = total_budget.plan(package)
+            budget_token = signing.dumps(
+                {
+                    "owner": binding[0],
+                    "workspace": binding[1],
+                    "draft": draft.pk,
+                    "target_key": target_key,
+                    "budget_key": total_budget.review_key(package),
+                },
+                salt=SALT + "-total-budget",
+            )
+            budget_form = format_html(
+                "<h2>Toplam bütçe için gönderimsiz test</h2><p>Kampanya toplamı: {} TRY. {} 00:00:00 – {} 23:59:59, Türkiye saat dilimi.</p>"
+                "<p>Bu kontrol, yukarıdaki örnek adres, konum ve reklam metniyle yalnızca Google TEST hesabında istek doğrulaması yapar. "
+                "Reklam oluşturmaz, mevcut günlük bütçeli testi değiştirmez ve ona toplam harcama sınırı uygulamaz. "
+                "Başarılı sonuç gerçek yayın veya harcama izni değildir.</p>"
+                '<form method="post" action="/connections/google/total-budget-validate/">'
+                '<input type="hidden" name="csrfmiddlewaretoken" value="{}"><input type="hidden" name="draft" value="{}">'
+                '<input type="hidden" name="review" value="{}"><button>Toplam bütçeli isteği TEST hesabında doğrula</button></form>',
+                Decimal(budget_plan["total_micros"]) / 1000000,
+                budget_plan["start"],
+                budget_plan["end"],
+                get_token(request),
+                draft.pk,
+                budget_token,
+            )
+        except ValidationError:
+            pass
     return HttpResponse(
         format_html(
             '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Google test gönderimi inceleme</title>'
@@ -152,7 +183,7 @@ def review(request, binding):
             '<input type="hidden" name="csrfmiddlewaretoken" value="{}">'
             '<input type="hidden" name="draft" value="{}"><input type="hidden" name="review" value="{}">'
             '<label><input type="checkbox" name="confirm" value="yes" required> Bu sürümü yalnızca duraklatılmış Google test gönderimi için onaylıyorum.</label>'
-            "<button>Bu test sürümünü onayla</button></form>{}</html>",
+            "<button>Bu test sürümünü onayla</button></form>{}{}</html>",
             draft.name,
             google["final_url"],
             Decimal(google["media_budget_minor"]) / 100,
@@ -169,8 +200,54 @@ def review(request, binding):
             draft.pk,
             token,
             dispatch_form,
+            budget_form,
         )
     )
+
+
+@local_owner_only("POST")
+@csrf_protect
+def validate_total_budget(request, binding):
+    try:
+        draft = _draft(request, binding)
+        package = build_draft_package(draft)
+        key = total_budget.review_key(package)
+        token = signing.loads(
+            request.POST.get("review", ""), salt=SALT + "-total-budget", max_age=600
+        )
+        if token != {
+            "owner": binding[0],
+            "workspace": binding[1],
+            "draft": draft.pk,
+            "target_key": verification.configuration_key(binding),
+            "budget_key": key,
+        }:
+            raise ValidationError("Budget review changed.")
+        result = total_budget.validate(binding, draft.pk, key)
+        return HttpResponse(
+            format_html(
+                "<h1>Toplam bütçe isteği doğrulandı</h1><p>Google TEST hesabı {} TRY toplam bütçeli isteği kabul etti. "
+                "Yalnızca istek doğrulaması yapıldı: yeni reklam veya bütçe oluşturulmadı; mevcut test değişmedi.</p>"
+                "<p>Bu sonuç gerçek harcama sınırının çalıştığını, reklamın yayınlanabileceğini veya hesabın üretime hazır olduğunu kanıtlamaz.</p>"
+                '<a href="/connections/google/draft-review/?draft={}">Taslağa dön</a>',
+                Decimal(result["total_micros"]) / 1000000,
+                draft.pk,
+            )
+        )
+    except WorkspaceCampaignDraft.DoesNotExist:
+        return HttpResponse("Taslak bulunamadı.", status=404)
+    except (
+        signing.BadSignature,
+        ValidationError,
+        GoogleDraftApproval.DoesNotExist,
+        backend.ConnectionUnavailable,
+        TypeError,
+        ValueError,
+    ):
+        return HttpResponse(
+            "Toplam bütçe isteği doğrulanamadı. Güncel onayı ve test bağlantısını kontrol edin. Günlük bütçeye otomatik geçilmedi ve yeni reklam oluşturulmadı.",
+            status=409,
+        )
 
 
 @local_owner_only("POST")
