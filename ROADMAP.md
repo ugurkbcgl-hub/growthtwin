@@ -179,7 +179,7 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 
 ## Phase 3 — First publishing and reporting integration
 
-October 17 setup: dedicated Google test accounts, Cloud Test API access, OAuth web client and one test user are prepared. Local-only OAuth routes and encrypted storage are implemented but disabled by default. No actual Google token exchange, Ads API read or publication is verified. Next review the isolated local screen and register its callback as described in [test integration readiness](docs/product/google-ads-test-account-readiness.md).
+October 17 setup: dedicated Google test accounts, Cloud Test API access, OAuth web client and one test user are prepared. Local-only OAuth routes and encrypted storage are implemented but disabled by default. Google token exchange, encrypted storage and a targeted test-account API read are verified. The local UI now displays a recent explicit test verification; no publication is enabled. Follow the remaining test-integration gates in [test integration readiness](docs/product/google-ads-test-account-readiness.md).
 
 **Goal:** prove one authorized destination before expanding channel coverage.
 
