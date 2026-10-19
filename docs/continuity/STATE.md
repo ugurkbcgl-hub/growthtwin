@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 19:39 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 19:40 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -16,8 +16,9 @@ PR #292 rebased/retargeted to main; prior-head run 39281961036 passed, but no
 check started after rebase/retarget. Empty CI-only commit 3858ce2 now has queued
 run 39287123904. PR #293 rebased onto #292, head c5c8bc1, CI 39286628218 in
 progress. PR #294 rebased onto #293, head 131fade, CI 39286654218 queued.
-Current branch feat/lifecycle-observation-reducer builds on #294. This snapshot
-precedes its own commit/PR. Verify heads/bases/checks; merge in
+Current branch feat/lifecycle-observation-reducer, PR #295, targets #294's branch;
+implementation head 0805164, initial CI 39287331540 queued. This snapshot precedes
+its own follow-up commit. Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
