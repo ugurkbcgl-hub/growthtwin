@@ -40,6 +40,14 @@ _TYPES = {
     Outcome.BACKUP_ERASURE: ExternalErasure,
 }
 
+_ISSUABLE_OUTCOMES = {
+    Step.STOP: Outcome.REMOTE_STOP,
+    Step.REVOKE: Outcome.REVOCATION,
+    Step.VERIFY_REVOCATION: Outcome.REVOCATION,
+    Step.REMOVE_LOCAL_SECRET: Outcome.LOCAL_SECRET,
+    Step.ERASE_LOCAL: Outcome.LOCAL_ERASURE,
+}
+
 
 def _uuid(value):
     if type(value) is not UUID or value.int == 0:
@@ -67,11 +75,23 @@ class ClosureIdentity:
 class PendingObservation:
     operation_id: UUID
     outcome: Outcome
+    source_step: Step | None = None
+    issued_revision: int | None = None
 
     def __post_init__(self):
         _uuid(self.operation_id)
         if type(self.outcome) is not Outcome:
             raise ValueError("A typed outcome is required.")
+        if (self.source_step is None) != (self.issued_revision is None):
+            raise ValueError("Ticket issuance metadata must be complete.")
+        if self.source_step is not None:
+            if type(self.source_step) is not Step:
+                raise ValueError("A typed source step is required.")
+            if _ISSUABLE_OUTCOMES.get(self.source_step) is not self.outcome:
+                raise ValueError("Source step does not match its typed outcome.")
+            _revision(self.issued_revision)
+            if self.issued_revision == 0:
+                raise ValueError("An issued ticket requires a positive revision.")
 
 
 @dataclass(frozen=True)
@@ -101,6 +121,7 @@ class ClosureRecord:
     pending: PendingObservation | None = None
     closed: bool = False
     seen_events: tuple[Observation, ...] = ()
+    priority_pending: PendingObservation | None = None
 
     def __post_init__(self):
         if type(self.identity) is not ClosureIdentity:
@@ -108,8 +129,26 @@ class ClosureRecord:
         _revision(self.revision)
         if type(self.snapshot) is not ClosureSnapshot or type(self.closed) is not bool:
             raise ValueError("Typed closure state is required.")
-        if self.pending is not None and type(self.pending) is not PendingObservation:
-            raise ValueError("A typed observation ticket is required.")
+        for ticket in (self.pending, self.priority_pending):
+            if ticket is not None and type(ticket) is not PendingObservation:
+                raise ValueError("A typed observation ticket is required.")
+            if (
+                ticket is not None
+                and ticket.issued_revision is not None
+                and ticket.issued_revision > self.revision
+            ):
+                raise ValueError("Pending ticket cannot come from a future revision.")
+        if self.priority_pending is not None:
+            if (
+                self.priority_pending.source_step is not Step.REVOKE
+                or self.priority_pending.outcome is not Outcome.REVOCATION
+            ):
+                raise ValueError("Priority lane is reserved for issued revocation.")
+            if (
+                self.pending
+                and self.pending.operation_id == self.priority_pending.operation_id
+            ):
+                raise ValueError("Active operations must have distinct identities.")
         if type(self.seen_events) is not tuple or any(
             type(event) is not Observation or event.identity != self.identity
             for event in self.seen_events
@@ -117,6 +156,13 @@ class ClosureRecord:
             raise ValueError("Immutable same-scope evidence is required.")
         if len({event.event_id for event in self.seen_events}) != len(self.seen_events):
             raise ValueError("Duplicate evidence identities are invalid.")
+        active_ids = {
+            ticket.operation_id
+            for ticket in (self.pending, self.priority_pending)
+            if ticket
+        }
+        if any(event.ticket.operation_id in active_ids for event in self.seen_events):
+            raise ValueError("Observed operations cannot remain pending.")
 
 
 class Disposition(StrEnum):
@@ -195,7 +241,7 @@ def reduce_observation(facts, record, event):
         return reject("request_closed")
     if event.expected_revision != record.revision:
         return reject("revision_mismatch")
-    if record.pending != event.ticket:
+    if event.ticket not in (record.pending, record.priority_pending):
         return reject("ticket_mismatch")
     if not record.snapshot.recovery_verified or not record.snapshot.barrier_confirmed:
         return reject("closure_evidence_unverified")
@@ -204,7 +250,10 @@ def reduce_observation(facts, record, event):
     updated = replace(
         record,
         revision=record.revision + 1,
-        pending=None,
+        pending=None if record.pending == event.ticket else record.pending,
+        priority_pending=(
+            None if record.priority_pending == event.ticket else record.priority_pending
+        ),
         snapshot=replace(record.snapshot, **{event.ticket.outcome.value: event.value}),
         seen_events=(*record.seen_events, event),
     )
