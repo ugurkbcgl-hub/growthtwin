@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 13:45 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 13:46 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -11,8 +11,9 @@ data, production serving and media spend remain gated.
 ## Repository
 
 Base main bfc7397 (PR #287 merged); its required CI 39237793375 and main CI
-39238090433 passed. Current branch feat/google-total-budget-validation.
-This snapshot precedes its PR/commit; recheck live Git/open PR/CI before work.
+39238090433 passed. Current branch feat/google-total-budget-validation, PR #288; implementation
+head 0174b69. This follow-up adds sanitized malformed-object handling and
+records the PR. Recheck latest Git/head/checks/merge state live before work.
 Reviewed green PRs may be merged under standing owner authorization.
 
 ## Current verified result

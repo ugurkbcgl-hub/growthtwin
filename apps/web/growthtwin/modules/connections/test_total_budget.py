@@ -168,6 +168,8 @@ class TotalBudgetTests(TransactionTestCase):
         for error in (
             TimeoutError("private provider details"),
             KeyError("private account"),
+            AttributeError("private malformed object"),
+            IndexError("private empty list"),
         ):
             with patch.object(draft_dispatch, "_resolve", side_effect=error):
                 response = self.post(data)

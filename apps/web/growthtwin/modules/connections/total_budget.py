@@ -106,7 +106,7 @@ def _validate(binding, draft_id, consent_key):
 def validate(binding, draft_id, consent_key):
     try:
         return _validate(binding, draft_id, consent_key)
-    except (OSError, KeyError, TypeError, ValueError):
+    except (OSError, KeyError, TypeError, ValueError, AttributeError, IndexError):
         # urllib network/timeouts and malformed provider bodies never escape.
         raise backend.ConnectionUnavailable(
             "TEST budget validation unavailable."
