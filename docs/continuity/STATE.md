@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 19:10 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 19:39 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,15 +10,14 @@ and media spend remain gated.
 
 ## Repository
 
-Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Main CI
-39281752320 is queued. PR #291 was rebased/retargeted to main, head 13f1dfa;
-required CI 39281843423 is queued. PR #292, branch feat/public-information-pages,
-builds on #291 (base docs/public-identity-requirements); latest head
-5ea0b28, CI 39281961036 queued. PR #293, branch docs/data-lifecycle-contract,
-targets feat/public-information-pages; head 87e1720, CI 39282568816 queued.
-Current branch feat/lifecycle-decision-contract, PR #294, targets #293's branch
-docs/data-lifecycle-contract; implementation head af963e9, initial CI 39283319613
-queued. This snapshot precedes its own follow-up commit. Verify heads/bases/checks; merge in
+Main afb1ddf: PR #291 merged after required CI 39281843423 passed. Main CI
+39286518702 last showed queued; previous main CI 39281752320 passed.
+PR #292 rebased/retargeted to main; prior-head run 39281961036 passed, but no
+check started after rebase/retarget. Empty CI-only commit 3858ce2 now has queued
+run 39287123904. PR #293 rebased onto #292, head c5c8bc1, CI 39286628218 in
+progress. PR #294 rebased onto #293, head 131fade, CI 39286654218 queued.
+Current branch feat/lifecycle-observation-reducer builds on #294. This snapshot
+precedes its own commit/PR. Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
@@ -73,6 +72,16 @@ Reviewed green PRs may merge under standing owner authorization.
   regression assertion added and reviewer confirmed no remaining findings.
   No DB/API/UI/model/migration changes or credential/ledger operations. Caller
   proof booleans are assertions, not implemented auth/CSRF/durability/freshness.
+- Follow-up reducer: lifecycle_observation.py binds synthetic outcome evidence
+  to workspace/connection/request/generation, revision and one pending operation
+  ticket. Exact replay is a no-op; event-ID content conflicts, wrong identity/
+  ticket/revision, closed requests and unverified recovery/barrier are rejected.
+  Outcome changes cannot alter safety flags, generation, closed status or grants.
+- 14 reducer tests plus 15 decision tests passed (29 DB-free); ruff format/check
+  and git diff --check passed. Independent read-only review found no blocking
+  issue. Pending tickets/provider evidence are caller assertions; no issuance,
+  durable store, atomic CAS, timestamp freshness or runtime auth is implemented.
+  No DB/API/UI/migration/credential operations; existing TEST routes unchanged.
 
 ## Preserved product evidence
 
@@ -84,18 +93,18 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 ## CI observation at this snapshot
 
 PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291 and #292 currently show queued for their new heads. Auto-merge is not enabled; linear
+PR #291 merged; #292–294 latest heads await CI completion. Auto-merge is not enabled; linear
 history rules also reject merge commits, so use squash after checks pass.
 No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Settle dependent PRs in order after required CI; then implement a pure
-request/generation/revision-bound observation reducer under ADR-0027, rejecting
-stale/late/replayed completion. Keep it synthetic, without DB/API/UI, token or
-real erasure effects. Decision suggestions are not an execution schedule or
-runtime authorization. Persistence/concurrency/freshness proof remains open.
+Settle dependent PRs in order after required CI; then add pure pending-ticket
+issuance from eligible decision steps under ADR-0027, bound to identity/generation/
+revision and rejecting replacement of an unresolved operation. Keep it synthetic
+without DB/API/UI/token or erasure effects. Suggestions/tickets are not runtime
+authorization. Persistence/concurrency/provider freshness proof remains open.
 Domain/business/contact, real recipients, retention periods and qualified review
 remain open before final public text/production. Preserve TEST setup, immutable
 existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase
