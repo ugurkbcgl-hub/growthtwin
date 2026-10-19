@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:22 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 18:32 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -40,6 +40,14 @@ PR #289 browser verified new synthetic draft 2 with 5,000 TRY CUSTOM_PERIOD,
 October 20–November 3, exact readback/repeat create/stop. Original draft 1 DAILY
 333.33 TRY November 1–15 retained read/stop. 82 targeted tests passed in that
 implementation. No production budget exhaustion/aggregate cap proof is implied.
+
+## CI observation at this snapshot
+
+PR #290 initial run 39277504638 passed. Follow-up run 39277581963 was reported
+in progress by status APIs; cancel replied already completed, while rerun replied
+already running. Latest-head CI success is therefore not verified. Do not force
+merge or disable checks. This snapshot records the discrepancy; verify the CI
+for its new head and merge only after required checks actually pass.
 
 ## Next action
 
