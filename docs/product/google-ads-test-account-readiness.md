@@ -1,96 +1,81 @@
-# Google Ads local test connection
+# Google Ads local test integration
 
-Updated: 2026-10-18, Europe/Istanbul.
+Verified: 2026-10-19, Europe/Istanbul.
 
-## Observed setup
+## Current evidence
 
-On October 17 the owner-authorized Google setup created a test manager/child,
-a dedicated Cloud project with Test API access, an External/Testing OAuth web
-client and one test user. No campaign was created. The exact loopback callback was saved in Google on October 18;
-no completed Google grant or Ads API read has been verified.
+Dedicated Google test manager/child and Cloud project with Test access exist.
+OAuth is External/Testing with one test user and the exact loopback callback
+registered. The owner approved the broad Ads scope; encrypted authorization
+save and refresh succeeded. Credentials remain outside Git under the current
+Windows account's LocalAppData/GrowthTwinsecrets using user-scoped DPAPI.
 
-Client credentials are outside Git in the current Windows user's LocalAppData
-`GrowthTwinsecrets/google-ads-oauth-client.dpapi`. They use user-scoped DPAPI.
-The application's loader successfully decrypted/validated that client without
-printing values. A separate fabricated payload passed encrypted write/read.
-Do not relocate the file based on the previously attempted failed folder rename.
+The application verifies only the configured child through its manager, accepts
+exactly one matching non-manager test account, and displays recent session-local
+evidence for up to ten minutes. Changes to targets, owner/workspace or encrypted
+grant invalidate that evidence. GET does not call Google.
 
-## Implemented local connection
+## Fixed paused test campaign
 
-Routes are present but disabled by default:
+The owner explicitly authorized a synthetic campaign create/read/stop rehearsal.
+The local connection screen now exposes it behind the additional
+`GOOGLE_ADS_LOCAL_TEST_CAMPAIGN_ENABLED=true` flag. All local OAuth guards remain.
+The operation uses a fixed synthetic Search campaign, ad group, exact keyword,
+responsive search ad and example.com destination. Campaign, group, keyword and
+ad start PAUSED. Virtual daily budget: one unit of the account currency.
 
-- `/connections/google/`: status and explicit start/disconnect forms.
-- `/connections/google/start/`: authenticated, CSRF-protected POST.
-- `/connections/google/callback/`: single-use state/PKCE validation, exchange
-  at Google's fixed token endpoint and encrypted refresh-token storage.
-- `/connections/google/disconnect/`: CSRF-protected POST; revoke before local
-  deletion. Failed revocation retains the encrypted file for recovery.
+Live browser evidence on October 19:
 
-The exact callback to register after local review is
-`http://127.0.0.1:8002/connections/google/callback/`.
-Google confirmed the redirect registration with “OAuth client saved”.
+- Google validation-only request succeeded before durable intent reservation.
+- One atomic create request produced the fixed test resources.
+- Initial reconciliation failed because Google named the non-shared budget
+  after the campaign; the reader was corrected to accept that observed name
+  while also requiring exact budget resource linkage, target, type and amount.
+- Read recovered the SAME campaign without resending create and confirmed PAUSED.
+- Stop sent PAUSED and read it back; the UI displayed stop confirmed / PAUSED.
+- Repeating create after stop read the same durable operation; no new create.
 
-Runtime requires Windows, DEBUG false, host `127.0.0.1:8002`, loopback peer,
-no forwarded headers, and all of these explicit environment settings:
+One workspace ledger is committed before the real request. Uncertain requests
+are never automatically resent; zero/multiple/mismatched reads remain uncertain.
+Workspace deletion is protected while the ledger exists. Existing credential or
+target changes block the old operation. Stop pauses; it does not delete objects.
+The fixed test journey is separate from the fake workspace rehearsal and does
+not yet dispatch arbitrary customer campaign drafts. See ADR-0022.
 
-- `GOOGLE_ADS_LOCAL_OAUTH_ENABLED=true`
-- `GOOGLE_ADS_LOCAL_OWNER_ID`: disposable authenticated local user's ID
-- `GOOGLE_ADS_LOCAL_WORKSPACE_ID`: workspace owned by that user
+## Local operation requirements
 
-Use an isolated synthetic database and a single process without autoreload.
-Never enable on staging, behind a proxy, or with multiple workers. A restart
-invalidates pending five-minute challenges. Owner/workspace/session binding
-and atomic in-process consumption prevent normal replay and cross-session use.
-Credentials are bound to owner/workspace; do not repurpose those IDs or the
-synthetic database without disconnecting and removing authorization first.
+Windows only, DEBUG off, single process without autoreload, exact loopback
+host/peer, no proxy/forwarded headers, explicit local owner/workspace and:
 
-Google's adwords scope is broad, not read-only. This implementation has no Ads
-API transport or publishing operation and does not verify an ad account as a
-test target. Do not add Ads requests before verifying explicit test routing.
-OAuth client configuration alone cannot establish actual account authorization.
+- GOOGLE_ADS_LOCAL_OAUTH_ENABLED=true
+- GOOGLE_ADS_LOCAL_OWNER_ID and GOOGLE_ADS_LOCAL_WORKSPACE_ID
+- GOOGLE_ADS_LOCAL_TEST_CUSTOMER_ID and GOOGLE_ADS_LOCAL_TEST_MANAGER_ID
+- GOOGLE_ADS_LOCAL_TEST_CAMPAIGN_ENABLED=true (only for test mutations)
 
-No secrets are stored in sessions or returned to the browser. Google HTTP
-redirects are rejected and token/revocation endpoints are fixed. Provider
-errors are sanitized; failed storage attempts best-effort revocation. If that
-also fails, remove the app permission through the Google account before retry.
-A file's presence is only a local record, not proof the remote grant is valid.
+Preserve the active isolated synthetic database and its owner/workspace identity
+for the encrypted grant and durable ledger. Never recreate those IDs under a
+new identity or delete/reset uncertain intent to bypass duplicate protection.
+Migration 0006 was applied only to this isolated test database during browser
+verification; existing legacy/local configured DB and Heroku were not migrated.
 
-Django callback-bearing console records are discarded; all connection responses
-receive no-store; the form uses same-origin referrers so CSRF Origin checks work, while callbacks use no-referrer. This does not protect proxy/router logs or
-arbitrary application logging. Do not turn DEBUG on for a live grant.
+The form uses same-origin referrers for CSRF; callbacks use no-referrer. Helpers
+sanitize errors and suppress callback-bearing Django console logs. These are
+not proxy/router logging controls or a production secret store.
 
-## Verification and next step
+## Verification and limits
 
-32 focused synthetic state, route and backend tests passed locally. Network and
-storage were mocked in unit tests; the separate Windows checks above verified
-only local encrypted storage. No real Google exchange/revocation was executed.
+52 focused local tests passed; formatting/lint and migration consistency passed.
+Live Google create/read/stop was verified through the application. Current PR CI
+must be checked before merge. SQLite cannot prove production concurrency.
 
-An isolated synthetic instance and disposable owner were opened on October 18. A real browser found Origin null caused by no-referrer on the form; the form policy was corrected without weakening CSRF, and Google account selection was reached. Phone identity verification is pending; no account grant completed.
+Google test accounts do not serve advertisements or incur media spend. No live
+serving, advertiser data, performance results, paid service or production rollout
+was enabled. Next bind a reviewed synthetic workspace draft to an immutable
+platform payload and explicit dispatch consent before broadening this fixed test.
 
-Next: finish the owner identity verification and inspect the Google consent screen;
-review the connection screen, then register the exact callback and obtain the
-owner's Google account grant. Confirm encrypted save before the first explicitly
-test-targeted read. Real advertising, media spend and beta launch remain gated.
+## Official references
 
-## Current official guidance
-
-Developer tokens were sunset; access is attached to the OAuth Cloud project.
-Do not create a production manager merely to request a developer token.
-
-- [Developer token migration](https://developers.google.com/google-ads/api/docs/api-policy/developer-token), checked October 17.
-- [Web-server OAuth](https://developers.google.com/identity/protocols/oauth2/web-server), checked October 17.
-
-
-## Verified authorization milestone — 2026-10-19
-
-The owner completed identity verification and explicitly approved the displayed broad Ads scope. The live local callback exchanged the code and displayed encrypted save success and record present. This supersedes earlier statements above that a grant was pending. The fixed redirect is registered. The writer's executable-resolution failure was reproduced in the browser-launched environment and corrected; synthetic encrypted write/read then passed there. 35 focused tests passed. No Ads API account read or publication occurred. Preserve the current isolated database and owner/workspace IDs for the stored credential; do not recreate them under another identity. Next verify the explicit test customer's test_account flag using a read-only operation before any further account work.
-
-
-## Verified test-account API read — 2026-10-19
-
-A temporary local verifier refreshed the encrypted grant and queried only the designated test child via its designated manager, selecting customer ID, test flag and manager flag with LIMIT 1. Exactly one matching non-manager customer with testAccount=true was returned. No enumeration, campaign data, writes or spend occurred. This verifies authentication and the specific test target; it does not implement the reusable product adapter or establish live publication readiness.
-
-
-## Application connection verification — 2026-10-19
-
-The local UI now has a CSRF-protected test-account verification POST backed by the fixed read-only adapter. Set GOOGLE_ADS_LOCAL_TEST_CUSTOMER_ID and GOOGLE_ADS_LOCAL_TEST_MANAGER_ID explicitly; no target IDs are hard-coded or accepted from forms. The adapter refreshes the saved authorization and checks exactly one matching non-manager customer with testAccount=true. GET does not call Google. Successful evidence is session-local for at most ten minutes and bound to configured targets, owner/workspace and encrypted credential contents; failure/disconnect invalidates it. This recent observation is not continuous monitoring or campaign authorization. 47 focused tests and live browser verification passed; CI status must be checked on the current PR. No ad mutations or media spend.
+- https://developers.google.com/google-ads/api/docs/campaigns/create-campaigns (checked October 19)
+- https://developers.google.com/google-ads/api/samples/add-campaigns (checked October 19)
+- https://developers.google.com/google-ads/api/docs/api-policy/developer-token (checked October 17; Cloud-based access supersedes tokens)
+- https://developers.google.com/identity/protocols/oauth2/web-server (checked October 17)

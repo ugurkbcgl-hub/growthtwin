@@ -121,3 +121,19 @@ class CampaignRehearsalEvent(models.Model):
                 fields=("rehearsal", "revision"), name="rehearsal_unique_event_revision"
             )
         ]
+
+
+class GoogleTestCampaign(models.Model):
+    """Durable intent for one local, synthetic Google test operation."""
+
+    workspace = models.OneToOneField(
+        "workspaces.Workspace",
+        on_delete=models.PROTECT,
+        related_name="google_test_campaign",
+    )
+    operation_id = models.UUIDField(unique=True)
+    configuration_key = models.CharField(max_length=64)
+    state = models.CharField(max_length=20, default="uncertain")
+    resource_name = models.CharField(max_length=120, blank=True)
+    observed_status = models.CharField(max_length=16, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

@@ -4,71 +4,48 @@ Verified: 2026-10-19, Europe/Istanbul.
 
 ## Objective
 
-Self-service advertising for Türkiye across industries. Current milestone is
-local Google OAuth authorization; live publication remains gated.
+Self-service advertising for Türkiye across industries. Continue from verified
+Google test integration toward immutable draft-to-platform dispatch; live
+advertiser data, serving and spend remain separately gated.
 
-## Repository
+## Repository and checks
 
-Base main: `58293a3` (merged PR #282). Current branch
-`fix/local-oauth-form-origin`, PR #283. Verify its current commit and CI because
-this snapshot precedes its own commit. No legacy database was modified.
+Base main: 626cb8b, PR #284 merged after successful CI.
+Current branch: feat/google-paused-test-campaign; this note precedes its own
+commit/PR. Recheck Git/CI before continuing. 52 focused local tests, Ruff and
+migration consistency passed. Live browser create/read/stop passed.
 
-## Verified progress
+## Verified implementation
 
-- Local-only start/callback/disconnect uses state/PKCE, owner/workspace/session
-  binding, CSRF and Windows user-scoped DPAPI outside Git.
-- Real browser found Origin null caused by no-referrer on the form. Form now
-  uses same-origin; callback remains no-referrer. CSRF stays enforced.
-- Real Google exchange then reached storage but failed because the browser-
-  launched environment lacked executable resolution for the Windows ACL tool.
-  Restoring standard PATHEXT in the helper fixed this; a fabricated write/read
-  roundtrip passed in that same process environment.
-- October 19: owner completed Google identity verification and explicitly
-  approved the broad Ads OAuth scope. Google returned successfully. The local
-  page displayed both authorization record present and encrypted save success.
-- The active isolated local server holds the disposable owner/workspace and
-  session. Preserve this database/identity for follow-up; do not recreate IDs
-  and inadvertently associate the saved grant with a different local owner.
-- 35 focused local tests passed, plus live browser authorization/save verified.
-  Google Ads API account verification or campaign operations have not run.
+Google OAuth grant is encrypted outside Git with Windows DPAPI. Explicit local
+test target read/verification works. The connection screen now supports a fixed
+synthetic Search test campaign behind a separate opt-in flag. Budget, campaign,
+ad group, exact keyword and responsive search ad are created atomically with
+partial failure disabled; statuses PAUSED, virtual daily budget one account unit.
 
-## Google configuration
+One durable workspace intent is committed before a real create. Uncertain
+responses cannot trigger a second create, including after restart. Read reconciles
+the exact operation and budget resource. The first real request succeeded but
+budget naming differed from expectation; reader corrected and recovered the
+same record. Stop and repeated-create readback confirmed the same PAUSED record.
+No actual serving or media spend; user-authorized Google test objects remain.
 
-Dedicated test manager/child and Cloud project with Test API access exist.
-OAuth client External/Testing, one test user; exact loopback redirect registered.
-Client and refresh credentials are protected outside Git under the current
-Windows user's LocalAppData/GrowthTwinsecrets. Do not print their values.
+Migration 0006 applied ONLY to the existing isolated synthetic review database.
+Preserve that DB, owner/workspace, encrypted grant and ledger. No legacy/Heroku
+DB migration or data inspection. The active local server uses the preserved
+review bootstrap, not the older fresh-database bootstrap.
 
-## Limits and next action
+## Limits
 
-Single local Windows process only; DEBUG off, explicit owner/workspace,
-loopback host/peer and no proxy. No production or staging activation.
-Legacy recovery, usability and real advertiser release gates remain unresolved.
+Single isolated Windows process, DEBUG off, loopback, explicit identity/targets;
+local OAuth and test mutation flags default off. No ENABLED mutation path.
+The fixed test is separate from fake campaign rehearsal; arbitrary workspace
+creative dispatch is not implemented. See ADR-0022 and the current Google test
+integration checklist. Recovery, legal/privacy and production gates remain open.
 
-## Verified API milestone
+## Next action
 
-October 19: a controlled local verifier refreshed the saved grant, then made one
-fixed GAQL Search request against only the owner-designated test child through
-its designated test manager. The response contained exactly one matching child,
-`testAccount=true` and no manager flag. No account enumeration, campaign data,
-mutations or spend. Only booleans/counts were emitted; identifiers and credentials
-were excluded from repository notes. The verifier is a temporary local script,
-not yet a product route or reusable application adapter.
-
-## Application verification UI
-
-The read is now an application adapter with explicit test customer/manager
-settings. The local owner uses a CSRF-protected POST to verify; GET never calls
-Google. Matching test-account evidence is session-local, expires after ten
-minutes, and is invalidated by changed target/owner/workspace/encrypted grant,
-failed verification or disconnect. Missing targets and non-test/mismatched
-responses fail closed. No IDs or tokens appear in the UI.
-
-Live browser verification through the new button succeeded on October 19.
-47 focused local tests passed; Ruff passed. The existing isolated synthetic
-database and owner/workspace were preserved for the saved credential.
-Current branch: feat/google-test-connection-status; snapshot precedes its PR.
-
-Next: design the narrowly scoped paused synthetic campaign creation/stop
-adapter using the verified test target, explicit action authorization and
-idempotency. Do not enable live serving or media spend.
+Bind a current owner-selected synthetic workspace draft to an immutable Google
+Search payload and explicit test-dispatch consent, reusing the verified target,
+durable idempotency and pause/readback protections. Do not enable real accounts,
+live serving, advertiser data or media spend.

@@ -10,4 +10,7 @@ urlpatterns = [
     path("callback/", views.callback, name="google-local-callback"),
     path("disconnect/", views.disconnect, name="google-local-disconnect"),
     path("verify/", views.verify_test_account, name="google-local-verify"),
+    path(
+        "test-campaign/", views.test_campaign_action, name="google-local-test-campaign"
+    ),
 ]

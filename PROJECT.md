@@ -2,6 +2,8 @@
 
 ## Current status
 
+- On 2026-10-19 the local application created a fixed synthetic Search campaign/ad group/keyword/responsive ad in the verified Google test account, read back PAUSED and confirmed stop as PAUSED. Durable intent prevented repeat creation while reconciliation recovered a budget-name mismatch. No live serving/spend; this is a separate fixed test, not arbitrary workspace draft dispatch. See ADR-0022 and Google test integration readiness.
+
 - Google test setup progressed on 2026-10-17: test manager/child, dedicated Cloud API project, OAuth web client and one test user exist. The application remains disconnected. Local-only status/start/callback/disconnect routes now use the state/PKCE foundation and Windows-encrypted credential storage; runtime client decryption is verified. The feature is disabled by default. Google redirect registration and encrypted account authorization were verified on October 19. The local UI can now explicitly verify the configured test child with a fixed read-only API call and display a recent result; live browser verification passed. No publishing or spend is enabled. Current Google guidance replaces developer tokens with Cloud project access. See [test integration readiness](docs/product/google-ads-test-account-readiness.md).
 
 - Product direction was clarified on 2026-09-27 at the owner's request: Türkiye is the target market, and the product is for people and organizations that want to advertise. Dental clinics are one example, not the product boundary.
