@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:32 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 18:49 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -11,9 +11,12 @@ and media spend remain gated.
 ## Repository
 
 Base main 09f54cc (PR #289 merged); its required CI 39242010811 and main CI
-39242328698 passed. Current branch docs/google-production-access-audit; PR #290, implementation
-head 14bf470. This snapshot records the PR before its own follow-up commit;
-verify latest Git/head/checks/merge state live.
+39242328698 passed. PR #290 remains open at 59b688a; required run 39278829487
+is queued, so it has not merged. Current branch docs/public-identity-requirements,
+PR #291 (implementation head 514f75b), targets #290's branch until #290 merges.
+Its initial CI 39280685026 is queued. This snapshot precedes its own follow-up
+commit; verify latest Git/head/checks live. Retarget #291 to main after #290
+merges, then check its latest-head required CI before merging it.
 Reviewed green PRs may merge under standing owner authorization.
 
 ## Verified Cloud/OAuth observations — read-only
@@ -31,8 +34,14 @@ Reviewed green PRs may merge under standing owner authorization.
   publication and advertiser/financial readiness, with current official sources.
   Testing grant expiry is generally seven days for these scopes; exact current
   grant expiry was not inspected or calculated. Do not rotate needlessly.
-- Documentation-only change: no new local application tests run in this audit.
-  Check required/post-merge CI after publishing its PR.
+- Requirements now in docs/product/public-identity-page-requirements.md:
+  page acceptance criteria, code-derived data inventory, missing owner facts,
+  retention/ledger deletion and test/production project separation. Existing
+  home route exists; separate contact/privacy/terms routes are not implemented.
+- Protected approval/dispatch snapshots include content. Do not promise immediate
+  total deletion or delete durable no-resend intent to satisfy a naive cleanup.
+- Documentation-only work: no new local application tests run. git diff --check
+  passed before this snapshot; required/post-merge CI must be checked live.
 
 ## Preserved product evidence
 
@@ -43,21 +52,22 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 
 ## CI observation at this snapshot
 
-PR #290 initial run 39277504638 passed. Follow-up run 39277581963 was reported
-in progress by status APIs; cancel replied already completed, while rerun replied
-already running. Latest-head CI success is therefore not verified. Do not force
-merge or disable checks. This snapshot records the discrepancy; verify the CI
-for its new head and merge only after required checks actually pass.
+PR #290 prior-head runs 39277504638 and 39277581963 are now both success.
+Latest-head run 39278829487 remains queued. Auto-merge is not enabled in this
+repository; enabling it was not attempted. Do not force merge or disable checks.
+Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Prepare local production-domain/application-identity and public homepage/contact/
-privacy/terms requirements from actual product data flows. Explicitly list missing
-owner facts (domain, business identity/contact, data recipients/retention) and
-qualified review. Preserve Test/Testing setup; decide test/production project and
-credential separation before a future Explorer application. No upgrade, OAuth
-publish, scope grant, purchase or real advertiser/spend action now. Any later
-security-sensitive access expansion needs explicit action-time confirmation.
+After settling the documentation PR dependency/checks, implement local static
+/iletisim/, /gizlilik/, /kullanim-kosullari/ draft preparation pages and footer
+links per public-identity-page-requirements.md. Explicit draft/not-ready labels,
+no forms or data collection, no invented business identity, no Google changes.
+Use focused route/template and visual checks appropriate to that implementation.
+Domain/business/contact, real recipients/retention and qualified review remain
+open before final public text/production. Preserve Test/Testing and plan separate
+production project/credentials; no upgrade, publish, scope grant, purchase or real
+advertiser/spend action now.
 
 ## Local environment
 
@@ -69,4 +79,6 @@ Latest browser draft-dispatch result for draft 2: stopped / PAUSED, 5,000 TRY CU
 Status controls: /connections/google/draft-status/?draft=1. Server/helper
 availability is ephemeral; verify before use. Grant stored with user-scoped
 Windows DPAPI outside Git; reuse it rather than unnecessary reauthorization.
-Read-only reviewer completed; no agent work remains running.
+Independent read-only review of the requirements and source completed with no
+actionable findings. No agent work remains running. No local DB/grant was read
+or changed for the code-derived data inventory.

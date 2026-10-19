@@ -40,13 +40,13 @@ Tarayıcı güvenlik kuralı erişimi genişleten son işlemde eylem anında aç
 ister. API yükseltmesi, OAuth publish/kapsam ekleme ve gerçek reklamveren/harcama
 izni ayrı işlemler olarak değerlendirilir.
 
-Tek sonraki yerel iş: mevcut gerçek veri akışları ve eksikleri temel alarak
-üretim alan adı/uygulama kimliği, herkese açık ürün tanıtımı, iletişim, gizlilik
-ve şartlar sayfalarının gereksinimlerini hazırlamak. İşletme unvanı/irtibat,
-alan sahipliği, veri alıcıları/saklama ve hukuki inceleme gibi kullanıcıdan gereken
-faktörleri açık kaydet. Alan adı henüz yok; satın alma/yayın veya gerçek bilgi
-uydurma yok. Yerel iskelet, Google doğrulamasına veya hukuki onaya hazır sayılmaz.
-Çalışan şifreli TEST grant'ini veya ledgeri bu hazırlık için değiştirme.
+Sayfa, veri akışı ve eksik sahip kararları
+[uygulama gereksinimlerinde](public-identity-page-requirements.md) kaydedildi.
+Tek sonraki yerel iş: veri toplamayan, açıkça taslak olarak işaretli iletişim,
+gizlilik ve şartlar hazırlık sayfaları ile footer bağlantıları. Alan adı henüz
+yok; satın alma/yayın veya gerçek bilgi uydurma yok. Yerel iskelet, Google
+doğrulamasına veya hukuki onaya hazır sayılmaz. Çalışan şifreli TEST grant'ini
+veya ledgeri bu hazırlık için değiştirme.
 
 ## Güncel resmi kaynaklar
 

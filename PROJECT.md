@@ -131,3 +131,5 @@ Total-budget TEST dispatch verified (2026-10-19): new profile v2 creates non-sha
 
 
 Read-only Cloud audit (2026-10-19): Ads API is enabled with Test access (15,000 test operations/day); Explorer Apply button visible, not submitted. OAuth is External/Testing with one test user; Publish app disabled pending Branding. Public home/privacy/terms URLs and authorized domains are absent; owner has no domain yet. Scope declaration tables empty (not proof that the existing runtime TEST grant was revoked). See [production-access audit](docs/product/google-production-access-audit.md). No access/permission/publication/account changes were made.
+
+Public identity preparation (2026-10-19): [page requirements](docs/product/public-identity-page-requirements.md) map current code data flows, missing business/domain/contact facts and category-specific retention/deletion decisions. Protected Google approval/dispatch snapshots contain content and need a deletion/recovery design that preserves no-resend safety. Next implement local draft information pages only; no legal text, production readiness, domain purchase or Google permission change is implied.

@@ -52,7 +52,10 @@ Güncel Cloud API/OAuth durumu salt okunur doğrulandı; ayrıntılar
 [erişim denetiminde](google-production-access-audit.md). Explorer başvuru düğmesi
 mevcut; test/üretim proje ayrımı belirlenmeden yükseltilmez. İleride erişimi
 genişleten son işlemde açık onay gerekir. Alan adı henüz yok; sonraki yerel iş
-uygulama kimliği ve halka açık tanıtım/gizlilik/şartlar sayfası gereksinimleridir. API erişimi, OAuth uygulama yayını ve gerçek reklamveren/harcama izni
+uygulama kimliği ve halka açık tanıtım/gizlilik/şartlar sayfası hazırlığıdır.
+[Gereksinimler ve kod veri envanteri](public-identity-page-requirements.md)
+tamamlandı; sırada veri toplamayan yerel taslak sayfalar var.
+API erişimi, OAuth uygulama yayını ve gerçek reklamveren/harcama izni
 ayrı kapılar olarak kalır. Gerçek hesap bağlanmadı ve erişim yükseltilmedi.
 
 ## Resmi kaynaklar — 19 Ekim'de kontrol edildi
