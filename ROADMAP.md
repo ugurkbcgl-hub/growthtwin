@@ -240,3 +240,6 @@ Live Google Search readiness audited (2026-10-19): [the current gate list](docs/
 
 
 Total-budget TEST dispatch verified (2026-10-19): new profile v2 creates non-shared CUSTOM_PERIOD budgets with exact totalAmountMicros; stored v1 DAILY ledgers retain read/stop and cannot be converted/reset. Browser created a new synthetic draft, sent 5,000 TRY total PAUSED, reconciled repeat create and confirmed stop; old daily stop also passed. 82 focused tests passed. No serving/spend or production cap exhaustion evidence; see ADR-0026. Next inspect current Cloud API/OAuth production-access gates read-only before planning any upgrade or real account flow.
+
+
+Read-only Cloud audit (2026-10-19): Ads API is enabled with Test access (15,000 test operations/day); Explorer Apply button visible, not submitted. OAuth is External/Testing with one test user; Publish app disabled pending Branding. Public home/privacy/terms URLs and authorized domains are absent; owner has no domain yet. Scope declaration tables empty (not proof that the existing runtime TEST grant was revoked). See [production-access audit](docs/product/google-production-access-audit.md). No access/permission/publication/account changes were made.
