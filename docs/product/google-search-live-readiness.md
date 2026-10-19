@@ -19,7 +19,7 @@ Bu, gerçek yayın başarısı veya gerçek harcama sınırı kanıtı değildir
 | Öncelik / kapı | Doğrulanmış olan | Eksik kanıt ve tamamlanma koşulu |
 |---|---|---|
 | 1. Toplam bütçe | Günlük örnek tutar açıkça toplam tavan sayılmıyor. Google v25 TEST hesabı bu çalışmada CUSTOM_PERIOD / totalAmountMicros isteğini validateOnly ile kabul etti. | 19 Ekim takip: yeni sentetik taslakta PAUSED CUSTOM_PERIOD/5.000 TRY oluşturma, tam tür/tutar/tarih geri okuma ve durdurma geçti; eski DAILY kaydı korundu. Gerçek bütçe tükenmesi/harcama davranışı TEST hesabında kanıtlanamaz. Gerçek kullanımda kampanya ve hesap toplamı, mevcut başka harcamalar ve eşzamanlı işlemler ayrıca sınırlandırılmalı. Otomatik günlük bütçe alternatifi yok. |
-| 2. API ve reklamveren hesabı | Yerel şifreli OAuth ve yalnız belirlenmiş TEST çocuk hesabı kontrolü var. | Üretime uygun Cloud API erişimi, gerekli OAuth/harici uygulama incelemesi, gerçek hesabın sahipliği/izinleri, ülke/para birimi/saat dilimi/faturalama uygunluğu ayrı doğrulanmalı. TEST onayı bu kapıyı açmaz. Bu denetim özel hesabın erişim seviyesini yeniden sorgulamadı. |
+| 2. API ve reklamveren hesabı | Yerel şifreli OAuth ve yalnız belirlenmiş TEST çocuk hesabı kontrolü var. | Üretime uygun Cloud API erişimi, gerekli OAuth/harici uygulama incelemesi, gerçek hesabın sahipliği/izinleri, ülke/para birimi/saat dilimi/faturalama uygunluğu ayrı doğrulanmalı. TEST onayı bu kapıyı açmaz. 19 Ekim canlı konsol denetimi: Test/15.000 günlük test işlemi; OAuth External/Testing, Branding eksik ve Publish kapalı. [Erişim denetimi](google-production-access-audit.md). Explorer başvurusu gönderilmedi. |
 | 3. Reklamveren yetkisi | Sentetik sürüme bağlı TEST onayı ve gönderim kaydı var. | Gerçek hesap, içerik sürümü, gerçek hedef adres, kampanya/hesap tavanı, zamanlama ve geri alma koşullarına bağlı finansal yayın izni kaydedilmeli; eski test onayı taşınmamalı. |
 | 4. Hedef ve politika | Kaynak URL korunuyor; example.com yalnız görünen TEST değişikliği. | Gerçek HTTPS hedefi, hak sahipliği, erişilebilirlik/yönlendirmeler, teklif/iddia kanıtları ve kampanyaya özgü Türkiye/platform uygunluğu doğrulanmalı. Örnek adresi gerçek site gibi kullanma; genel amaçlı sunucu URL isteği eklemeden SSRF sınırını tasarla. |
 | 5. Gizlilik ve veri yaşam döngüsü | Geliştirme sentetik. 29 Eylül araştırması ürün kapılarını listeliyor. | Gerçek girdiler, alıcılar, KVKK/transfer, saklama/silme/yedekler, erişim ve yetkili hukuki değerlendirme tamamlanmalı. Dated araştırma güncel hukuki onay sayılmaz. İlk akışta ham lead saklamama kararı korunur. |
@@ -48,11 +48,12 @@ ADR-0026 ile yeni v2 profil, imzalı kesin toplam/tarih onayı ve kalıcı rezer
 gönderim ve durdurma geçti. Eski v1 günlük ledger değişmedi ve durdurulabildi.
 82 hedefli test başarılı. Bu bir gerçek harcama davranışı testi değildir.
 
-Sırada Cloud projesinin güncel Google Ads API erişim seviyesini ve OAuth uygulama
-yayın/inceleme durumunu yalnız okuyarak doğrulamak; üretim erişimi başvurusu için
-somut eksikleri belirlemek var. Yeni izin/erişim yükseltmesi gönderme veya gerçek
-reklamveren hesabı bağlama yok. İzin gerektiren son işlemde kullanıcıya somut
-sonucu göster; kurtarma/gizlilik/finansal izin kapılarını atlama.
+Güncel Cloud API/OAuth durumu salt okunur doğrulandı; ayrıntılar
+[erişim denetiminde](google-production-access-audit.md). Explorer başvuru düğmesi
+mevcut; test/üretim proje ayrımı belirlenmeden yükseltilmez. İleride erişimi
+genişleten son işlemde açık onay gerekir. Alan adı henüz yok; sonraki yerel iş
+uygulama kimliği ve halka açık tanıtım/gizlilik/şartlar sayfası gereksinimleridir. API erişimi, OAuth uygulama yayını ve gerçek reklamveren/harcama izni
+ayrı kapılar olarak kalır. Gerçek hesap bağlanmadı ve erişim yükseltilmedi.
 
 ## Resmi kaynaklar — 19 Ekim'de kontrol edildi
 
