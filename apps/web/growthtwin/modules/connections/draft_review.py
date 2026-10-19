@@ -14,13 +14,34 @@ from django.views.decorators.csrf import csrf_protect
 from growthtwin.modules.campaigns.google_draft_payload import build_draft_package
 from growthtwin.modules.campaigns.models import (
     GoogleDraftApproval,
+    GoogleDraftDispatch,
     WorkspaceCampaignDraft,
 )
 
-from . import backend, verification
+from . import backend, draft_dispatch, verification
 from .views import local_owner_only
 
 SALT = "local-google-draft-test-review-v1"
+
+
+@local_owner_only("GET")
+def dispatch_status(request, binding):
+    try:
+        draft = _draft(request, binding)
+    except (WorkspaceCampaignDraft.DoesNotExist, ValidationError):
+        return HttpResponse("Taslak bulunamadı.", status=404)
+    row = GoogleDraftDispatch.objects.filter(draft=draft).first()
+    return HttpResponse(
+        format_html(
+            "<h1>Google test gönderimi</h1><p>{}</p><p>Bu sayfa güncel taslak değişmiş olsa da kayıtlı testi kontrol edip durdurabilir.</p>"
+            '<form method="post" action="/connections/google/draft-dispatch/">'
+            '<input type="hidden" name="csrfmiddlewaretoken" value="{}"><input type="hidden" name="draft" value="{}">'
+            '<button name="action" value="read">Kontrol et</button><button name="action" value="stop">Durdur ve doğrula</button></form>',
+            row.state if row else "Henüz gönderilmedi",
+            get_token(request),
+            draft.pk,
+        )
+    )
 
 
 def _draft(request, binding, *, lock=False):
@@ -76,6 +97,48 @@ def review(request, binding):
         "<li>{}</li>",
         ((text,) for text in google["headlines"] + google["descriptions"]),
     )
+    dispatch_form = ""
+    try:
+        plan = draft_dispatch.profile(package)
+        dispatch_token = signing.dumps(
+            {
+                "owner": binding[0],
+                "workspace": binding[1],
+                "draft": draft.pk,
+                "target_key": target_key,
+                "dispatch_key": draft_dispatch.review_key(package),
+            },
+            salt=SALT + "-dispatch",
+        )
+        row = GoogleDraftDispatch.objects.filter(draft=draft).first()
+        dispatch_form = (
+            format_html(
+                "<h2>Duraklatılmış test gönderimi</h2><p>Özgün adres: {}. TEST adresi açıkça {} olarak değişir; bu bir reklamveren sayfası veya doğrulanmış hizmet değildir.</p>"
+                "<p>Günlük sanal bütçe: {} TRY. Başlangıç: {} 00:00:00; bitiş dahil: {} 23:59:59 (Türkiye saat dilimi, hesapta doğrulanır). Ankara / Türkiye şehir kaydı Google’dan tekil ve etkin olarak doğrulanır; konum seçimi PRESENCE.</p>"
+                "<p>Günlük bütçe toplam planın gün sayısına (iki uç dahil) bölünüp kuruşa aşağı yuvarlanmasıdır; toplam harcama garantisi değildir. "
+                "Anahtar kelime yalnızca “growthtwin synthetic test” / EXACT. Tüm reklam kaynakları PAUSED oluşturulur. Canlı yayın ve medya harcaması yoktur.</p>"
+                '<p>Gönderim durumu: {}</p><form method="post" action="/connections/google/draft-dispatch/">'
+                '<input type="hidden" name="csrfmiddlewaretoken" value="{}"><input type="hidden" name="draft" value="{}">'
+                '<input type="hidden" name="review" value="{}">'
+                '<label><input type="checkbox" name="confirm" value="yes"> Yukarıdaki adres ve test ayarlarıyla, onaylı sürümü Google TEST hesabına duraklatılmış göndermeyi onaylıyorum.</label>'
+                '<button name="action" value="create">Onaylı sürümü test hesabına gönder</button>'
+                '<button name="action" value="read">Gönderilen testi kontrol et</button>'
+                '<button name="action" value="stop">Testi durdur ve doğrula</button></form>',
+                plan["original_url"],
+                plan["test_url"],
+                Decimal(plan["daily_micros"]) / 1000000,
+                plan["start"],
+                plan["end"],
+                row.state if row else "Henüz gönderilmedi",
+                get_token(request),
+                draft.pk,
+                dispatch_token,
+            )
+            if approved
+            else ""
+        )
+    except ValidationError:
+        dispatch_form = "Gönderim için ileri tarihli Ankara test planı gerekli."
     return HttpResponse(
         format_html(
             '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Google test gönderimi inceleme</title>'
@@ -89,7 +152,7 @@ def review(request, binding):
             '<input type="hidden" name="csrfmiddlewaretoken" value="{}">'
             '<input type="hidden" name="draft" value="{}"><input type="hidden" name="review" value="{}">'
             '<label><input type="checkbox" name="confirm" value="yes" required> Bu sürümü yalnızca duraklatılmış Google test gönderimi için onaylıyorum.</label>'
-            "<button>Bu test sürümünü onayla</button></form></html>",
+            "<button>Bu test sürümünü onayla</button></form>{}</html>",
             draft.name,
             google["final_url"],
             Decimal(google["media_budget_minor"]) / 100,
@@ -105,8 +168,59 @@ def review(request, binding):
             get_token(request),
             draft.pk,
             token,
+            dispatch_form,
         )
     )
+
+
+@local_owner_only("POST")
+@csrf_protect
+def dispatch(request, binding):
+    try:
+        draft = _draft(request, binding)
+        action = request.POST.get("action")
+        consent_key = ""
+        if action == "create":
+            package = build_draft_package(draft)
+            target_key = verification.configuration_key(binding)
+            consent_key = draft_dispatch.review_key(package)
+            token = signing.loads(
+                request.POST.get("review", ""), salt=SALT + "-dispatch", max_age=600
+            )
+            if request.POST.get("confirm") != "yes" or token != {
+                "owner": binding[0],
+                "workspace": binding[1],
+                "draft": draft.pk,
+                "target_key": target_key,
+                "dispatch_key": consent_key,
+            }:
+                raise ValidationError("Gönderim onayı güncel değil.")
+        row = draft_dispatch.perform(binding, draft.pk, action, consent_key)
+        return HttpResponse(
+            format_html(
+                '<p>Test gönderimi: {}. {}</p><a href="/connections/google/draft-review/?draft={}">İncelemeye dön</a>',
+                row.state,
+                "Sonuç belirsiz; tekrar oluşturulmaz. Kontrol et veya durdur."
+                if row.state == "uncertain"
+                else "Google durumu PAUSED olarak doğrulandı.",
+                draft.pk,
+            ),
+            status=409 if row.state == "uncertain" else 200,
+        )
+    except WorkspaceCampaignDraft.DoesNotExist:
+        return HttpResponse("Taslak bulunamadı.", status=404)
+    except (
+        signing.BadSignature,
+        ValidationError,
+        GoogleDraftApproval.DoesNotExist,
+        backend.ConnectionUnavailable,
+        TypeError,
+        ValueError,
+    ):
+        return HttpResponse(
+            "Gönderim tamamlanamadı. Güncel onayı, test planını ve bağlantıyı kontrol edin; mevcut işlem yeniden oluşturulmaz.",
+            status=409,
+        )
 
 
 @local_owner_only("POST")

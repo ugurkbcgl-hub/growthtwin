@@ -159,3 +159,17 @@ class GoogleDraftApproval(models.Model):
                 name="unique_google_draft_approval",
             )
         ]
+
+
+class GoogleDraftDispatch(models.Model):
+    """One committed external TEST intent per draft; never reset after ambiguity."""
+
+    draft = models.OneToOneField(WorkspaceCampaignDraft, on_delete=models.PROTECT)
+    approval = models.ForeignKey(GoogleDraftApproval, on_delete=models.PROTECT)
+    operation_id = models.UUIDField(unique=True)
+    configuration_key = models.CharField(max_length=64)
+    payload_json = models.TextField()
+    state = models.CharField(max_length=20, default="uncertain")
+    resource_name = models.CharField(max_length=120, blank=True)
+    observed_status = models.CharField(max_length=16, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)

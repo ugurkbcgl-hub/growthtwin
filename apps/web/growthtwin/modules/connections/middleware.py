@@ -15,7 +15,11 @@ class LocalOAuthHeadersMiddleware:
             response["Referrer-Policy"] = (
                 "same-origin"
                 if request.path
-                in {"/connections/google/", "/connections/google/draft-review/"}
+                in {
+                    "/connections/google/",
+                    "/connections/google/draft-review/",
+                    "/connections/google/draft-status/",
+                }
                 else "no-referrer"
             )
         return response

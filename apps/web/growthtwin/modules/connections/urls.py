@@ -5,6 +5,10 @@ from django.urls import path
 from . import draft_review, views
 
 urlpatterns = [
+    path(
+        "draft-status/", draft_review.dispatch_status, name="google-local-draft-status"
+    ),
+    path("draft-dispatch/", draft_review.dispatch, name="google-local-draft-dispatch"),
     path("draft-review/", draft_review.review, name="google-local-draft-review"),
     path("draft-approve/", draft_review.approve, name="google-local-draft-approve"),
     path("", views.status, name="google-local-status"),

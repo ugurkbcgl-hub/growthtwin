@@ -84,3 +84,10 @@ platform payload and explicit dispatch consent before broadening this fixed test
 ## Workspace review preparation — 2026-10-19
 
 ADR-0023 adds an owner-only local review package from the selected workspace creative and plan. Canonical JSON and a source/target-bound signed review prevent silent changes; POST approval stores an immutable snapshot. 62 focused tests passed and the synthetic browser approval succeeded without any Google call. Existing fixed-test dispatch is unchanged. Migration 0007 applied only to the preserved synthetic review DB. Destination example.invalid remains exact and unverified; future dispatch must explicitly resolve destination, budget/date/targeting semantics and revalidate current approval before a new durable Google operation.
+
+
+## Workspace PAUSED TEST dispatch — 2026-10-19
+
+ADR-0024 implements the separate durable workspace draft dispatch after ADR-0023 approval. The UI additionally displays and requires consent for the example.com test URL override, inclusive daily TRY budget (rounded down to kuruş), account-local date-times, Ankara/PRESENCE and synthetic EXACT keyword. It preserves the original example.invalid URL in the approval. Before writes, Google verifies the configured TEST child, TRY currency, Türkiye time zone and one enabled city constant. Validation-only passed with v25 date-time fields; the subsequent browser create/read/stop succeeded. Readback checks creative assets, destination, budget, dates and targeting. 71 focused tests passed.
+
+Migration 0008 was applied only to the preserved isolated synthetic DB. Each draft has a separate one-to-one intent referencing the immutable approval; uncertain requests never resend creation. /connections/google/draft-status/?draft=1 preserves owner-only read/stop even after the current source becomes invalid. Remote drift can leave full reconciliation uncertain despite a sent pause; changed target/identity requires recovery review. No live account, serving, media spend or production readiness is established.
