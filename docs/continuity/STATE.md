@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 14:03 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 14:04 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -11,8 +11,9 @@ advertiser data, production serving and media spend remain gated.
 ## Repository
 
 Base main 8ba9ea3 (PR #288 merged); its required CI 39239847336 and main CI
-39240223862 passed. Current branch feat/google-total-budget-dispatch.
-This snapshot precedes its PR/commit; recheck Git/head/open PR/CI live.
+39240223862 passed. Current branch feat/google-total-budget-dispatch; PR #289, implementation
+head f8a04de. This documentation follow-up records the PR; recheck latest
+Git/head/checks/merge state live.
 Reviewed green PRs may merge under standing owner authorization.
 
 ## Verified result
