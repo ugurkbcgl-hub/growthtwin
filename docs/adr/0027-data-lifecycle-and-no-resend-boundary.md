@@ -182,6 +182,38 @@ of pending tickets from eligible decision steps, binding scope/generation/revisi
 and preventing ticket replacement while an operation is unresolved. Keep that
 coordinator synthetic before connecting any real executor or persistence.
 
+### Pure ticket issuance follow-up — 2026-10-19
+
+`connections/lifecycle_ticket.py` now issues synthetic tickets only for eligible
+STOP, REVOKE, VERIFY_REVOCATION, REMOVE_LOCAL_SECRET and ERASE_LOCAL steps.
+Request identity/generation and expected revision must match. Issuance changes
+only revision and the pending ticket; it does not mark outcomes successful.
+Exact issuance replay is a no-op, changed-content operation-ID reuse conflicts,
+and observed operation IDs cannot be issued again. Unsupported/manual steps
+remain unsupported rather than bypassing the decision contract.
+
+One normal unresolved ticket cannot be replaced. An explicitly requested,
+eligible immediate REVOKE can occupy a separate single priority slot without
+losing the normal operation. Reducer evidence consumes only its matching slot;
+both result orders preserve the other ticket. Priority issuance increments the
+global revision, so an old result remains rejected. Freshly verified evidence
+must be correlated to the current revision; never make a stale response valid
+by merely changing its revision. Provider verification is still not implemented.
+
+Pending ticket source step and issuance revision are typed and bound to the
+outcome; issued revisions cannot be ahead of the record. Older manual synthetic
+tickets remain constructible for existing fixtures, not a runtime bypass.
+13 new issuance tests plus the previous 29 tests passed (42 DB-free total).
+Ruff and independent read-only review passed; reviewer-suggested reverse result
+order coverage was added. No route, DB, migration, provider/credential operation,
+durable atomic store or actual erasure is connected. A duplicate result never
+instructs a future executor to resend. Real runtime checks and retention decisions
+remain separate release gates.
+
+Next: expose these contracts through a read-only local preview with fixed
+synthetic scenarios and clearly simulated outcomes, not real closure buttons.
+Keep actual TEST grants/ledgers and production actions separate.
+
 ## Consequences and official sources
 
 Kullanıcıya dört farklı işlem sunulması, tek belirsiz “sil” düğmesinden daha çok

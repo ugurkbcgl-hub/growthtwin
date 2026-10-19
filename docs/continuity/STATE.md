@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 19:40 Europe/Istanbul (+03:00).
+Verified: 2026-10-20 02:43 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,15 +10,16 @@ and media spend remain gated.
 
 ## Repository
 
-Main afb1ddf: PR #291 merged after required CI 39281843423 passed. Main CI
-39286518702 last showed queued; previous main CI 39281752320 passed.
-PR #292 rebased/retargeted to main; prior-head run 39281961036 passed, but no
-check started after rebase/retarget. Empty CI-only commit 3858ce2 now has queued
-run 39287123904. PR #293 rebased onto #292, head c5c8bc1, CI 39286628218 in
-progress. PR #294 rebased onto #293, head 131fade, CI 39286654218 queued.
-Current branch feat/lifecycle-observation-reducer, PR #295, targets #294's branch;
-implementation head 0805164, initial CI 39287331540 queued. This snapshot precedes
-its own follow-up commit. Verify heads/bases/checks; merge in
+Main 121794a: PR #292–295 merged after their own required CI passed. Latest
+#295 required run 39291420532 passed; previous main 516d335 CI 39291370448 passed.
+Current main CI 39343286851 is in progress. Current branch
+feat/lifecycle-ticket-issuance, PR #296, now targets main; rebased head 4f1993b,
+CI 39343314861 in progress. Previous pre-rebase head e8f2483 CI 39291430117 passed.
+Application tree is unchanged by rebase (git diff e8f2483 HEAD -- apps/web empty).
+This snapshot precedes its own documentation follow-up commit; verify its latest
+head/checks before merging. No local tests rerun on October 20; the 42 focused
+tests below were run and passed on October 19.
+Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
@@ -83,6 +84,18 @@ Reviewed green PRs may merge under standing owner authorization.
   issue. Pending tickets/provider evidence are caller assertions; no issuance,
   durable store, atomic CAS, timestamp freshness or runtime auth is implemented.
   No DB/API/UI/migration/credential operations; existing TEST routes unchanged.
+- Pure issuance is now in lifecycle_ticket.py: only eligible supported steps
+  issue typed source/outcome/revision tickets. Exact issuance replay is a no-op;
+  conflicts, retired operation IDs and unresolved normal replacement are rejected.
+  Immediate REVOKE may use one separate priority slot, preserving the original
+  ticket. Reducer consumes only the matching slot; both result orders tested.
+  New safety metadata cannot be future-dated or mismatched with its outcome.
+- 13 new issuance tests + prior 29 passed (42 DB-free); ruff format/check and
+  git diff --check passed. Independent review found no blocking issue; optional
+  reverse-order test was added. Code tree unchanged by dependency rebase.
+  Still no storage/executor/provider proof/credential/UI effects. A duplicate
+  result never authorizes resending. Fresh observation correlation is not
+  implemented provider freshness verification; never re-stamp a stale event.
 
 ## Preserved product evidence
 
@@ -94,18 +107,19 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 ## CI observation at this snapshot
 
 PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291 merged; #292–294 latest heads await CI completion. Auto-merge is not enabled; linear
+PR #291–295 merged; #296 latest head awaits CI completion. Auto-merge is not enabled; linear
 history rules also reject merge commits, so use squash after checks pass.
 No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Settle dependent PRs in order after required CI; then add pure pending-ticket
-issuance from eligible decision steps under ADR-0027, bound to identity/generation/
-revision and rejecting replacement of an unresolved operation. Keep it synthetic
-without DB/API/UI/token or erasure effects. Suggestions/tickets are not runtime
-authorization. Persistence/concurrency/provider freshness proof remains open.
+Settle dependent PRs in order after required CI; then add a read-only local
+lifecycle preview using fixed synthetic scenarios from these contracts, with
+clear simulation labels and no real closure/revoke/delete buttons or submitted
+personal data. Do not wire an executor or access preserved Google DB/grants.
+Suggestions/tickets are not runtime authorization; persistence/concurrency/
+provider freshness proof remains open.
 Domain/business/contact, real recipients, retention periods and qualified review
 remain open before final public text/production. Preserve TEST setup, immutable
 existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase
