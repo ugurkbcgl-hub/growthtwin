@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Kontrol önizlemesi — GrowthTwin</title>
+    <link rel="stylesheet" href="{% static 'site/css/site.css' %}">
+  </head>
+  <body class="information-page lifecycle-preview">
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
+    <header class="topbar">
+      <a class="brand" href="{% url 'site:home' %}" aria-label="GrowthTwin ana sayfa">growth<span class="brand-light">twin</span></a>
+      <a class="topbar-account" href="{% url 'site:home' %}">Ana sayfaya dön</a>
+    </header>
+    <main class="page-wrap information-content" id="main-content" tabindex="-1">
+      <p class="information-status" role="note"><strong>Sentetik önizleme · Gerçek işlem yapılmaz</strong><br>Buradaki hesap ve sonuçlar örnektir. Hesabına bağlanılmaz, reklam durdurulmaz, yetki iptal edilmez ve veri silinmez.</p>
+      <h1>Kontrol sende,<br>her adım açık.</h1>
+      <p class="information-intro">Bir örnek seç. Hangi sonucun doğrulandığını, neyin beklediğini ve nedenini gör.</p>
+      <div class="lifecycle-layout">
+        <nav class="scenario-nav" aria-label="Sentetik senaryolar">
+          {% for key, label in scenarios %}
+            <a href="{% url 'site:lifecycle-preview' %}?senaryo={{ key }}#scenario-result"{% if key == selected %} aria-current="page"{% endif %}>{{ label }}</a>
+          {% endfor %}
+        </nav>
+        <section class="scenario-result" id="scenario-result" aria-labelledby="scenario-title" tabindex="-1">
+          <p class="scenario-label">Yalnızca örnek sonuç</p>
+          <h2 id="scenario-title">{{ title }}</h2>
+          {% for note in notes %}<p>{{ note }}</p>{% endfor %}
+          <h3>Örnekteki durum</h3>
+          <ul class="scenario-outcomes">{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+          <div class="scenario-next">
+            <h3>Sırada hangi kontrol var?</h3>
+            <ul>{% for check in next_checks %}<li>{{ check }}</li>{% empty %}<li>Bu örnekte önerilen başka bir adım yok.</li>{% endfor %}</ul>
+          </div>
+          <p class="scenario-footnote">Bunlar gerçek hesabının durumunu göstermez. Üretim bağlantısı ve veri temizliği henüz bu ekrana bağlı değildir.</p>
+        </section>
+      </div>
+    </main>
+    <footer class="footer page-wrap">
+      {% include 'site/information_links.html' %}
+      <span class="footer-prototype">Yerel ürün prototipi</span>
+    </footer>
+  </body>
+</html>
