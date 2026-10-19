@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:58 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 19:03 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -12,10 +12,11 @@ and media spend remain gated.
 
 Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Main CI
 39281752320 is queued. PR #291 was rebased/retargeted to main, head 13f1dfa;
-required CI 39281843423 is queued. Current branch feat/public-information-pages,
-PR #292, builds on #291 (base docs/public-identity-requirements); implementation
-head bd1ffe6, initial CI 39281897394 queued. This snapshot precedes its own
-follow-up commit. Verify latest heads, PR bases and checks; merge in
+required CI 39281843423 is queued. PR #292, branch feat/public-information-pages,
+builds on #291 (base docs/public-identity-requirements); latest head
+5ea0b28, CI 39281961036 queued. Current branch docs/data-lifecycle-contract builds
+on #292 and will target feat/public-information-pages until that PR merges.
+This snapshot precedes its own commit/PR. Verify latest heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
@@ -52,6 +53,14 @@ Reviewed green PRs may merge under standing owner authorization.
   cookie name, not the preserved Google DB. Initial home error from an existing
   browser cookie was resolved by that cookie isolation; home then passed review.
   This preview supports information-page review, not campaign operation.
+- ADR-0027 now defines category-specific retention/deletion/recovery boundaries,
+  separate stop/revoke/secret/local/recipient/backup outcomes, no-resend barrier
+  versus content snapshot, in-flight/callback races and restore quarantine.
+  No production mechanism, model, migration, erasure or new duration was added.
+  Official Google revoke and KVKK destruction regulation checked on October 19.
+  Independent review found one misleading workspace-delete phrase; corrected to
+  campaign-draft deletion. No other findings. git diff --check passed; no new
+  local application tests run for this documentation-only step.
 
 ## Preserved product evidence
 
@@ -70,14 +79,15 @@ Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Settle #291 and the dependent information-page PR in order after required CI.
-Then define the category-specific retention/deletion/recovery contract, separating
-stop, Google token revocation, local deletion and no-resend ledger preservation.
-Do not invent retention periods, delete existing records or implement a blanket
-delete while facts are open. Domain/business/contact, real recipients/retention
-and qualified review remain open before final public text/production. Preserve
-Test/Testing and plan separate production project/credentials; no upgrade,
-publish, scope grant, purchase or real advertiser/spend action now.
+Settle the dependent PRs in order after required CI; then implement a pure
+synthetic lifecycle decision contract from ADR-0027, returning allowed actions
+and truthful independent outcomes. No DB/API/UI, token change or real erasure
+in that slice. Check scope/authorization, uncertainty, late completion and
+restore restrictions without pretending persistence/concurrency is solved.
+Domain/business/contact, real recipients, retention periods and qualified review
+remain open before final public text/production. Preserve TEST setup, immutable
+existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase
+or real advertiser/spend action now.
 
 ## Local environment
 

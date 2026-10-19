@@ -105,6 +105,10 @@ için hazırlanmadı; yalnız bilgilendirme sayfalarını doğrular.
 yaşam döngüsü kararlarını tamamlamadan bu taslakları nihai metin olarak yayımlama.
 Google'a nihai politika adresi olarak kaydetme. PR/CI ve üretim kapıları ayrı kalır.
 
+Veri yaşam döngüsünün teknik tasarım sınırı [ADR-0027](../adr/0027-data-lifecycle-and-no-resend-boundary.md)
+ile tanımlandı. Bu sözleşme gerçek süre/dayanak, silme çalıştırılması veya
+yedek/alıcı temizliği kanıtı değildir; sayfalardaki taslak durumu sürer.
+
 ## Kaynaklar ve kapsamları — 19 Ekim 2026 kontrolü
 
 - [Google marka doğrulaması](https://developers.google.com/identity/protocols/oauth2/production-readiness/brand-verification): erişilebilir ana sayfa, aynı alandaki gizlilik bağlantısı, alan sahipliği ve ayrı test/üretim projesi önerisi. Terms bağlantısı burada ürün gereksinimidir; her uygulama için bu belgede zorunlu olduğu iddia edilmez.
