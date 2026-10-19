@@ -12,7 +12,7 @@ advertiser data, serving and spend remain separately gated.
 
 Base main: 626cb8b, PR #284 merged after successful CI.
 Current branch: feat/google-paused-test-campaign; this note precedes its own
-commit/PR. Recheck Git/CI before continuing. 50 focused local tests, Ruff and
+commit/PR. Recheck Git/CI before continuing. 52 focused local tests, Ruff and
 migration consistency passed. Live browser create/read/stop passed.
 
 ## Verified implementation

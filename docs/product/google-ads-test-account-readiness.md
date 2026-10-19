@@ -64,7 +64,7 @@ not proxy/router logging controls or a production secret store.
 
 ## Verification and limits
 
-50 focused local tests passed; formatting/lint and migration consistency passed.
+52 focused local tests passed; formatting/lint and migration consistency passed.
 Live Google create/read/stop was verified through the application. Current PR CI
 must be checked before merge. SQLite cannot prove production concurrency.
 

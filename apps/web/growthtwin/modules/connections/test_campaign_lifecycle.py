@@ -114,3 +114,40 @@ class TestCampaignLifecycleTests(TransactionTestCase):
                 test_campaign.perform(self.binding, "create")
             request.assert_not_called()
         self.assertEqual(GoogleTestCampaign.objects.count(), 0)
+
+    def test_google_nonshared_budget_name_is_accepted_only_with_linked_resource(self):
+        def canonical(binding, operation, payload):
+            result = self.response(binding, operation, payload)
+            if operation == "googleAds:search":
+                result["results"][0]["campaignBudget"]["name"] = result["results"][0][
+                    "campaign"
+                ]["name"]
+            return result
+
+        with patch.object(test_campaign, "_request", side_effect=canonical):
+            row = test_campaign.perform(self.binding, "create")
+            self.assertEqual(row.state, "paused")
+
+        def wrong_budget(binding, operation, payload):
+            result = canonical(binding, operation, payload)
+            if operation == "googleAds:search":
+                result["results"][0]["campaignBudget"]["resourceName"] = (
+                    "customers/1111111111/campaignBudgets/999"
+                )
+            return result
+
+        with patch.object(test_campaign, "_request", side_effect=wrong_budget):
+            row = test_campaign.perform(self.binding, "read")
+            self.assertEqual(row.state, "uncertain")
+
+    def test_validation_failure_does_not_reserve_or_send_actual_create(self):
+        with patch.object(
+            test_campaign,
+            "_request",
+            side_effect=test_campaign.TestCampaignRejected("REQUIRED"),
+        ) as request:
+            with self.assertRaises(backend.ConnectionUnavailable):
+                test_campaign.perform(self.binding, "create")
+            self.assertEqual(request.call_count, 1)
+            self.assertTrue(request.call_args.args[2]["validateOnly"])
+        self.assertEqual(GoogleTestCampaign.objects.count(), 0)
