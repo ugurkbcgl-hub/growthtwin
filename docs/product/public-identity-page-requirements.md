@@ -1,6 +1,6 @@
 # Üretim kimliği ve herkese açık sayfalar: uygulama gereksinimleri
 
-**Durum:** 19 Ekim 2026, Europe/Istanbul; uygulama öncesi gereksinim belgesi.
+**Durum:** 19 Ekim 2026, Europe/Istanbul; gereksinimler ve yerel taslak uygulaması.
 Kod inceleme temeli: PR #289 / `09f54cc`; erişim bulguları PR #290.
 Bu belge yayımlanacak gizlilik metni, sözleşme veya hukuki uygunluk onayı değildir.
 Alan adı henüz yok. Satın alma, dağıtım veya Google ayarı değiştirilmedi.
@@ -26,7 +26,7 @@ marka ile sözleşmenin tarafı aynı değilse bu ilişki açıklanmalıdır.
 
 ## 2. Sayfa haritası ve içerik kabul ölçütleri
 
-Aşağıdaki yollar öneridir; henüz route olarak mevcut değildir (`/` hariç).
+Aşağıdaki yollar yerel taslak olarak uygulanmıştır; üretim yayını değildir.
 Üretim alanı belirlenmeden sahte tam URL oluşturulmaz veya konsola yazılmaz.
 
 | Yol | İçerik ve kabul ölçütü |
@@ -85,13 +85,25 @@ sohbete göndermesi istenmez. Eksik işletme bilgileri tahminle tamamlanmaz.
    Yeni dış istek, bağımlılık, model, kayıt veya Google ayarı yok.
 2. Sadece bu sayfalar için route/şablon ve masaüstü/mobil görünüm doğrulaması;
    giriş gerektirmeden erişim, doğru durum uyarısı ve bağlantılar kontrol edilir.
-   Bu belge hazırlığında uygulama testi çalıştırılmadı.
+   İlk gereksinim belgesinde test çalıştırılmadı. Takip uygulamasında 5 odaklı
+   SimpleTestCase ve ruff geçti; sayfaların GET/HEAD erişimi, yazma reddi,
+   bağlantılar, form/script ve oturum yazımı yokluğu kontrol edildi.
 3. Sahip bilgileri, gerçek üretim veri envanteri ve yetkin inceleme tamamlanınca
    nihai metinler; sonra ayrı onaylı alan/HTTPS/yayın ve Google marka/kapsam süreci.
    API erişimi, OAuth yayını ve reklamverenin finansal izni ayrı kapılar kalır.
 
-**Bir sonraki iş:** 1. adımdaki yerel, veri toplamayan hazırlık sayfaları.
-Bu belge o sayfaların veya üretim hazırlığının tamamlandığı anlamına gelmez.
+**Yerel uygulama kanıtı:** üç route, ortak sabit şablon ve footer bağlantıları
+eklendi. Ayrı bellek DB kullanan 8010 önizlemesinde tarayıcı geçişleri, klavye
+odağı, masaüstü ve mobil görünüm kontrol edildi. Mobilde sayfa/genişlik ölçümü
+375/375 px; ana sayfa footer'ında yatay taşma yok. Önizlemenin ilk ana sayfa
+isteği eski tarayıcı oturum çerezi nedeniyle boş DB'de session tablosu aradı;
+yalıtılmış önizlemeye ayrı çerez adı verildikten sonra ana sayfa da doğrulandı.
+Korunan Google DB/grant/ledger değiştirilmedi. Bu önizleme kampanya işlemleri
+için hazırlanmadı; yalnız bilgilendirme sayfalarını doğrular.
+
+**Bir sonraki hazırlık:** gerçek sağlayıcı kimliği/iletişim, alan adı ve veri
+yaşam döngüsü kararlarını tamamlamadan bu taslakları nihai metin olarak yayımlama.
+Google'a nihai politika adresi olarak kaydetme. PR/CI ve üretim kapıları ayrı kalır.
 
 ## Kaynaklar ve kapsamları — 19 Ekim 2026 kontrolü
 
