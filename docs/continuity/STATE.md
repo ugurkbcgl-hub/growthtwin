@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-20 02:54 Europe/Istanbul (+03:00).
+Verified: 2026-10-20 02:55 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -12,8 +12,9 @@ and media spend remain gated.
 
 Main d3aa5ea: PR #292–296 merged after their required CI passed. #296 required
 CI 39343370126 and post-merge main CI 39343651561 passed. No open PR at start.
-Current branch feat/lifecycle-scenario-preview implements the read-only preview;
-this snapshot precedes its own commit/PR. Verify latest head/PR/checks live.
+Current branch feat/lifecycle-scenario-preview, PR #297, implements the read-only
+preview; implementation head 4d4edf5. Required CI not yet reported at this
+snapshot, which precedes its own follow-up commit. Verify latest head/checks live.
 Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
