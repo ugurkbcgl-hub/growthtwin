@@ -55,6 +55,20 @@ mutations or spend. Only booleans/counts were emitted; identifiers and credentia
 were excluded from repository notes. The verifier is a temporary local script,
 not yet a product route or reusable application adapter.
 
-Next: move this fixed, read-only account-verification operation behind a tested
-application adapter and expose a clear verified-test-connection status in the
-local UI before implementing any paused synthetic campaign creation.
+## Application verification UI
+
+The read is now an application adapter with explicit test customer/manager
+settings. The local owner uses a CSRF-protected POST to verify; GET never calls
+Google. Matching test-account evidence is session-local, expires after ten
+minutes, and is invalidated by changed target/owner/workspace/encrypted grant,
+failed verification or disconnect. Missing targets and non-test/mismatched
+responses fail closed. No IDs or tokens appear in the UI.
+
+Live browser verification through the new button succeeded on October 19.
+47 focused local tests passed; Ruff passed. The existing isolated synthetic
+database and owner/workspace were preserved for the saved credential.
+Current branch: feat/google-test-connection-status; snapshot precedes its PR.
+
+Next: design the narrowly scoped paused synthetic campaign creation/stop
+adapter using the verified test target, explicit action authorization and
+idempotency. Do not enable live serving or media spend.
