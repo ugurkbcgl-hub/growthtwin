@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 19:09 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 19:10 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -16,8 +16,9 @@ required CI 39281843423 is queued. PR #292, branch feat/public-information-pages
 builds on #291 (base docs/public-identity-requirements); latest head
 5ea0b28, CI 39281961036 queued. PR #293, branch docs/data-lifecycle-contract,
 targets feat/public-information-pages; head 87e1720, CI 39282568816 queued.
-Current branch feat/lifecycle-decision-contract builds on #293. This snapshot
-precedes its own commit/PR. Verify latest heads/bases/checks; merge in
+Current branch feat/lifecycle-decision-contract, PR #294, targets #293's branch
+docs/data-lifecycle-contract; implementation head af963e9, initial CI 39283319613
+queued. This snapshot precedes its own follow-up commit. Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
