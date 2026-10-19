@@ -250,6 +250,7 @@
       <h2>Google test gönderimini incele</h2>
       <p>Seçilen güncel metin ve plan için sürümü sabit bir test paketi hazırla. İnceleme ve onay Google'a istek göndermez.</p>
       <a class="button button-secondary" href="{% url 'google-local-draft-review' %}?draft={{ draft.pk }}">Test gönderim paketini incele</a>
+      <a class="button button-secondary" href="{% url 'google-local-draft-status' %}?draft={{ draft.pk }}">Gönderilmiş testi kontrol et / durdur</a>
     </section>
     {% endif %}
 

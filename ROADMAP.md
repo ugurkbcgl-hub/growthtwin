@@ -179,7 +179,7 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 
 ## Phase 3 — First publishing and reporting integration
 
-October 19: fixed Google test create/read/pause lifecycle verified through the local application, with atomic PAUSED resources and durable no-resend intent. Next map a reviewed synthetic workspace draft to immutable platform payload and explicit dispatch consent. Live serving/spend remain closed; see ADR-0022.
+October 19: fixed Google test create/read/pause lifecycle verified through the local application, with atomic PAUSED resources and durable no-resend intent. Selected workspace drafts now have immutable review/consent and a separate durable PAUSED TEST dispatch lifecycle (ADR-0023/0024). Live serving/spend remain closed; see ADR-0022.
 
 October 17 setup: dedicated Google test accounts, Cloud Test API access, OAuth web client and one test user are prepared. Local-only OAuth routes and encrypted storage are implemented but disabled by default. Google token exchange, encrypted storage and a targeted test-account API read are verified. The local UI now displays a recent explicit test verification; no publication is enabled. Follow the remaining test-integration gates in [test integration readiness](docs/product/google-ads-test-account-readiness.md).
 
@@ -231,3 +231,6 @@ or this schedule.
 
 
 Local Google workspace preparation (2026-10-19): selected creative and plan can be reviewed as an immutable package and explicitly approved for later PAUSED TEST dispatch. Source/selection/target changes invalidate the current approval. This step performs no Google call and does not yet dispatch workspace drafts. See ADR-0023.
+
+
+Workspace Google TEST dispatch verified (2026-10-19): selected synthetic creative now creates a separate durable PAUSED campaign from its immutable approval. The second consent explicitly shows example.com test URL override, inclusive daily TRY budget, account-local date-times and Ankara/PRESENCE mapping. Browser create/read/stop passed; 71 focused tests passed. One intent per draft prevents re-creation after timeout/restart; independent read/stop survives source changes. Live serving/spend remain gated. See ADR-0024.
