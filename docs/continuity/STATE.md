@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 19:04 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 19:09 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -14,10 +14,10 @@ Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Main CI
 39281752320 is queued. PR #291 was rebased/retargeted to main, head 13f1dfa;
 required CI 39281843423 is queued. PR #292, branch feat/public-information-pages,
 builds on #291 (base docs/public-identity-requirements); latest head
-5ea0b28, CI 39281961036 queued. Current branch docs/data-lifecycle-contract,
-PR #293, targets feat/public-information-pages until #292 merges; implementation
-head 7cf77c7, initial CI 39282530077 queued. This snapshot precedes its own
-follow-up commit. Verify latest heads/bases/checks; merge in
+5ea0b28, CI 39281961036 queued. PR #293, branch docs/data-lifecycle-contract,
+targets feat/public-information-pages; head 87e1720, CI 39282568816 queued.
+Current branch feat/lifecycle-decision-contract builds on #293. This snapshot
+precedes its own commit/PR. Verify latest heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
@@ -62,6 +62,16 @@ Reviewed green PRs may merge under standing owner authorization.
   Independent review found one misleading workspace-delete phrase; corrected to
   campaign-draft deletion. No other findings. git diff --check passed; no new
   local application tests run for this documentation-only step.
+- Follow-up code: connections/lifecycle_decision.py is a pure frozen/typed
+  synthetic evaluator returning eligible closure steps and independent Turkish
+  messages. It blocks new work universally; request/recovery/barrier proof gaps,
+  in-flight and missing erasure facts fail closed. BLOCKED erasure never becomes
+  ERASE_LOCAL automatically; immediate revoke does not suggest stop/reconcile.
+- 15 focused SimpleTestCase tests passed without DB access; ruff format/check
+  and git diff --check passed. Independent review's BLOCKED-state gap was fixed,
+  regression assertion added and reviewer confirmed no remaining findings.
+  No DB/API/UI/model/migration changes or credential/ledger operations. Caller
+  proof booleans are assertions, not implemented auth/CSRF/durability/freshness.
 
 ## Preserved product evidence
 
@@ -80,11 +90,11 @@ Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Settle the dependent PRs in order after required CI; then implement a pure
-synthetic lifecycle decision contract from ADR-0027, returning allowed actions
-and truthful independent outcomes. No DB/API/UI, token change or real erasure
-in that slice. Check scope/authorization, uncertainty, late completion and
-restore restrictions without pretending persistence/concurrency is solved.
+Settle dependent PRs in order after required CI; then implement a pure
+request/generation/revision-bound observation reducer under ADR-0027, rejecting
+stale/late/replayed completion. Keep it synthetic, without DB/API/UI, token or
+real erasure effects. Decision suggestions are not an execution schedule or
+runtime authorization. Persistence/concurrency/freshness proof remains open.
 Domain/business/contact, real recipients, retention periods and qualified review
 remain open before final public text/production. Preserve TEST setup, immutable
 existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase

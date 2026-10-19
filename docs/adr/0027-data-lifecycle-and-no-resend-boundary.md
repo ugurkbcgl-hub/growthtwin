@@ -134,6 +134,30 @@ yan etkisiz bir yaşam döngüsü karar sözleşmesi; yalnız sentetik değerler
 izinli eylem ve kullanıcıya gösterilecek alt durumları üretir. DB/API/UI bağlantısı
 ve gerçek silme bundan sonra, ayrı incelemeyle gelir.
 
+### Pure decision implementation follow-up — 2026-10-19
+
+`connections/lifecycle_decision.py` now evaluates frozen synthetic request facts
+and independent typed evidence. It returns eligible closure steps and Turkish
+outcome messages; it never approves new campaign/refresh/callback work. Unknown
+types and truthy non-booleans are rejected; unverified request, recovery or
+barrier facts prevent further suggestions. An explicit BLOCKED erasure remains
+review-only, even if other conditions are ready. Immediate revocation does not
+wait for stop/reconciliation. Missing local secret is not revocation evidence.
+
+15 focused database-free tests passed, including defaults, proof rejection,
+restore distrust, stop/revoke priority, project impact, secret absence, in-flight,
+each erasure prerequisite, partial outcomes, repeat determinism and immutability.
+These are decision tests, not execution of all production acceptance scenarios
+above. No durable request identity/revision, transition reducer, concurrency,
+timestamps/freshness verifier, actual auth/CSRF checks, retry job or erasure
+executor was implemented. The caller-supplied assertions are not themselves
+proof. The existing local TEST views do not import or use the contract.
+
+Eligible steps are not an execution schedule or runtime permission; every real
+effect would require fresh scoped, durable checks. Next implement a pure
+request/generation/revision-bound observation reducer to reject stale/late
+completion and replay, still without DB/API/UI or credential operations.
+
 ## Consequences and official sources
 
 Kullanıcıya dört farklı işlem sunulması, tek belirsiz “sil” düğmesinden daha çok
