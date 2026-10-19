@@ -116,3 +116,6 @@ AI may propose and transform campaign material; deterministic application rules 
 ## Omneky capability reference
 
 The owner selected Omneky as a long-term capability benchmark for ad creation, connected campaign launch, cross-channel performance reporting, and bounded optimization. Its current public product pages are a reference, not independent verification or a GrowthTwin feature commitment. Recheck current capabilities and Türkiye-specific platform/API access when selecting an implementation target. Sources: [Omneky](https://www.omneky.com/) and [Campaign Launcher](https://www.omneky.com/campaign-launcher), checked 2026-09-27.
+
+
+Local Google workspace preparation (2026-10-19): selected creative and plan can be reviewed as an immutable package and explicitly approved for later PAUSED TEST dispatch. Source/selection/target changes invalidate the current approval. This step performs no Google call and does not yet dispatch workspace drafts. See ADR-0023.

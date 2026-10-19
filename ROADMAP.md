@@ -228,3 +228,6 @@ Heroku Scheduler. The 2026-09-29 00:00 UTC execution is verified in Heroku logs
 with exit status 0. Actual one-off dyno cost remains unverified. Scheduler is
 best-effort; do not infer a real-data retention guarantee from session expiry
 or this schedule.
+
+
+Local Google workspace preparation (2026-10-19): selected creative and plan can be reviewed as an immutable package and explicitly approved for later PAUSED TEST dispatch. Source/selection/target changes invalidate the current approval. This step performs no Google call and does not yet dispatch workspace drafts. See ADR-0023.

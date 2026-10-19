@@ -245,6 +245,14 @@
 
     {% include "campaigns/rehearsal.html" %}
 
+    {% if google_test_review_enabled %}
+    <section class="summary-card">
+      <h2>Google test gönderimini incele</h2>
+      <p>Seçilen güncel metin ve plan için sürümü sabit bir test paketi hazırla. İnceleme ve onay Google'a istek göndermez.</p>
+      <a class="button button-secondary" href="{% url 'google-local-draft-review' %}?draft={{ draft.pk }}">Test gönderim paketini incele</a>
+    </section>
+    {% endif %}
+
     <section class="summary-card" aria-labelledby="download-title">
       <h2 id="download-title">Taslağını yanında götür</h2>
       <p>Planı, örnek medya tavanını ve tercih ettiğin metni tek bir metin dosyasında indir. Dosya inceleme içindir; reklam yayımlamaz ve Google Ads'e doğrudan aktarılamaz.</p>

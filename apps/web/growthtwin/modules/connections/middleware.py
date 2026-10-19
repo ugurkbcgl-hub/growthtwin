@@ -14,7 +14,7 @@ class LocalOAuthHeadersMiddleware:
             # local CSRF check without sharing referrers with Google.
             response["Referrer-Policy"] = (
                 "same-origin"
-                if request.path == "/connections/google/"
+                if request.path in {"/connections/google/", "/connections/google/draft-review/"}
                 else "no-referrer"
             )
         return response
