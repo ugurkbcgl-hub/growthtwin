@@ -1,0 +1,34 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ page.title }} — GrowthTwin</title>
+    <link rel="stylesheet" href="{% static 'site/css/site.css' %}">
+  </head>
+  <body class="information-page">
+    <a class="skip-link" href="#main-content">İçeriğe geç</a>
+    <header class="topbar">
+      <a class="brand" href="{% url 'site:home' %}" aria-label="GrowthTwin ana sayfa">growth<span class="brand-light">twin</span></a>
+      <a class="topbar-account" href="{% url 'site:home' %}">Ana sayfaya dön</a>
+    </header>
+    <main class="page-wrap information-content" id="main-content" tabindex="-1">
+      <p class="information-status" role="note"><strong>Taslak · Üretime hazır değil</strong><br>Bu sayfa yerel ürün hazırlığı içindir. Nihai metin olarak kullanılamaz.</p>
+      <p class="information-version">19 Ekim 2026 · Hazırlık sürümü</p>
+      <h1>{{ page.title }}</h1>
+      <p class="information-intro">{{ page.intro }}</p>
+      {% for heading, text in page.sections %}
+        <section class="information-section" aria-labelledby="section-{{ forloop.counter }}">
+          <h2 id="section-{{ forloop.counter }}">{{ heading }}</h2>
+          <p>{{ text }}</p>
+        </section>
+      {% endfor %}
+    </main>
+    <footer class="footer page-wrap">
+      {% include 'site/information_links.html' %}
+      <span class="footer-prototype">Yerel ürün prototipi</span>
+    </footer>
+  </body>
+</html>

@@ -42,8 +42,8 @@ izni ayrı işlemler olarak değerlendirilir.
 
 Sayfa, veri akışı ve eksik sahip kararları
 [uygulama gereksinimlerinde](public-identity-page-requirements.md) kaydedildi.
-Tek sonraki yerel iş: veri toplamayan, açıkça taslak olarak işaretli iletişim,
-gizlilik ve şartlar hazırlık sayfaları ile footer bağlantıları. Alan adı henüz
+Veri toplamayan, açıkça taslak olarak işaretli iletişim, gizlilik ve şartlar
+hazırlık sayfaları ile footer bağlantıları yerelde uygulandı. Alan adı henüz
 yok; satın alma/yayın veya gerçek bilgi uydurma yok. Yerel iskelet, Google
 doğrulamasına veya hukuki onaya hazır sayılmaz. Çalışan şifreli TEST grant'ini
 veya ledgeri bu hazırlık için değiştirme.

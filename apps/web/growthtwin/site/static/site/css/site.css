@@ -424,13 +424,25 @@ textarea:focus { border-color: #aaa3eb; background: #fff; box-shadow: 0 0 0 3px 
 .control-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .control-chips span { padding: 6px 10px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 99px; color: #e3e1ed; font-size: 9px; }
 
-.footer { display: flex; min-height: 85px; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid rgb(40 42 57 / 8%); }
+.footer { display: flex; min-height: 85px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding-block: 20px; border-top: 1px solid rgb(40 42 57 / 8%); }
 .brand-footer { font-size: 17px; }
 .brand-footer .brand-mark { width: 30px; height: 30px; border-radius: 10px; }
 .brand-footer .brand-mark svg { width: 24px; height: 24px; }
 .footer > p { margin: 0; color: #888994; font-size: 10px; }
 .footer-prototype { color: #8c8c98; font-size: 9px; }
 .prototype-banner { padding: 12px 24px; background: #eeecf6; color: #6c6b7b; font-size: 10px; text-align: center; }
+
+.information-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.information-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--purple-dark); font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.information-links a:focus-visible, .information-page a:focus-visible { outline: 3px solid var(--purple-dark); outline-offset: 4px; border-radius: 4px; }
+.information-content { max-width: 800px; padding-block: 40px 64px; overflow-wrap: anywhere; }
+.information-page h1 { margin: 20px 0; font-size: clamp(32px, 5vw, 48px); line-height: 1.2; letter-spacing: -1px; }
+.information-status { padding: 18px 22px; border: 1px solid #d8d4f5; border-radius: 16px; background: #eeecf6; color: #403768; }
+.information-version { color: #60616f; font-size: 13px; }
+.information-intro { font-size: 18px; color: #555665; }
+.information-section { padding-top: 16px; }
+.information-section h2 { font-size: 21px; line-height: 1.4; }
+.information-section p { font-size: 16px; line-height: 1.8; }
 
 @media (max-width: 1030px) {
   .hero { grid-template-columns: minmax(0, .85fr) minmax(385px, 1fr); gap: 38px; }

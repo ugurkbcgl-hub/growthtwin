@@ -54,7 +54,8 @@ mevcut; test/üretim proje ayrımı belirlenmeden yükseltilmez. İleride erişi
 genişleten son işlemde açık onay gerekir. Alan adı henüz yok; sonraki yerel iş
 uygulama kimliği ve halka açık tanıtım/gizlilik/şartlar sayfası hazırlığıdır.
 [Gereksinimler ve kod veri envanteri](public-identity-page-requirements.md)
-tamamlandı; sırada veri toplamayan yerel taslak sayfalar var.
+tamamlandı; veri toplamayan yerel taslak sayfalar da uygulandı. Nihai işletme,
+alan adı ve veri yaşam döngüsü kararları açık.
 API erişimi, OAuth uygulama yayını ve gerçek reklamveren/harcama izni
 ayrı kapılar olarak kalır. Gerçek hesap bağlanmadı ve erişim yükseltilmedi.
 

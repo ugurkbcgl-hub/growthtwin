@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 18:49 Europe/Istanbul (+03:00).
+Verified: 2026-10-19 18:57 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,13 +10,12 @@ and media spend remain gated.
 
 ## Repository
 
-Base main 09f54cc (PR #289 merged); its required CI 39242010811 and main CI
-39242328698 passed. PR #290 remains open at 59b688a; required run 39278829487
-is queued, so it has not merged. Current branch docs/public-identity-requirements,
-PR #291 (implementation head 514f75b), targets #290's branch until #290 merges.
-Its initial CI 39280685026 is queued. This snapshot precedes its own follow-up
-commit; verify latest Git/head/checks live. Retarget #291 to main after #290
-merges, then check its latest-head required CI before merging it.
+Main 38e3cce: PR #290 merged after required CI 39278829487 passed. Its main CI
+must be checked live. PR #291 has been retargeted to main and needs rebase to
+exclude the squash-merged #290 commits, then fresh required checks.
+Current branch feat/public-information-pages builds on #291. This snapshot
+precedes its own commit/PR. Verify latest heads, PR bases and checks; merge in
+dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
 ## Verified Cloud/OAuth observations — read-only
@@ -37,11 +36,21 @@ Reviewed green PRs may merge under standing owner authorization.
 - Requirements now in docs/product/public-identity-page-requirements.md:
   page acceptance criteria, code-derived data inventory, missing owner facts,
   retention/ledger deletion and test/production project separation. Existing
-  home route exists; separate contact/privacy/terms routes are not implemented.
+  home route exists; separate contact/privacy/terms routes are now implemented.
 - Protected approval/dispatch snapshots include content. Do not promise immediate
   total deletion or delete durable no-resend intent to satisfy a naive cleanup.
-- Documentation-only work: no new local application tests run. git diff --check
-  passed before this snapshot; required/post-merge CI must be checked live.
+- Implementation: static GET/HEAD-only /iletisim/, /gizlilik/ and
+  /kullanim-kosullari/, shared links and public home footer. Visible draft labels,
+  noindex, no forms/scripts or new data collection on these pages.
+- Five focused SimpleTestCase tests passed without DB access, including anonymous
+  access, links, method rejection, HEAD, no cookie writes and no query reflection.
+  Ruff format/check and git diff --check passed. Desktop/mobile browser navigation,
+  focus and layout reviewed; mobile document/client width 375/375, no horizontal
+  overflow on info pages or home footer. Independent code review had no findings.
+- Separate temporary preview at 127.0.0.1:8010 uses in-memory test DB and its own
+  cookie name, not the preserved Google DB. Initial home error from an existing
+  browser cookie was resolved by that cookie isolation; home then passed review.
+  This preview supports information-page review, not campaign operation.
 
 ## Preserved product evidence
 
@@ -52,22 +61,22 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 
 ## CI observation at this snapshot
 
-PR #290 prior-head runs 39277504638 and 39277581963 are now both success.
-Latest-head run 39278829487 remains queued. Auto-merge is not enabled in this
-repository; enabling it was not attempted. Do not force merge or disable checks.
+PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
+PR #291 still showed queued before rebase. Auto-merge is not enabled; linear
+history rules also reject merge commits, so use squash after checks pass.
+No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-After settling the documentation PR dependency/checks, implement local static
-/iletisim/, /gizlilik/, /kullanim-kosullari/ draft preparation pages and footer
-links per public-identity-page-requirements.md. Explicit draft/not-ready labels,
-no forms or data collection, no invented business identity, no Google changes.
-Use focused route/template and visual checks appropriate to that implementation.
-Domain/business/contact, real recipients/retention and qualified review remain
-open before final public text/production. Preserve Test/Testing and plan separate
-production project/credentials; no upgrade, publish, scope grant, purchase or real
-advertiser/spend action now.
+Settle #291 and the dependent information-page PR in order after required CI.
+Then define the category-specific retention/deletion/recovery contract, separating
+stop, Google token revocation, local deletion and no-resend ledger preservation.
+Do not invent retention periods, delete existing records or implement a blanket
+delete while facts are open. Domain/business/contact, real recipients/retention
+and qualified review remain open before final public text/production. Preserve
+Test/Testing and plan separate production project/credentials; no upgrade,
+publish, scope grant, purchase or real advertiser/spend action now.
 
 ## Local environment
 
@@ -79,6 +88,7 @@ Latest browser draft-dispatch result for draft 2: stopped / PAUSED, 5,000 TRY CU
 Status controls: /connections/google/draft-status/?draft=1. Server/helper
 availability is ephemeral; verify before use. Grant stored with user-scoped
 Windows DPAPI outside Git; reuse it rather than unnecessary reauthorization.
-Independent read-only review of the requirements and source completed with no
-actionable findings. No agent work remains running. No local DB/grant was read
-or changed for the code-derived data inventory.
+Read-only requirements and implementation reviews completed with no findings;
+no agent work remains running. Google DB/grant/ledger unchanged. Preview proof
+outside Git: conversation workspace information-contact-desktop.png and
+information-mobile-footer.png. Server lifetime is ephemeral.

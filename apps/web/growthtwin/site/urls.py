@@ -3,11 +3,20 @@
 from django.urls import path
 
 from growthtwin.site import views
+from growthtwin.site.information import information_page
 
 app_name = "site"
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("iletisim/", information_page, {"page_key": "contact"}, name="contact"),
+    path("gizlilik/", information_page, {"page_key": "privacy"}, name="privacy"),
+    path(
+        "kullanim-kosullari/",
+        information_page,
+        {"page_key": "terms"},
+        name="terms",
+    ),
     path(
         "drafts/<uuid:campaign_id>/delete/",
         views.delete_campaign,
