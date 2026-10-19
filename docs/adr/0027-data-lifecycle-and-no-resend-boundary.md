@@ -214,6 +214,27 @@ Next: expose these contracts through a read-only local preview with fixed
 synthetic scenarios and clearly simulated outcomes, not real closure buttons.
 Keep actual TEST grants/ledgers and production actions separate.
 
+### Read-only synthetic preview — 2026-10-20
+
+The public local prototype now links `/kontrol-onizleme/` from its footer. Five
+allowlisted scenarios compute fixed synthetic decision/ticket/observation results:
+waiting stop, urgent revoke with uncertain stop, issuance replay, recovery
+quarantine and incomplete recipient/backup erasure. The route accepts GET/HEAD
+only, takes no account/evidence/text input, and shows prominent simulation labels.
+It is not an account action page, connected report or an executor.
+
+Nine preview tests, five information-page tests and 42 contract tests passed
+(56 DB-free total). Provider secret-read/token POST functions were patched to
+fail during scenario rendering tests; no session cookie was written. Ruff,
+desktop/mobile browser review, all scenario transitions and keyboard navigation
+passed; mobile content/client width was 375/375. An independent read-only review
+found no blocking issue. Browser preview uses a separate in-memory server on
+8010; preserved Google DB, grants and ledgers were untouched.
+
+Next engineering slice is owner-scoped, isolated synthetic persistence of closure
+request/operation identities and atomic revision checks. Do not wire a provider
+executor, token revocation or actual erasure while release gates remain open.
+
 ## Consequences and official sources
 
 Kullanıcıya dört farklı işlem sunulması, tek belirsiz “sil” düğmesinden daha çok

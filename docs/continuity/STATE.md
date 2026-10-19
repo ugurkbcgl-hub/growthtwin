@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-20 02:43 Europe/Istanbul (+03:00).
+Verified: 2026-10-20 02:55 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,20 +10,18 @@ and media spend remain gated.
 
 ## Repository
 
-Main 121794a: PR #292–295 merged after their own required CI passed. Latest
-#295 required run 39291420532 passed; previous main 516d335 CI 39291370448 passed.
-Current main CI 39343286851 is in progress. Current branch
-feat/lifecycle-ticket-issuance, PR #296, now targets main; rebased head 4f1993b,
-CI 39343314861 in progress. Previous pre-rebase head e8f2483 CI 39291430117 passed.
-Application tree is unchanged by rebase (git diff e8f2483 HEAD -- apps/web empty).
-This snapshot precedes its own documentation follow-up commit; verify its latest
-head/checks before merging. No local tests rerun on October 20; the 42 focused
-tests below were run and passed on October 19.
+Main d3aa5ea: PR #292–296 merged after their required CI passed. #296 required
+CI 39343370126 and post-merge main CI 39343651561 passed. No open PR at start.
+Current branch feat/lifecycle-scenario-preview, PR #297, implements the read-only
+preview; implementation head 4d4edf5. Required CI not yet reported at this
+snapshot, which precedes its own follow-up commit. Verify latest head/checks live.
 Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
 
 ## Verified Cloud/OAuth observations — read-only
+
+Cloud console observations below were verified October 19, not rechecked today.
 
 - Existing test Cloud project: Ads API Enabled, current access Test, 15,000 daily
   TEST operations. Explorer Apply for access visible, NOT clicked/submitted.
@@ -96,6 +94,18 @@ Reviewed green PRs may merge under standing owner authorization.
   Still no storage/executor/provider proof/credential/UI effects. A duplicate
   result never authorizes resending. Fresh observation correlation is not
   implemented provider freshness verification; never re-stamp a stale event.
+- October 20 preview: GET/HEAD-only /kontrol-onizleme/ now renders five fixed
+  allowlisted scenarios using the three pure contracts; shared public footer
+  links it. No account/evidence/text input, forms, scripts, real action buttons
+  or session writes. Simulation labels distinguish examples from account state.
+- Nine preview + five information + 42 contract tests passed today (56 DB-free),
+  including secret-read/token POST guards and ignored extra query inputs. Ruff
+  format/check and git diff --check passed. Independent review: no blocking issue.
+- Browser verified all scenario navigation, desktop/mobile layout and keyboard
+  Tab/Enter, with mobile content/client width 375/375. Temporary viewport reset.
+  Separate in-memory preview server restarted on 8010; its own cookie prevents
+  borrowing the preserved Google session. Proof outside Git in conversation
+  workspace: lifecycle-preview-desktop.png and lifecycle-preview-mobile.png.
 
 ## Preserved product evidence
 
@@ -107,19 +117,19 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 ## CI observation at this snapshot
 
 PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291–295 merged; #296 latest head awaits CI completion. Auto-merge is not enabled; linear
+PR #291–296 merged and main d3aa5ea CI passed. Auto-merge is not enabled; linear
 history rules also reject merge commits, so use squash after checks pass.
 No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
 
 ## Next action
 
-Settle dependent PRs in order after required CI; then add a read-only local
-lifecycle preview using fixed synthetic scenarios from these contracts, with
-clear simulation labels and no real closure/revoke/delete buttons or submitted
-personal data. Do not wire an executor or access preserved Google DB/grants.
-Suggestions/tickets are not runtime authorization; persistence/concurrency/
-provider freshness proof remains open.
+After merging the preview under green CI, implement a narrow owner-scoped
+synthetic closure-request/operation persistence slice with durable operation
+identities and atomic revision checks. Use isolated fixtures/test DB; do not
+modify preserved Google DB/grants/ledgers, wire a provider executor, revoke
+credentials or perform real erasure. Suggestions/tickets are not runtime
+authorization; provider freshness, production vault and recovery remain open.
 Domain/business/contact, real recipients, retention periods and qualified review
 remain open before final public text/production. Preserve TEST setup, immutable
 existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase
