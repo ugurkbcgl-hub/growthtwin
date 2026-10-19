@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-19 20:05 Europe/Istanbul (+03:00).
+Verified: 2026-10-20 02:43 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,14 +10,15 @@ and media spend remain gated.
 
 ## Repository
 
-Main b06398c: PR #292 merged after required CI 39287123904 passed; #293 merged
-after required CI 39290073430 passed. Previous main 4d3d94f CI 39290018147 passed;
-current main CI 39290944848 is in progress. PR #294 now targets main, rebased
-head 93649e6, CI 39290998289 in progress. PR #295 rebased onto #294, head
-66eb69c, CI 39291003701 in progress. Current branch feat/lifecycle-ticket-issuance
-PR #296 targets #295's branch feat/lifecycle-observation-reducer; implementation
-head 69e5fd1, initial published head 85c494e, CI 39291152837 queued. This snapshot
-precedes its own follow-up commit.
+Main 121794a: PR #292–295 merged after their own required CI passed. Latest
+#295 required run 39291420532 passed; previous main 516d335 CI 39291370448 passed.
+Current main CI 39343286851 is in progress. Current branch
+feat/lifecycle-ticket-issuance, PR #296, now targets main; rebased head 4f1993b,
+CI 39343314861 in progress. Previous pre-rebase head e8f2483 CI 39291430117 passed.
+Application tree is unchanged by rebase (git diff e8f2483 HEAD -- apps/web empty).
+This snapshot precedes its own documentation follow-up commit; verify its latest
+head/checks before merging. No local tests rerun on October 20; the 42 focused
+tests below were run and passed on October 19.
 Verify heads/bases/checks; merge in
 dependency order, retargeting/rebasing the child when its parent is squash merged.
 Reviewed green PRs may merge under standing owner authorization.
@@ -106,7 +107,7 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
 ## CI observation at this snapshot
 
 PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291–293 merged; rebased #294–295 latest heads await CI completion. Auto-merge is not enabled; linear
+PR #291–295 merged; #296 latest head awaits CI completion. Auto-merge is not enabled; linear
 history rules also reject merge commits, so use squash after checks pass.
 No repository rule was changed. Do not force merge or disable checks.
 Merge reviewed PRs in dependency order only when their own required checks pass.
