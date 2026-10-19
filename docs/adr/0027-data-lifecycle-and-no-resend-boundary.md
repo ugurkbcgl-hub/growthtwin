@@ -148,7 +148,7 @@ wait for stop/reconciliation. Missing local secret is not revocation evidence.
 restore distrust, stop/revoke priority, project impact, secret absence, in-flight,
 each erasure prerequisite, partial outcomes, repeat determinism and immutability.
 These are decision tests, not execution of all production acceptance scenarios
-above. No durable request identity/revision, transition reducer, concurrency,
+above. That decision-only slice did not implement durable identity/revision, a transition reducer, concurrency,
 timestamps/freshness verifier, actual auth/CSRF checks, retry job or erasure
 executor was implemented. The caller-supplied assertions are not themselves
 proof. The existing local TEST views do not import or use the contract.
@@ -157,6 +157,30 @@ Eligible steps are not an execution schedule or runtime permission; every real
 effect would require fresh scoped, durable checks. Next implement a pure
 request/generation/revision-bound observation reducer to reject stale/late
 completion and replay, still without DB/API/UI or credential operations.
+
+### Pure observation reducer follow-up — 2026-10-19
+
+`connections/lifecycle_observation.py` now models a synthetic immutable closure
+identity (workspace, connection, request and generation), revision, one pending
+operation ticket and typed outcome evidence. It consumes a matching ticket,
+changes only its outcome, increments revision and retains synthetic event evidence.
+Exact replay is a no-op; same event ID with changed content is rejected. Old/future
+revision, wrong scope/generation/ticket, closed request or unverified recovery/
+barrier cannot update the record. Outcomes cannot reopen a grant or alter safety
+flags. Terminal success is per closure request, not a live provider drift monitor.
+
+14 new DB-free tests plus the 15 decision tests passed (29 total), with ruff and
+independent read-only review finding no blocking issue. This demonstrates pure
+state transitions, not atomic storage, runtime auth, provider evidence freshness,
+safe remote retries or restart recovery. Pending tickets are assertions supplied
+by a future authorized coordinator; this module does not issue them. The seen
+event tuple is synthetic in-memory evidence, not a production retention policy.
+
+The reducer is not imported by application views. No DB, migration, network,
+credential, callback handler or deletion effect was added. Next: pure issuance
+of pending tickets from eligible decision steps, binding scope/generation/revision
+and preventing ticket replacement while an operation is unresolved. Keep that
+coordinator synthetic before connecting any real executor or persistence.
 
 ## Consequences and official sources
 
