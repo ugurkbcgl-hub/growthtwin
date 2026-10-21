@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 21:03 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 21:06 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -16,8 +16,9 @@ connection/data, production publication, media spend or production AI in this sl
 Verified base main 93e53a2: PR #300 merged. Latest-head required CI 39647636463
 passed 377 PostgreSQL tests including concurrency and 10 browser E2E tests;
 post-merge main CI 39648069200 passed. No open PR at session start.
-Current branch feat/synthetic-connection-work-guard; implementation/tests/docs
-await PR and required CI. Snapshot precedes its own commit: verify current
+Current branch feat/synthetic-connection-work-guard, PR #301; implementation
+head a1d8180. Required CI 39649688737 queued at this snapshot, which precedes
+its own follow-up commit. Verify current
 branch, worktree, latest head, open PR/checks before acting.
 
 ## Current slice — synthetic connection/work guard
