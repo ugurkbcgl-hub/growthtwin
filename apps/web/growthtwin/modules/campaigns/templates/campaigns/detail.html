@@ -1,15 +1,16 @@
 {% extends "campaigns/base.html" %}
 {% block title %}{{ draft.name }}{% endblock %}
 {% block content %}
-  <p class="eyebrow">2 / 2 · Reklam taslağı</p>
+  <p class="eyebrow">Reklam taslağı</p>
   <div class="narrow-column">
     <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalara dön</a>
     <h1>{{ draft.name }}</h1>
     <p class="lead">{{ draft.brand_name }} · {{ draft.target_city }} · Google Search</p>
+    <a class="button button-secondary" href="{% url 'campaigns:journey' draft.pk %}">Kampanya adımlarını gör →</a>
 
     <aside class="notice" role="note">
       <strong>Önizleme · yayınlanmadı</strong>
-      <p>Bu metin taslağı sabit sentetik örnekten hazırlanmıştır. Google Ads hesabına bağlanılmadı ve harcama yapılmadı.</p>
+      <p>Bu metin taslağı sabit sentetik örnekten hazırlanmıştır. Bu ekran platforma istek göndermez; kayıtlı TEST işlemleri ayrı izlenir. Gerçek yayın ve harcama açılmadı.</p>
     </aside>
 
     <section
@@ -233,7 +234,7 @@
     <section class="notice notice-muted" aria-labelledby="launch-readiness-title">
       <details class="technical-details">
         <summary id="launch-readiness-title">Gerçek reklam yayını için gerekenleri gör</summary>
-        <p>Bu sayfa yalnızca sentetik bir önizleme sunar. Prototipte reklam hesabı bağlama, reklam yayımlama veya para harcama özelliği yoktur.</p>
+        <p>Bu sayfa sentetik bir önizleme sunar. Yerel TEST bağlantısı ve duraklatılmış test kaydı, gerçek reklam yayını veya harcama izni değildir.</p>
         <ul>
           <li>İşletmenin gerçek bilgileri ve reklamda kullanılacak iddialar doğrulanmalı.</li>
           <li>Türkiye’de kullanılabilir reklam kanalı ve hesaba erişim izni doğrulanmalı.</li>

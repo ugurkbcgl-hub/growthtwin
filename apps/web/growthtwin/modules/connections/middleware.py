@@ -7,7 +7,10 @@ class LocalOAuthHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        if request.path.startswith("/workspace/control/"):
+        if request.path.startswith("/workspace/control/") or (
+            request.path.startswith("/workspace/campaigns/")
+            and request.path.endswith("/journey/")
+        ):
             response["Cache-Control"] = "no-store, private"
             response["Referrer-Policy"] = "same-origin"
             response["X-Robots-Tag"] = "noindex, nofollow"

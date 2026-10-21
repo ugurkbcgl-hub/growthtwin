@@ -24,12 +24,15 @@
       <h2 id="saved-campaigns-title">Kaydedilen taslaklar</h2>
       <div class="campaign-list">
         {% for row in draft_rows %}
+          <div>
           <a class="campaign-card" href="{% url 'campaigns:detail' row.draft.pk %}">
             <span class="status-tag">Taslak · {{ row.draft.channel }}</span>
             <h3>{{ row.draft.name }}</h3>
             <p>{{ row.draft.brand_name }} · {{ row.draft.target_city }}</p>
             <p>{{ row.budget_display }} toplam medya bütçesi</p>
           </a>
+          <a class="journey-card-link" href="{% url 'campaigns:journey' row.draft.pk %}">{{ row.draft.name }} · Adımları gör →</a>
+          </div>
         {% endfor %}
       </div>
     </section>

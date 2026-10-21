@@ -1,0 +1,39 @@
+{% extends "campaigns/base.html" %}
+{% block title %}{{ draft.name }} · Kampanya adımları{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalarına dön</a>
+  <p class="eyebrow">Kampanya adımları</p>
+  <h1>Her adım,<br>tek yerde.</h1>
+  <p class="lead">{{ draft.name }} · {{ draft.workspace.name }}</p>
+  <aside class="notice" role="note">
+    <strong>Sentetik hazırlık ve TEST akışı</strong>
+    <p>Bu ekran kayıtlı bilgileri özetler; platforma istek göndermez. Metin seçimi, TEST onayı ve gerçek yayın izni farklıdır. Gerçek reklam yayını ve harcama açılmadı.</p>
+  </aside>
+  <section class="journey-next" aria-labelledby="next-step-title">
+    <div>
+      <p class="eyebrow">Sıradaki önerilen adım</p>
+      <h2 id="next-step-title">{{ journey.next_title }}</h2>
+      <p>{{ journey.next_text }}</p>
+    </div>
+    <a class="button button-primary" href="{{ journey.next_href }}">{{ journey.next_action }}</a>
+  </section>
+  <p class="pacing-note">Planlanan örnek medya tavanı: <strong>{{ budget_display }}</strong>. İçerik/hizmet bedeli ve gerçek harcama değildir. Plan dönemi: {{ draft.flight_start|default:"Belirtilmedi" }} – {{ draft.flight_end|default:"Belirtilmedi" }}.</p>
+  <ol class="journey-stages" aria-label="Kampanyanın altı adımı">
+    {% for stage in journey.stages %}
+      <li class="summary-card journey-stage" aria-labelledby="{{ stage.key }}-stage">
+        <p class="journey-number" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</p>
+        <h2 id="{{ stage.key }}-stage" tabindex="-1">{{ stage.title }}</h2>
+        <p class="status-tag">{{ stage.status }}</p>
+        <p>{{ stage.explanation }}</p>
+        {% if stage.key == "dispatch" and journey.dispatch_updated_at %}<p class="pacing-note">Yerel kaydın güncellenme zamanı: {{ journey.dispatch_updated_at }}. Platform verisinin tazeliğini kanıtlamaz.</p>{% endif %}
+        {% if stage.href %}<a class="journey-action" href="{{ stage.href }}">{{ stage.action }} →</a>{% else %}<p class="pacing-note">{{ stage.unavailable_reason|default:"Bu ortamda TEST kontrolleri açık değil." }}</p>{% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  <aside class="notice notice-muted" role="note">
+    <strong>Gerçek yayına geçiş ayrı bir adım</strong>
+    <p>Hesap yetkisi, doğrulanmış hedef/içerik, açık finansal onay, uygulanabilir harcama sınırları ve veri güvenliği koşulları tamamlanmalı. Bu özet bunları onaylamaz.</p>
+  </aside>
+{% endblock %}
