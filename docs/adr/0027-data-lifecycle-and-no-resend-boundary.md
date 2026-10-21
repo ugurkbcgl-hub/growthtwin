@@ -235,6 +235,50 @@ Next engineering slice is owner-scoped, isolated synthetic persistence of closur
 request/operation identities and atomic revision checks. Do not wire a provider
 executor, token revocation or actual erasure while release gates remain open.
 
+### Isolated synthetic persistence — 2026-10-21
+
+`connections/lifecycle_store.py` adds owner-scoped create/read/issue/observe
+services, with no HTTP route, callback or executor. Two new synthetic-only
+tables hold closure requests and operation issuance receipts. A workspace and
+synthetic connection may have only one request; a changed request/generation
+cannot replace it. The pure UUID tenant identity is derived from the existing
+workspace PK for this experiment; this mapping is not anonymity or a registry
+of actual Google connections. Initial snapshot facts are typed fixture assertions,
+not evidence of provider authorization, revocation or production recovery.
+
+Active ownership is checked from current DB state. PostgreSQL row locks protect
+consistent record/receipt reads; revision-conditional updates and transactional
+receipt writes prevent partial issuance. Receipt identities are globally unique
+within these synthetic tables. Exact pending issuance and observed-event replay
+are no-ops; an observed operation cannot be issued again. Duplicate creation
+returns current progress rather than restoring the initial snapshot. No API
+permits reset, reopen, replacement generation, fact changes or deletion.
+
+The versioned codec accepts only the known typed snapshot/ticket/event shape.
+Stored revision and the unique operation-ID/receipt set must agree; unknown
+versions, extra fields, missing receipts and corrupt state fail closed without
+automatic repair. This is service-layer integrity, not tamper-proof storage or
+an external audit system. Metadata retains issuance/observation identities and
+timestamps, not creative text, URLs, credentials or raw provider responses.
+PROTECT prevents ordinary workspace/user cascade from silently removing these
+synthetic barriers; a future lawful deletion path and retention periods remain
+unimplemented. These tables are not a production retention policy.
+
+Local isolated SQLite checks: 62 tests passed (20 new store tests and the prior
+42 pure tests); one additional PostgreSQL competing-writer test was skipped
+locally and must pass in required CI before merge. Migration drift and ruff
+checks passed. Independent review found two consistency/error-classification
+issues, both corrected with regression tests; recheck found no blocking issue.
+The migration ran only in ephemeral test databases; the preserved Google DB,
+grant, ledgers and Heroku were untouched. The stored fixture barrier does not
+guard existing Google routes. No real provider outcome or safe production
+restart/restore behavior is proven by reconstructing these synthetic records.
+
+Next: an authenticated owner-only synthetic request/status journey using this
+store, with explicit CSRF-protected start and read-only status. Use fixed
+fixtures, never browser-supplied outcome/proof flags; no provider executor,
+credential operation, erasure or preserved Google DB changes.
+
 ## Consequences and official sources
 
 Kullanıcıya dört farklı işlem sunulması, tek belirsiz “sil” düğmesinden daha çok

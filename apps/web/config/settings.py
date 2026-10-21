@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "growthtwin.modules.approvals.apps.ApprovalsConfig",
     "growthtwin.modules.workspaces.apps.WorkspacesConfig",
     "growthtwin.modules.campaigns.apps.CampaignsConfig",
+    "growthtwin.modules.connections.apps.ConnectionsConfig",
     "growthtwin.site.apps.SiteConfig",
     "growthtwin.demo.apps.DemoConfig",
 ]
