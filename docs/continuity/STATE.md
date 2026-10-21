@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-20 02:55 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 20:16 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,14 +10,13 @@ and media spend remain gated.
 
 ## Repository
 
-Main d3aa5ea: PR #292–296 merged after their required CI passed. #296 required
-CI 39343370126 and post-merge main CI 39343651561 passed. No open PR at start.
-Current branch feat/lifecycle-scenario-preview, PR #297, implements the read-only
-preview; implementation head 4d4edf5. Required CI not yet reported at this
-snapshot, which precedes its own follow-up commit. Verify latest head/checks live.
-Verify heads/bases/checks; merge in
-dependency order, retargeting/rebasing the child when its parent is squash merged.
-Reviewed green PRs may merge under standing owner authorization.
+Verified base main 544bccb: PR #297 merged; latest-head required CI 39344527287
+and post-merge main CI 39344727991 passed. No open PR at session start.
+Current feature branch feat/synthetic-closure-store, PR #298; implementation
+head e58e6c8. Required PostgreSQL CI 39642295934 queued at this snapshot. This
+snapshot precedes its own follow-up commit; verify latest head/checks live. Reviewed green
+PRs may squash merge under standing owner authorization; never force merge,
+disable checks, push main directly or enable auto-merge.
 
 ## Verified Cloud/OAuth observations — read-only
 
@@ -98,7 +97,7 @@ Cloud console observations below were verified October 19, not rechecked today.
   allowlisted scenarios using the three pure contracts; shared public footer
   links it. No account/evidence/text input, forms, scripts, real action buttons
   or session writes. Simulation labels distinguish examples from account state.
-- Nine preview + five information + 42 contract tests passed today (56 DB-free),
+- Nine preview + five information + 42 contract tests passed October 20 (56 DB-free),
   including secret-read/token POST guards and ignored extra query inputs. Ruff
   format/check and git diff --check passed. Independent review: no blocking issue.
 - Browser verified all scenario navigation, desktop/mobile layout and keyboard
@@ -114,26 +113,36 @@ October 20–November 3, exact readback/repeat create/stop. Original draft 1 DAI
 333.33 TRY November 1–15 retained read/stop. 82 targeted tests passed in that
 implementation. No production budget exhaustion/aggregate cap proof is implied.
 
-## CI observation at this snapshot
+## Current slice — synthetic persistence
 
-PR #290 latest-head run 39278829487 is now confirmed success and #290 merged.
-PR #291–296 merged and main d3aa5ea CI passed. Auto-merge is not enabled; linear
-history rules also reject merge commits, so use squash after checks pass.
-No repository rule was changed. Do not force merge or disable checks.
-Merge reviewed PRs in dependency order only when their own required checks pass.
+- Two new connections tables hold synthetic closure requests/issuance receipts.
+  Owner-scoped service create/read/issue/observe only; no HTTP/executor integration.
+- Unique workspace/connection request and global operation identity, row locks,
+  revision-conditional update and transactional receipt insertion. Creation replay
+  returns current progress; no reset/generation replacement/delete API.
+- Strict versioned typed codec, revision and exact unique receipt-set validation;
+  corrupt/unsupported state fails closed. PROTECT prevents silent owner/workspace
+  cascade of these synthetic barriers, not a final lawful deletion implementation.
+- 62 focused local tests passed (20 new DB tests + 42 pure contracts); one
+  additional PostgreSQL competing-writer test skipped on SQLite and awaits CI.
+  Migration drift, ruff and independent re-review passed. Review's creation-conflict
+  classification and duplicate-operation/orphan-receipt findings fixed and tested.
+- Migration applied only to ephemeral local test DB. No preserved Google DB,
+  encrypted grant, immutable ledger, Heroku, provider or credential operations.
+  No actual erasure. Initial snapshot flags remain synthetic fixture assertions;
+  DB persistence does not make them verified provider facts. The fixture barrier
+  is not wired into existing Google routes; no production recovery proof implied.
 
 ## Next action
 
-After merging the preview under green CI, implement a narrow owner-scoped
-synthetic closure-request/operation persistence slice with durable operation
-identities and atomic revision checks. Use isolated fixtures/test DB; do not
-modify preserved Google DB/grants/ledgers, wire a provider executor, revoke
-credentials or perform real erasure. Suggestions/tickets are not runtime
-authorization; provider freshness, production vault and recovery remain open.
-Domain/business/contact, real recipients, retention periods and qualified review
-remain open before final public text/production. Preserve TEST setup, immutable
-existing ledgers and encrypted grant; no upgrade, publish, scope grant, purchase
-or real advertiser/spend action now.
+After reviewed persistence PR passes required CI and merges, implement a narrow
+fixed-fixture authenticated owner start/status journey using the synthetic store.
+Start must be an explicit CSRF-protected POST; status is read-only. Do not accept
+browser-supplied evidence, outcome/proof flags or actual connection/account data.
+Use isolated fixtures/test DB, preserve Google DB/grant/ledgers, and add no provider
+executor, revocation, erasure or real advertiser/spend operations. Domain/business/
+contact, real recipients, retention periods, provider freshness/vault/recovery
+and qualified review remain open before final public text/production.
 
 ## Local environment
 
