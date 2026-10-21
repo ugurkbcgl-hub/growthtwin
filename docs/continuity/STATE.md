@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 20:50 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 20:52 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -12,9 +12,9 @@ and media spend remain gated.
 
 Verified base main 852d60f: PR #299 merged; latest-head required CI 39644787052
 and post-merge main CI 39645131181 passed (362 PostgreSQL tests + 10 browser E2E).
-No open PR at start. Current branch feat/synthetic-closure-results; bounded fixed
-fake STOP result implementation/tests/docs await PR and required CI. Snapshot
-precedes its own commit; verify latest head/checks live. Reviewed green PRs may
+No open PR at start. Current branch feat/synthetic-closure-results, PR #300;
+implementation head 2b460d5. Required CI 39647587400 is in progress at this
+snapshot, which precedes its own follow-up commit. Verify latest head/checks live. Reviewed green PRs may
 squash merge under standing owner authorization. Never force merge, disable
 checks, push main directly or enable auto-merge.
 
