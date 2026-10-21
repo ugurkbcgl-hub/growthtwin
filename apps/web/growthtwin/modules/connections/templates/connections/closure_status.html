@@ -2,12 +2,24 @@
 {% block title %}Kaydedilen prova{% endblock %}
 {% block closure_content %}
   <p class="lead">{{ workspace.name }} · Yalnızca örnek durum</p>
+  {% if example_label %}<p class="status-tag">{{ example_label }}</p>{% endif %}
   <section class="summary-card" aria-labelledby="closure-result">
     <span class="status-tag">Örnek kayıt</span>
     <h2 id="closure-result">{% if has_pending %}İstek kaydedildi, sonuç bekleniyor{% else %}Kaydedilen örneğin durumu{% endif %}</h2>
     <p>Ekranı yenilemek yeni işlem başlatmaz. Aşağıdaki sonuçlar gerçek hesabının durumunu göstermez.</p>
     <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
-    {% if has_pending %}<aside class="notice notice-muted" role="note"><strong>Bu örnekte bekleyen adım var</strong><p>Dış işlem çalıştırılmadı; durdurma sonucu otomatik gelmez. Kaydın bulunması, reklamın durduğu veya verinin silindiği anlamına gelmez.</p></aside>{% endif %}
+    {% if has_pending %}<aside class="notice notice-muted" role="note"><strong>Bu örnekte bekleyen adım var</strong><p>Gerçek dış işlem çalıştırılmadı; durdurma sonucu otomatik gelmez. Kaydın bulunması, reklamın durduğu veya verinin silindiği anlamına gelmez.</p></aside>{% endif %}
+    {% if result_token %}
+      <form method="post" action="{% url 'closure:result' workspace.pk request_id %}">
+        {% csrf_token %}
+        <input type="hidden" name="token" value="{{ result_token }}">
+        <p><label class="closure-confirm"><input type="checkbox" name="synthetic_only" value="yes" required> Yalnızca sabit örnek sonucun gösterileceğini anladım.</label></p>
+        <button class="button button-primary" type="submit">Örnek sonucu göster</button>
+        <p class="pacing-note">Sonuç bir simülasyondur. Google yetkisi veya gerçek reklam durumu doğrulanmaz.</p>
+      </form>
+    {% elif not has_pending %}
+      <aside class="notice notice-muted" role="note"><strong>Kaydedilen örnek sonuç</strong><p>Bu prova sonucu, gerçek bir durdurma veya veri temizliği kanıtı değildir. Erişim iptali ve diğer sonuçlar ayrı izlenir. Tekrar açmak yeni işlem oluşturmaz.</p></aside>
+    {% endif %}
     <a class="button button-secondary" href="{% url 'closure:overview' %}">Prova alanına dön</a>
   </section>
 {% endblock %}

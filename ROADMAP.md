@@ -250,4 +250,30 @@ Data lifecycle contract (2026-10-19): [ADR-0027](docs/adr/0027-data-lifecycle-an
 
 Synthetic lifecycle persistence (2026-10-21): owner-scoped service-only request/operation storage now uses typed versioned metadata, unique request/receipt identities, transactional receipt writes and revision-conditional updates. Creation replay preserves current progress; stale/conflicting updates fail closed. No HTTP/provider/credential/erasure path is connected, and the stored fixture barrier does not guard existing Google routes. 62 local focused tests passed; PostgreSQL CI 39642369641 subsequently passed all 343 tests (including the competing-writer test) and 10 browser tests; main CI 39642731033 passed after PR #298 merged. Migration drift/ruff checks and independent re-review passed. Only ephemeral test DB migrations were run; preserved Google DB/grant/ledgers and Heroku are unchanged. See ADR-0027. Next: fixed-fixture authenticated owner start/status journey, with CSRF-safe start and no browser-supplied outcome/proof flags.
 
-Synthetic owner closure journey (2026-10-21): a default-off fixed-example start/status flow now uses the owner-scoped store under `/workspace/control/`. CSRF-protected POST requires explicit synthetic confirmation; extra submitted proof/outcome/ID fields are rejected. Stable server fixture IDs and one transaction preserve one request/STOP receipt under repeat start; GET/HEAD status is read-only and clearly distinguishes example outcomes from real account results. Campaign-list navigation is flag-gated. 80 focused local tests passed; two PostgreSQL concurrency tests await required CI. Ruff, migration drift, independent review and desktop/mobile/keyboard browser checks passed. Browser fixture on loopback 8011 has an isolated DB/cookies and no real account or password. No provider executor, Google DB/grant/ledger, Heroku, schema or production change. Next: a bounded explicit fake-only STOP result demonstration for the saved example using operation/revision-bound observations; no browser-supplied proof or real provider action.
+Synthetic owner closure journey (2026-10-21): a default-off fixed-example start/status flow now uses the owner-scoped store under `/workspace/control/`. CSRF-protected POST requires explicit synthetic confirmation; extra submitted proof/outcome/ID fields are rejected. Stable server fixture IDs and one transaction preserve one request/STOP receipt under repeat start; GET/HEAD status is read-only and clearly distinguishes example outcomes from real account results. Campaign-list navigation is flag-gated. 80 focused local tests passed; PR #299 required PostgreSQL CI 39644787052 passed 362 tests including concurrency and 10 browser E2E tests; main CI 39645131181 also passed. Ruff, migration drift, independent review and desktop/mobile/keyboard browser checks passed. Browser fixture on loopback 8011 has an isolated DB/cookies and no real account or password. No provider executor, Google DB/grant/ledger, Heroku, schema or production change. Next: a bounded explicit fake-only STOP result demonstration for the saved example using operation/revision-bound observations; no browser-supplied proof or real provider action.
+
+Bounded synthetic STOP results (2026-10-21): the owner journey now records a fixed confirmed or uncertain result from a local deterministic fake. Separate scenario IDs preserve the existing default fixture. Explicit CSRF-protected confirmation and a 10-minute signed owner/workspace/request/operation/revision token bind the result; raw browser outcome/proof fields are rejected. Exact persisted replay bypasses the fake and creates no second operation/event. GET/HEAD remains read-only; revocation/erasure states stay separate. 94 local focused tests passed, three PostgreSQL races await CI; ruff, migration drift, independent review and desktop/mobile/keyboard checks passed. Preview 8011 retained the isolated fixture DB across restart. No real Google DB/grant/ledger, provider, credential, Heroku, schema or spend change. Next: isolated synthetic new-work/callback guard integration, then the unified advertiser journey. See ADR-0027.
+
+## Accepted delivery sequence — 2026-10-21
+
+1. Finish the saved synthetic closure example with explicit fixed fake STOP
+   results, preserving replay/conflict safety. Implemented locally in the current
+   slice; reviewed PR/required PostgreSQL CI still required before merge.
+2. Bind closure safety to new-work and callback processing, initially only in an
+   isolated synthetic coordinator/fake adapter. Verify scoped ownership/generation,
+   durable blocking and late/in-flight outcomes; inspect existing TEST hooks from
+   code before a separately reviewed real-runtime mapping.
+3. Unify campaign creation, current creative choice, budget/target review, consent,
+   dispatch status and reporting into a coherent advertiser journey. Keep unknown
+   metrics and readiness gaps explicit and customer data gated.
+4. Complete production identity/domain/contact, truthful public policies and data
+   lifecycle decisions, provider/tenant secret handling, configured DB recovery,
+   current campaign staging E2E and Google production-access requirements. Costs,
+   permissions, account access and legal decisions require their applicable gates.
+5. Only after those gates: separately authorized first real campaign with verified
+   advertiser/account/financial consent, enforceable spend caps, stop and reports.
+
+Then expand customer asset intake/versioning, evaluated production AI, credit/
+service/payment accounting, creative experiments and additional ad channels.
+This sequence does not itself buy a domain/service, publish an app, raise access,
+accept real data, spend media budget or select a production provider.

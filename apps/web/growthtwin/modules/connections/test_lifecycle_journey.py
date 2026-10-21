@@ -170,7 +170,7 @@ class SyntheticClosureJourneyTests(JourneyFixture, TestCase):
         self.assertEqual(row.state["snapshot"]["revocation"], "unverified")
         overview = self.client.get(self.overview)
         self.assertContains(overview, "Kaydedilen provayı aç")
-        self.assertNotContains(overview, "Sentetik provayı başlat")
+        self.assertContains(overview, "Sentetik provayı başlat", count=1)
 
     def test_status_refresh_head_and_query_data_do_not_modify_or_invent_results(self):
         self.client.post(self.start, {"synthetic_only": "yes"})

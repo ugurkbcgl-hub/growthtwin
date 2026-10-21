@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 20:32 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 20:50 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,14 +10,13 @@ and media spend remain gated.
 
 ## Repository
 
-Verified base main ae88866: PR #298 merged; latest-head required CI 39642369641
-and post-merge main CI 39642731033 passed. Required CI ran 343 tests including
-PostgreSQL concurrency and 10 browser E2E tests. No open PR at session start.
-Current feature branch feat/synthetic-closure-journey, PR #299; implementation
-head ca469be. Required CI 39644727549 in progress at this snapshot, which precedes
-its own follow-up commit; verify latest head/checks live. Reviewed green PRs may squash merge
-under standing owner authorization. Never force merge, disable checks, push
-main directly or enable auto-merge.
+Verified base main 852d60f: PR #299 merged; latest-head required CI 39644787052
+and post-merge main CI 39645131181 passed (362 PostgreSQL tests + 10 browser E2E).
+No open PR at start. Current branch feat/synthetic-closure-results; bounded fixed
+fake STOP result implementation/tests/docs await PR and required CI. Snapshot
+precedes its own commit; verify latest head/checks live. Reviewed green PRs may
+squash merge under standing owner authorization. Never force merge, disable
+checks, push main directly or enable auto-merge.
 
 ## Verified Cloud/OAuth observations — read-only
 
@@ -154,17 +153,32 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
   closure-journey-status-desktop.png and closure-journey-status-mobile.png in the
   conversation workspace. No new schema, provider, credential or actual erasure.
 
+## Current slice — explicit fake STOP results
+
+- Two fixed separately stored confirmed/uncertain examples. Existing default IDs
+  preserved. Only a deterministic local fake supplies the result, not POST fields.
+- Explicit owner/CSRF POST and ten-minute signed owner/workspace/request/operation/
+  revision token. Extra evidence, stale/tampered/foreign token or changed state
+  rejected. Outer transaction holds scoped row lock through result persistence.
+- Exact saved-event replay bypasses fake invocation and adds no operation/event.
+  GET/HEAD status read-only, controls disappear on result; six outcomes distinct.
+- 94 focused local tests passed; three PostgreSQL-only concurrency tests skipped
+  on SQLite and await CI. Ruff, migration drift and independent review passed.
+- Browser both outcomes/reload and mobile keyboard Space/Tab/Enter passed; width
+  375/375, viewport reset. Proof outside Git: closure-result-confirmed-desktop.png,
+  closure-result-uncertain-desktop.png, closure-result-uncertain-mobile.png.
+- No real provider, credential, erasure, schema/migration, Heroku or spend changes.
+  Stored fixture barrier still does not protect existing Google runtime routes.
+
 ## Next action
 
-After reviewed owner-journey PR passes required CI and merges, implement one
-bounded explicit fake-only STOP result demonstration for the saved example,
-using operation/identity/current-revision-bound observations from the synthetic
-store. Generate the result in a fixed fake adapter; never accept browser-supplied
-proof. Replay/conflict must not create/resend a second operation. Use isolated
-fixtures/test DB and preserve Google DB/grant/ledgers. No provider executor,
-revocation, erasure, real advertiser/spend or new paid services. Domain/business/
-contact, recipients/retention, provider freshness/vault/recovery and qualified
-review remain production gates; this is not a runtime Google guard.
+After reviewed result PR passes required CI and merges, begin accepted plan step 2:
+implement a fail-closed new-work/callback guard for isolated synthetic scope and
+generation, used only by fake operations. Test closure races and stale callbacks;
+inspect actual TEST create/refresh/callback hooks from code before later runtime
+mapping. Fixture IDs are not actual Google connections. Preserve Google DB/grants/
+ledgers and add no real provider executor, erasure, account, spend or paid service.
+Then continue unified advertiser journey and remaining launch gates in ROADMAP.
 
 ## Local environment
 
@@ -181,12 +195,19 @@ no agent work remains running. Google DB/grant/ledger unchanged. Preview proof
 outside Git: conversation workspace information-contact-desktop.png and
 information-mobile-footer.png. Server lifetime is ephemeral.
 
-Current owner-journey browser fixture: 127.0.0.1:8011, session 40923 at this
+Current owner-journey browser fixture: 127.0.0.1:8011, session 93512 at this
 snapshot. Disposable isolated SQLite under Temp/gwt-closure-ui-preview-*, separate
 session/CSRF names, Google features disabled. Helper outside Git:
 LocalAppData/Temp/growthtwin_closure_journey_preview.py. Unusable-password synthetic
 owner; helper-only /__preview__/ entry creates that fixture session. This is not
 product auth or a real sign-in test. Product start/status behavior is exercised
 normally after that entry. Do not point this helper at the preserved Google DB;
-restarting it creates a new disposable DB, not a recovery proof. Browser tab is
+the helper now reuses only its validated Temp/gwt-closure-ui-preview-28gfu4nv
+fixture directory and refuses a usable-password owner. Restart preserved the
+synthetic records, not a production recovery proof. Browser tab is
 left on saved status. Server availability is ephemeral. No agent remains working.
+
+Latest preview: existing confirmed example now has one saved confirmed STOP event;
+new uncertain example has one saved uncertain STOP event. Both revocation/erasure
+outcomes remain unverified/pending. Browser tab left on uncertain result.
+Accepted plan sequence is now in ROADMAP; only step 1 is implemented in this slice.
