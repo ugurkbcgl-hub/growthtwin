@@ -84,7 +84,33 @@ fixture-only and explicit; default/missing/quarantined/generation-mismatched or
 closed scope must deny. The same owned workspace row lock orders closure intake
 and local fake execution; rollback must restore both request and scope state.
 No arbitrary executor, remote request or actual grant write is accepted. Required
-CI must verify both orderings; local SQLite cannot prove this row-lock behavior.
+CI 39649793207 verified both orderings within 393 PostgreSQL tests and 10 browser tests; post-merge main CI 39650308546 passed. Local SQLite cannot prove this row-lock behavior.
 Migration 0002 was applied only to ephemeral test DBs, not preserved Google or
 browser fixture DBs. No UI changes or new browser test in this service-only slice.
 This is not a production restore or already-sent remote-action guarantee.
+
+
+## Campaign stage overview
+
+`campaigns.test_journey` adds 16 tests. Together with campaigns.tests,
+`test_exports` and `test_rehearsal_views`, 63 focused tests passed with no skips.
+Coverage includes owner/inactive/foreign/missing access, GET/HEAD no writes,
+405 mutations, error privacy headers, current source/version preference,
+plan prerequisites, approval existence versus current consent, stored TEST
+state allowlisting and existing dispatch priority after source changes.
+Projection queries exclude dispatch payloads; provider/grant/verification calls
+are patched to fail. Exact loopback owner/workspace/remote/forwarded visibility
+and prerequisites are checked. Currency is taken from the stored draft.
+Ruff, formatting and migration drift passed; no new migration.
+
+Browser fixture 127.0.0.1:8011 used the preserved isolated closure preview DB,
+unusable-password synthetic owner and Google disabled. Created synthetic draft 1,
+selected the first current creative and verified the suggested step changed from
+creative selection to plan review without inventing approval/dispatch/results.
+Plan Enter navigation, report roundtrip and list-to-journey worked. Desktop and
+390x844 viewport screenshots were inspected; mobile document/client widths were
+375/375 with no horizontal overflow. Viewport reset. Proof outside Git in the
+conversation workspace: campaign-journey-desktop.png and campaign-journey-mobile.png.
+The helper session is not a product login or staging E2E test. Restart applied
+previous migration 0002 only to that isolated fixture DB; actual Google preserved
+DB/grant/ledgers and Heroku were untouched. Current required CI remains pending.

@@ -257,15 +257,17 @@ Bounded synthetic STOP results (2026-10-21): the owner journey now records a fix
 ## Accepted delivery sequence — 2026-10-21
 
 1. Finish the saved synthetic closure example with explicit fixed fake STOP
-   results, preserving replay/conflict safety. Implemented locally in the current
-   slice; reviewed PR/required PostgreSQL CI still required before merge.
+   results, preserving replay/conflict safety. Completed in merged PR #300 with
+   required and post-merge CI verified.
 2. Bind closure safety to new-work and callback processing, initially only in an
    isolated synthetic coordinator/fake adapter. Verify scoped ownership/generation,
    durable blocking and late/in-flight outcomes; inspect existing TEST hooks from
-   code before a separately reviewed real-runtime mapping.
+   code before a separately reviewed real-runtime mapping. Synthetic part completed
+   in merged PR #301; actual Google runtime mapping remains a production gate.
 3. Unify campaign creation, current creative choice, budget/target review, consent,
    dispatch status and reporting into a coherent advertiser journey. Keep unknown
-   metrics and readiness gaps explicit and customer data gated.
+   metrics and readiness gaps explicit and customer data gated. Read-only six-stage
+   overview implemented in the current slice; protected TEST page navigation is next.
 4. Complete production identity/domain/contact, truthful public policies and data
    lifecycle decisions, provider/tenant secret handling, configured DB recovery,
    current campaign staging E2E and Google production-access requirements. Costs,
@@ -278,4 +280,7 @@ service/payment accounting, creative experiments and additional ad channels.
 This sequence does not itself buy a domain/service, publish an app, raise access,
 accept real data, spend media budget or select a production provider.
 
-Synthetic connection work guard (2026-10-21): a positive fixed-fixture scope registry defaults to quarantine. Only current registered OPEN scope/generation/revision can run local fake CREATE/REFRESH/CALLBACK_SAVE. Closure intake and fake work share the owned workspace lock; closure creation and scope blocking commit together. Late callbacks/replay, missing/unknown scope, old generation and quarantine deny work; STOP success does not reopen it. 108 local focused tests passed; five PostgreSQL concurrency tests await CI. Ruff, migration drift and independent review passed. New migration ran only in ephemeral test DBs; preserved Google/preview DBs, grants, ledgers and Heroku unchanged. Source-only actual TEST hook map is in ADR-0027; fixture IDs are not actual Google connections and no real runtime guard is wired. Next: unified local advertiser campaign stages, retaining production identity/privacy/access/recovery/financial gates.
+Synthetic connection work guard (2026-10-21): a positive fixed-fixture scope registry defaults to quarantine. Only current registered OPEN scope/generation/revision can run local fake CREATE/REFRESH/CALLBACK_SAVE. Closure intake and fake work share the owned workspace lock; closure creation and scope blocking commit together. Late callbacks/replay, missing/unknown scope, old generation and quarantine deny work; STOP success does not reopen it. 108 local focused tests passed with five PostgreSQL-only skips; PR #301 required CI 39649793207 subsequently passed 393 PostgreSQL tests including those races and 10 browser E2E tests; post-merge main CI 39650308546 passed. Ruff, migration drift and independent review passed. At the guard milestone migration 0002 ran only in ephemeral test DBs. The later journey browser restart also applied it to the isolated fixture DB; preserved Google DB/grant/ledgers and Heroku remain unchanged. Source-only actual TEST hook map is in ADR-0027; fixture IDs are not actual Google connections and no real runtime guard is wired. Next: unified local advertiser campaign stages, retaining production identity/privacy/access/recovery/financial gates.
+
+
+Campaign stage overview (2026-10-21): owner-scoped `/workspace/campaigns/<id>/journey/` joins campaign, current creative preference, plan/budget, TEST approval, stored TEST dispatch and report navigation. Ordinary GET reads only scoped local metadata; no credentials, provider requests or writes. Approval existence is not current consent; stored TEST state is not live status or serving. Source/version changes invalidate creative preference, and existing dispatch review takes priority over a new submission. Exact existing loopback controls and prerequisite visibility are retained. 63 focused tests (16 new) passed; ruff, migration drift, independent review and desktop/mobile/keyboard checks passed. No new migration or actual Google operation. Current feature awaits reviewed PR/required CI. See ADR-0028. Next: carry the same navigation and truthful state distinctions into existing protected TEST review/status screens without weakening their action boundaries.

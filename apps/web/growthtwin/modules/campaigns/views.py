@@ -13,7 +13,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.formats import number_format
 from django.views.decorators.cache import never_cache
-from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.http import require_GET, require_POST, require_safe
 
 from growthtwin.modules.campaigns.eligibility import (
     synthetic_campaign_eligibility_preview,
@@ -26,6 +26,10 @@ from growthtwin.modules.campaigns.forms import (
     CampaignDraftEditForm,
     CampaignDraftForm,
     CreativeVariantEditForm,
+)
+from growthtwin.modules.campaigns.journey import (
+    campaign_journey,
+    google_test_controls_available,
 )
 from growthtwin.modules.campaigns.models import WorkspaceCampaignDraft
 from growthtwin.modules.campaigns.planning import build_google_search_campaign_plan
@@ -76,9 +80,9 @@ def _draft_rows(drafts):
     ]
 
 
-def _format_budget(minor_units):
+def _format_budget(minor_units, currency="TRY"):
     amount = Decimal(minor_units) / 100
-    return f"{number_format(amount, decimal_pos=2, force_grouping=True)} TRY"
+    return f"{number_format(amount, decimal_pos=2, force_grouping=True)} {currency}"
 
 
 def _format_daily_average(minor_units):
@@ -204,14 +208,8 @@ def _campaign_detail_response(request, draft, *, bound_edit_form=None):
             "creative_is_stale": creative_is_stale,
             "creative_version_count": len(versions),
             "download_variant": preferred_current_variant(draft),
-            "google_test_review_enabled": (
-                getattr(settings, "GOOGLE_ADS_LOCAL_OAUTH_ENABLED", False)
-                and not settings.DEBUG
-                and str(request.user.pk)
-                == str(getattr(settings, "GOOGLE_ADS_LOCAL_OWNER_ID", ""))
-                and str(draft.workspace_id)
-                == str(getattr(settings, "GOOGLE_ADS_LOCAL_WORKSPACE_ID", ""))
-                and request.get_host() == "127.0.0.1:8002"
+            "google_test_review_enabled": google_test_controls_available(
+                request, draft
             ),
             "download_stale": request.GET.get("download") == "stale",
             "rehearsal": rehearsal_context(draft),
@@ -283,6 +281,28 @@ def campaign_detail(request, draft_id):
         pk=draft_id,
     )
     return _campaign_detail_response(request, draft)
+
+
+@never_cache
+@login_required
+@require_safe
+def campaign_journey_overview(request, draft_id):
+    """Show owner-scoped stored stages without provider access or mutations."""
+    draft = get_object_or_404(
+        WorkspaceCampaignDraft.objects.owned_by(request.user)
+        .filter(workspace__owner__is_active=True)
+        .select_related("workspace"),
+        pk=draft_id,
+    )
+    return render(
+        request,
+        "campaigns/journey.html",
+        {
+            "draft": draft,
+            "journey": campaign_journey(request, draft),
+            "budget_display": _format_budget(draft.media_budget_minor, draft.currency),
+        },
+    )
 
 
 @login_required

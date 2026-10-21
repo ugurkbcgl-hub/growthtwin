@@ -3,13 +3,14 @@
 {% block content %}
   <div class="narrow-column">
     <a class="back-link" href="{% url 'campaigns:detail' draft.pk %}">← Kampanyaya dön</a>
+    <p><a class="back-link" href="{% url 'campaigns:journey' draft.pk %}">Kampanya adımlarını gör →</a></p>
     <p class="eyebrow">Kampanya raporu</p>
     <h1>{{ draft.name }}</h1>
     <p class="lead">{{ draft.brand_name }} · {{ draft.target_city }} · Google Search</p>
 
     <aside class="notice" role="status">
       <strong>Rapor verisi henüz bağlı değil</strong>
-      <p>Bu prototipte reklam hesabı bağlama ve platformdan rapor verisi alma henüz desteklenmiyor. Bu nedenle gerçek kampanya sonuçları gösterilemiyor.</p>
+      <p>Bu rapor henüz doğrulanmış platform sonuçlarına bağlı değil. Kayıtlı TEST işlemleri, gerçek yayın veya performans verisi anlamına gelmez.</p>
       <p><a class="button button-secondary" href="{% url 'campaigns:detail' draft.pk %}">Kampanya planına dön</a></p>
     </aside>
 
@@ -58,6 +59,6 @@
       <div><dt>Veri çekim zamanı</dt><dd>Henüz veri alınmadı</dd></div>
     </dl>
 
-    <p class="notice notice-muted">Bu prototip reklam hesabına bağlanmaz, reklam yayımlamaz ve harcama yapmaz.</p>
+    <p class="notice notice-muted">Bu rapor henüz doğrulanmış sonuç kaynağına bağlı değil. Kayıtlı TEST işlemi gerçek performans sonucu veya harcama kanıtı değildir.</p>
   </div>
 {% endblock %}

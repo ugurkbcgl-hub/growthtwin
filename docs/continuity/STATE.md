@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 21:06 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 21:28 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,32 +13,33 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main 93e53a2: PR #300 merged. Latest-head required CI 39647636463
-passed 377 PostgreSQL tests including concurrency and 10 browser E2E tests;
-post-merge main CI 39648069200 passed. No open PR at session start.
-Current branch feat/synthetic-connection-work-guard, PR #301; implementation
-head a1d8180. Required CI 39649688737 queued at this snapshot, which precedes
-its own follow-up commit. Verify current
-branch, worktree, latest head, open PR/checks before acting.
+Verified base main 7dfdf6a: PR #301 merged. Latest-head required CI 39649793207
+passed 393 PostgreSQL tests including concurrency and 10 browser E2E tests;
+post-merge main CI 39650308546 passed. No open PR at slice start.
+Current branch feat/campaign-journey-overview, PR #302, implementation head
+2ae5f9f. Required CI 39652954215 in progress at this snapshot, which precedes
+its own follow-up commit. Verify live branch/worktree/latest head/checks.
+PR attachment to this chat failed once: attachment identity count exceeds 100;
+GitHub PR is intact. No unrelated attachments were changed.
 
-## Current slice — synthetic connection/work guard
+## Current slice — campaign stage overview
 
-- New SyntheticConnectionScope table: owner workspace, fixture UUID/generation,
-  quarantine/open/blocked state, revision and fake work counter. No credentials.
-  Registration is explicit/internal for fixed examples; retry cannot reopen.
-- Only current registered OPEN scope/generation/revision runs fixed local fake
-  CREATE/REFRESH/CALLBACK_SAVE. Missing/unknown/quarantined/invalid scope denies.
-  Any closure blocks work independently of its outcome/generation or scope state.
-- Closure intake and fake work first lock the owned workspace row. Closure and
-  scope block commit together; issuance failure rolls back both. Earlier fake
-  work can finish first; later callbacks cannot reopen or write a fake result.
-- 14 new local guard tests + prior focused tests: 108 passed, five PostgreSQL
-  races skipped on SQLite and await required CI. Two new tests cover both close/
-  fake orderings. Ruff/migration drift and independent read-only review passed.
-- New migration 0002 applied only to ephemeral local test DBs. Google/preview DBs,
-  encrypted grant, immutable ledgers, Heroku and UI unchanged. No browser run for
-  this service-only slice. No arbitrary executor, real provider/credential write,
-  production restore proof or protection for already-sent network actions.
+- Owner-scoped read-only /workspace/campaigns/<id>/journey/ joins six existing
+  stages with advisory next action and list/detail/report navigation.
+- Current creative preference is not consent; approval existence is not verified
+  current consent. Stored TEST status is unrefreshed and may refer to old source.
+  Existing dispatch takes priority over new submission after source changes.
+- GET/HEAD reads scoped metadata only, no payload/grant/provider/write; unsafe
+  methods rejected, errors private/no-store/noindex. Exact existing loopback
+  settings and prerequisites govern links, not endpoint authorization.
+- 16 new + 47 existing focused tests: 63 passed, no skips. Ruff/formatting,
+  migration drift and independent read-only review passed. No new migration.
+- Browser created fixture draft 1 and selected current creative; next action
+  changed to plan review. Plan/report Enter navigation and list roundtrip passed.
+  Desktop and 390x844 viewport inspected, mobile widths 375/375; viewport reset.
+  Screenshots campaign-journey-desktop.png and campaign-journey-mobile.png outside
+  Git in conversation workspace. No actual Google operation or product login.
+- ADR-0028 records the read-only/advisory contract; latest-head required CI still required.
 
 ## Verified existing product evidence
 
@@ -82,13 +83,12 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-After reviewed guard PR passes required CI and merges, start accepted plan step 3:
-unify the existing local synthetic advertiser journey with a clear stage overview
-for campaign creation, current creative selection, plan/budget review, consent,
-TEST dispatch status and reporting. Reflect unavailable/incomplete stages honestly;
-no provider/credential read on ordinary GET, no new real data or execution. Keep
-owner/tenant scope and existing fixed TEST ledgers. Actual runtime guard mapping
-above remains a production gate, not something the fixture guard proves.
+Finish reviewed journey PR/required CI/merge and verify main CI. Then carry
+campaign overview navigation into existing protected TEST review/status screens,
+with explicit fixed TEST consent and stored-versus-refreshed status labels.
+Preserve exact loopback/owner/CSRF/immutable-ledger boundaries and no-resend/stop
+behavior. Ordinary overview GET must not read grants or call providers. Production
+identity/privacy/access/recovery/financial gates and actual guard mapping stay open.
 
 ## Preserved local environments
 
@@ -97,11 +97,11 @@ above remains a production gate, not something the fixture guard proves.
   Use helper LocalAppData/Temp/growthtwin_oauth_preserved.py, never the older
   fresh-DB bootstrap. Do not reset ledgers or reauthorize needlessly. DPAPI secrets
   are outside Git under LocalAppData/GrowthTwinsecrets; do not read/print values.
-- Browser fixture 127.0.0.1:8011 (session 93512 at last check) has a separate
+- Browser fixture 127.0.0.1:8011 (session 59045 at last check) has a separate
   validated Temp/gwt-closure-ui-preview-28gfu4nv/fixture.sqlite3, isolated session/
   CSRF cookies, unusable-password owner and Google features disabled. Helper:
   LocalAppData/Temp/growthtwin_closure_journey_preview.py. Its /__preview__/ entry
   creates only that fixture session; this is not a product login route or real
-  sign-in test. Current slice did not restart/migrate the fixture server; running
-  Python code may still be prior version. Server lifetime is ephemeral. No agent
+  sign-in test. Current slice restarted this isolated fixture and applied prior migration 0002
+  there. Draft 1 is the new journey example; prior closure examples retained. Server lifetime is ephemeral. No agent
   remains working; no secrets belong in handoff, logs, source or chat.
