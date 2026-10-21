@@ -358,6 +358,64 @@ testing closure races and stale callbacks. Inspect actual TEST integration point
 from code before later runtime mapping; do not treat fixture IDs as actual Google
 connection IDs, modify preserved grants or wire a real provider executor.
 
+### Synthetic scope/work guard — 2026-10-21
+
+`SyntheticConnectionScope` is a positive registration for the two fixed local
+examples, not a real Google connection/grant registry. Its default is quarantine.
+Only explicit internal fixture registration can initially create an OPEN scope;
+registration replay cannot reopen or rotate an existing scope. A pre-existing
+closure creates a BLOCKED scope. The row stores generation, revision and a fake
+work counter only; no token, callback code, creative content or provider payload.
+
+`lifecycle_work_guard.perform_fake_work` admits only typed CREATE, REFRESH and
+CALLBACK_SAVE requests for a registered known fixture with current generation/
+revision and OPEN state. Unknown/missing/quarantined/invalid scopes deny work.
+Any closure for the workspace/connection blocks admission independently of the
+closure generation, result or a mistakenly OPEN scope. A successful STOP does
+not authorize new work. Fake execution increments a counter and revision in a
+conditional write; a replayed old revision does not invoke the fake again.
+
+Closure intake and fake work take the same owned workspace row lock first.
+Creation/replay of a closure blocks any registered scope in that transaction;
+failed later ticket issuance rolls both back. This deliberately coarse fixture
+lock orders simultaneous closure/callback/fake work on PostgreSQL. An earlier
+fake may finish before closure intake, but a later callback cannot reopen it.
+There is no external request, arbitrary executor or grant write. The counter is
+synthetic evidence, not a remote side-effect receipt. Already-sent real network
+work, independent restore-barrier evidence, production registry/leases and
+multi-provider revocation are not implemented. No HTTP/UI action was added.
+
+14 new local guard tests passed; the complete focused lifecycle selection has
+108 passes and five PostgreSQL-only skips. The two new PostgreSQL tests exercise
+both orderings (closure first and fake first); required CI must verify them.
+Ruff, migration drift and independent read-only review passed. New migration
+0002 ran only in ephemeral local test DBs. No migration/operation on preserved
+Google DB, preview DB, grants/ledgers or Heroku; no UI/browser test was needed.
+
+### Actual TEST runtime hook map — code review, 2026-10-21
+
+The following hooks were inspected in source only; none uses this synthetic
+guard, and no actual grant/config/DB was read:
+
+| Hook | Later runtime boundary needed |
+|---|---|
+| `views.local_owner_only`, `views.start`, `google_oauth.begin` | Authoritative connection/generation lookup before authorization start. Current session-bound handshake is not a durable credential generation. |
+| `views.callback`, `backend.exchange_and_store` | Check before exchange and again before grant write; consuming state/PKCE does not serialize against closure. |
+| `verification.verify`, `test_campaign._access_token` | Two refresh paths require scoped purpose/generation controls; guarding only verification misses dispatch refresh. |
+| `test_campaign.perform/_perform`, `draft_dispatch.perform` | Guard intent reservation, external create and late result acceptance; retain existing uncertain/no-resend ledgers and separately allow bounded stop/reconcile. |
+| `backend.disconnect` | Separate remote revocation from local secret removal; neither proves campaign stop. |
+
+`backend._token_path` currently binds owner/workspace, without durable connection
+UUID/generation. `verification.configuration_key` fingerprints configured target
+and encrypted bytes; it is not a closure registry. Deterministic fixture IDs
+cannot be silently mapped to those actual grants. Real integration remains a
+separate reviewed readiness task; do not add an unconditional block that also
+prevents legitimate stop/reconciliation.
+
+Next: the accepted plan's unified local advertiser journey, with clear campaign
+stages and honest TEST/readiness status. Production runtime mapping above remains
+an open launch gate; do not connect real data, provider execution or spend.
+
 ## Consequences and official sources
 
 Kullanıcıya dört farklı işlem sunulması, tek belirsiz “sil” düğmesinden daha çok

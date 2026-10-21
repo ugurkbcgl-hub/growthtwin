@@ -3,6 +3,23 @@
 from django.db import models
 
 
+class SyntheticConnectionScope(models.Model):
+    """Positive fixture registration, not an actual Google grant/connection."""
+
+    class State(models.TextChoices):
+        QUARANTINED = "quarantined"
+        OPEN = "open"
+        BLOCKED = "blocked"
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    workspace = models.ForeignKey("workspaces.Workspace", on_delete=models.PROTECT)
+    generation = models.UUIDField(editable=False)
+    state = models.CharField(max_length=16, choices=State, default=State.QUARANTINED)
+    revision = models.PositiveBigIntegerField(default=0)
+    fake_work_count = models.PositiveBigIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class SyntheticClosureRequest(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     workspace = models.ForeignKey("workspaces.Workspace", on_delete=models.PROTECT)
