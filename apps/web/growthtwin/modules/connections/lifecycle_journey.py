@@ -12,14 +12,36 @@ from .lifecycle_store import (
 )
 from .lifecycle_ticket import IssuanceDisposition, TicketRequest
 
+EXAMPLES = (
+    ("durdurma", "Durdurma doğrulandı örneği"),
+    ("belirsiz", "Durdurma doğrulanamadı örneği"),
+)
 
-def example_id(workspace_id, kind):
+
+def example_id(workspace_id, kind, example="durdurma"):
     # Stable per-workspace v1 fixture IDs. No IDs from actual accounts/grants.
-    return uuid5(NAMESPACE_URL, f"growthtwin:closure-journey:v1:{workspace_id}:{kind}")
+    if example not in dict(EXAMPLES):
+        raise ValueError("Unknown synthetic example.")
+    suffix = kind if example == "durdurma" else f"{example}:{kind}"
+    return uuid5(
+        NAMESPACE_URL, f"growthtwin:closure-journey:v1:{workspace_id}:{suffix}"
+    )
+
+
+def example_snapshot():
+    return ClosureSnapshot(
+        barrier_confirmed=True,
+        recovery_verified=True,
+        in_flight=False,
+        local_secret=LocalSecret.PRESENT,
+        remote_stop=RemoteStop.PENDING,
+        stop_authorized=True,
+        project_impact_confirmed=True,
+    )
 
 
 @transaction.atomic
-def start_example(*, owner, workspace_id):
+def start_example(*, owner, workspace_id, example="durdurma"):
     """One synthetic request and one STOP receipt; duplicate POST resumes it.
 
     Initial creation and ticket commit together. No evidence/result is invented
@@ -28,25 +50,20 @@ def start_example(*, owner, workspace_id):
     record = create_synthetic_closure(
         owner=owner,
         workspace_id=workspace_id,
-        connection_id=example_id(workspace_id, "connection"),
-        generation=example_id(workspace_id, "generation"),
-        request_id=example_id(workspace_id, "request"),
-        snapshot=ClosureSnapshot(
-            barrier_confirmed=True,
-            recovery_verified=True,
-            in_flight=False,
-            local_secret=LocalSecret.PRESENT,
-            remote_stop=RemoteStop.PENDING,
-            stop_authorized=True,
-            project_impact_confirmed=True,
-        ),
+        connection_id=example_id(workspace_id, "connection", example),
+        generation=example_id(workspace_id, "generation", example),
+        request_id=example_id(workspace_id, "request", example),
+        snapshot=example_snapshot(),
     )
     if record.revision == 0:
         issued = issue_synthetic_ticket(
             owner=owner,
             workspace_id=workspace_id,
             request=TicketRequest(
-                record.identity, 0, example_id(workspace_id, "operation"), Step.STOP
+                record.identity,
+                0,
+                example_id(workspace_id, "operation", example),
+                Step.STOP,
             ),
         )
         if issued.disposition is not IssuanceDisposition.ISSUED:

@@ -61,3 +61,16 @@ real sign-in test. Preserved Google DB/grants/ledgers were not used.
 - Local website and campaign UX can be tested with synthetic data before staging/recovery work is complete.
 - Before real platform accounts, an external beta, or production, verify staging E2E, backup/restore, rollback, controlled CI failure blocking, platform permission revocation, spend ceilings, stop behavior, and the main advertiser journey. Record actual results; do not infer them from CI's synthetic test.
 - Never use staging or a hosted trial model for real advertiser/customer data or live paid campaigns.
+
+## Fixed fake closure results
+
+Two fixed examples now demonstrate confirmed and uncertain STOP with distinct
+server-owned identities. Result POST requires explicit synthetic confirmation,
+CSRF and a ten-minute owner/workspace/request/operation/revision signed token.
+`test_lifecycle_results` adds 14 local tests and one PostgreSQL-only concurrent
+result race. The focused lifecycle selection has 94 passed locally and three
+PostgreSQL-only skips. Exact replay must bypass the fake adapter; expired, stale,
+wrong-owner/scope, altered-state or injected outcome/proof requests must not write.
+No remote exactly-once/recovery guarantee follows from this deterministic fake.
+Desktop/mobile browser checks exercised both results, reload and keyboard action;
+the normal viewport was restored. No actual Google/credential/erasure operation.
