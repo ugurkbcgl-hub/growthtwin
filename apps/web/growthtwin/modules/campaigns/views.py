@@ -99,7 +99,11 @@ def campaign_list(request):
     return render(
         request,
         "campaigns/list.html",
-        {"draft_rows": _draft_rows(drafts), "synthetic_only": True},
+        {
+            "draft_rows": _draft_rows(drafts),
+            "synthetic_only": True,
+            "closure_ui_enabled": settings.SYNTHETIC_CLOSURE_UI_ENABLED,
+        },
     )
 
 

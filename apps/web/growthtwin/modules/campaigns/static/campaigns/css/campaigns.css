@@ -127,6 +127,8 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
 
 .notice { margin: 1.5rem 0 2rem; padding: 1rem 1.15rem; border-color: #ead9a4; background: var(--soft-amber); color: var(--amber); }
 .notice p:last-child { margin-bottom: 0; }
+.closure-confirm { display: flex; align-items: flex-start; gap: .6rem; }
+.closure-confirm input { flex: none; width: 1.1rem; height: 1.1rem; margin-top: .2rem; }
 .notice-muted { border-color: var(--line); background: #f0f1ed; color: var(--ink); }
 .notice-muted h2 { margin-bottom: .75rem; }
 .pacing-note { margin: .75rem 0 0; color: var(--muted); font-size: .92rem; }

@@ -1,4 +1,4 @@
-"""Owner-scoped SYNTHETIC persistence, deliberately not wired to any HTTP route.
+"""Owner-scoped SYNTHETIC persistence; the UI supplies only fixed fixture facts.
 
 Snapshots are fixture assertions, never verified provider evidence. No real
 connection registry, credential access, provider calls, erasure or executor.

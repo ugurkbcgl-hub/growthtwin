@@ -1,0 +1,13 @@
+{% extends "connections/closure_base.html" %}
+{% block title %}Kaydedilen prova{% endblock %}
+{% block closure_content %}
+  <p class="lead">{{ workspace.name }} · Yalnızca örnek durum</p>
+  <section class="summary-card" aria-labelledby="closure-result">
+    <span class="status-tag">Örnek kayıt</span>
+    <h2 id="closure-result">{% if has_pending %}İstek kaydedildi, sonuç bekleniyor{% else %}Kaydedilen örneğin durumu{% endif %}</h2>
+    <p>Ekranı yenilemek yeni işlem başlatmaz. Aşağıdaki sonuçlar gerçek hesabının durumunu göstermez.</p>
+    <ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+    {% if has_pending %}<aside class="notice notice-muted" role="note"><strong>Bu örnekte bekleyen adım var</strong><p>Dış işlem çalıştırılmadı; durdurma sonucu otomatik gelmez. Kaydın bulunması, reklamın durduğu veya verinin silindiği anlamına gelmez.</p></aside>{% endif %}
+    <a class="button button-secondary" href="{% url 'closure:overview' %}">Prova alanına dön</a>
+  </section>
+{% endblock %}

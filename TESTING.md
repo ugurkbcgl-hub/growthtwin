@@ -26,6 +26,28 @@ no network calls, produces no real metrics and incurs no spend.
 4. **Operational:** readiness and deployed revision, secrets/config separation, backups and restore, rollback, emergency stop, and visible job failures.
 5. **Usability/accessibility:** keyboard and screen-reader essentials, responsive layouts, clear progress/error states, short intake effort, and comprehension of limits/results.
 
+## Synthetic closure journey
+
+`SYNTHETIC_CLOSURE_UI_ENABLED` is disabled by default. Enable it only in an
+isolated synthetic environment with current migrations and a synthetic owner/
+workspace; do not enable it against the preserved Google test DB or real data.
+The campaign list then links to `/workspace/control/`. GET/HEAD overview/status
+are read-only. Only an explicit owner POST with CSRF and the synthetic-only
+confirmation starts the fixed example. No outcome/proof/connection input is
+accepted. One example/operation is retained per workspace; refresh/replay does
+not reset it. Status remains pending because there is no provider executor.
+
+Focused tests: `growthtwin.modules.connections.test_lifecycle_journey`, plus
+the store/decision/observation/ticket modules. On October 21, 80 local tests
+passed; two PostgreSQL-only competing-writer tests were skipped on SQLite.
+Required CI must verify those on its ephemeral PostgreSQL service. Tests cover
+owner/active-state isolation, method/CSRF/confirmation boundaries, extra-field
+rejection, no-store error responses, replay, transaction rollback and corrupted
+state. Separate browser review checked desktop/mobile/keyboard and resume using
+a disposable fixture DB, separate cookie names and an unusable-password owner.
+The helper-only fixture session is not a product authentication bypass or a
+real sign-in test. Preserved Google DB/grants/ledgers were not used.
+
 ## AI evaluation
 
 - Keep model quality/latency experiments separate from application correctness tests.

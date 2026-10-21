@@ -7,6 +7,10 @@ class LocalOAuthHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
+        if request.path.startswith("/workspace/control/"):
+            response["Cache-Control"] = "no-store, private"
+            response["Referrer-Policy"] = "same-origin"
+            response["X-Robots-Tag"] = "noindex, nofollow"
         if request.path.startswith("/connections/google"):
             response["Cache-Control"] = "no-store, private"
             # no-referrer on the form document can make POST Origin opaque

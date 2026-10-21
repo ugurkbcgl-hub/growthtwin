@@ -7,6 +7,7 @@ from config.views import health
 from growthtwin.site.forms import GrowthTwinAuthenticationForm
 
 urlpatterns = [
+    path("workspace/control/", include("growthtwin.modules.connections.lifecycle_urls")),
     path("connections/google/", include("growthtwin.modules.connections.urls")),
     path("health/", health, name="health"),
     path("", include("growthtwin.site.urls")),

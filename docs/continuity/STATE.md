@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 20:16 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 20:31 Europe/Istanbul (+03:00).
 
 ## Objective
 
@@ -10,13 +10,14 @@ and media spend remain gated.
 
 ## Repository
 
-Verified base main 544bccb: PR #297 merged; latest-head required CI 39344527287
-and post-merge main CI 39344727991 passed. No open PR at session start.
-Current feature branch feat/synthetic-closure-store, PR #298; implementation
-head e58e6c8. Required PostgreSQL CI 39642295934 queued at this snapshot. This
-snapshot precedes its own follow-up commit; verify latest head/checks live. Reviewed green
-PRs may squash merge under standing owner authorization; never force merge,
-disable checks, push main directly or enable auto-merge.
+Verified base main ae88866: PR #298 merged; latest-head required CI 39642369641
+and post-merge main CI 39642731033 passed. Required CI ran 343 tests including
+PostgreSQL concurrency and 10 browser E2E tests. No open PR at session start.
+Current feature branch feat/synthetic-closure-journey; fixed owner start/status
+implementation, tests and docs awaiting PR/required CI. Snapshot precedes its
+own commit; verify latest head/checks live. Reviewed green PRs may squash merge
+under standing owner authorization. Never force merge, disable checks, push
+main directly or enable auto-merge.
 
 ## Verified Cloud/OAuth observations — read-only
 
@@ -124,7 +125,8 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
   corrupt/unsupported state fails closed. PROTECT prevents silent owner/workspace
   cascade of these synthetic barriers, not a final lawful deletion implementation.
 - 62 focused local tests passed (20 new DB tests + 42 pure contracts); one
-  additional PostgreSQL competing-writer test skipped on SQLite and awaits CI.
+  additional PostgreSQL competing-writer test skipped on SQLite, then passed CI
+  39642369641 on PostgreSQL before #298 merged.
   Migration drift, ruff and independent re-review passed. Review's creation-conflict
   classification and duplicate-operation/orphan-receipt findings fixed and tested.
 - Migration applied only to ephemeral local test DB. No preserved Google DB,
@@ -133,16 +135,36 @@ implementation. No production budget exhaustion/aggregate cap proof is implied.
   DB persistence does not make them verified provider facts. The fixture barrier
   is not wired into existing Google routes; no production recovery proof implied.
 
+## Current slice — fixed synthetic owner journey
+
+- Default-off SYNTHETIC_CLOSURE_UI_ENABLED gates /workspace/control/ and the
+  campaign-list link. Active authenticated owner only; explicit synthetic-only
+  confirmation and CSRF-protected POST start a fixed STOP-pending example.
+- Server-derived fixture identities/facts; submitted extra fields/proof/outcomes/
+  IDs rejected. Creation+issuance share one transaction; repeated start resumes
+  existing progress. GET/HEAD overview/status create no closure or provider work.
+- Six separately labeled example outcomes, generic corruption 409, private/no-store
+  and noindex headers including errors. No real completion/revoke/erase controls.
+- 80 focused local tests passed (18 journey + 20 store + 42 pure); two PostgreSQL
+  competing-writer tests skipped on SQLite and await required CI. Ruff/migration
+  drift and independent read-only review passed with no blocking findings.
+- Browser checked desktop/mobile overview/start/status/reload/resume/campaign link
+  and Space/Tab/Enter. No horizontal overflow: overview 375/375, status 390/390.
+  Temporary viewport reset. Proof outside Git: closure-journey-start-desktop.png,
+  closure-journey-status-desktop.png and closure-journey-status-mobile.png in the
+  conversation workspace. No new schema, provider, credential or actual erasure.
+
 ## Next action
 
-After reviewed persistence PR passes required CI and merges, implement a narrow
-fixed-fixture authenticated owner start/status journey using the synthetic store.
-Start must be an explicit CSRF-protected POST; status is read-only. Do not accept
-browser-supplied evidence, outcome/proof flags or actual connection/account data.
-Use isolated fixtures/test DB, preserve Google DB/grant/ledgers, and add no provider
-executor, revocation, erasure or real advertiser/spend operations. Domain/business/
-contact, real recipients, retention periods, provider freshness/vault/recovery
-and qualified review remain open before final public text/production.
+After reviewed owner-journey PR passes required CI and merges, implement one
+bounded explicit fake-only STOP result demonstration for the saved example,
+using operation/identity/current-revision-bound observations from the synthetic
+store. Generate the result in a fixed fake adapter; never accept browser-supplied
+proof. Replay/conflict must not create/resend a second operation. Use isolated
+fixtures/test DB and preserve Google DB/grant/ledgers. No provider executor,
+revocation, erasure, real advertiser/spend or new paid services. Domain/business/
+contact, recipients/retention, provider freshness/vault/recovery and qualified
+review remain production gates; this is not a runtime Google guard.
 
 ## Local environment
 
@@ -158,3 +180,13 @@ Read-only requirements and implementation reviews completed with no findings;
 no agent work remains running. Google DB/grant/ledger unchanged. Preview proof
 outside Git: conversation workspace information-contact-desktop.png and
 information-mobile-footer.png. Server lifetime is ephemeral.
+
+Current owner-journey browser fixture: 127.0.0.1:8011, session 40923 at this
+snapshot. Disposable isolated SQLite under Temp/gwt-closure-ui-preview-*, separate
+session/CSRF names, Google features disabled. Helper outside Git:
+LocalAppData/Temp/growthtwin_closure_journey_preview.py. Unusable-password synthetic
+owner; helper-only /__preview__/ entry creates that fixture session. This is not
+product auth or a real sign-in test. Product start/status behavior is exercised
+normally after that entry. Do not point this helper at the preserved Google DB;
+restarting it creates a new disposable DB, not a recovery proof. Browser tab is
+left on saved status. Server availability is ephemeral. No agent remains working.

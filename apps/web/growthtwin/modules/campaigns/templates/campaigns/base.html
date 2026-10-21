@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#f6f4ef">
     <title>{% block title %}Kampanyalar{% endblock %} — GrowthTwin</title>
     <link rel="stylesheet" href="{% static 'campaigns/css/campaigns.css' %}">
+    {% block extra_head %}{% endblock %}
   </head>
   <body>
     <a class="skip-link" href="#main-content">İçeriğe geç</a>
@@ -23,6 +24,6 @@
     <main id="main-content" class="page-wrap">
       {% block content %}{% endblock %}
     </main>
-    <script defer src="{% static 'campaigns/js/campaigns.js' %}"></script>
+    {% block scripts %}<script defer src="{% static 'campaigns/js/campaigns.js' %}"></script>{% endblock %}
   </body>
 </html>
