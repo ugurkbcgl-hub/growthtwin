@@ -156,9 +156,7 @@ GOOGLE_ADS_LOCAL_TEST_CAMPAIGN_ENABLED = (
 )
 
 # Fixed-fixture owner journey only; unrelated to Google authorization/execution.
-SYNTHETIC_CLOSURE_UI_ENABLED = (
-    os.environ.get("SYNTHETIC_CLOSURE_UI_ENABLED") == "true"
-)
+SYNTHETIC_CLOSURE_UI_ENABLED = os.environ.get("SYNTHETIC_CLOSURE_UI_ENABLED") == "true"
 
 # Callback URLs may contain one-time codes. Apply before handler formatting;
 # reverse-proxy access logs still require separate controls before deployment.
