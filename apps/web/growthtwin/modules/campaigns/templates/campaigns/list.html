@@ -15,6 +15,10 @@
     <p>Gerçek işletme, müşteri veya kişi bilgisi girme. Bu ekranda hesap bağlama, reklam yayını, AI üretimi veya harcama yapılmaz.</p>
   </aside>
 
+  {% if closure_ui_enabled %}
+    <p><a class="back-link" href="{% url 'closure:overview' %}">Kapatma akışını sentetik provada incele →</a></p>
+  {% endif %}
+
   {% if draft_rows %}
     <section aria-labelledby="saved-campaigns-title">
       <h2 id="saved-campaigns-title">Kaydedilen taslaklar</h2>

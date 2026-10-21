@@ -1,0 +1,14 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Kapatma provası{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalarına dön</a>
+  <p class="eyebrow">Kontrol sende</p>
+  <h1>Kapatma akışını<br>güvenle incele.</h1>
+  <aside class="notice" role="note">
+    <strong>Sentetik prova · Gerçek işlem yapılmaz</strong>
+    <p>Bu alan yalnızca sabit bir örneği kaydeder. Google hesabına bağlanılmaz, reklam durdurulmaz, erişim iptal edilmez ve veri silinmez.</p>
+  </aside>
+  {% block closure_content %}{% endblock %}
+{% endblock %}

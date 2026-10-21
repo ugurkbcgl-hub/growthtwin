@@ -1,0 +1,29 @@
+{% extends "connections/closure_base.html" %}
+{% block closure_content %}
+  <p class="lead">Bir örnek başlat; isteğin kaydedildiğini ve hangi sonuçların hâlâ beklendiğini gör.</p>
+  <div class="campaign-list">
+    {% for row in rows %}
+      <section class="summary-card" aria-labelledby="workspace-{{ row.workspace.pk }}">
+        <h2 id="workspace-{{ row.workspace.pk }}">{{ row.workspace.name }}</h2>
+        {% if row.request_id %}
+          <p>Bu çalışma alanının örneği kaydedilmiş. Durumuna yeniden bakabilirsin.</p>
+          <a class="button button-secondary" href="{% url 'closure:status' row.workspace.pk row.request_id %}">Kaydedilen provayı aç</a>
+        {% else %}
+          <p>Bir durdurma isteğinin bekleme durumunu incele. Bu örnekte dış işlem çalışmadığı için sonuç bekliyor olarak kalır.</p>
+          <form method="post" action="{% url 'closure:start' row.workspace.pk %}">
+            {% csrf_token %}
+            <p><label class="closure-confirm"><input type="checkbox" name="synthetic_only" value="yes" required> Bunun yalnızca bir örnek prova olduğunu anladım.</label></p>
+            <button class="button button-primary" type="submit">Sentetik provayı başlat</button>
+          </form>
+          <p class="pacing-note">Her çalışma alanı için bir örnek kaydedilir. Aynı isteği tekrar göndermek ikinci kayıt oluşturmaz.</p>
+        {% endif %}
+      </section>
+    {% empty %}
+      <section class="empty-state">
+        <h2>Henüz çalışma alanın yok</h2>
+        <p>Önce kampanyalar bölümünden sentetik çalışma alanını açabilirsin.</p>
+        <a class="button button-secondary" href="{% url 'campaigns:list' %}">Kampanyalarına git</a>
+      </section>
+    {% endfor %}
+  </div>
+{% endblock %}
