@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 21:29 Europe/Istanbul (+03:00).
+Verified: 2026-10-21 21:28 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -16,8 +16,11 @@ connection/data, production publication, media spend or production AI in this sl
 Verified base main 7dfdf6a: PR #301 merged. Latest-head required CI 39649793207
 passed 393 PostgreSQL tests including concurrency and 10 browser E2E tests;
 post-merge main CI 39650308546 passed. No open PR at slice start.
-Current branch feat/campaign-journey-overview, uncommitted implementation at this
-snapshot. No PR/CI yet for this slice. Verify live branch/worktree/head/checks.
+Current branch feat/campaign-journey-overview, PR #302, implementation head
+2ae5f9f. Required CI 39652954215 in progress at this snapshot, which precedes
+its own follow-up commit. Verify live branch/worktree/latest head/checks.
+PR attachment to this chat failed once: attachment identity count exceeds 100;
+GitHub PR is intact. No unrelated attachments were changed.
 
 ## Current slice — campaign stage overview
 
@@ -36,7 +39,7 @@ snapshot. No PR/CI yet for this slice. Verify live branch/worktree/head/checks.
   Desktop and 390x844 viewport inspected, mobile widths 375/375; viewport reset.
   Screenshots campaign-journey-desktop.png and campaign-journey-mobile.png outside
   Git in conversation workspace. No actual Google operation or product login.
-- ADR-0028 records the read-only/advisory contract; current PR/CI still required.
+- ADR-0028 records the read-only/advisory contract; latest-head required CI still required.
 
 ## Verified existing product evidence
 
