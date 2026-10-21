@@ -10,6 +10,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError, transaction
+from django.db.models import F
 from django.utils import timezone
 
 from growthtwin.modules.workspaces.models import Workspace
@@ -33,19 +34,38 @@ from .lifecycle_ticket import (
     TicketRequest,
     issue_ticket,
 )
-from .models import SyntheticClosureOperation, SyntheticClosureRequest
+from .models import (
+    SyntheticClosureOperation,
+    SyntheticClosureRequest,
+    SyntheticConnectionScope,
+)
 
 
 class ClosureConflict(ValueError):
     """No write committed; reload and review, never automatically resend."""
 
 
-def _workspace(owner, workspace_id):
+def _workspace(owner, workspace_id, *, lock=False):
     if not getattr(owner, "is_authenticated", False) or not getattr(
         owner, "is_active", False
     ):
         raise PermissionDenied("An active workspace owner is required.")
-    return Workspace.objects.get(pk=workspace_id, owner=owner, owner__is_active=True)
+    query = Workspace.objects
+    if lock:
+        query = query.select_for_update()
+    return query.get(pk=workspace_id, owner=owner, owner__is_active=True)
+
+
+def _block_scope(workspace, connection_id):
+    # Called with the workspace locked, inside the closure transaction. Never
+    # recreate a missing scope or reopen an existing generation on retry.
+    SyntheticConnectionScope.objects.filter(
+        workspace=workspace,
+        pk=connection_id,
+    ).exclude(state=SyntheticConnectionScope.State.BLOCKED).update(
+        state=SyntheticConnectionScope.State.BLOCKED,
+        revision=F("revision") + 1,
+    )
 
 
 def _identity(row):
@@ -104,6 +124,7 @@ def _cas(owner, row, updated):
         raise ClosureConflict("Synthetic closure changed; reload before review.")
 
 
+@transaction.atomic
 def create_synthetic_closure(
     *,
     owner,
@@ -118,7 +139,7 @@ def create_synthetic_closure(
     The connection UUID is a fixture identifier, not an actual Google account.
     A different generation/request cannot replace this experiment's barrier.
     """
-    workspace = _workspace(owner, workspace_id)
+    workspace = _workspace(owner, workspace_id, lock=True)
     row = SyntheticClosureRequest(
         pk=request_id,
         workspace=workspace,
@@ -131,6 +152,7 @@ def create_synthetic_closure(
     try:
         with transaction.atomic():
             row.save(force_insert=True)
+        _block_scope(workspace, connection_id)
         return record
     except IntegrityError:
         # A transaction/unique constraint, not a read-then-insert assumption,
@@ -145,6 +167,7 @@ def create_synthetic_closure(
                 or existing.initial_snapshot != row.initial_snapshot
             ):
                 raise ClosureConflict("Synthetic request identity conflicts.") from None
+            _block_scope(workspace, connection_id)
             return current
 
 

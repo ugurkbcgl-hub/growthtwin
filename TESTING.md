@@ -74,3 +74,17 @@ wrong-owner/scope, altered-state or injected outcome/proof requests must not wri
 No remote exactly-once/recovery guarantee follows from this deterministic fake.
 Desktop/mobile browser checks exercised both results, reload and keyboard action;
 the normal viewport was restored. No actual Google/credential/erasure operation.
+
+## Synthetic connection/work ordering
+
+`test_lifecycle_work_guard` adds 14 local tests and two PostgreSQL-only orderings
+for closure intake versus a fixed fake work/callback. The focused lifecycle set
+has 108 local passes and five PostgreSQL skips. New scope registration is internal,
+fixture-only and explicit; default/missing/quarantined/generation-mismatched or
+closed scope must deny. The same owned workspace row lock orders closure intake
+and local fake execution; rollback must restore both request and scope state.
+No arbitrary executor, remote request or actual grant write is accepted. Required
+CI must verify both orderings; local SQLite cannot prove this row-lock behavior.
+Migration 0002 was applied only to ephemeral test DBs, not preserved Google or
+browser fixture DBs. No UI changes or new browser test in this service-only slice.
+This is not a production restore or already-sent remote-action guarantee.
