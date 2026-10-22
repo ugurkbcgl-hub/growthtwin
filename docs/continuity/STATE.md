@@ -15,8 +15,10 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main c91e50a: PR305 merged. Latest-head CI39720686706 passed465
 PostgreSQL tests and10 browser E2E tests; main CI39720985597 passed. No open PR
-at slice start. Current branch feat/scoped-oauth-candidate-boundary, uncommitted
-implementation at this snapshot. New PR/CI not created yet; recheck live state.
+at slice start. Current branch feat/scoped-oauth-candidate-boundary, PR306;
+implementation head e3bd018. Required CI39722668451 queued at this snapshot,
+which precedes its own follow-up commit. Verify latest head/checks before merge.
+PR306 attachment failed once with the known100-item limit; GitHub PR is intact.
 PR attachment has hit this chat's100-item limit; attempt once per new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
