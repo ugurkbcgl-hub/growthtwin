@@ -32,6 +32,11 @@
 
 ## Operations
 
+- Scoped TEST candidate inspection is default-off, unwired and advisory only
+  (ADR0032). Exact owned receipt/envelope binding and current quarantine checks
+  never authorize provider work. Uncertain/orphaned attempts require explicit
+  reconciliation; no automatic promotion, retry, revocation or cleanup occurs.
+
 - Keep development, staging, and production configurations, permissions, and credentials separate. Do not copy production data into development or staging.
 - Do not modify production systems manually. Production changes require a reviewed deployment, recoverable backup, health check, monitoring, and tested rollback/stop path.
 - Log request IDs and operational metadata, not secrets, access tokens, private customer information, or unnecessary ad content.
