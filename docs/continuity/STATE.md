@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 06:25 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 06:49 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,38 +13,33 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main 5ee3647: PR #302 merged. Latest-head required CI 39653009712
-passed 409 PostgreSQL tests and 10 browser E2E tests; post-merge main CI
-39653441692 passed. No open PR at this slice start.
-Current branch feat/test-campaign-journey-navigation, PR #303; implementation
-head199239a CI39716734298 failed one new test fixture: unknown state exceeded
-PostgreSQL varchar20. Fixed only the synthetic test label to unknown-private;
-latest-head CI must rerun. Snapshot precedes its own follow-up commit.
-PR303 attachment failed once with the known 100-item limit; GitHub PR is intact.
-PR attachment to this chat has hit its 100-item limit; attempt once for a new PR,
+Verified base main1419425: PR303 merged. Latest-head required CI39716957472
+passed423 PostgreSQL tests and10 browser E2E tests; post-merge main CI39717264957
+passed. No open PR at slice start. Its earlier overlength fixture error was fixed.
+Current branch feat/connector-identity-generations, PR304; implementation head
+0411d49. Required CI39719075471 in progress at this snapshot, which precedes
+its own follow-up commit. Verify latest head/checks before merge.
+PR304 attachment failed once with the known100-item limit; GitHub PR is intact.
+PR attachment has hit this chat's100-item limit; attempt once per new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
-## Current slice — protected TEST campaign navigation
+## Current slice — durable connector identity/generation metadata
 
-- Shared shell/links for review, stored status, dispatch result and validateOnly
-  result. Owned recoverable errors retain links; unresolved/foreign drafts do not.
-- Status GET reads scoped state/observed status/timestamp only: no payload, grant,
-  configuration, provider or writes. No intent means no control/stop buttons.
-- Shared allowlisted labels distinguish stored metadata from an explicit POST
-  operation observation. Unknown/uncertain results cannot look verified. Timestamp
-  includes offset. Existing owner/loopback/CSRF/consent/no-resend/stop unchanged.
-- 14 new tests + prior focused draft review/dispatch/budget/journey: 55 passed,
-  no skips. Ruff/format, migration drift and independent source review passed.
-  Result/error documents use same-origin for local form CSRF; callback/start stay
-  no-referrer. No external referrer or access boundary is opened.
-- Desktop/mobile browser: reviewed fixed synthetic review and uncertain status,
-  expanded package, status/back Enter links passed; widths375/375 at390x844.
-  Viewport reset. Proof test-review-navigation-{desktop,mobile}.png and
-  test-status-navigation-{desktop,mobile}.png outside Git in conversation workspace.
-- Preview uses a stubbed configuration and explicit fixed-example labels. No
-  actual Google calls or browser operation POST. Actual guards covered by tests;
-  preview helper itself is not product login/authorization/staging evidence.
-- No new migration, actual Google DB/grant/ledger, Heroku or production change.
+- Separate ConnectorIdentity/ConnectorGeneration, one google_ads_test slot per
+  owned workspace. Server-generated connection/current generation UUIDs with
+  ordinal/revision and permanent typed request/generation history. No secrets.
+- Initial quarantine, irreversible block, no OPEN/activate/reopen API. Metadata
+  rotation never refreshes credentials or implies permission. Exact replay returns
+  current metadata even after later rotation/block; stale/conflicting requests deny.
+- All paths check active ownership, lock workspace then connection and verify
+  history; atomic receipts/CAS preserve consistency. No actual runtime consumer.
+-15 new local tests +14 work-guard tests passed (29 total); four PostgreSQL races
+  skipped locally, including two new registration/rotation races. Required CI must
+  pass those. Ruff/format/migration drift and independent source review passed.
+- Migration0003 applied only to ephemeral test DBs. Preserved Google/fixture DBs,
+  grants, ledgers, Heroku and UI unchanged. No browser test for service-only slice.
+- ADR0029 records the contract and limits. No OAuth handshake or actual credential
+  generation mapping, provider request, restore barrier or remote execution proof.
 
 ## Verified existing product evidence
 
@@ -88,12 +83,12 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Finish this reviewed navigation PR/required CI/merge and verify main CI. Then
-introduce durable connector connection identity and credential generation in an
-isolated synthetic slice, before real-runtime closure guard mapping. Do not read,
-migrate or reactivate the preserved Google grant in that slice. Preserve separately
-permitted existing-grant stop/reconcile behavior; fixtures cannot prove real scope.
-Production identity/privacy/access/recovery/financial gates remain open.
+Finish the reviewed identity PR/required CI/merge and verify main CI. Then add
+a closed-by-default, generation-bound authorization-attempt receipt/result
+coordinator with deterministic local fake outcomes. Do not read, migrate,
+reactivate or reset the preserved Google grant. Actual OAuth hook integration,
+separately allowed stop/reconcile and production identity/privacy/access/recovery/
+financial gates remain open; fixture IDs and registry metadata prove no real scope.
 
 ## Preserved local environments
 
