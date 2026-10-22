@@ -36,3 +36,5 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [Google Search report metric mapping](../product/google-search-report-metric-mapping.md) — Official-source research only; no API access or connection
 
 - [0028 — Read-only owner campaign stage overview](0028-campaign-stage-overview.md) — Accepted for local synthetic development only
+
+- [0029 — Durable connector identity/generations](0029-durable-connector-identity-generations.md) — Accepted for isolated synthetic validation only

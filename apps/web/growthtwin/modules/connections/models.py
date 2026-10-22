@@ -1,4 +1,6 @@
-"""Isolated synthetic closure metadata, never credentials or campaign content."""
+"""Connector identity and isolated closure metadata; never credentials or content."""
+
+from uuid import uuid4
 
 from django.db import models
 
@@ -59,5 +61,66 @@ class SyntheticClosureOperation(models.Model):
             models.UniqueConstraint(
                 fields=("request", "issued_revision"),
                 name="unique_synthetic_issuance_revision",
+            ),
+        ]
+
+
+class ConnectorIdentity(models.Model):
+    """Metadata foundation only. No activation, account ID, grant or runtime use."""
+
+    class State(models.TextChoices):
+        QUARANTINED = "quarantined"
+        BLOCKED = "blocked"
+
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    workspace = models.ForeignKey("workspaces.Workspace", on_delete=models.PROTECT)
+    provider = models.CharField(
+        max_length=24, default="google_ads_test", editable=False
+    )
+    generation = models.UUIDField(default=uuid4, editable=False)
+    ordinal = models.PositiveBigIntegerField(default=1)
+    revision = models.PositiveBigIntegerField(default=0)
+    state = models.CharField(max_length=16, choices=State, default=State.QUARANTINED)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=("workspace", "provider"),
+                name="unique_connector_workspace_provider",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(provider="google_ads_test"),
+                name="connector_test_provider_only",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(state__in=("quarantined", "blocked")),
+                name="connector_closed_states_only",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ordinal__gt=0), name="connector_positive_ordinal"
+            ),
+        ]
+
+
+class ConnectorGeneration(models.Model):
+    """Permanent generation/request receipt; contains no credential material."""
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    connection = models.ForeignKey(ConnectorIdentity, on_delete=models.PROTECT)
+    request_id = models.UUIDField(unique=True, editable=False)
+    ordinal = models.PositiveBigIntegerField()
+    from_generation = models.UUIDField(null=True, editable=False)
+    from_revision = models.PositiveBigIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=("connection", "ordinal"),
+                name="unique_connector_generation_ordinal",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(ordinal__gt=0), name="connector_generation_positive"
             ),
         ]

@@ -143,4 +143,23 @@ Preserved Google DB/grant/ledgers, Heroku and real data remain untouched.
 
 Shared result/error documents preserve same-origin referrers for their local logout form CSRF Origin. Callback/start remain no-referrer; external referrers remain suppressed. Existing header test and result assertions passed.
 
-PR303 first PostgreSQL CI39716734298 rejected an overlength synthetic unknown-state fixture (varchar20). The test label was shortened; application/model constraints unchanged. Latest-head CI must pass before merge.
+PR303 first PostgreSQL CI39716734298 rejected an overlength synthetic unknown-state fixture (varchar20). The test label was shortened; application/model constraints unchanged. Corrected latest-head CI39716957472 passed423 PostgreSQL tests and10 browser E2E tests; PR303 merged and main CI39717264957 passed.
+
+
+## Durable connector identity metadata
+
+`connections.test_connector_identity` adds15 local tests and2 PostgreSQL-only
+races. Together with existing `test_lifecycle_work_guard`,29 local tests pass
+and4 PostgreSQL races skip on SQLite. Required CI must verify all four races.
+Registration replay, workspace/owner isolation, stale generation/revision,
+retired-generation/request reuse, permanently blocked state, replay after later
+rotation/block, corrupt history, receipt rollback and database state/provider
+constraints are covered. Reads/writes cannot call provider/credential adapters.
+New races check simultaneous registration yields one identity/receipt and two
+competing rotations admit only one current generation. SQLite is not lock proof.
+
+Ruff/format/migration drift and independent read-only review passed. Migration0003
+was applied only during ephemeral local test DB setup, never to the preserved
+Google DB or the browser fixture. No UI/browser run for this service-only slice.
+No runtime consumer, credential metadata mapping, actual OAuth handshake, remote
+exactly-once, stop/revocation or independent restore-barrier guarantee is implied.
