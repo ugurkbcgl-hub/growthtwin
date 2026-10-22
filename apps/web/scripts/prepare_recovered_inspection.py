@@ -51,6 +51,7 @@ def _owned_synthetic_session(*, owner, workspace_id):
     from django.db import connection
     from django.http import HttpRequest
     from django.views.decorators.debug import sensitive_variables
+
     from growthtwin.modules.workspaces.models import Workspace
 
     class OwnedSession:

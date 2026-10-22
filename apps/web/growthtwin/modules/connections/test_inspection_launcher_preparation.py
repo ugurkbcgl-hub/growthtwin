@@ -14,9 +14,9 @@ from django.contrib.sessions.models import Session
 from django.db import transaction
 from django.test import SimpleTestCase, TransactionTestCase, override_settings
 from django.utils import timezone
-from scripts import prepare_recovered_inspection as launcher
 
 from growthtwin.modules.workspaces.models import Workspace
+from scripts import prepare_recovered_inspection as launcher
 
 
 @override_settings(DEBUG=False)
