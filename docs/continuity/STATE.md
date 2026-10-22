@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 12:02 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 12:34 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,35 +13,31 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main a060234: PR307 merged. Latest-head CI39747787250 passed509
-PostgreSQL tests and10 browser E2E tests; main CI39748174729 passed. No open PR
-at slice start. Current branch feat/synthetic-authorization-session-journey, PR308; implementation
-head e0d6141. Initial CI39752146038 running at this snapshot, which precedes its
-own follow-up commit. Verify latest head/checks before merging. PR308 attachment
-failed once with the known100-item limit; GitHub PR is intact. Do not remove
-unrelated attachments.
+Verified base main3eb143e: PR308 merged. Latest-head CI39752232154 passed527
+PostgreSQL tests and11 browser E2E tests; main CI39752610827 passed. No open PR
+at slice start. Current branch feat/connection-recovery-dispositions, PR309; implementation head
+afa2f49. Initial CI39756385104 running at this snapshot, which precedes its own
+follow-up commit. Verify latest head/checks before merge. PR309 attachment failed
+once at the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
 
-## Current slice — synthetic owner/session/CSRF journey
+## Current slice — recovery assessment and synthetic reopening
 
-- New double-default-off fixture pages call only the fixed synthetic coordinator.
-  Signed10-minute owner/workspace/session-HMAC/connection/generation/revision/
-  attempt/scenario/action tickets and exact fields/confirmation protect two POSTs.
-  Start reserves; separate perform runs the fake. GET never runs work; replay
-  cannot duplicate it. Accepted example is never a grant or provider permission.
-- Initiating session marker scopes status/result access; only LAST started example
-  is accessible. Lost/rotated sessions or session-store failure after reservation
-  have no UI recovery. Preserve pending history; do not auto-retry or activate.
--17 new endpoint tests plus coordinator:40 local passes,2 PostgreSQL skips.
-  New browser test passed desktop/mobile/keyboard, fixed outcomes and refresh;
-  source CSS screenshots reviewed in Temp/growthtwin-authorization-rehearsal-20261022.
-- Independent review found missing framework-error header coverage. Prefix and
-  three403/404 no-store/private/noindex regressions fixed. Independent final
-  re-review found no blocking issue.
-  Ruff/format, migration drift and whitespace checks run. No migration.
-- Actual candidate adapter remains off/unwired. No actual provider, secret or credential file,
-  preserved Google/fixture DB or Heroku action. Browser used ephemeral test DB.
-  Existing dev Playwright pin installed locally; dependency manifests unchanged.
-  See ADR0033 and its explicit session/recovery limits.
+- Owned candidate metadata assessment preserves uncertainty despite elapsed time,
+  session loss/block/rotation. No retry/activation, secret I/O or candidate mutation.
+- Double-default-off synthetic recovery GET lists20 recent owned fake receipts.
+  Signed session/owner/scope/scenario/expiry-bound confirmed CSRF POST changes ONLY
+  last-example marker. No begin/perform, new receipt or deadline extension. Actual
+  candidate/grant is never rebound; existing runtime/legacy access unchanged.
+- Stale/expired/running/terminal reopened examples cannot gain run controls.
+  Current pending fake still requires separate confirmed perform and DB checks.
+-18 new tests plus17 prior journey tests:35 local passes. Extended isolated browser
+  passed new-session404, explicit same-receipt reopen, separate result execution,
+  desktop/mobile/keyboard and preserved quarantine. Recovery mobile screenshot
+  reviewed in Temp/growthtwin-authorization-recovery-20261022.
+- Independent review found no blocker and requested stronger stale/expired/terminal
+  tests; added/passed. Independent final re-review found no blocker; required CI follows. No migration or
+  actual credential/provider/preserved Google/fixture DB/Heroku operation.
+  See ADR0034. No automatic retry/revoke/adoption.
 
 ## Verified existing product evidence
 
@@ -85,8 +81,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete this reviewed session-journey PR/CI/merge and verify main CI. Then
-design/test explicit lost-session and pending/uncertain candidate recovery
-dispositions, preserving legacy grants and separately permitted stop/reconcile.
-Keep the actual adapter off. Configured TEST target proof, callback/recovery
-wiring and explicit legacy adoption/rollback remain prerequisites to rollout.
+Complete this recovery PR/required CI/merge and main CI. Then implement explicit
+RESERVED-only retirement with generation fencing and mocked tests; never retire
+or retry EXCHANGING/UNCERTAIN, touch legacy grants or infer provider revocation.
+Actual adapter remains off; callback/recovery wiring, configured TEST target proof,
+orphan reconciliation and adoption/rollback remain prerequisites to rollout.

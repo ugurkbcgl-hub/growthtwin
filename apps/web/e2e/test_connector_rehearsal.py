@@ -8,7 +8,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import override_settings
+from django.test import Client, override_settings
 from django.urls import reverse
 from playwright.sync_api import expect, sync_playwright
 
@@ -42,6 +42,9 @@ class ConnectorRehearsalBrowserTests(StaticLiveServerTestCase):
             owner=owner, workspace_id=workspace.pk, request_id=uuid4()
         )
         self.client.force_login(owner)
+        recovered_client = Client()
+        recovered_client.force_login(owner)
+        recovered_cookie = recovered_client.cookies[settings.SESSION_COOKIE_NAME].value
         for name in ("_client", "_read", "_write", "_post", "_token_path"):
             mocked = patch.object(
                 backend, name, side_effect=AssertionError("Forbidden real boundary")
@@ -102,6 +105,37 @@ class ConnectorRehearsalBrowserTests(StaticLiveServerTestCase):
                     page.evaluate("document.documentElement.scrollWidth"), 390
                 )
                 self._screenshot(page, "authorization-pending-mobile.png")
+                original_status = page.url
+                recovered_context = browser.new_context(
+                    viewport={"width": 390, "height": 844}
+                )
+                recovered_context.add_cookies(
+                    [
+                        {
+                            "name": settings.SESSION_COOKIE_NAME,
+                            "value": recovered_cookie,
+                            "url": self.live_server_url,
+                        }
+                    ]
+                )
+                page = recovered_context.new_page()
+                self.assertEqual(page.goto(original_status).status, 404)
+                page.goto(
+                    self.live_server_url
+                    + reverse("authorization_rehearsal:recovery", args=[workspace.pk])
+                )
+                expect(
+                    page.get_by_text("Yalnızca örnek kayıt açılır", exact=True)
+                ).to_be_visible()
+                self._screenshot(page, "authorization-recovery-mobile.png")
+                page.get_by_role("checkbox").check()
+                page.get_by_role("button", name="Bu örneği aç", exact=True).click()
+                expect(
+                    page.get_by_text(
+                        "Örnek başlatıldı; sonuç henüz çalıştırılmadı.", exact=True
+                    )
+                ).to_be_visible()
+                self.assertEqual(page.url, original_status)
                 page.get_by_role("checkbox").check()
                 page.get_by_role(
                     "button", name="Örnek sonucu çalıştır", exact=True

@@ -1,0 +1,23 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Örnek kayıtları yeniden aç{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'authorization_rehearsal:overview' workspace.pk %}">← Prova seçeneklerine dön</a>
+  <p class="eyebrow">Sentetik bağlantı provası</p>
+  <h1>Önceki örneği<br>yeniden incele.</h1>
+  <aside class="notice" role="note"><strong>Yalnızca örnek kayıt açılır</strong><p>Gerçek hesap bağlanmaz. Sonuç çalıştırılmaz, işlem tekrar gönderilmez ve süresi uzatılmaz. Bu onay yalnızca seçtiğin örneği bu oturumda görüntülemene izin verir.</p></aside>
+  <p class="lead">{{ workspace.name }} · En son 20 örnek</p>
+  {% for row in rows %}
+    <section class="summary-card" aria-labelledby="record-{{ forloop.counter }}">
+      <h2 id="record-{{ forloop.counter }}">{{ row.scenario_label }} · {{ forloop.counter }}</h2>
+      <p>{{ row.message }}</p>
+      <p>Örneğin süre sınırı: {{ row.snapshot.expires_at|date:"d.m.Y H:i T" }}</p>
+      <form method="post" action="{% url 'authorization_rehearsal:recover' workspace.pk row.snapshot.connection_id row.snapshot.attempt_id %}">
+        {% csrf_token %}<input type="hidden" name="token" value="{{ row.token }}">
+        <p><label><input type="checkbox" name="synthetic_only" value="yes" required> Yalnızca bu örneği mevcut oturumumda açmayı onaylıyorum.</label></p>
+        <button class="button button-secondary" type="submit">Bu örneği aç</button>
+      </form>
+    </section>
+  {% empty %}<section class="summary-card"><h2>Önceki örnek bulunmuyor</h2><p>Bu çalışma alanında kayıtlı sentetik deneme yok. Gerçek bağlantılara işlem yapılmadı.</p></section>{% endfor %}
+{% endblock %}

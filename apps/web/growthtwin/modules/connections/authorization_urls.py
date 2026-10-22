@@ -8,6 +8,12 @@ app_name = "authorization_rehearsal"
 urlpatterns = [
     path("<int:workspace_id>/", views.overview, name="overview"),
     path("<int:workspace_id>/start/", views.start, name="start"),
+    path("<int:workspace_id>/recovery/", views.recovery, name="recovery"),
+    path(
+        "<int:workspace_id>/<uuid:connection_id>/<uuid:attempt_id>/recover/",
+        views.recover,
+        name="recover",
+    ),
     path(
         "<int:workspace_id>/<uuid:connection_id>/<uuid:attempt_id>/",
         views.status,
