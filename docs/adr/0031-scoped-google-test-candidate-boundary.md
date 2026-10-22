@@ -52,7 +52,7 @@ start URLs and sensitive locals are excluded from repr/debug reporting.
 
 Encrypted filesystem write and SQL commit are not one transaction. A crash or
 DB failure after a possible file write may leave an inert orphan; no candidate
-activation/reader exists. Leave exchanging/uncertain evidence and require explicit
+activation existed in this slice; ADR0032 adds advisory inspection only. Leave exchanging/uncertain evidence and require explicit
 reconciliation. Do not auto-resend, auto-adopt, unlink unknown files or revoke
 remote credentials. Revocation/cleanup effects have not been verified for this
 candidate/account and must not endanger the preserved grant. Disabling/reverting
@@ -69,9 +69,10 @@ legacy-file appearance, expiry/rotation/block/client/session/state changes and
 secret suppression are tested. Migration0005 applied only to ephemeral test DBs;
 no actual candidate/grant/client/provider/preserved DB/UI/Heroku operation.
 
-Next: strict versioned candidate-envelope validation/readback with matching
-receipt, current owner/scope and explicit reconciliation dispositions, tested
-with mocks. No activation or actual file access while preparing it. Before any
+PR306 required CI39722697389 and main CI39722996360 passed487 PostgreSQL tests
+and10 browser E2E tests. ADR0032 now adds strict versioned candidate-envelope
+validation/advisory readback with matching receipt, current owner/scope and
+explicit reconciliation dispositions using mocks. No activation or actual file access while preparing it. Before any
 live hook: endpoint/session/CSRF wiring, configured TEST target evidence, pending
 handshake recovery, credential-vault/readback and orphan reconciliation, explicit
 legacy adoption/rollback, scoped refresh and separately permitted stop/reconcile

@@ -205,3 +205,18 @@ candidate storage follows. Required CI must verify them. Ruff/format/migration
 drift and independent source review passed. Migration0005 only ran in ephemeral
 test DBs. No browser test or actual filesystem write/decrypt/Google operation.
 The mocked orphan test is not real filesystem/DB distributed recovery proof.
+
+PR306 required CI39722697389 and main CI39722996360 subsequently passed487
+PostgreSQL tests and10 browser E2E tests, including its two races.
+
+## Candidate envelope and advisory readback
+
+`test_candidate_readback` adds21 local tests and1 PostgreSQL race. Focused with
+`test_scoped_oauth_candidate` and `test_backend`:55 local passes and3 PostgreSQL
+skips. All client/transport/path/encrypted I/O is mocked. Strict fields/version/
+scope/token bounds, wrong owner/workspace/session, default-off/caller transaction,
+corrupt receipts, no activation/write, pending/rejected/uncertain dispositions,
+legacy/client changes, malformed/missing storage and post-read scope/binding
+changes are covered. The PostgreSQL race allows a concurrent block to commit
+during read and denies a match afterward. No actual decrypt/file/provider action,
+new migration, browser test or recovery certification. See ADR0032.

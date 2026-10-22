@@ -2,7 +2,7 @@
 
 Only tests call this adapter with mocked transport/client/encrypted storage.
 Existing local routes and legacy token path remain unchanged. No scoped candidate
-reader/activation exists; uncertain attempts must never be automatically retried.
+activation exists; readback is advisory only. Uncertain attempts never auto-retry.
 """
 
 import hashlib
@@ -20,6 +20,7 @@ from django.utils.crypto import salted_hmac
 from django.views.decorators.debug import sensitive_variables
 
 from . import backend
+from .candidate_envelope import build_envelope
 from .connector_identity import (
     IdentityConflict,
     _revision,
@@ -383,17 +384,12 @@ def consume_candidate(
                 stage = "storage_uncertain"
                 backend._write(
                     _candidate_path(row),
-                    {
-                        "schema": "google-test-candidate-v1",
-                        "owner_id": str(owner.pk),
-                        "workspace_id": str(workspace_id),
-                        "connection_id": str(row.connection_id),
-                        "generation": str(row.generation),
-                        "attempt_id": str(row.pk),
-                        "client_id_hash": row.client_id_hash,
-                        "refresh_token": token["refresh_token"],
-                        "scope": ADS_SCOPE,
-                    },
+                    build_envelope(
+                        owner_id=owner.pk,
+                        workspace_id=workspace_id,
+                        receipt=row,
+                        refresh_token=token["refresh_token"],
+                    ),
                 )
                 reason = _scope_reason(current, row)
                 return (
