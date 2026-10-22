@@ -291,3 +291,11 @@ reviewed native ACL handling resolved them. No permit/credential read/provider/
 activation/deployment. See [exercise preparation](docs/product/recovered-inspection-exercise-preparation.md).
 Next: separately reviewed one-shot client-bound inspection launcher/failure plan;
 never rerun completed preparation, reset history/claims or restore over consumption.
+
+
+Launcher preparation (2026-10-23): reviewed read-only plan passed same post0007
+candidate/history/private-backup admission with zero permits/sessions. Separate
+synthetic operator-session bootstrap primitive passed14 focused fabricated local
+checks; it is not called by plan. No actual session/permit/credential/provider
+operation or execute command. Next: integrate/rehearse/review the single-attempt
+launcher and terminal-failure flow before any actual claim. See exercise preparation.

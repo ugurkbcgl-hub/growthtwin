@@ -426,3 +426,20 @@ RO audit passed current identity/history, disabled login/session0, table/migrati
 presence and exact private protected files without reading their encrypted contents.
 No permit/provider/readback/activation/deployment or new local Django suite.
 See [full evidence and current next step](docs/product/recovered-inspection-exercise-preparation.md).
+
+
+## Launcher preparation rehearsal - 2026-10-23
+
+14 focused tests in test_inspection_launcher_preparation passed local ephemeral
+SQLite:11 session bootstrap/refusal/cleanup cases and3 fabricated-plan checks.
+Includes exception after session insertion, wrong scope/usable password/caller
+transaction/preexisting session refusal, changed minted row retention and concurrent
+other-session retention with explicit cleanup-review failure. Existing user data
+stays unchanged on successful bootstrap; no password login is claimed.
+
+Plan tests mock all private helper/file/ACL operations. Independently reviewed
+actual read-only plan passed and was repeated after session-only hardening with
+same post0007 identity/history/backup admission,
+permit0/session0, no protected contents read/current-client proof/execute capability.
+Ruff format/lint/whitespace passed; no broad local Django suite or actual protected
+session/permit/decoder invocation. Full execution/failure rehearsal remains next.
