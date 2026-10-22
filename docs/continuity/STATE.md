@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 06:22 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 06:25 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -16,8 +16,10 @@ connection/data, production publication, media spend or production AI in this sl
 Verified base main 5ee3647: PR #302 merged. Latest-head required CI 39653009712
 passed 409 PostgreSQL tests and 10 browser E2E tests; post-merge main CI
 39653441692 passed. No open PR at this slice start.
-Current branch feat/test-campaign-journey-navigation, uncommitted implementation
-at this snapshot. New PR/CI not yet created. Recheck live state before acting.
+Current branch feat/test-campaign-journey-navigation, PR #303; implementation
+head f1e6dad. Required CI 39716699055 in progress at this snapshot, which
+precedes its own follow-up commit. Verify latest head/checks before merge.
+PR303 attachment failed once with the known 100-item limit; GitHub PR is intact.
 PR attachment to this chat has hit its 100-item limit; attempt once for a new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
