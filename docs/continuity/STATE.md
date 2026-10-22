@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 13:10 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 13:42 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,30 +13,31 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main89be175: PR309 merged. Latest-head CI39756480228 passed545
-PostgreSQL tests and11 browser E2E tests; main CI39756903416 passed. No open PR
-at slice start. Current branch feat/retire-reserved-candidate, PR310; implementation headbf82bfe.
-Initial required CI39761074417 running at this snapshot, which precedes its own
-follow-up commit. Verify latest head/checks before merge. PR310 attachment failed
-once at the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
+Verified base main29217c0: PR310 merged. Latest-head CI39761138226 passed561
+PostgreSQL tests and11 browser E2E tests; main CI39761601822 passed. No open PR
+at slice start. Current branch feat/scoped-candidate-endpoints, PR311; implementation head5a64e31.
+Initial CI39765118546 running at this snapshot, which precedes its own follow-up
+commit. Verify latest head/checks before merge. PR311 attachment failed once at
+the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
 
-## Current slice — explicit RESERVED-only retirement
+## Current slice — closed scoped TEST endpoint wiring
 
-- Default-off unwired metadata service requires typed scope/request and explicit
-  confirmation. Locks owned workspace/connector/attempt. Only current quarantined
-  RESERVED and no other unresolved history can retire. Every other state denies.
-- Generation rotation and original REJECTED/retired_before_exchange write share one
-  transaction. Permanent unique request/replacement-generation binding validated;
-  failed final write/validation rolls both back. History/deadlines preserved.
-- Exact replay returns current identity after later rotate/block; never reopens.
-  Old callback sealed by terminal receipt/generation, no process-store cleanup.
-  No retry/revoke/unlink/activation/adoption or actual legacy/runtime change.
--14 new local tests plus2 PostgreSQL races; with adapter/recovery:42 local passes,
-  4 PostgreSQL skips pending CI. Independent final review found no blocker.
-  Races cover exchange-first deny and retirement-first zero callback transport.
-- Migration0006 only in ephemeral test DBs; no actual credentials/provider/files/
-  preserved Google/fixture DB/Heroku/UI operation. No manual browser check.
-  See ADR0035. Required CI must verify PostgreSQL races before merge.
+- New separate metadata overview/start/callback/retire routes; endpoint+candidate
+  flags remain False. Existing exact configured owner/workspace/loopback8002,
+  DEBUG False/no-forward guards apply. No legacy runtime/redirect/grant change.
+- Signed5-minute session/scope/action forms and CSRF. State SHA256 marker (no raw
+  state/code/verifier) rejects old/wrong callback before current nonce consumption.
+  Allowed callback303 cleans URL; slashless alias avoids query-bearing redirect.
+- Retirement digest now checked UNDER service locks following independent TOCTOU
+  finding; regression mutates receipt between endpoint read and service lock and
+  proves409/no retirement/rotation. Independent final re-review approved.
+-25 new tests plus adapter/retirement/legacy:76 local passes,4 PostgreSQL skips.
+  Ruff/format, migration drift and whitespace checks run. No new migration or
+  actual provider/credential/files/preserved Google/fixture DB/Heroku operation.
+  No manual browser check; request-level validation. CI pending.
+- Separate scoped callback URI must be checked/configured with current isolated
+  TEST target before enabling. No actual OAuth success, active grant, refresh,
+  adoption or cleanup claim. See ADR0036 and its process/logging/rollout limits.
 
 ## Verified existing product evidence
 
@@ -80,8 +81,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete this retirement PR/required CI/merge and main CI. Then separately wire
-scoped start/callback/retirement endpoints with session/CSRF and mocked transport
-tests, keeping normal runtime off. Configured TEST target proof, uncertain/orphan
-reconciliation, legacy adoption/rollback, scoped refresh and production gates
-remain open; do not infer actual grant revocation or provider permission.
+Complete scoped-endpoint PR/required CI/merge and main CI. Then verify isolated
+TEST OAuth configuration/new redirect and current target readiness before any
+separately authorized candidate exercise. Preserve legacy grant/ledgers; no
+publishing, account upgrade, adoption, refresh or actual cleanup. Normal flags
+remain off; reconciliation, rollback and production gates remain open.

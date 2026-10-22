@@ -1,10 +1,11 @@
 """Local Google authorization endpoints."""
 
-from django.urls import path
+from django.urls import include, path
 
 from . import draft_review, views
 
 urlpatterns = [
+    path("scoped/", include("growthtwin.modules.connections.scoped_urls")),
     path(
         "total-budget-validate/",
         draft_review.validate_total_budget,

@@ -34,6 +34,13 @@ class LocalOAuthHeadersMiddleware:
                     "/connections/google/draft-approve/",
                     "/connections/google/total-budget-validate/",
                 }
+                or (
+                    request.path.startswith("/connections/google/scoped/")
+                    and request.path.rstrip("/")
+                    != "/connections/google/scoped/callback"
+                )
                 else "no-referrer"
             )
+            if request.path.startswith("/connections/google/scoped/"):
+                response["X-Robots-Tag"] = "noindex, nofollow"
         return response

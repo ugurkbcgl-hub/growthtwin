@@ -23,7 +23,7 @@ from .connector_identity import (
     register_google_test_identity,
     rotate_generation,
 )
-from .google_oauth import ADS_SCOPE, LOCAL_REDIRECT_URI, LocalAuthorizationStore
+from .google_oauth import ADS_SCOPE, SCOPED_REDIRECT_URI, LocalAuthorizationStore
 from .models import ScopedOAuthCandidateAttempt as Attempt
 
 
@@ -148,7 +148,7 @@ class ScopedCandidateTests(CandidateFixture, TransactionTestCase):
         self._post.assert_called_once()
         endpoint, fields = self._post.call_args.args
         self.assertEqual(endpoint, "https://oauth2.googleapis.com/token")
-        self.assertEqual(fields["redirect_uri"], LOCAL_REDIRECT_URI)
+        self.assertEqual(fields["redirect_uri"], SCOPED_REDIRECT_URI)
         self.assertEqual(fields["code"], "fabricated-code")
         self.assertIn("code_verifier", fields)
         path, envelope = self._write.call_args.args

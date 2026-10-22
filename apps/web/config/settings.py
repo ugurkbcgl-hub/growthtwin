@@ -184,5 +184,6 @@ LOGGING = {
 SYNTHETIC_CONNECTOR_AUTHORIZATION_ENABLED = False
 SYNTHETIC_CONNECTOR_UI_ENABLED = False
 
-# Unwired candidate adapter; never adopt an existing grant implicitly.
+# Closed scoped candidate flow; never adopt an existing grant implicitly.
 GOOGLE_ADS_SCOPED_CANDIDATE_ENABLED = False
+GOOGLE_ADS_SCOPED_ENDPOINTS_ENABLED = False

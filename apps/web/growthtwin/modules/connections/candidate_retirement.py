@@ -1,5 +1,8 @@
-"""Default-off reserved-only retirement. No endpoints, I/O or provider action."""
+"""Default-off reserved-only retirement. No I/O or provider action."""
 
+import hashlib
+import json
+import secrets
 from dataclasses import dataclass
 
 from django.conf import settings
@@ -24,6 +27,20 @@ class Retirement:
     current_identity: IdentitySnapshot
 
 
+def receipt_binding_digest(row):
+    value = [
+        str(row.pk),
+        str(row.connection_id),
+        str(row.generation),
+        row.expected_revision,
+        row.session_key_hash,
+        row.client_id_hash,
+        row.created_at.isoformat(),
+        row.expires_at.isoformat(),
+    ]
+    return hashlib.sha256(json.dumps(value).encode()).hexdigest()
+
+
 @transaction.atomic
 def retire_reserved(
     *,
@@ -35,6 +52,7 @@ def retire_reserved(
     expected_generation,
     expected_revision,
     retirement_confirmation=False,
+    expected_receipt_key=None,
 ):
     if getattr(settings, "GOOGLE_ADS_SCOPED_CANDIDATE_ENABLED", False) is not True:
         raise PermissionDenied("Scoped candidate retirement is disabled.")
@@ -46,6 +64,11 @@ def retire_reserved(
     connector, current = candidate._locked(owner, workspace_id, connection_id)
     row = Attempt.objects.select_for_update().get(pk=attempt_id, connection=connector)
     snapshot = candidate._metadata(row)
+    if expected_receipt_key is not None and (
+        type(expected_receipt_key) is not str
+        or not secrets.compare_digest(expected_receipt_key, receipt_binding_digest(row))
+    ):
+        raise IdentityConflict("Retirement receipt binding changed.")
     if (
         row.generation != expected_generation
         or row.expected_revision != expected_revision

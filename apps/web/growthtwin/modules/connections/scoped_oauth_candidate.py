@@ -1,8 +1,8 @@
-"""Default-off, unwired Google TEST candidate boundary. NOT grant adoption.
+"""Default-off Google TEST candidate boundary. NOT grant adoption.
 
-Only tests call this adapter with mocked transport/client/encrypted storage.
-Existing local routes and legacy token path remain unchanged. No scoped candidate
-activation exists; readback is advisory only. Uncertain attempts never auto-retry.
+Separate closed scoped endpoints call this adapter; validation uses mocked
+transport/client/encrypted storage. Legacy routes and token path stay unchanged.
+No candidate activation exists; readback is advisory. Uncertainty never auto-retries.
 """
 
 import hashlib
@@ -30,7 +30,7 @@ from .connector_identity import (
 )
 from .google_oauth import (
     ADS_SCOPE,
-    LOCAL_REDIRECT_URI,
+    SCOPED_REDIRECT_URI,
     AuthorizationRejected,
     LocalAuthorizationStore,
 )
@@ -261,7 +261,9 @@ def begin_candidate(
             raise IdentityConflict("Candidate start expired.")
         # Separate process-local store; legacy routes' handshake is untouched.
         url = _store.begin(
-            client_id=client_id, binding=_oauth_binding(owner, workspace_id, row)
+            client_id=client_id,
+            binding=_oauth_binding(owner, workspace_id, row),
+            redirect_uri=SCOPED_REDIRECT_URI,
         )
         return CandidateStart(_metadata(row), url)
 
@@ -367,7 +369,7 @@ def consume_candidate(
                         "client_secret": client["client_secret"],
                         "code": code.code,
                         "code_verifier": code.verifier,
-                        "redirect_uri": LOCAL_REDIRECT_URI,
+                        "redirect_uri": SCOPED_REDIRECT_URI,
                         "grant_type": "authorization_code",
                     },
                 )

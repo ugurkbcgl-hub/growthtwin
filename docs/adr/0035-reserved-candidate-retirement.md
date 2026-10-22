@@ -3,6 +3,10 @@
 Status: Accepted for default-off mocked service validation only; no rollout
 Date: 2026-10-22
 
+Follow-up: ADR0036 adds separate closed scoped endpoints and a distinct fixed
+callback URI, validated only with mocks. Earlier no-endpoint statements describe
+this original slice; normal flags remain off and no actual rollout is claimed.
+
 ## Decision
 
 Add an unwired metadata-only service behind the existing strict scoped-candidate

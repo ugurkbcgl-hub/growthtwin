@@ -1,0 +1,24 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Bağlantı denemesi{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalara dön</a>
+  <p class="eyebrow">Yerel doğrulama alanı</p>
+  <h1>Bağlantı denemesi</h1>
+  <aside class="notice" role="note"><strong>Bağlantı henüz etkinleştirilmez</strong><p>Bu alan yalnızca ayrı bir yetkilendirme adayını hazırlar. Reklam yayımlamaz; mevcut Google erişimini taşımaz veya kaldırmaz. Yeni dönüş adresi ve hesap hedefi doğrulanmadan kullanıma açılamaz.</p></aside>
+  {% if problem %}
+    <section class="summary-card" role="alert"><h2>İşlem tamamlanamadı</h2><p>{% if configuration_problem %}Yerel yapılandırma veya mevcut bağlantı nedeniyle başlatılamadı. Mevcut Google erişimi korunur.{% else %}Oturum, süre veya bağlantı bilgileri değişmiş olabilir. Sonucu incelemeden yeni işlem gönderme.{% endif %}</p><a href="{% url 'scoped_candidate:overview' %}">Güncel kaydı incele</a></section>
+  {% else %}
+    {% if notice %}<p class="notice" role="status">{{ notice }}</p>{% endif %}
+    <section class="summary-card"><h2>Kaydedilen durum</h2><p>{{ message|default:"Hazır bir aday kaydı bulunmuyor." }}</p><p>Sayfayı yenilemek dosya veya Google erişimi başlatmaz. Kayıt bulunması gerçek hesap doğrulaması değildir.</p>
+    {% if start_token %}
+      <form method="post" action="{% url 'scoped_candidate:start' %}">{% csrf_token %}<input type="hidden" name="token" value="{{ start_token }}"><p><label><input type="checkbox" name="confirm" value="yes" required> Ayrı bir yetkilendirme denemesi başlatılmasını onaylıyorum.</label></p><button class="button button-primary" type="submit">Google yetkilendirmesine git</button></form>
+    {% endif %}
+    {% if retire_token %}
+      <form method="post" action="{% url 'scoped_candidate:retire' %}">{% csrf_token %}<input type="hidden" name="token" value="{{ retire_token }}"><p><label><input type="checkbox" name="confirm" value="yes" required> Yalnızca gönderim öncesindeki denemenin sonlandırılmasını onaylıyorum.</label></p><button class="button button-secondary" type="submit">Bu denemeyi sonlandır</button></form>
+    {% endif %}
+    </section>
+    <p><a href="{% url 'google-local-status' %}">Mevcut Google test bağlantısı</a> ayrı akışta korunur.</p>
+  {% endif %}
+{% endblock %}
