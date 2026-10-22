@@ -223,3 +223,17 @@ Origin-session/process-secret loss prevents existing guarded readback; next desi
 owner-bound inspection-only recovery with unchanged receipts, using synthetic data.
 See [exercise result](docs/product/scoped-test-exercise-preparation.md).
 No application code change or new local automatic test suite in this slice.
+
+
+Inspection recovery permit metadata (2026-10-22): a default-off service now issues
+and irreversibly consumes a five-minute, new-session owner/workspace/candidate/
+generation/revision/immutable-receipt-bound permit. Original candidate/session hash
+and history never change. One permit per candidate; exact replay preserves current
+state/deadline, no replacement/renewal, caller transaction or double consumption.
+CONSUMED is metadata only, not file-read proof or permission for existing readers.
+No reader, HTTP, credential/path/client/provider/activation integration. New27 tests
+plus readback/retirement:60 local passes,5 PostgreSQL-only skips; formatting/lint,
+migration drift and independent source review passed. Migration0007 only in ephemeral
+test DBs; no protected Google DB/grant/Heroku operation. See [ADR0037](docs/adr/0037-metadata-only-inspection-recovery-permits.md).
+Next: a separately reviewed mocked executor with irreversible claim and post-read
+scope/client/legacy/time checks, retaining normal closed flags and real files untouched.
