@@ -307,8 +307,31 @@ attempt/connector/generation records, including denied operations. New session a
 old SECRET_KEY loss is independent of original receipt; later permit key/session
 loss fails closed. Cover exact replay/expiry/no renewal, wrong owner/scope/session,
 digest/generation/block drift, no caller transaction, DB constraints and two races
-(competing issue requests and competing consumers). PostgreSQL concurrency awaits CI.
+(competing issue requests and competing consumers). PR316 required CI39815782725
+and post-merge main CI39816401402 passed613 PostgreSQL tests and11 browser E2E,
+including both recovery-permit race tests.
 Ruff format/check, migration consistency and whitespace checks passed. Migration0007
 ran only in ephemeral test DBs. No actual credentials, files, preserved Google DB,
 provider, UI or Heroku operation; no actual readback or post-I/O protocol validation.
 See [ADR0037](docs/adr/0037-metadata-only-inspection-recovery-permits.md).
+
+## Synthetic inspection recovery executor — 2026-10-22
+
+37 new tests:35 passed locally,2 PostgreSQL-only skips. Combined focused invocation
+with permit, original readback and retirement suites:102 total,95 passed,7 skipped.
+Fresh in-memory SQLite with config.test_settings and an ephemeral secret only.
+All original receipt/identity/generation records stay unchanged in the success
+case; only the permit is consumed. No caller snapshot/reader/path is accepted.
+Backend/client/transport/storage and existing reader/path hooks remain unused.
+
+Checks cover five fixed synthetic outcomes, only-fixed-client admission, committed
+claim before each transaction-free probe, repeat denial, failed initialization/read
+without reopening, transient pre-read denial, post-read ownership/session/SECRET_KEY/
+scope/receipt/permit/time/flag drift, client/legacy changes and bounded safe results.
+Clock checks cover moving before consumption; no monotonic guarantee is claimed.
+Two PostgreSQL tests cover competing executors (one fake read) and rotation during
+the read (no match). They await required CI before merge; local SQLite is not
+row-lock evidence. Ruff format/lint, migration drift and whitespace checks passed;
+independent source review found no blockers. No new migration, UI/browser exercise,
+actual file/credential/provider/preserved DB/Heroku operation or deployment.
+See [ADR0038](docs/adr/0038-synthetic-inspection-recovery-executor.md).

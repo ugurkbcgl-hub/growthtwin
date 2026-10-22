@@ -235,5 +235,23 @@ No reader, HTTP, credential/path/client/provider/activation integration. New27 t
 plus readback/retirement:60 local passes,5 PostgreSQL-only skips; formatting/lint,
 migration drift and independent source review passed. Migration0007 only in ephemeral
 test DBs; no protected Google DB/grant/Heroku operation. See [ADR0037](docs/adr/0037-metadata-only-inspection-recovery-permits.md).
-Next: a separately reviewed mocked executor with irreversible claim and post-read
-scope/client/legacy/time checks, retaining normal closed flags and real files untouched.
+PR316 required CI39815782725 and main CI39816401402 passed613 PostgreSQL tests
+and11 browser E2E, including both permit races. The mocked executor follows below.
+
+Synthetic inspection recovery executor (2026-10-22): a separate double-default-off
+service consumes the permit directly before an internal fixed in-memory probe.
+Only the fabricated inspection-client receipt is eligible; callers cannot supply
+a reader, path, envelope or snapshot. Owned quarantined scope, original receipt
+digest, new-session HMAC, exact consumed snapshot and permit time are rechecked
+after claim, before simulated read and after completion. Fixture client/legacy
+checks surround that read outside DB locks. Results contain only safe metadata
+and explicit synthetic_match or bounded negative dispositions. CONSUMED remains a
+claim, not a stored inspection result; errors do not enable retry or replacement.
+New37 tests:35 local passes,2 PostgreSQL skips. With permit/readback/retirement
+suites:95 local passes,7 PostgreSQL skips; formatting/lint/migration drift and
+independent source review passed. No actual reader/provider/file operation,
+migration, UI, activation or deployment.
+See [ADR0038](docs/adr/0038-synthetic-inspection-recovery-executor.md).
+Next: design the separately gated actual recovery reader's configured-client and
+owner/workspace legacy-path binding, exact candidate location, bounded I/O and
+failure/reconciliation behavior; validate with mocked storage before real access.

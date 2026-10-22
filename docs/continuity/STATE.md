@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 19:36 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 21:59 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,12 +12,34 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main6f120ca: PR315 merged. Required CI39811645737 and post-merge
-main CI39812128522 successful:586 PostgreSQL tests +11 browser E2E. No open PR at
-slice start. Current branch feat/inspection-recovery-permits, before its own PR/CI;
+Verified base main3d9b774: PR316 merged. Required CI39815782725 and post-merge
+main CI39816401402 successful:613 PostgreSQL tests +11 browser E2E. No open PR at
+slice start. Current branch feat/inspection-recovery-rehearsal, before its own PR/CI;
 verify latest head/checks. Attachment100-item limit known; remove no unrelated items.
 
-## Current slice — metadata-only inspection recovery permits
+## Current slice — fixed-fixture inspection recovery rehearsal
+
+- Separate defaultFalse GOOGLE_ADS_INSPECTION_REHEARSAL_ENABLED plus existing
+  recovery flag. Service-only, no route/env toggle/actual reader/backend adapter.
+  Admission requires fixed fabricated client hash; actual client receipt ineligible.
+- Executor consumes permit directly, commits before internal in-memory probe,
+  accepts no caller reader/path/envelope/snapshot. Reloads owned current quarantine,
+  original digest/new-sessionHMAC/exact consumed snapshot/initial deadline after
+  claim, before read and after completion. Time must remain within consume/deadline;
+  no monotonic clock guarantee. Fixture client/legacy probes run outside DB locks.
+- Five fixed scenarios; successful result explicitly synthetic_match. Only frozen
+  request/attempt/disposition returned, no real proof or stored inspection result.
+  Failure/crash does not reopen/renew permit. No actual file/path/client/provider/
+  legacy operation, migration, browser, preserved Google DB or Heroku change.
+- ADR0038 records fixture limits and future actual-reader gates. The current backend
+  derives durable legacy location from configured owner/workspace, not session;
+  future actual adapter must verify that exact mapping and current client.
+- New37 tests:35 local passes,2 PostgreSQL-only skips. Combined with permit/readback/
+  retirement:102 total,95 passed,7 PostgreSQL-only skips. Ruff format/lint, migration
+  drift and whitespace checks passed; independent source review found no blockers.
+  Required PostgreSQL CI pending at this pre-PR snapshot; final closure in PR comment.
+
+## Previous milestone — metadata-only inspection recovery permits
 
 - DefaultFalse GOOGLE_ADS_CANDIDATE_INSPECTION_RECOVERY_ENABLED, no env toggle,
   routes or actual reader. Short-lived new-session permit requires authenticated
@@ -34,7 +56,8 @@ verify latest head/checks. Attachment100-item limit known; remove no unrelated i
 - New27 tests plus readback/retirement:60 local passes,5 PostgreSQL-only skips.
   Ruff format/lint, migration drift/whitespace and independent source review passed.
   Migration0007 only in ephemeral test DBs; protected actual Google DB not migrated.
-  No actual file/grant/DB/provider/Heroku/browser operation. CI pending at snapshot.
+  No actual file/grant/DB/provider/Heroku/browser operation. PR316/main CI verified
+  above, including both PostgreSQL-only permit races.
 - ADR0037 describes limits, including no renewal and no future consumer trusting
   caller-fabricated snapshots. Future UI requires server-session/CSRF/signed consent.
 
@@ -96,9 +119,10 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Finish this PR's independent review/required PostgreSQL CI, squash only if green,
-and verify main CI. Then implement a separately reviewed MOCKED inspection executor
-that consumes this permit directly before bounded I/O and rechecks immutable scope,
-time, configured-client/legacy-file conditions after read. No real encrypted-file
-operation, session-hash rewrite, activation, refresh, adoption or publishing. Normal
-flags remain off; reconciliation/renewal and production gates remain unresolved.
+Finish this rehearsal PR's independent review/required PostgreSQL CI, squash only
+if green, and verify main CI. Then design the separately gated actual recovery
+reader: verified configured-client/owner-workspace legacy mapping, exact candidate
+location, bounded I/O and failure/reconciliation behavior. Validate with mocked
+storage before any actual access. No real encrypted-file operation, session-hash
+rewrite, activation, refresh, adoption or publishing in this slice. Normal flags
+remain off; reconciliation/renewal and production gates remain unresolved.
