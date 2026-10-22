@@ -16,8 +16,10 @@ connection/data, production publication, media spend or production AI in this sl
 Verified base main1419425: PR303 merged. Latest-head required CI39716957472
 passed423 PostgreSQL tests and10 browser E2E tests; post-merge main CI39717264957
 passed. No open PR at slice start. Its earlier overlength fixture error was fixed.
-Current branch feat/connector-identity-generations; uncommitted implementation at
-this snapshot, no new PR/CI yet. Recheck live branch/worktree/head/checks.
+Current branch feat/connector-identity-generations, PR304; implementation head
+0411d49. Required CI39719075471 in progress at this snapshot, which precedes
+its own follow-up commit. Verify latest head/checks before merge.
+PR304 attachment failed once with the known100-item limit; GitHub PR is intact.
 PR attachment has hit this chat's100-item limit; attempt once per new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
