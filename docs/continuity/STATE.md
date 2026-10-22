@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 14:04 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 17:02 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,13 +13,13 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Baseline main8fd13b5: PR311 merged. Latest-head required CI39765174203 and
-main CI39765596754 passed586 PostgreSQL tests and11 browser E2E tests.
-No open PR at audit start. Current branch docs/scoped-test-readiness-audit;
-documentation-only follow-up, before its own PR/CI. Verify live head/checks.
-PR attachment has a known100-item limit; remove no unrelated attachments.
+Verified main0c87014: PR312 merged. Required CI39768028595 and main CI39768447961
+passed586 PostgreSQL tests and11 browser E2E tests. No open PR at slice start;
+main clean. Current branch docs/isolated-scoped-preparation; documentation-only
+follow-up before its own PR/CI. Verify live head/checks. PR attachment has a
+known100-item limit; remove no unrelated attachments.
 
-## Current slice — scoped TEST configuration readiness
+## Preserved configuration readiness — earlier October22 audit
 
 - Owner explicitly approved only the new local scoped callback on GrowthTwin
   Web Test. Saved/reopened client contains both original /google/callback/ and
@@ -38,6 +38,27 @@ PR attachment has a known100-item limit; remove no unrelated attachments.
   must be established before any separately authorized actual candidate exercise.
   No local tests run for this documentation/configuration slice; code unchanged.
   See docs/product/google-production-access-audit.md, October22 follow-up.
+
+## Current slice — closed isolated preparation
+
+- Fresh DB only: %TEMP%\gwt-scoped-preparation-_jafwrsl\synthetic.sqlite3.
+  Private preparation.json holds owner/workspace PKs and connector/generation IDs.
+  Both numeric PKs explicitly random/large; no default1/1 legacy-path collision.
+- Migrated only new DB, unusable-password synthetic owner/workspace, quarantined
+  connector. Zero attempts and Google ledgers; corresponding legacy path absent.
+  New actual candidate path cannot be checked until exact attempt exists.
+- Git-external helper %TEMP%\growthtwin_prepare_closed_scoped.py denies credential
+  read/write, client load and transport functions. No provider/credential I/O,
+  server, session, OAuth, refresh or preserved DB/grant/ledger access. Normal scoped
+  flags False; preparation process also local OAuth/campaign False.
+- Helper creates a NEW environment if rerun; not a resume/reset mechanism.
+  Temp files may disappear. Do not bypass unresolved history with new identities.
+  Existing fixed TEST client not loaded; new DB does NOT mean separate client.
+- Independent source/new-DB read-only review passed. I/O declarations are source
+  observations, not instrumented counters/general egress protection; runtime must
+  re-establish this DB/identity/settings. No local automated test suite run for docs/bootstrap. Readiness still blocked
+  on fresh TEST target proof, exact runtime/client/session, logging controls and
+  uncertainty plan. See docs/product/scoped-test-exercise-preparation.md.
 
 ## Verified existing product evidence
 
@@ -81,8 +102,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete the isolated candidate-exercise preparation: separate synthetic
-owner/workspace/client binding, fresh TEST child proof, same-process PKCE and
-callback/proxy/error-log controls, while preserving legacy grant and ledgers.
-Do not enable flags or start OAuth before these gates and the specific exercise
-consent are satisfied. No publishing, upgrade, adoption, refresh or cleanup.
+Complete the exact scope of fresh TEST-target verification (the existing verifier
+reads/refreshes the preserved grant) and the isolated runtime/client binding.
+No such credential/provider operation occurred in preparation. Do not enable flags
+or start OAuth until evidence, session/logging/uncertainty gates and specific
+exercise consent are satisfied. Preserve legacy grant/ledgers and stop/reconcile.
