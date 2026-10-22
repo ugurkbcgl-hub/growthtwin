@@ -82,3 +82,44 @@ before reuse. The audit is not a reusable product endpoint or trusted capability
 This slice did not back up/migrate the prepared database, issue a permit or run
 the actual reader on protected data. Normal source flags stay False. A local
 envelope match, if later obtained, still would not prove provider/account access.
+
+## Two-phase helper preparation and usage handoff — 2026-10-22
+
+A private, fixed-scope helper was prepared at
+`%TEMP%\gwt_prepare_inspection_schema.py`, outside the repository. It has separate
+PREPARE and APPLY phases; neither phase was executed in this slice. There is no
+actual backup or computed actual migration plan yet. Source preparation is not
+migration evidence. The prepared DB file still exists and the preparation pointer
+was absent at the handoff check; full metadata admission must be repeated.
+
+Independent source review identified and prompted these changes: verify the
+reviewed audit's bounded source bytes against a pinned SHA before executing those
+same bytes; forbid subprocesses throughout Django startup/plan/migration; reject
+reparse paths before leaf hashing/ACL checks; verify the fresh backup root's private
+ACL before copying; bound the manifest before writing its pointer; require typed
+manifest versions. PREPARE uses immutable read-only SQLite; APPLY uses mode=rw to
+refuse creation of a missing database. Direct MigrationExecutor avoids management
+command post_migrate writes to existing permission/content-type tables.
+
+The proposed preservation comparison covers preexisting application schema/data
+and migration history, allowing only the added 0007 recorder row and the new empty
+permit table/indexes. SQLite internal sqlite_sequence is excluded; a recorder
+sequence increment is expected and must not be called byte-identical preservation.
+No backup restoration, permit claim, protected credential read, provider call or
+activation is included. Source checks are not an operating-system sandbox or an
+exclusive cross-process lock.
+
+Ruff with apps/web/pyproject.toml and Python compilation passed for the private
+helper. The five-hour usage window reported100% consumed with additional credits
+enabled; AGENTS' low-usage handoff rule stopped execution before PREPARE/APPLY.
+Final independent source review found no remaining PREPARE blocker; it did not
+approve APPLY or verify any execution result. Before reuse, move success reporting
+after the outer network-guard counter check, so a caught forbidden attempt cannot
+print success before final failure. Re-review the exact helper source, repeat
+admission and PREPARE, and independently review the actual plan before APPLY.
+Reviewed helper SHA256 (code only, not credential data):
+4668e9bb711fc25b3bf6eb69d68fb1087607e261cd30b99ed7e42269855db409.
+The reporting change will require a new hash/review.
+Temporary helpers can disappear. Do not recreate the database/identity to bypass
+missing resources or history; do not interpret this handoff as execution approval
+for an unchecked helper.
