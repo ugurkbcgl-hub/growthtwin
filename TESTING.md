@@ -404,6 +404,25 @@ suite was needed for this harness/docs slice; last verified full suite is above.
 A separately reviewed immutable RO SQLite/metadata/ACL audit verified the same
 preserved DB unchanged, coherent two-attempt history, disabled login/session0,
 regular exact client/candidate files and private protected-root ACL. No encrypted
-contents were read/decrypted. Migration0007 and permit table are absent; no backup,
+contents were read/decrypted. At that audit migration0007/table were absent; no backup,
 migration/permit/provider/actual reader/adoption/activation occurred. See
 [current preparation evidence and next plan](docs/product/recovered-inspection-exercise-preparation.md).
+
+
+## Actual same-DB backup and forward0007 schema preparation - 2026-10-22
+
+Final reviewed private two-phase helper passed Ruff/compilation. Three ACL-related
+PREPARE failures stopped before database copy, leaving empty directories only.
+Focused native ACL handling passed on an empty owned directory; final PREPARE
+secured its fresh root BEFORE copying, verified byte/snapshot-equivalent backup
+and actual immutable-RO plan containing only forward connections.0007. Independent
+actual manifest/hash/ACL/migration-source review found no APPLY blocker.
+
+Single APPLY passed fresh admission, exact plan and mode=rw existing-file checks;
+preexisting application schema/data/history preserved except recorder0007; only
+new permit table/indexes; permit_count0; backup unchanged. SQLite internal tables
+excluded. No post_migrate management command, restore or APPLY retry. Subsequent
+RO audit passed current identity/history, disabled login/session0, table/migration
+presence and exact private protected files without reading their encrypted contents.
+No permit/provider/readback/activation/deployment or new local Django suite.
+See [full evidence and current next step](docs/product/recovered-inspection-exercise-preparation.md).
