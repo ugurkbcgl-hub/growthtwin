@@ -413,7 +413,13 @@ The plaintext-overflow example hit the encrypted cap first; no independent later
 plaintext-cap proof. A separate read-only audit of the SAME prepared DB verified
 unchanged bytes/size/mtime, coherent retired/current history, disabled login/session0,
 regular exact client/candidate and private ACLs; no credential contents opened.
-Migration0007/permit table are absent. No backup, schema write, permit, provider,
-actual candidate readback or activation. See [exercise preparation](docs/product/recovered-inspection-exercise-preparation.md).
-Next: private verified same-DB backup and exact forward0007 migration-plan review,
-then separately reviewed one-shot client-bound inspection; never reset history/claims.
+At that audit migration0007/permit table were absent; no schema/credential operation.
+Subsequently, after PR320 handoff and renewed owner instruction, a private SAME-DB
+backup and exact ONLY-forward0007 plan were verified and independently reviewed.
+One APPLY completed: old application schema/data/history preserved except the0007
+recorder row, new permit table empty, backup unchanged. Post-operation RO audit
+passed. Three earlier ACL preparation failures stopped before copying DB data;
+reviewed native ACL handling resolved them. No permit/credential read/provider/
+activation/deployment. See [exercise preparation](docs/product/recovered-inspection-exercise-preparation.md).
+Next: separately reviewed one-shot client-bound inspection launcher/failure plan;
+never rerun completed preparation, reset history/claims or restore over consumption.

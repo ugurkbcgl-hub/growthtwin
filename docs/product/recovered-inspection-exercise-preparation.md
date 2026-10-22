@@ -28,7 +28,7 @@ The successful rehearsal proves the tested Windows DPAPI paths/error cases on
 this machine/user, not cross-user access, atomic no-follow, production vault,
 remote account permission or a protected candidate match.
 
-## Existing candidate metadata and ACL audit
+## Existing candidate metadata and ACL audit - before schema preparation
 
 A separately source-reviewed, one-shot private helper performed immutable,
 read-only SQLite queries on the SAME prepared database. It refused WAL/SHM/journal
@@ -48,7 +48,7 @@ Verified booleans:
   current-user-only allow rules and the root DACL is protected.
 - Legacy path for THIS owned identity is absent. Other legacy identities were
   not enumerated, opened or changed.
-- Migration 0007 is NOT applied and the inspection permit table does NOT exist.
+- At that audit, migration 0007 was NOT applied and the permit table did NOT exist.
 - No encrypted contents were read/decrypted; current client-hash match and token/
   account access remain unverified.
 
@@ -57,7 +57,7 @@ and scope metadata remain under `%TEMP%\gwt-scoped-preparation-_jafwrsl\` as
 documented in STATE. Temporary resources can vanish; verify and source-review
 before reuse. The audit is not a reusable product endpoint or trusted capability.
 
-## Next bounded preparation step
+## Preparation sequence - schema steps completed below
 
 1. Reconfirm the exact same database/scope/history and absence of live sessions,
    unresolved competing work and any existing permit. Never create a fresh identity
@@ -79,7 +79,7 @@ before reuse. The audit is not a reusable product endpoint or trusted capability
    may bypass it. Preserve uncertainty for explicit reconciliation. Retain the same
    candidate/history; no OAuth, refresh, adoption, activation, revoke or publishing.
 
-This slice did not back up/migrate the prepared database, issue a permit or run
+The earlier rehearsal slice did not back up/migrate the prepared database, issue a permit or run
 the actual reader on protected data. Normal source flags stay False. A local
 envelope match, if later obtained, still would not prove provider/account access.
 
@@ -87,8 +87,8 @@ envelope match, if later obtained, still would not prove provider/account access
 
 A private, fixed-scope helper was prepared at
 `%TEMP%\gwt_prepare_inspection_schema.py`, outside the repository. It has separate
-PREPARE and APPLY phases; neither phase was executed in this slice. There is no
-actual backup or computed actual migration plan yet. Source preparation is not
+PREPARE and APPLY phases; neither phase was executed at the PR320 handoff. There
+was no actual backup or computed actual migration plan at that point. Source preparation is not
 migration evidence. The prepared DB file still exists and the preparation pointer
 was absent at the handoff check; full metadata admission must be repeated.
 
@@ -112,14 +112,69 @@ exclusive cross-process lock.
 Ruff with apps/web/pyproject.toml and Python compilation passed for the private
 helper. The five-hour usage window reported100% consumed with additional credits
 enabled; AGENTS' low-usage handoff rule stopped execution before PREPARE/APPLY.
-Final independent source review found no remaining PREPARE blocker; it did not
-approve APPLY or verify any execution result. Before reuse, move success reporting
-after the outer network-guard counter check, so a caught forbidden attempt cannot
-print success before final failure. Re-review the exact helper source, repeat
-admission and PREPARE, and independently review the actual plan before APPLY.
-Reviewed helper SHA256 (code only, not credential data):
+At that handoff, independent source review found no remaining PREPARE blocker;
+it had not approved APPLY or verified any execution result. It requested moving
+success reporting after the outer network counters, renewed source review,
+admission/PREPARE and separate actual-plan review before APPLY. These requests
+were subsequently completed as documented below.
+Historical PR320 helper SHA256 (code only, not credential data):
 4668e9bb711fc25b3bf6eb69d68fb1087607e261cd30b99ed7e42269855db409.
-The reporting change will require a new hash/review.
+The current executed helper has the different reviewed hash recorded below.
 Temporary helpers can disappear. Do not recreate the database/identity to bypass
 missing resources or history; do not interpret this handoff as execution approval
 for an unchecked helper.
+
+## Verified same-database backup and schema preparation - after PR320
+
+On2026-10-22 23:49 Europe/Istanbul, the owner requested completion after the usage
+handoff; with additional credits enabled, the bounded operation resumed under that
+current instruction. The success-reporting refinement now captures phase output
+until the outer network guards pass. Independently reviewed final helper SHA256:
+d5742e54d168e7e31d64e8ff2ecb68083f7747be0d7c25192d68efabbc69acee.
+
+Three PREPARE attempts stopped before any database copy: the first fresh directory
+retained other explicit ACL entries; Set-Acl alternatives required unavailable
+privileges. All three failed-attempt directories remained empty, without backup or
+manifest. A focused empty-owned-directory check verified native icacls /reset then
+/inheritance:r /grant:r for the current SID. The final helper requires a fresh empty
+owned directory, checks both native exit codes and verifies strict private ACLs
+BEFORE any database bytes are copied. No original-resource ACL or owner was changed.
+The empty failed-attempt directories were retained; no recursive cleanup occurred.
+
+Successful PREPARE then verified:
+
+- SAME preserved candidate DB; exact identity/history, disabled login/session0,
+  no8002 listener and no SQLite companion journals admitted again.
+- Backup bytes and integrity/data snapshot equal to the unchanged original.
+- Backup root, backup and manifest current-user-only ACLs; protected root DACL.
+- Actual immutable read-only migration plan: ONLY forward
+  connections.0007_candidate_inspection_permit, one CreateModel operation.
+
+Independent review read the actual private manifest, checked source/preparation/
+migration/DB/backup hashes and ACLs and found no APPLY blocker. APPLY reran admission
+and the exact plan, then used MigrationExecutor once against mode=rw on that SAME
+existing file. Successful postconditions: only0007 added to migration history;
+preexisting application schema and table-data fingerprints unchanged; new permit
+table/indexes only; permit_count=0; backup hash unchanged. Internal SQLite tables
+remain excluded from that preservation comparison. No management-command
+post_migrate permission/content-type writes, restore or APPLY retry occurred.
+
+A separate post-operation read-only audit also passed: current inactive identity,
+retained attempt/generation chain and preparation IDs coherent; session0; migration
+and permit table present; exact protected client/candidate regular and private;
+legacy absent for this identity. Its database_unchanged=true means unchanged DURING
+that later audit, not byte-identical across the intentional schema migration.
+
+Exact backup location is in the bounded private pointer
+%TEMP%\gwt-scoped-preparation-_jafwrsl\inspection-schema-preparation.json.
+Resolve that pointer with the existing no-reparse/typed/path checks, not by choosing
+an arbitrary matching directory. Backup and manifest remain outside Git. Temporary
+resources may disappear; never reset/recreate identity/history or restore over a
+future consumed claim. PREPARE/APPLY are now completed, not reusable resume steps.
+
+No permit was issued/consumed. No protected credential content was read/decrypted;
+no OAuth, refresh, provider, adoption, activation, advertising or deployment occurred.
+Default source flags stay False. Ruff/compilation and focused actual operational
+checks passed; no new local Django suite was run for this private helper/docs slice.
+Next is a separately reviewed one-shot inspection launcher and failure plan as in
+sequence steps4-5, before any permit claim or protected-file read.
