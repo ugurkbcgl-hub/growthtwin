@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 13:09 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 13:10 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -15,9 +15,10 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main89be175: PR309 merged. Latest-head CI39756480228 passed545
 PostgreSQL tests and11 browser E2E tests; main CI39756903416 passed. No open PR
-at slice start. Current branch feat/retire-reserved-candidate; implementation/docs
-in progress, PR not yet created at this snapshot. Verify latest head/checks.
-Attachment limit100 remains; attempt once per new PR without removing any.
+at slice start. Current branch feat/retire-reserved-candidate, PR310; implementation headbf82bfe.
+Initial required CI39761074417 running at this snapshot, which precedes its own
+follow-up commit. Verify latest head/checks before merge. PR310 attachment failed
+once at the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
 
 ## Current slice — explicit RESERVED-only retirement
 
