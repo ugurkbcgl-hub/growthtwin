@@ -195,6 +195,8 @@ class ScopedOAuthCandidateAttempt(models.Model):
     expected_revision = models.PositiveBigIntegerField()
     session_key_hash = models.CharField(max_length=64, editable=False)
     client_id_hash = models.CharField(max_length=64, editable=False)
+    retirement_request_id = models.UUIDField(null=True, unique=True, editable=False)
+    retired_generation = models.UUIDField(null=True, editable=False)
     state = models.CharField(max_length=16, choices=State, default=State.RESERVED)
     reason = models.CharField(max_length=24, blank=True, default="")
     created_at = models.DateTimeField(default=timezone.now, editable=False)
@@ -221,5 +223,23 @@ class ScopedOAuthCandidateAttempt(models.Model):
             models.CheckConstraint(
                 condition=models.Q(expires_at__gt=models.F("created_at")),
                 name="scoped_oauth_positive_lifetime",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(
+                        state="rejected",
+                        reason="retired_before_exchange",
+                        retirement_request_id__isnull=False,
+                        retired_generation__isnull=False,
+                    )
+                    | (
+                        ~models.Q(reason="retired_before_exchange")
+                        & models.Q(
+                            retirement_request_id__isnull=True,
+                            retired_generation__isnull=True,
+                        )
+                    )
+                ),
+                name="scoped_oauth_retirement_binding",
             ),
         ]

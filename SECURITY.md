@@ -49,3 +49,5 @@
 - Follow [ADR-0027](docs/adr/0027-data-lifecycle-and-no-resend-boundary.md) for the planned data lifecycle: stop, revoke, local erasure and recipient/backup erasure have separate evidence. A durable action barrier must survive restore without retaining creative snapshots indefinitely. This production mechanism is not implemented; existing TEST ledgers must not be reset or cascaded away.
 
 - ADR0034 synthetic recovery rebinds only fixed-example session metadata after separate signed/CSRF confirmation. It does not recover a Google/candidate grant or authorize retries. Assessment preserves uncertainty across session/scope/time changes; legacy stop/reconcile access remains unchanged.
+
+- ADR0035 permits explicitly confirmed retirement only before the adapter commits EXCHANGING, with atomic generation fencing. Uncertainty, existing grants and remote revocation cannot be resolved by retirement. Durable exact replay never reopens a blocked connector; legacy stop/reconcile access stays separate.
