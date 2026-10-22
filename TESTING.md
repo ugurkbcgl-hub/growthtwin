@@ -330,8 +330,53 @@ without reopening, transient pre-read denial, post-read ownership/session/SECRET
 scope/receipt/permit/time/flag drift, client/legacy changes and bounded safe results.
 Clock checks cover moving before consumption; no monotonic guarantee is claimed.
 Two PostgreSQL tests cover competing executors (one fake read) and rotation during
-the read (no match). They await required CI before merge; local SQLite is not
+the read (no match). PR317 required CI39836461900 and main CI39837030362 passed650
+PostgreSQL tests and11 browser E2E, including those races. Local SQLite is not
 row-lock evidence. Ruff format/lint, migration drift and whitespace checks passed;
 independent source review found no blockers. No new migration, UI/browser exercise,
 actual file/credential/provider/preserved DB/Heroku operation or deployment.
 See [ADR0038](docs/adr/0038-synthetic-inspection-recovery-executor.md).
+
+## Closed recovered reader and bounded storage — 2026-10-22
+
+New reader37 tests:35 local passes,2 PostgreSQL-only skips. New storage17 tests all
+passed; every filesystem/stat/PowerShell operation was mocked. Four additional
+SafeExceptionReporterFilter tests passed with DEBUG=False: reader chain and direct
+session-bearing recovery/path helper calls mask their locals. Direct-call helper
+annotations are defense in depth; the protected reader entry already covers its chain.
+Combined invocation with permit/readback/retirement:123 total,116 passed,7 PostgreSQL-only skips, using
+ephemeral in-memory config.test_settings. No preserved DB or credential was opened.
+
+Checks cover exact scope-derived storage locations (same durable legacy location
+under a new session), client/candidate decoder caps, duplicate JSON rejection,
+safe errors, metadata-only legacy presence, committed claim before all observations,
+single candidate read/replay denial, flags/ownership/session, storage/config drift,
+client/legacy changes, immutable receipt/permit drift and both time budgets. Regression
+tests cover deadline crossing while holding DB locks and root changes during the
+second client observation. PostgreSQL races cover competing readers and rotation
+during read and await required CI. Ruff format/lint, migration drift and whitespace
+checks passed; independent review found the two corrected gaps and no remaining
+source blocker. No new migration, UI/browser exercise, actual DPAPI runtime, file,
+provider, protected DB or Heroku operation. Script marker tests prove source shape
+only; real Windows/ACL/no-follow/credential validity remains unverified.
+See [ADR0039](docs/adr/0039-closed-recovered-candidate-readback.md).
+
+### Hosted-runner dependency download guard
+
+PR318 latest-head run39839852480 stalled twice during Playwright's Ubuntu APT
+dependency downloads, before application tests. Attempt1 was cancelled after about
+10 minutes; its log showed slow azure.archive.ubuntu.com package downloads.
+Earlier head5ba81bb/run39839305150 passed704 PostgreSQL tests +11 browser E2E;
+that does not verify the later helper-privacy changes or CI change.
+
+The CI job now caps total runtime at20 minutes and Chromium installation at8.
+Before installation it configures APT with one retry and20-second HTTP/HTTPS
+connection/data timeouts. When the hosted-runner mirror list exists, it selects
+official HTTPS archive.ubuntu.com and security.ubuntu.com endpoints. Distribution
+suites, package signatures, permissions and every existing check remain unchanged;
+installation failure remains fatal. No continue-on-error or test bypass is added.
+These limits reject late/stuck installation, not proof of external availability.
+See [Ubuntu APT transport documentation](https://manpages.ubuntu.com/manpages/jammy/man1/apt-transport-http.1.html)
+and the [runner-image stall report](https://github.com/actions/runner-images/issues/14594).
+Actual workflow execution is the validation for these Linux-only CI commands;
+no local device APT configuration is changed.

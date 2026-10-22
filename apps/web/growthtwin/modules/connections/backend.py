@@ -55,6 +55,7 @@ def _enabled():
         raise ConnectionUnavailable("Local connection is unavailable.")
 
 
+@sensitive_variables()
 def _token_path(binding):
     # Session binds the handshake, not the durable owner/workspace credential.
     if (

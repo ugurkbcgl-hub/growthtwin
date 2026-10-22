@@ -252,6 +252,24 @@ suites:95 local passes,7 PostgreSQL skips; formatting/lint/migration drift and
 independent source review passed. No actual reader/provider/file operation,
 migration, UI, activation or deployment.
 See [ADR0038](docs/adr/0038-synthetic-inspection-recovery-executor.md).
-Next: design the separately gated actual recovery reader's configured-client and
-owner/workspace legacy-path binding, exact candidate location, bounded I/O and
-failure/reconciliation behavior; validate with mocked storage before real access.
+PR317 required CI39836461900 and main CI39837030362 passed650 PostgreSQL tests
+and11 browser E2E. The separately gated recovered reader follows below.
+
+Closed recovered reader (2026-10-22): a new default-off service verifies the
+configured owner/workspace and captures exact client/legacy/candidate locations,
+then directly consumes the permit before any file observation. Bounded client
+and candidate decoding replaces the old unlimited reader only in this adapter;
+legacy contents remain unread. Scope/session/digest/time and captured configuration
+are rechecked, including after final client observation and DB-lock waits. A local
+envelope match is advisory, not token/account proof or activation. Source has no
+HTTP route, refresh/provider/write/adoption operation; normal switches remain off.
+58 new tests:56 local passes,2 PostgreSQL skips. Combined focused suites:116 passes,
+7 PostgreSQL skips; formatting/lint/migration drift and independent review passed.
+Direct session-bearing helper calls also mask Django traceback locals; four tests
+verify actual reporter filtering. The protected reader entry already masks its chain.
+No new migration or actual protected DB/file/credential/provider/Heroku operation.
+PowerShell checks are mocked source contracts, not actual Windows DPAPI evidence.
+See [ADR0039](docs/adr/0039-closed-recovered-candidate-readback.md).
+Next: review one-shot isolated exercise preparation on the same preserved candidate
+DB/history, including private backup/schema plan, ACL/location/client metadata,
+owner session/permit lifetime and failure disposition, before actual file access.

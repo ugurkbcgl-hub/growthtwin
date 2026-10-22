@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 21:59 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 22:47 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,12 +12,44 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main3d9b774: PR316 merged. Required CI39815782725 and post-merge
-main CI39816401402 successful:613 PostgreSQL tests +11 browser E2E. No open PR at
-slice start. Current branch feat/inspection-recovery-rehearsal, before its own PR/CI;
-verify latest head/checks. Attachment100-item limit known; remove no unrelated items.
+Verified base main3022af4: PR317 merged. Required CI39836461900 and post-merge
+main CI39837030362 successful:650 PostgreSQL tests +11 browser E2E. No open PR at
+slice start. Current branch feat/recovered-inspection-storage, PR318 open. Head
+87abee2 passed123 focused local tests (116 passed,7 skipped) but latest CI pending.
+Earlier head5ba81bb CI39839305150 passed704 PostgreSQL +11 browser tests; not latest
+head proof. CI39839852480 attempt1 cancelled after ~10min Ubuntu/Playwright download
+stall; attempt2 repeated that stall before application tests. A follow-up CI fix
+bounds APT retry/timeouts, selects official HTTPS mirrors, caps install8min/job20min;
+all checks/signatures unchanged. Verify new head/run before merge, then main CI.
+Attachment100-item limit known; remove no unrelated items.
 
-## Current slice — fixed-fixture inspection recovery rehearsal
+## Current slice — closed recovered reader, mocked storage validation
+
+- New defaultFalse GOOGLE_ADS_RECOVERED_INSPECTION_ENABLED, plus strictlyTrue
+  recovery/scoped/local-OAuth switches and existing Windows/no-DEBUG runtime guard.
+  No HTTP route or env toggle. Existing origin reader and fixture rehearsal unchanged.
+- Five-second process lock wait before claim. Pure configured owner/workspace and
+  captured root/client/legacy/candidate derivation precedes committed direct consume.
+  All file/client observations outside DB locks. Strict scope/session/digest/exact
+  consumed snapshot/time rechecks plus final configuration check;60s monotonic
+  acceptance budget rechecked after DB locks. Not hard cancellation of all I/O.
+- Separate bounded decoder for BOTH client and candidate:131072 encrypted bytes,
+  32768 plaintext characters,15s subprocess limit, held read-only stream, strictUTF8,
+  duplicate-JSON rejection, BSTR cleanup, sanitized errors. Legacy contents unread.
+  Reparse checks best effort; no production no-follow/crossprocess guarantee.
+- Only safe advisory metadata returned; match is NOT token/account/activation proof.
+  Consumption terminal even on failure/crash, no retry/renewal/result persistence.
+- New58 tests:56 passed,2 PostgreSQL skips. Combined with permit/readback/retirement:
+  123 total,116 passed,7 skipped. Four real Django reporter-filter checks verify
+  direct session-bearing helpers; entry already protects its nested frames.
+  Ruff format/lint, migration drift and whitespace
+  checks passed. Independent review found two gaps (late DB wait and final client
+  configuration drift); corrected and regression-tested, no remaining source blocker.
+- All storage/stat/PowerShell mocked; no actual file/client/credential/provider/
+  protected DB/migration/Heroku/UI operation. ADR0039 records actual exercise gates.
+  Required PostgreSQL CI pending at pre-PR snapshot; final closure in PR comment.
+
+## Previous milestone — fixed-fixture inspection recovery rehearsal
 
 - Separate defaultFalse GOOGLE_ADS_INSPECTION_REHEARSAL_ENABLED plus existing
   recovery flag. Service-only, no route/env toggle/actual reader/backend adapter.
@@ -37,7 +69,7 @@ verify latest head/checks. Attachment100-item limit known; remove no unrelated i
 - New37 tests:35 local passes,2 PostgreSQL-only skips. Combined with permit/readback/
   retirement:102 total,95 passed,7 PostgreSQL-only skips. Ruff format/lint, migration
   drift and whitespace checks passed; independent source review found no blockers.
-  Required PostgreSQL CI pending at this pre-PR snapshot; final closure in PR comment.
+  PR317/main CI verified above, including both executor races.
 
 ## Previous milestone — metadata-only inspection recovery permits
 
@@ -56,8 +88,8 @@ verify latest head/checks. Attachment100-item limit known; remove no unrelated i
 - New27 tests plus readback/retirement:60 local passes,5 PostgreSQL-only skips.
   Ruff format/lint, migration drift/whitespace and independent source review passed.
   Migration0007 only in ephemeral test DBs; protected actual Google DB not migrated.
-  No actual file/grant/DB/provider/Heroku/browser operation. PR316/main CI verified
-  above, including both PostgreSQL-only permit races.
+  No actual file/grant/DB/provider/Heroku/browser operation. PR316 required
+  CI39815782725 and main CI39816401402 passed613 PostgreSQL tests +11 browser E2E.
 - ADR0037 describes limits, including no renewal and no future consumer trusting
   caller-fabricated snapshots. Future UI requires server-session/CSRF/signed consent.
 
@@ -119,10 +151,11 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Finish this rehearsal PR's independent review/required PostgreSQL CI, squash only
-if green, and verify main CI. Then design the separately gated actual recovery
-reader: verified configured-client/owner-workspace legacy mapping, exact candidate
-location, bounded I/O and failure/reconciliation behavior. Validate with mocked
-storage before any actual access. No real encrypted-file operation, session-hash
-rewrite, activation, refresh, adoption or publishing in this slice. Normal flags
-remain off; reconciliation/renewal and production gates remain unresolved.
+Finish this reader PR's independent review/required PostgreSQL CI, squash only if
+green, and verify main CI. Then review one-shot isolated exercise preparation on
+the SAME preserved candidate DB/history: private backup/schema plan (0007 not yet
+applied there), ACL/location/current-client metadata, owner session/permit lifetime
+and failure disposition. Do not create a new identity or reset a consumed permit.
+No actual encrypted-file operation, session-hash rewrite, activation, refresh,
+adoption or publishing in this slice. Normal flags remain off; actual Windows
+decode, reconciliation/renewal and production launch gates remain unresolved.
