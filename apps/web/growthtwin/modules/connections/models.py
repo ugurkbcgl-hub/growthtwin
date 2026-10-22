@@ -3,6 +3,7 @@
 from uuid import uuid4
 
 from django.db import models
+from django.utils import timezone
 
 
 class SyntheticConnectionScope(models.Model):
@@ -122,5 +123,57 @@ class ConnectorGeneration(models.Model):
             ),
             models.CheckConstraint(
                 condition=models.Q(ordinal__gt=0), name="connector_generation_positive"
+            ),
+        ]
+
+
+class SyntheticAuthorizationAttempt(models.Model):
+    """Fixed-example attempt receipt, never OAuth state, code, PKCE or a grant."""
+
+    class State(models.TextChoices):
+        PENDING = "pending"
+        RUNNING = "running"
+        ACCEPTED = "accepted"
+        REJECTED = "rejected"
+        EXPIRED = "expired"
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    connection = models.ForeignKey(ConnectorIdentity, on_delete=models.PROTECT)
+    generation = models.UUIDField(editable=False)
+    expected_revision = models.PositiveBigIntegerField()
+    mode = models.CharField(max_length=16, default="synthetic", editable=False)
+    scenario = models.CharField(
+        max_length=16,
+        choices=(("allow_example", "Allow example"), ("deny_example", "Deny example")),
+    )
+    state = models.CharField(max_length=16, choices=State, default=State.PENDING)
+    reason = models.CharField(max_length=24, default="", blank=True)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    expires_at = models.DateTimeField()
+    completed_at = models.DateTimeField(null=True, editable=False)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(mode="synthetic"), name="auth_attempt_synthetic_only"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(scenario__in=("allow_example", "deny_example")),
+                name="auth_attempt_fixed_scenario",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(
+                    state__in=("pending", "running", "accepted", "rejected", "expired")
+                ),
+                name="auth_attempt_known_state",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(expires_at__gt=models.F("created_at")),
+                name="auth_attempt_positive_lifetime",
+            ),
+            models.UniqueConstraint(
+                fields=("connection",),
+                condition=models.Q(state__in=("pending", "running")),
+                name="unique_active_synthetic_auth",
             ),
         ]

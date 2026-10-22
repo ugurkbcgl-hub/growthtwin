@@ -150,7 +150,7 @@ PR303 first PostgreSQL CI39716734298 rejected an overlength synthetic unknown-st
 
 `connections.test_connector_identity` adds15 local tests and2 PostgreSQL-only
 races. Together with existing `test_lifecycle_work_guard`,29 local tests pass
-and4 PostgreSQL races skip on SQLite. Required CI must verify all four races.
+and4 PostgreSQL races skip on SQLite. PR304 required CI39719120618 verified all four races in440 PostgreSQL tests and10 browser E2E tests; main CI39719367350 passed.
 Registration replay, workspace/owner isolation, stale generation/revision,
 retired-generation/request reuse, permanently blocked state, replay after later
 rotation/block, corrupt history, receipt rollback and database state/provider
@@ -163,3 +163,25 @@ was applied only during ephemeral local test DB setup, never to the preserved
 Google DB or the browser fixture. No UI/browser run for this service-only slice.
 No runtime consumer, credential metadata mapping, actual OAuth handshake, remote
 exactly-once, stop/revocation or independent restore-barrier guarantee is implied.
+
+
+## Default-off synthetic authorization attempts
+
+`test_synthetic_authorization` adds23 local tests and2 PostgreSQL races. With
+`test_connector_identity`,38 tests pass locally and4 PostgreSQL tests skip.
+New races require PostgreSQL: a second perform during a running fake must not
+execute twice; a block must commit while fake waits and reject its late success.
+Other tests cover default/confirmation, scoped generation/revision, expiry before/
+during fake, switch/block/rotation while fake runs, stale active replacement,
+historical GET without writes, owner/inactive isolation, missing receipt, caller
+transaction rejection, provider/credential adapter isolation and immutable-binding
+corruption. Accepted metadata must be ALLOW with aware completion within lifetime;
+contradictory fake outcome or corrupt accepted metadata cannot replay as success.
+
+Review finding about accepted metadata consistency was fixed and independently
+rechecked. Ruff/format/migration drift passed. Migration0004 ran only in ephemeral
+test DBs; no preserved Google/fixture DB, credentials, provider, Heroku or UI use.
+No browser check for this service-only slice. A running fake is never resumed or
+re-executed automatically; an expired/stale active example may be retired before
+a new explicitly confirmed example. This is not real OAuth callback verification,
+authorization, grant storage, remote exactly-once or independent restore evidence.

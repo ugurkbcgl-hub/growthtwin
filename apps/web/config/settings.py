@@ -179,3 +179,6 @@ LOGGING = {
         "django.server": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }
+
+# Internal rehearsal only; enable explicitly with isolated test settings.
+SYNTHETIC_CONNECTOR_AUTHORIZATION_ENABLED = False
