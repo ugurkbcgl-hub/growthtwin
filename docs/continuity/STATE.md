@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 06:49 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 07:06 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,33 +13,33 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main1419425: PR303 merged. Latest-head required CI39716957472
-passed423 PostgreSQL tests and10 browser E2E tests; post-merge main CI39717264957
-passed. No open PR at slice start. Its earlier overlength fixture error was fixed.
-Current branch feat/connector-identity-generations, PR304; implementation head
-0411d49. Required CI39719075471 in progress at this snapshot, which precedes
-its own follow-up commit. Verify latest head/checks before merge.
-PR304 attachment failed once with the known100-item limit; GitHub PR is intact.
+Verified base main6648139: PR304 merged. Latest-head CI39719120618 passed440
+PostgreSQL tests including new identity races and10 browser E2E tests; main
+CI39719367350 passed. No open PR at slice start.
+Current branch feat/synthetic-authorization-attempts, uncommitted implementation
+at this snapshot; new PR/CI not created yet. Recheck live state/head/checks.
 PR attachment has hit this chat's100-item limit; attempt once per new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
-## Current slice — durable connector identity/generation metadata
+## Current slice — generation-bound synthetic authorization attempts
 
-- Separate ConnectorIdentity/ConnectorGeneration, one google_ads_test slot per
-  owned workspace. Server-generated connection/current generation UUIDs with
-  ordinal/revision and permanent typed request/generation history. No secrets.
-- Initial quarantine, irreversible block, no OPEN/activate/reopen API. Metadata
-  rotation never refreshes credentials or implies permission. Exact replay returns
-  current metadata even after later rotation/block; stale/conflicting requests deny.
-- All paths check active ownership, lock workspace then connection and verify
-  history; atomic receipts/CAS preserve consistency. No actual runtime consumer.
--15 new local tests +14 work-guard tests passed (29 total); four PostgreSQL races
-  skipped locally, including two new registration/rotation races. Required CI must
-  pass those. Ruff/format/migration drift and independent source review passed.
-- Migration0003 applied only to ephemeral test DBs. Preserved Google/fixture DBs,
-  grants, ledgers, Heroku and UI unchanged. No browser test for service-only slice.
-- ADR0029 records the contract and limits. No OAuth handshake or actual credential
-  generation mapping, provider request, restore barrier or remote execution proof.
+- Internal default-off rehearsal with fixed typed confirmation/scenario,10-minute
+  expiry and owned connection/generation/revision binding. One active attempt per
+  connection. No OAuth code/state/PKCE/session, credential or external evidence.
+- Running reservation commits before fixed local fake; final result rechecks
+  ownership, registry state/generation/revision, switch, expiry and immutable
+  binding. Replay/duplicate running/terminal calls do not execute the fake again.
+- Block/rotation/expiry/disable while fake runs rejects late success. Accepted is
+  only an ALLOW example with aware completion inside lifetime; identity stays
+  quarantined. Failed persistence/running receipt is never automatically resumed.
+-23 new local tests +15 identity tests passed (38 total);4 PostgreSQL races skip
+  locally (2 new). Ruff/format/migration drift and independent re-review passed.
+  Review finding about corrupt accepted metadata fixed with two regressions.
+- Migration0004 applied only to ephemeral test DBs. Preserved Google/fixture DBs,
+  grants, ledgers, provider, Heroku and UI unchanged. No browser test needed.
+- ADR0030 records scope; this is not OAuth callback authenticity, grant storage,
+  provider permission or production restore/no-resend proof. Existing runtime
+  remains unconnected and cannot consume the synthetic accepted metadata.
 
 ## Verified existing product evidence
 
@@ -83,12 +83,13 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Finish the reviewed identity PR/required CI/merge and verify main CI. Then add
-a closed-by-default, generation-bound authorization-attempt receipt/result
-coordinator with deterministic local fake outcomes. Do not read, migrate,
-reactivate or reset the preserved Google grant. Actual OAuth hook integration,
-separately allowed stop/reconcile and production identity/privacy/access/recovery/
-financial gates remain open; fixture IDs and registry metadata prove no real scope.
+Finish this reviewed attempt PR/required CI/merge and verify main CI. Then
+review the Google TEST credential-envelope/callback adoption and rollback plan
+from source and implement a default-off adapter boundary with mocked pre/post
+exchange/result checks, explicitly bound to durable identity/generation. Do not
+read/migrate/reactivate/reset the preserved grant in that preparation. Actual
+OAuth integration, separately allowed stop/reconcile, production privacy/access/
+recovery/financial gates remain open. Synthetic accepted metadata is never a grant.
 
 ## Preserved local environments
 

@@ -38,3 +38,5 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0028 — Read-only owner campaign stage overview](0028-campaign-stage-overview.md) — Accepted for local synthetic development only
 
 - [0029 — Durable connector identity/generations](0029-durable-connector-identity-generations.md) — Accepted for isolated synthetic validation only
+
+- [0030 — Generation-bound synthetic authorization attempts](0030-synthetic-generation-bound-authorization-attempts.md) — Accepted for isolated rehearsal only
