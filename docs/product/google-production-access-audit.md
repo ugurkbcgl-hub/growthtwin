@@ -58,3 +58,39 @@ veya ledgeri bu hazırlık için değiştirme.
 Kaynaklar 19 Ekim'de kontrol edildi. Eski sayfa özetlerindeki developer-token
 ifadeleriyle güncel Cloud projesi erişim modeli karıştırılmamalı. Bu denetim
 yazılım değişikliği, üretim hesabı denemesi, erişim yükseltme veya yayın yapmadı.
+
+
+## Scoped TEST hazırlığı — 22 Ekim 2026
+
+Saat 14:04 Europe/Istanbul (+03:00), kod tabanı `8fd13b5` / PR #311.
+Bu bölüm önceki tarihli gözlemleri günceller; üretim erişimi başvurusu değildir.
+
+- Cloud konsolunda Ads API **Enabled**, erişim seviyesi **Test**; OAuth
+  **External / Testing**, bir test kullanıcısı olarak yeniden görüldü. Branding
+  ana sayfa/gizlilik/şartlar ve yetkili alanlar boş; uygulama yayımlanmadı.
+- Kullanıcının işlem anındaki açık onayıyla yalnız **GrowthTwin Web Test**
+  istemcisine `http://127.0.0.1:8002/connections/google/scoped/callback/` eklendi.
+  Kaydetme sonrasında istemci yeniden açıldı ve hem bu adres hem eski
+  `http://127.0.0.1:8002/connections/google/callback/` okundu. Başka alan,
+  kapsam, erişim seviyesi veya kimlik bilgisi değiştirilmedi.
+- Ads arayüzündeki mevcut yönetici/alt hesap kimlikleri, korunmuş yerel yardımcının
+  kaynak kodundaki hedef sabitleriyle eşleşiyor. Bu, çalışan sürecin güncel
+  yapılandırmasının veya owner/workspace bağının doğrulandığı anlamına gelmez.
+- Alt hesap arayüzünde üç kampanya ve yayın yapılmadığı/nesnelerin duraklatıldığı
+  veya kaldırıldığı uyarısı görüldü. Görüntülenen 16–22 Ekim aralığında tıklama,
+  gösterim ve maliyet sıfırdı; tüm zamanlara ilişkin sonuç çıkarılmadı.
+- Güncel `customer.test_account=True` API sorgusuyla **yeniden doğrulanmadı**.
+  API erişim seviyesinin Test olması veya hesap adı bu kanıtın yerine geçmez.
+  Grant yenileme, OAuth başlatma, kampanya işlemi veya ledger SQL okuması yapılmadı.
+- Yerel yardımcı yalnız AST/kaynak incelemesiyle değerlendirildi: üst düzey DB ve
+  kullanıcı değiştiren işlemleri var, salt okunur denetim için çalıştırılmadı.
+  Şifreli kayıt açılmadı; eski grant/DB/ledger, Heroku ve normal kapalı bayraklar
+  korundu. Ekran kanıtı gizli alanlar hariç kırpılarak Git dışında tutuldu.
+
+**Sonraki tek iş:** eski grant/ledgeri koruyan ayrı sentetik workspace/owner ve
+istemci bağlamıyla izole aday denemesinin hazırlığını tamamla; güncel TEST hedefi,
+yetki kapsamı, aynı süreç PKCE, callback/proxy/hata logları ve belirsiz sonuç
+uzlaştırma koşullarını doğrulamadan bayrakları açma veya OAuth başlatma.
+Dönüş adresinin kaydı, başarılı OAuth/aktif grant/üretim hazırlığı kanıtı değildir.
+Bu belge diliminde yerel test çalıştırılmadı; kod değişmedi. PR #311 son-head CI
+39765174203 ve main CI39765596754 başarılı: 586 PostgreSQL testi +11 tarayıcı E2E.
