@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 23:49 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 00:15 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,13 +12,33 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main1e911d14ac582ba577ecd09c4076600371d52baa: PR320 merged;
-required CI39849922850 and main CI39850487290 passed708 PostgreSQL tests +11
-browser E2E. Main check rechecked successful. No open PR at slice start.
-Current branch docs/verified-inspection-schema, before its evidence PR/CI.
-Verify final PR/closure comment and latest checks. Attachment100-item limit known.
+Verified base main16fab445fb00f53da3f946e445ae84ca4ad96c9b: PR321 merged;
+required CI39852614274 and main CI39853130617 passed708 PostgreSQL+11 browser
+E2E. No open PR at slice start. Current branch chore/recovered-inspection-launcher,
+before its preparation PR/required CI. Verify final PR/closure comment and latest
+checks. Attachment100-item limit known. Overnight queue issue322; thread heartbeat
+active every15 minutes until2026-10-23 11:00 Europe/Istanbul, no new work after10:40.
+Only quiet/non-actionable runs stay silent; record meaningful results/real blockers.
 
-## Current slice - same-DB backup and only forward0007 completed
+## Current slice - read-only launcher preparation, not execution
+
+- New scripts/prepare_recovered_inspection.py exposes only Windows read-only plan.
+  Pinned schema helper/audit, exact pointer/backup/schema/data/history, zero permits
+  and sessions; no Django setup/session/permit/decode/execute path from plan.
+- Independent source review preceded actual plan. All read-only admission checks
+  passed; client_hash_proved=False, execution_available=False. Protected contents
+  unread. No preserved DB/session/permit writes or provider operation.
+- Separate internal local-operator synthetic-session bootstrap primitive (not called
+  by plan): unusable password stays unchanged; exact configured owned workspace,
+  server-generated5min session, DB reload/get_user exact-owner proof. Not a password
+  login or public authentication/advertiser permission.
+- Cleanup checks nonce/owner/exact encoded row; deletes only minted unchanged row.
+  Changed/concurrent sessions retained with explicit failure; crash may need review.
+- 14 focused fabricated tests passed ephemeral local SQLite,11 session+3 plan.
+  Ruff format/lint/whitespace passed. Full real launcher not integrated or exercised;
+  current PR's required PostgreSQL CI pending at snapshot.
+
+## Previous milestone - same-DB backup and only forward0007 completed
 
 - Owner requested completing next steps after usage handoff; additional credits
   enabled, bounded work resumed under current instruction. No change to standing
@@ -107,13 +127,15 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Close this evidence PR after independent review and green required CI; verify main
-CI. Then prepare and independently review ONE bounded local recovered-inspection
-launcher/failure plan for the SAME inactive candidate: exact owned scope, immutable
-receipt/generation/revision, new short-lived server-session binding, process-only
-flags, configured-client proof and zero external HTTP endpoints. Do not claim a
-permit or read protected content before that separate review. Consumed/expired
-claims are terminal; no reset, renewal, restore, rerun, session-hash rewrite or new
-identity bypass. PREPARE/APPLY are completed; leave original history and the private
-backup intact. No provider/refresh/adoption/activation/publishing. Launch gates and
-reconciliation/renewal remain open.
+Close this preparation PR after independent review/green required CI and verify
+main CI. Then integrate and rehearse ONE bounded single-attempt local inspection
+launcher using the reviewed synthetic-owner session primitive and the SAME candidate.
+Complete terminal failure/cleanup behavior, exact scope/source/receipt pins,
+process-only flags and fixed decoder boundary; independently review before any
+real session bootstrap, permit claim or protected content read. Existing bounded
+reader proves client binding only AFTER consumption; no pre-claim decode bypass.
+No retry/renewal/reset/restore/new identity/session-hash rewrite. PREPARE/APPLY are
+complete; preserve history/backup. No provider/refresh/adoption/activation/publishing.
+By10:40 stop new implementation and finish/preserve work; final report by11:00
+Europe/Istanbul2026-10-23 and pause heartbeat. Authentication blockers skip to
+independent safe roadmap work; no gates weakened to fill the overnight window.

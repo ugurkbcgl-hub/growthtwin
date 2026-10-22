@@ -178,3 +178,50 @@ Default source flags stay False. Ruff/compilation and focused actual operational
 checks passed; no new local Django suite was run for this private helper/docs slice.
 Next is a separately reviewed one-shot inspection launcher and failure plan as in
 sequence steps4-5, before any permit claim or protected-file read.
+
+
+## Launcher preparation only - 2026-10-23
+
+scripts/prepare_recovered_inspection.py exposes only a Windows read-only `plan`
+command. It pins the reviewed private schema helper before executing identical
+bounded source bytes, reuses its pinned audit and validates the exact private
+backup pointer/manifest, post0007 history/data/schema and zero permits/sessions.
+No Django setup, session creation, permit issue/consume, protected decode or
+execute command is reachable from `plan`. Python network-connect calls are denied.
+
+Independent source review preceded the actual local plan. It passed with
+read_only_admission=true, same_candidate_history_preserved=true,
+verified_private_backup=true, permit_count=0 and session_count=0.
+credential_contents_read=false, current_client_hash_proved=false and
+execution_available=false correctly distinguish metadata admission from readback.
+Normal source flags and the preserved DB/backup remain unchanged.
+
+A separate internal session primitive is present but NOT invoked by plan. It is
+an explicit local-operator bootstrap for the already owned synthetic fixture,
+NOT a password login, public authentication flow or advertiser-account proof.
+It requires exact configured owner/workspace, active owner with unusable password,
+no caller transaction, DEBUG=False and no existing sessions. A new five-minute
+server session is saved and reloaded, then get_user verifies the exact active owner.
+No password or last_login write. The key and nonce/auth binding are temporarily stored in the server-session row;
+process SECRET_KEY stays in memory. They are never printed or placed in Git/logs.
+Regular sensitive_variables-decorated methods protect traceback locals.
+
+Cleanup validates the minted session's nonce and owner and deletes only the exact
+unchanged encoded row. It also handles an exception immediately after insertion.
+Changed or concurrently added sessions are retained and cause an explicit review
+failure, not broad deletion or an unconditional cleanup-success claim. This byte/
+payload check does not prove expire_date-column immutability: the real launcher
+must separately capture/revalidate the server-session deadline before use. A process
+crash can leave a row and requires explicit reviewed reconciliation. No permit,
+receipt or backup is deleted/reset by this primitive.
+
+Fourteen focused fabricated tests passed locally in ephemeral SQLite: eleven session
+bootstrap/refusal/failure/cleanup checks and three plan-validation checks. Plan
+checks replace every private helper/file/ACL boundary; session checks never use the
+preserved DB or protected files. Ruff format/lint and whitespace passed. No new
+full local suite; PostgreSQL behavior awaits this PR's required CI. Actual session
+bootstrap in the preserved DB and the real one-shot launcher remain UNEXECUTED.
+Next integrate the reviewed primitive into a separate fail-closed single-attempt
+launcher, rehearse its full fixture/error flow and review before any real claim.
+Client binding must be proved by the existing bounded reader AFTER consumption;
+metadata admission is not a substitute and there is no pre-claim decode bypass.
