@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 11:28 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 11:27 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -15,10 +15,11 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main9132e1e: PR306 merged. Latest-head CI39722697389 passed487
 PostgreSQL tests and10 browser E2E tests; main CI39722996360 passed. No open PR
-at slice start. Current branch feat/scoped-candidate-readback; implementation
-and docs in progress, PR not yet created at this snapshot. Verify current head
-and required CI before merging. PR attachment has hit this chat's100-item limit;
-attempt once per new PR, do not remove unrelated attachments.
+at slice start. Current branch feat/scoped-candidate-readback, PR307; implementation head
+3e3758d. Initial required CI39747720288 running at this snapshot, which precedes
+its own follow-up commit. Verify latest head/checks before merging. PR307
+attachment failed once with the known100-item limit; GitHub PR is intact. Do not
+remove unrelated attachments.
 
 ## Current slice — scoped candidate advisory readback
 
@@ -34,8 +35,8 @@ attempt once per new PR, do not remove unrelated attachments.
   No activation, metadata/file mutation, auto retry/revoke/unlink or provider call.
 -21 new local tests and1 PostgreSQL race; focused readback/adapter/backend run:
   55 local passes,3 PostgreSQL skips. Ruff/format and migration drift checks run;
-  independent source review found no blocker. Broad exception assertion tightened
-  to PermissionDenied; final review and required CI follow. No browser check.
+  independent source review and final re-review found no blocker. Broad exception
+  assertion tightened to PermissionDenied; required CI follows. No browser check.
 - All client/path/transport/encrypted read/write mocked. No migration or actual
   credential/file/provider/preserved Google/fixture DB/Heroku operation. See ADR0032.
 
