@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 22:47 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 23:11 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,18 +12,36 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main3022af4: PR317 merged. Required CI39836461900 and post-merge
-main CI39837030362 successful:650 PostgreSQL tests +11 browser E2E. No open PR at
-slice start. Current branch feat/recovered-inspection-storage, PR318 open. Head
-87abee2 passed123 focused local tests (116 passed,7 skipped) but latest CI pending.
-Earlier head5ba81bb CI39839305150 passed704 PostgreSQL +11 browser tests; not latest
-head proof. CI39839852480 attempt1 cancelled after ~10min Ubuntu/Playwright download
-stall; attempt2 repeated that stall before application tests. A follow-up CI fix
-bounds APT retry/timeouts, selects official HTTPS mirrors, caps install8min/job20min;
-all checks/signatures unchanged. Verify new head/run before merge, then main CI.
+Verified base mainf6aa75d: PR318 merged. Required CI39843136730 and main
+CI39843726808 passed708 PostgreSQL tests +11 browser E2E. Bounded official-mirror
+dependency installation passed both; old cancelled runs are not the proof.
+No open PR at slice start. Current branch chore/windows-inspection-rehearsal,
+before its own PR/CI. Verify latest head/checks and final closure comment.
 Attachment100-item limit known; remove no unrelated items.
 
-## Current slice — closed recovered reader, mocked storage validation
+## Current slice — actual Windows synthetic rehearsal and RO preparation audit
+
+- New reviewed harness scripts/rehearse_inspection_storage.py ran actual DPAPI
+  on fresh disposable fabricated files only:12 checks passed, cleanup complete,
+  forbidden boundary attempts0. DB/network guards before Django setup; legacy
+  client/read/transport/path forbidden. No saved secret/DB or protected-file input.
+- Turkish JSON and30000-character payload round-tripped. Error/size/missing cases
+  rejected. Oversized text hit ciphertext cap first; later plaintext cap NOT
+  independently exercised. No limit changes. Exact nonrecursive cleanup succeeded.
+- Separate source-reviewed RO immutable SQLite + exact-file metadata/ACL audit
+  verified SAME preserved DB unchanged (hash/size/mtime), coherent two-attempt chain,
+  unusable owner password/session0, regular nonempty candidate/client and private
+  root/files ACLs; legacy path absent for this identity. No encrypted content read.
+- Actual DB still lacks migration0007 and permit table. No backup/schema write,
+  permit, actual recovered readback, provider, activation or Heroku operation.
+- New preparation evidence/plan in docs/product/recovered-inspection-exercise-preparation.md.
+  Private reviewed audit helper: %TEMP%\gwt_inspection_metadata_audit.py (temporary,
+  verify/source-review before reuse). No raw metadata/secret values in public output.
+- Ruff format/lint/whitespace passed. No new local Django suite for harness/docs;
+  actual12-case rehearsal and RO audit are the focused validation. Required CI
+  pending at this snapshot; independent source review passed before operations.
+
+## Previous milestone — closed recovered reader, mocked storage validation
 
 - New defaultFalse GOOGLE_ADS_RECOVERED_INSPECTION_ENABLED, plus strictlyTrue
   recovery/scoped/local-OAuth switches and existing Windows/no-DEBUG runtime guard.
@@ -47,7 +65,7 @@ Attachment100-item limit known; remove no unrelated items.
   configuration drift); corrected and regression-tested, no remaining source blocker.
 - All storage/stat/PowerShell mocked; no actual file/client/credential/provider/
   protected DB/migration/Heroku/UI operation. ADR0039 records actual exercise gates.
-  Required PostgreSQL CI pending at pre-PR snapshot; final closure in PR comment.
+  PR318/main CI verified above. Actual protected-file readback remains unperformed.
 
 ## Previous milestone — fixed-fixture inspection recovery rehearsal
 
@@ -134,7 +152,8 @@ new DB/identity to bypass history. Candidate encrypted material remains inert.
 Origin session and random process-only Django SECRET_KEY were lost at logout/stop.
 Existing inspect_candidate requires original session HMAC; cannot recreate by a
 new session/secret or mutate stored hash. Guarded actual readback not performed.
-Design recovery first; no bypass, activation or provider consumption.
+Separate recovery adapter now exists; it requires the backup/schema/permit steps
+in Next action before an actual exercise. No bypass, activation or provider use.
 
 ## Existing evidence and open gates
 
@@ -151,11 +170,12 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Finish this reader PR's independent review/required PostgreSQL CI, squash only if
-green, and verify main CI. Then review one-shot isolated exercise preparation on
-the SAME preserved candidate DB/history: private backup/schema plan (0007 not yet
-applied there), ACL/location/current-client metadata, owner session/permit lifetime
-and failure disposition. Do not create a new identity or reset a consumed permit.
-No actual encrypted-file operation, session-hash rewrite, activation, refresh,
-adoption or publishing in this slice. Normal flags remain off; actual Windows
-decode, reconciliation/renewal and production launch gates remain unresolved.
+Finish this harness/docs PR's review/required CI, squash only if green, verify main
+CI. Then create a private verified backup of the SAME preserved candidate DB and
+review its exact migration plan: ONLY forward connections.0007_candidate_inspection_permit.
+Apply that additive migration only after backup/independent plan review; recheck
+old history unchanged/zero permits. Actual one-shot client-bound inspection remains
+a subsequent reviewed operation with explicit scope/session/expiry/failure handling.
+Never reset a consumed permit, restore over a claim, rewrite session hashes, or
+create another identity to bypass refusal. Normal flags off; no provider/refresh/
+adoption/activation/publishing. Reconciliation/renewal and launch gates stay open.

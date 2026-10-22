@@ -402,6 +402,18 @@ verify actual reporter filtering. The protected reader entry already masks its c
 No new migration or actual protected DB/file/credential/provider/Heroku operation.
 PowerShell checks are mocked source contracts, not actual Windows DPAPI evidence.
 See [ADR0039](docs/adr/0039-closed-recovered-candidate-readback.md).
-Next: review one-shot isolated exercise preparation on the same preserved candidate
-DB/history, including private backup/schema plan, ACL/location/client metadata,
-owner session/permit lifetime and failure disposition, before actual file access.
+PR318 required CI39843136730 and main CI39843726808 passed708 PostgreSQL tests
+and11 browser E2E. The dependency-download guard passed on both runs.
+
+Windows inspection rehearsal/preparation (2026-10-22): a source-reviewed harness
+actually encrypted/read disposable fabricated files on Windows;12 checks passed,
+cleanup complete and DB/network/legacy boundary attempts zero. Valid Turkish and
+30000-character payloads round-tripped; malformed/missing/oversized inputs rejected.
+The plaintext-overflow example hit the encrypted cap first; no independent later
+plaintext-cap proof. A separate read-only audit of the SAME prepared DB verified
+unchanged bytes/size/mtime, coherent retired/current history, disabled login/session0,
+regular exact client/candidate and private ACLs; no credential contents opened.
+Migration0007/permit table are absent. No backup, schema write, permit, provider,
+actual candidate readback or activation. See [exercise preparation](docs/product/recovered-inspection-exercise-preparation.md).
+Next: private verified same-DB backup and exact forward0007 migration-plan review,
+then separately reviewed one-shot client-bound inspection; never reset history/claims.
