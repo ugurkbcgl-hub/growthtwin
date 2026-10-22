@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 13:43 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 13:42 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -15,9 +15,10 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main29217c0: PR310 merged. Latest-head CI39761138226 passed561
 PostgreSQL tests and11 browser E2E tests; main CI39761601822 passed. No open PR
-at slice start. Current branch feat/scoped-candidate-endpoints; implementation/docs
-in progress, PR not yet created at this snapshot. Verify latest head/checks.
-Attachment limit100 remains; attempt once per PR without removing unrelated items.
+at slice start. Current branch feat/scoped-candidate-endpoints, PR311; implementation head5a64e31.
+Initial CI39765118546 running at this snapshot, which precedes its own follow-up
+commit. Verify latest head/checks before merge. PR311 attachment failed once at
+the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
 
 ## Current slice — closed scoped TEST endpoint wiring
 
