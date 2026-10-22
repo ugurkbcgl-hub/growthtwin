@@ -2,6 +2,7 @@
 
 from uuid import uuid4
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
@@ -175,6 +176,50 @@ class SyntheticAuthorizationAttempt(models.Model):
                 fields=("connection",),
                 condition=models.Q(state__in=("pending", "running")),
                 name="unique_active_synthetic_auth",
+            ),
+        ]
+
+
+class CandidateInspectionPermit(models.Model):
+    """Metadata-only new-session protocol; never file-read or provider proof."""
+
+    class State(models.TextChoices):
+        ISSUED = "issued"
+        CONSUMED = "consumed"
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    workspace = models.ForeignKey("workspaces.Workspace", on_delete=models.PROTECT)
+    connection = models.ForeignKey(ConnectorIdentity, on_delete=models.PROTECT)
+    attempt = models.OneToOneField(
+        "ScopedOAuthCandidateAttempt", on_delete=models.PROTECT
+    )
+    generation = models.UUIDField(editable=False)
+    expected_revision = models.PositiveBigIntegerField()
+    receipt_key = models.CharField(max_length=64, editable=False)
+    session_key_hash = models.CharField(max_length=64, editable=False)
+    state = models.CharField(max_length=16, choices=State, default=State.ISSUED)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    expires_at = models.DateTimeField()
+    consumed_at = models.DateTimeField(null=True, editable=False)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(expires_at__gt=models.F("created_at")),
+                name="inspection_permit_positive_lifetime",
+            ),
+            models.CheckConstraint(
+                condition=(
+                    models.Q(state="issued", consumed_at__isnull=True)
+                    | models.Q(
+                        state="consumed",
+                        consumed_at__isnull=False,
+                        consumed_at__gte=models.F("created_at"),
+                        consumed_at__lt=models.F("expires_at"),
+                    )
+                ),
+                name="inspection_permit_consumption_state",
             ),
         ]
 

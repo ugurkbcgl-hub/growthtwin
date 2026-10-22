@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 19:08 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 19:36 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,12 +12,31 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Base main3ce5a03: PR314 merged after independent review and required CI39799304331
-success. Post-merge main CI39809736479 was still in progress at last check; verify.
-Current branch docs/scoped-candidate-exercise-result, before its own PR/CI.
-PR313 required CI39792541560/main39795773585 passed586 PostgreSQL +11 browser
-E2E. Worktree state/checks must be verified live. Attachment100-item limit known;
-remove no unrelated artifacts.
+Verified base main6f120ca: PR315 merged. Required CI39811645737 and post-merge
+main CI39812128522 successful:586 PostgreSQL tests +11 browser E2E. No open PR at
+slice start. Current branch feat/inspection-recovery-permits, before its own PR/CI;
+verify latest head/checks. Attachment100-item limit known; remove no unrelated items.
+
+## Current slice — metadata-only inspection recovery permits
+
+- DefaultFalse GOOGLE_ADS_CANDIDATE_INSPECTION_RECOVERY_ENABLED, no env toggle,
+  routes or actual reader. Short-lived new-session permit requires authenticated
+  owner/workspace/current quarantined CANDIDATE and expected immutable scope.
+- Additive model binds request/owner/workspace/connection/attempt/generation/revision/
+  receipt digest/new sessionHMAC; original attempt/sessionhash/history unchanged.
+  One permit per candidate; exact replay preserves current state and deadline;
+  expired/consumed cannot renew or replace. Session/SECRET_KEY loss fails closed.
+- Issue/consume reject caller atomic transactions. Workspace->connector->attempt->
+  permit locks; consume commits once before returning metadata. CONSUMED is NOT
+  inspection result or current-reader I/O permission. No path/client/legacy-file/
+  envelope/provider operation, activation or grant adoption. Actual postread scope
+  checks/reconciliation and configured-client proof remain future gates.
+- New27 tests plus readback/retirement:60 local passes,5 PostgreSQL-only skips.
+  Ruff format/lint, migration drift/whitespace and independent source review passed.
+  Migration0007 only in ephemeral test DBs; protected actual Google DB not migrated.
+  No actual file/grant/DB/provider/Heroku/browser operation. CI pending at snapshot.
+- ADR0037 describes limits, including no renewal and no future consumer trusting
+  caller-fabricated snapshots. Future UI requires server-session/CSRF/signed consent.
 
 ## Verified milestone — inactive scoped candidate
 
@@ -77,9 +96,9 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Design and validate a NEW-SESSION owner-bound inspection-only recovery protocol
-using synthetic data, preserving immutable receipt/hash/history. Short-lived
-recorded permission must bind owner/workspace/connection/generation/revision/
-attempt/digest; current quarantined CANDIDATE only, scope recheck after read.
-No actual encrypted file read in this design slice; no refresh/adoption/activation
-or automatic retry permission. Finish current docs PR/required CI and verify main.
+Finish this PR's independent review/required PostgreSQL CI, squash only if green,
+and verify main CI. Then implement a separately reviewed MOCKED inspection executor
+that consumes this permit directly before bounded I/O and rechecks immutable scope,
+time, configured-client/legacy-file conditions after read. No real encrypted-file
+operation, session-hash rewrite, activation, refresh, adoption or publishing. Normal
+flags remain off; reconciliation/renewal and production gates remain unresolved.

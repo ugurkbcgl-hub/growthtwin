@@ -295,3 +295,20 @@ Origin-session/process-secret loss prevents existing guarded readback; next desi
 owner-bound inspection-only recovery with unchanged receipts, using synthetic data.
 See [exercise result](docs/product/scoped-test-exercise-preparation.md).
 No application code change or new local automatic test suite in this slice.
+
+
+## Inspection recovery permit protocol — 2026-10-22
+
+27 new tests in test_inspection_recovery:25 passed locally,2 PostgreSQL race skips.
+Combined focused invocation with test_candidate_readback and test_candidate_retirement:
+65 tests total,60 passed and5 PostgreSQL-only skips. Tests fabricate candidates
+without invoking OAuth and verify zero backend/reader calls plus unchanged original
+attempt/connector/generation records, including denied operations. New session after
+old SECRET_KEY loss is independent of original receipt; later permit key/session
+loss fails closed. Cover exact replay/expiry/no renewal, wrong owner/scope/session,
+digest/generation/block drift, no caller transaction, DB constraints and two races
+(competing issue requests and competing consumers). PostgreSQL concurrency awaits CI.
+Ruff format/check, migration consistency and whitespace checks passed. Migration0007
+ran only in ephemeral test DBs. No actual credentials, files, preserved Google DB,
+provider, UI or Heroku operation; no actual readback or post-I/O protocol validation.
+See [ADR0037](docs/adr/0037-metadata-only-inspection-recovery-permits.md).
