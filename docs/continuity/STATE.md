@@ -16,8 +16,10 @@ connection/data, production publication, media spend or production AI in this sl
 Verified base main6648139: PR304 merged. Latest-head CI39719120618 passed440
 PostgreSQL tests including new identity races and10 browser E2E tests; main
 CI39719367350 passed. No open PR at slice start.
-Current branch feat/synthetic-authorization-attempts, uncommitted implementation
-at this snapshot; new PR/CI not created yet. Recheck live state/head/checks.
+Current branch feat/synthetic-authorization-attempts, PR305; implementation head
+aa55876. Required CI39720649136 queued at this snapshot, which precedes its
+own follow-up commit. Verify latest head/checks before merge.
+PR305 attachment failed once with known100-item limit; GitHub PR is intact.
 PR attachment has hit this chat's100-item limit; attempt once per new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.
 
