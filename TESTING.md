@@ -252,3 +252,16 @@ PostgreSQL races cover both winners: exchange-first denies retirement; retiremen
 ## Closed scoped candidate endpoints
 
 Closed scoped TEST endpoints (2026-10-22): separate overview/start/callback/retire routes bind signed5-minute forms to configured owner/workspace/session and immutable scope. Both endpoint/candidate flags remain False plus exact loopback/DEBUG/no-forward guards. Separate scoped redirect leaves legacy default/runtime unchanged. State digest marker rejects old/wrong callback before consuming current handshake; allowed callback always303-cleans URL. Retirement digest rechecked under service locks after independent review found a check/use race.25 new tests plus existing adapter/retirement/legacy:76 local passes,4 PostgreSQL skips; independent final review approved. No new migration or actual provider/credential/preserved DB/Heroku operation; no manual browser check. See ADR0036. PR311 required CI39765174203 and main CI39765596754 passed586 PostgreSQL tests and11 browser E2E tests. Follow-up readiness audit: the owner-approved scoped redirect was registered and both old/new URIs re-read; API remains Test and OAuth External/Testing. Current customer.test_account and isolated runtime binding remain unverified. See [October 22 audit](docs/product/google-production-access-audit.md#scoped-test-hazırlığı--22-ekim-2026). Next: complete isolated candidate-exercise prerequisites with the legacy grant/ledgers preserved; flags remain off, no OAuth/refresh/adoption/publish/cleanup.
+
+
+## Isolated closed preparation — 2026-10-22
+
+No application code changed or local automated test suite run. A new temp SQLite
+DB was migrated and checked for a distinct explicit owner/workspace pair,
+unusable-password owner, quarantined connector and zero candidate/Google ledger
+rows. Credential/client/transport functions were denied in the preparation process;
+no server/provider/credential I/O occurred. No existing DB was opened. This is
+bootstrap evidence only, not concurrency, browser authentication, callback log
+safety, TEST-target or actual OAuth evidence. See [preparation record](docs/product/scoped-test-exercise-preparation.md).
+Baseline PR312 required CI39768028595 and main CI39768447961 passed586 PostgreSQL
+tests and11 browser E2E tests. Follow-up documentation CI must be verified separately.

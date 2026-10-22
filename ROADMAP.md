@@ -313,3 +313,15 @@ Reserved candidate retirement (2026-10-22): default-off unwired owned service re
 
 
 Closed scoped TEST endpoints (2026-10-22): separate overview/start/callback/retire routes bind signed5-minute forms to configured owner/workspace/session and immutable scope. Both endpoint/candidate flags remain False plus exact loopback/DEBUG/no-forward guards. Separate scoped redirect leaves legacy default/runtime unchanged. State digest marker rejects old/wrong callback before consuming current handshake; allowed callback always303-cleans URL. Retirement digest rechecked under service locks after independent review found a check/use race.25 new tests plus existing adapter/retirement/legacy:76 local passes,4 PostgreSQL skips; independent final review approved. No new migration or actual provider/credential/preserved DB/Heroku operation; no manual browser check. See ADR0036. PR311 required CI39765174203 and main CI39765596754 passed586 PostgreSQL tests and11 browser E2E tests. Follow-up readiness audit: the owner-approved scoped redirect was registered and both old/new URIs re-read; API remains Test and OAuth External/Testing. Current customer.test_account and isolated runtime binding remain unverified. See [October 22 audit](docs/product/google-production-access-audit.md#scoped-test-hazırlığı--22-ekim-2026). Next: complete isolated candidate-exercise prerequisites with the legacy grant/ledgers preserved; flags remain off, no OAuth/refresh/adoption/publish/cleanup.
+
+
+Closed isolated preparation (2026-10-22): a fresh temporary SQLite database now
+has distinct explicit numeric owner/workspace IDs, an unusable-password synthetic
+owner and quarantined connector. Zero candidate/Google ledger rows; normal scoped
+flags remain False. Credential/client/transport calls denied in preparation; no
+server, OAuth, refresh, preserved DB/grant/ledger or Heroku operation. Existing
+fixed encrypted client is NOT a separate client and was not loaded. Fresh TEST
+child proof, runtime/client/session/logging and uncertainty prerequisites remain
+open. See [exercise preparation](docs/product/scoped-test-exercise-preparation.md).
+PR312 required CI39768028595 and main CI39768447961 passed586 PostgreSQL tests
+and11 browser E2E; not actual isolated OAuth evidence.
