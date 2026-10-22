@@ -360,3 +360,23 @@ source blocker. No new migration, UI/browser exercise, actual DPAPI runtime, fil
 provider, protected DB or Heroku operation. Script marker tests prove source shape
 only; real Windows/ACL/no-follow/credential validity remains unverified.
 See [ADR0039](docs/adr/0039-closed-recovered-candidate-readback.md).
+
+### Hosted-runner dependency download guard
+
+PR318 latest-head run39839852480 stalled twice during Playwright's Ubuntu APT
+dependency downloads, before application tests. Attempt1 was cancelled after about
+10 minutes; its log showed slow azure.archive.ubuntu.com package downloads.
+Earlier head5ba81bb/run39839305150 passed704 PostgreSQL tests +11 browser E2E;
+that does not verify the later helper-privacy changes or CI change.
+
+The CI job now caps total runtime at20 minutes and Chromium installation at8.
+Before installation it configures APT with one retry and20-second HTTP/HTTPS
+connection/data timeouts. When the hosted-runner mirror list exists, it selects
+official HTTPS archive.ubuntu.com and security.ubuntu.com endpoints. Distribution
+suites, package signatures, permissions and every existing check remain unchanged;
+installation failure remains fatal. No continue-on-error or test bypass is added.
+These limits reject late/stuck installation, not proof of external availability.
+See [Ubuntu APT transport documentation](https://manpages.ubuntu.com/manpages/jammy/man1/apt-transport-http.1.html)
+and the [runner-image stall report](https://github.com/actions/runner-images/issues/14594).
+Actual workflow execution is the validation for these Linux-only CI commands;
+no local device APT configuration is changed.

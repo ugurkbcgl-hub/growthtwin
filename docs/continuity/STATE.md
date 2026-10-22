@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 22:20 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 22:47 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -14,8 +14,14 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 Verified base main3022af4: PR317 merged. Required CI39836461900 and post-merge
 main CI39837030362 successful:650 PostgreSQL tests +11 browser E2E. No open PR at
-slice start. Current branch feat/recovered-inspection-storage, before its own PR/CI;
-verify latest head/checks. Attachment100-item limit known; remove no unrelated items.
+slice start. Current branch feat/recovered-inspection-storage, PR318 open. Head
+87abee2 passed123 focused local tests (116 passed,7 skipped) but latest CI pending.
+Earlier head5ba81bb CI39839305150 passed704 PostgreSQL +11 browser tests; not latest
+head proof. CI39839852480 attempt1 cancelled after ~10min Ubuntu/Playwright download
+stall; attempt2 repeated that stall before application tests. A follow-up CI fix
+bounds APT retry/timeouts, selects official HTTPS mirrors, caps install8min/job20min;
+all checks/signatures unchanged. Verify new head/run before merge, then main CI.
+Attachment100-item limit known; remove no unrelated items.
 
 ## Current slice — closed recovered reader, mocked storage validation
 
