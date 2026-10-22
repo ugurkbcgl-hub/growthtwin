@@ -39,3 +39,20 @@ Actual Google guard mapping and production readiness gates stay open.
 Next narrow slice: add consistent campaign overview navigation to protected
 TEST review/status pages while retaining existing fixed TEST consent and action
 boundaries. Do not infer real publishing permission from this UX.
+
+
+## Protected TEST presentation follow-up — 2026-10-22
+
+The existing guarded review/status, operation result and validateOnly result
+share the campaign shell, noindex metadata and no scripts. Owned409 recoverable
+errors return to stages; unresolved/foreign drafts must not gain navigation.
+Shared status labels allowlist only known stored metadata; status GET reads no
+payload/grant/configuration and performs no remote request or write. Explicit
+POST operation results limit fresh observation claims to that operation, while
+uncertain or unrecognized states never imply verified publication. A local
+record timestamp includes timezone offset, not provider freshness.
+No intent means no status read/stop form. Existing guarded POST actions, fixed
+consent, CSRF/signatures, immutable snapshots, no-resend and stop behavior remain.
+Fourteen new tests plus existing focused coverage (55 tests) passed, as did
+independent source review, ruff/migration drift and isolated browser layout/
+keyboard checks. The stubbed browser fixture is not actual Google evidence.

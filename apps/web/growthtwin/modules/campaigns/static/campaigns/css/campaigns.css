@@ -235,3 +235,13 @@ h2 { font-size: 1.35rem; letter-spacing: -.025em; }
   .summary-list div { grid-template-columns: 1fr; gap: .15rem; }
   .report-source div { grid-template-columns: 1fr; gap: .15rem; }
 }
+
+.test-campaign-nav { display: flex; flex-wrap: wrap; gap: .7rem 1.25rem; margin-bottom: 1.5rem; font-weight: 650; }
+.google-test-content { overflow-wrap: anywhere; min-width: 0; }
+.google-test-content h2 { margin-top: 2rem; }
+.google-test-content form { padding: 1.2rem; margin: 1.25rem 0; border: 1px solid var(--line); border-radius: .8rem; background: var(--surface); }
+.google-test-content input[type="checkbox"] { width: 1.1rem; height: 1.1rem; margin-right: .5rem; }
+.google-test-content label { display: block; margin-bottom: 1rem; }
+.google-test-content button { display: inline-block; max-width: 100%; margin: .4rem .4rem .4rem 0; padding: .8rem 1rem; border: 1px solid var(--green-dark); border-radius: .6rem; background: var(--green); color: white; font: inherit; font-weight: 650; cursor: pointer; }
+.google-test-content button:disabled { opacity: .55; cursor: not-allowed; }
+.google-test-content pre { max-width: 100%; overflow: auto; padding: 1rem; background: var(--surface); }

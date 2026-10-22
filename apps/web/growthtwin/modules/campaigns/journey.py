@@ -42,6 +42,21 @@ class JourneyStage:
     unavailable_reason: str = ""
 
 
+def stored_test_dispatch_label(dispatch):
+    """Allowlisted local metadata label, never refreshed provider evidence."""
+    label = "Henüz gönderim kaydı yok"
+    if dispatch:
+        label = "Kayıt var · Durum doğrulanmalı"
+        if dispatch["state"] == "uncertain":
+            label = "Kayıtlı sonuç belirsiz"
+        elif dispatch["observed_status"] == "PAUSED":
+            label = {
+                "paused": "Kayıtta duraklatıldı (TEST)",
+                "stopped": "Kayıtta durduruldu (TEST)",
+            }.get(dispatch["state"], label)
+    return label
+
+
 def campaign_journey(request, draft):
     """Project scoped local records only. No credentials, network or writes.
 
@@ -68,16 +83,7 @@ def campaign_journey(request, draft):
         if controls and dispatch
         else None
     )
-    dispatch_label = "Henüz gönderim kaydı yok"
-    if dispatch:
-        dispatch_label = "Kayıt var · Durum doğrulanmalı"
-        if dispatch["state"] == "uncertain":
-            dispatch_label = "Kayıtlı sonuç belirsiz"
-        elif dispatch["observed_status"] == "PAUSED":
-            dispatch_label = {
-                "paused": "Kayıtta duraklatıldı (TEST)",
-                "stopped": "Kayıtta durduruldu (TEST)",
-            }.get(dispatch["state"], dispatch_label)
+    dispatch_label = stored_test_dispatch_label(dispatch)
     stages = (
         JourneyStage(
             "campaign",

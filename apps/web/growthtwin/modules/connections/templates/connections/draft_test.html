@@ -1,0 +1,18 @@
+{% extends "campaigns/base.html" %}
+{% block title %}{{ page_title }}{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <nav class="test-campaign-nav" aria-label="Kampanya içinde gezin">
+    <a href="{% url 'campaigns:journey' draft.pk %}">← Kampanya adımlarına dön</a>
+    <a href="{% url 'campaigns:detail' draft.pk %}">Metin ve plan</a>
+    <a href="{% url 'google-local-draft-status' %}?draft={{ draft.pk }}">Kayıtlı TEST durumu</a>
+    <a href="{% url 'campaigns:report' draft.pk %}">Sonuç raporu</a>
+  </nav>
+  <p class="eyebrow">{{ draft.name }} · Google TEST</p>
+  <aside class="notice" role="note">
+    <strong>Yalnız sentetik TEST hesabı</strong>
+    <p>TEST onayı gerçek reklam yayını veya harcama izni değildir. Gönderim, kontrol ve durdurma ayrı düğmelerle başlatılır. Kampanya adımlarına dönmek bu işlemleri çalıştırmaz.</p>
+  </aside>
+  <div class="google-test-content">{{ body }}</div>
+{% endblock %}

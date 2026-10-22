@@ -11,6 +11,9 @@ class LocalOAuthHeadersTests(SimpleTestCase):
         middleware = LocalOAuthHeadersMiddleware(lambda request: HttpResponse())
         for path, policy in (
             ("/connections/google/", "same-origin"),
+            ("/connections/google/draft-dispatch/", "same-origin"),
+            ("/connections/google/draft-approve/", "same-origin"),
+            ("/connections/google/total-budget-validate/", "same-origin"),
             ("/connections/google/callback/?code=fabricated", "no-referrer"),
             ("/connections/google/start/", "no-referrer"),
         ):
