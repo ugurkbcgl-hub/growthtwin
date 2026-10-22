@@ -14,6 +14,8 @@ from urllib.parse import parse_qs, urlencode
 
 CALLBACK_PATH = "/connections/google/callback/"
 LOCAL_REDIRECT_URI = "http://127.0.0.1:8002" + CALLBACK_PATH
+SCOPED_CALLBACK_PATH = "/connections/google/scoped/callback/"
+SCOPED_REDIRECT_URI = "http://127.0.0.1:8002" + SCOPED_CALLBACK_PATH
 ADS_SCOPE = "https://www.googleapis.com/auth/adwords"
 AUTHORIZATION_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
 
@@ -47,9 +49,10 @@ class LocalAuthorizationStore:
         self._pending = {}
         self._lock = threading.Lock()
 
-    def begin(self, *, client_id, binding):
+    def begin(self, *, client_id, binding, redirect_uri=LOCAL_REDIRECT_URI):
         if (
-            not isinstance(client_id, str)
+            redirect_uri not in (LOCAL_REDIRECT_URI, SCOPED_REDIRECT_URI)
+            or not isinstance(client_id, str)
             or not client_id.endswith(".apps.googleusercontent.com")
             or len(client_id) > 256
             or any(c.isspace() for c in client_id)
@@ -81,7 +84,7 @@ class LocalAuthorizationStore:
             + urlencode(
                 {
                     "client_id": client_id,
-                    "redirect_uri": LOCAL_REDIRECT_URI,
+                    "redirect_uri": redirect_uri,
                     "response_type": "code",
                     "scope": ADS_SCOPE,
                     "state": state,

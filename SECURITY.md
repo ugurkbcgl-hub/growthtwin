@@ -51,3 +51,5 @@
 - ADR0034 synthetic recovery rebinds only fixed-example session metadata after separate signed/CSRF confirmation. It does not recover a Google/candidate grant or authorize retries. Assessment preserves uncertainty across session/scope/time changes; legacy stop/reconcile access remains unchanged.
 
 - ADR0035 permits explicitly confirmed retirement only before the adapter commits EXCHANGING, with atomic generation fencing. Uncertainty, existing grants and remote revocation cannot be resolved by retirement. Durable exact replay never reopens a blocked connector; legacy stop/reconcile access stays separate.
+
+- ADR0036 scoped endpoints remain double-default-off and exact configured owner/loopback only. Separate callback/state digest routing, signed/CSRF forms, under-lock retirement digest checking and callback log suppression do not activate a grant. Actual redirect/target proof and proxy/error-reporting controls remain enabling gates.

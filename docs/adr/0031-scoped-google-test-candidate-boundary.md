@@ -3,6 +3,10 @@
 Status: Accepted for mocked adapter validation only; not rollout
 Date: 2026-10-22
 
+Follow-up: ADR0036 adds separate closed scoped endpoints and a distinct fixed
+callback URI, validated only with mocks. Earlier no-endpoint statements describe
+this original slice; normal flags remain off and no actual rollout is claimed.
+
 ## Source review and adoption plan
 
 Legacy `views.start/callback` enforce exact owner/workspace/loopback and CSRF
