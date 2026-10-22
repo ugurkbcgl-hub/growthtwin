@@ -113,4 +113,34 @@ Plan Enter navigation, report roundtrip and list-to-journey worked. Desktop and
 conversation workspace: campaign-journey-desktop.png and campaign-journey-mobile.png.
 The helper session is not a product login or staging E2E test. Restart applied
 previous migration 0002 only to that isolated fixture DB; actual Google preserved
-DB/grant/ledgers and Heroku were untouched. Current required CI remains pending.
+DB/grant/ledgers and Heroku were untouched. PR #302 required CI 39653009712 passed 409 PostgreSQL tests and 10 browser E2E tests; post-merge main CI 39653441692 passed.
+
+
+## Protected TEST navigation
+
+`connections.test_draft_navigation` adds 14 tests; together with existing draft
+review/dispatch, total-budget, header and campaign journey checks, 55 focused tests pass.
+Coverage includes scoped shared links, escaped names, unchanged fixed consent,
+CSRF/host/forwarded/owner/method denial, missing/unknown/uncertain/stale state,
+metadata-only status GET and no provider/credential/payload/write on that GET.
+Owned errors retain links; unresolved approvals do not expose a campaign link.
+Mocked validation/operation responses verify result scope, status codes and links;
+they are not new Google evidence. Ruff/format/migration drift passed; no migration.
+
+Desktop/mobile browser reviewed the shared review and uncertain-status screens,
+expanded the full package, followed status and campaign-back links using Enter,
+and reset viewport. Mobile document/client widths375/375 (390x844 override).
+Proof outside Git: test-review-navigation-{desktop,mobile}.png and
+ test-status-navigation-{desktop,mobile}.png in the conversation workspace.
+Helper Temp/growthtwin_test_navigation_preview.py uses the existing validated
+isolated fixture DB/cookies with unusable-password synthetic owner; creates only
+fixed synthetic draft2/approval/uncertain metadata. A prominent fixture label and
+stubbed configuration distinguish it from actual Google evidence. Google flags
+remain false; browser used no operation POSTs. Preview-only GET routes render the
+inner presentation with a fixed stub; they do not prove product authentication or
+local endpoint authorization. Actual protected views/CSRF are exercised in tests.
+Preserved Google DB/grant/ledgers, Heroku and real data remain untouched.
+
+Shared result/error documents preserve same-origin referrers for their local logout form CSRF Origin. Callback/start remain no-referrer; external referrers remain suppressed. Existing header test and result assertions passed.
+
+PR303 first PostgreSQL CI39716734298 rejected an overlength synthetic unknown-state fixture (varchar20). The test label was shortened; application/model constraints unchanged. Latest-head CI must pass before merge.

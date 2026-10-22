@@ -26,6 +26,11 @@ class LocalOAuthHeadersMiddleware:
                     "/connections/google/",
                     "/connections/google/draft-review/",
                     "/connections/google/draft-status/",
+                    # Shared result/error pages include the same-origin logout
+                    # form; retain CSRF Origin without sending external referrers.
+                    "/connections/google/draft-dispatch/",
+                    "/connections/google/draft-approve/",
+                    "/connections/google/total-budget-validate/",
                 }
                 else "no-referrer"
             )

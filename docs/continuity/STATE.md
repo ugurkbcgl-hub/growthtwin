@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-21 21:28 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 06:25 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,33 +13,38 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main 7dfdf6a: PR #301 merged. Latest-head required CI 39649793207
-passed 393 PostgreSQL tests including concurrency and 10 browser E2E tests;
-post-merge main CI 39650308546 passed. No open PR at slice start.
-Current branch feat/campaign-journey-overview, PR #302, implementation head
-2ae5f9f. Required CI 39652954215 in progress at this snapshot, which precedes
-its own follow-up commit. Verify live branch/worktree/latest head/checks.
-PR attachment to this chat failed once: attachment identity count exceeds 100;
-GitHub PR is intact. No unrelated attachments were changed.
+Verified base main 5ee3647: PR #302 merged. Latest-head required CI 39653009712
+passed 409 PostgreSQL tests and 10 browser E2E tests; post-merge main CI
+39653441692 passed. No open PR at this slice start.
+Current branch feat/test-campaign-journey-navigation, PR #303; implementation
+head199239a CI39716734298 failed one new test fixture: unknown state exceeded
+PostgreSQL varchar20. Fixed only the synthetic test label to unknown-private;
+latest-head CI must rerun. Snapshot precedes its own follow-up commit.
+PR303 attachment failed once with the known 100-item limit; GitHub PR is intact.
+PR attachment to this chat has hit its 100-item limit; attempt once for a new PR,
+do not remove unrelated attachments. GitHub PRs remain intact.
 
-## Current slice — campaign stage overview
+## Current slice — protected TEST campaign navigation
 
-- Owner-scoped read-only /workspace/campaigns/<id>/journey/ joins six existing
-  stages with advisory next action and list/detail/report navigation.
-- Current creative preference is not consent; approval existence is not verified
-  current consent. Stored TEST status is unrefreshed and may refer to old source.
-  Existing dispatch takes priority over new submission after source changes.
-- GET/HEAD reads scoped metadata only, no payload/grant/provider/write; unsafe
-  methods rejected, errors private/no-store/noindex. Exact existing loopback
-  settings and prerequisites govern links, not endpoint authorization.
-- 16 new + 47 existing focused tests: 63 passed, no skips. Ruff/formatting,
-  migration drift and independent read-only review passed. No new migration.
-- Browser created fixture draft 1 and selected current creative; next action
-  changed to plan review. Plan/report Enter navigation and list roundtrip passed.
-  Desktop and 390x844 viewport inspected, mobile widths 375/375; viewport reset.
-  Screenshots campaign-journey-desktop.png and campaign-journey-mobile.png outside
-  Git in conversation workspace. No actual Google operation or product login.
-- ADR-0028 records the read-only/advisory contract; latest-head required CI still required.
+- Shared shell/links for review, stored status, dispatch result and validateOnly
+  result. Owned recoverable errors retain links; unresolved/foreign drafts do not.
+- Status GET reads scoped state/observed status/timestamp only: no payload, grant,
+  configuration, provider or writes. No intent means no control/stop buttons.
+- Shared allowlisted labels distinguish stored metadata from an explicit POST
+  operation observation. Unknown/uncertain results cannot look verified. Timestamp
+  includes offset. Existing owner/loopback/CSRF/consent/no-resend/stop unchanged.
+- 14 new tests + prior focused draft review/dispatch/budget/journey: 55 passed,
+  no skips. Ruff/format, migration drift and independent source review passed.
+  Result/error documents use same-origin for local form CSRF; callback/start stay
+  no-referrer. No external referrer or access boundary is opened.
+- Desktop/mobile browser: reviewed fixed synthetic review and uncertain status,
+  expanded package, status/back Enter links passed; widths375/375 at390x844.
+  Viewport reset. Proof test-review-navigation-{desktop,mobile}.png and
+  test-status-navigation-{desktop,mobile}.png outside Git in conversation workspace.
+- Preview uses a stubbed configuration and explicit fixed-example labels. No
+  actual Google calls or browser operation POST. Actual guards covered by tests;
+  preview helper itself is not product login/authorization/staging evidence.
+- No new migration, actual Google DB/grant/ledger, Heroku or production change.
 
 ## Verified existing product evidence
 
@@ -83,12 +88,12 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Finish reviewed journey PR/required CI/merge and verify main CI. Then carry
-campaign overview navigation into existing protected TEST review/status screens,
-with explicit fixed TEST consent and stored-versus-refreshed status labels.
-Preserve exact loopback/owner/CSRF/immutable-ledger boundaries and no-resend/stop
-behavior. Ordinary overview GET must not read grants or call providers. Production
-identity/privacy/access/recovery/financial gates and actual guard mapping stay open.
+Finish this reviewed navigation PR/required CI/merge and verify main CI. Then
+introduce durable connector connection identity and credential generation in an
+isolated synthetic slice, before real-runtime closure guard mapping. Do not read,
+migrate or reactivate the preserved Google grant in that slice. Preserve separately
+permitted existing-grant stop/reconcile behavior; fixtures cannot prove real scope.
+Production identity/privacy/access/recovery/financial gates remain open.
 
 ## Preserved local environments
 
@@ -97,11 +102,13 @@ identity/privacy/access/recovery/financial gates and actual guard mapping stay o
   Use helper LocalAppData/Temp/growthtwin_oauth_preserved.py, never the older
   fresh-DB bootstrap. Do not reset ledgers or reauthorize needlessly. DPAPI secrets
   are outside Git under LocalAppData/GrowthTwinsecrets; do not read/print values.
-- Browser fixture 127.0.0.1:8011 (session 59045 at last check) has a separate
-  validated Temp/gwt-closure-ui-preview-28gfu4nv/fixture.sqlite3, isolated session/
-  CSRF cookies, unusable-password owner and Google features disabled. Helper:
-  LocalAppData/Temp/growthtwin_closure_journey_preview.py. Its /__preview__/ entry
-  creates only that fixture session; this is not a product login route or real
-  sign-in test. Current slice restarted this isolated fixture and applied prior migration 0002
-  there. Draft 1 is the new journey example; prior closure examples retained. Server lifetime is ephemeral. No agent
-  remains working; no secrets belong in handoff, logs, source or chat.
+- Browser fixture 127.0.0.1:8011 (session41181 at last check) uses the validated
+  Temp/gwt-closure-ui-preview-28gfu4nv/fixture.sqlite3, isolated cookies and
+  unusable-password owner. Google flags remain false. Current helper:
+  Temp/growthtwin_test_navigation_preview.py; /__preview__/ creates fixture session,
+  /__preview__/test-review/ and /test-status/ show explicit fixed examples with a
+  stubbed configuration, inner presentation only, no operation POSTs. Draft1 and
+  closure examples retained; draft2 is a fixed synthetic approved/uncertain example.
+  These records are not actual Google evidence. No new migration in current slice.
+  Original helper growthtwin_closure_journey_preview.py still exists. Runtime is
+  ephemeral; no agent remains working. Never include secrets in handoff/source.
