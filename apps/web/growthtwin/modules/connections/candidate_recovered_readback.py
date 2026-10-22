@@ -48,6 +48,7 @@ def _enabled():
     backend._enabled()
 
 
+@sensitive_variables()
 def _checked(values, *, issued=None, claimed=None, digest=None, deadline=None):
     _enabled()
     if deadline is not None and monotonic() >= deadline:
@@ -90,6 +91,7 @@ def _checked(values, *, issued=None, claimed=None, digest=None, deadline=None):
         return snapshot, current_digest, row
 
 
+@sensitive_variables()
 def _locations(values, row):
     return storage._locations(
         owner_id=values["owner"].pk,
@@ -99,6 +101,7 @@ def _locations(values, row):
     )
 
 
+@sensitive_variables()
 def _unchanged_locations(values, row, locations):
     _enabled()
     if _locations(values, row) != locations:

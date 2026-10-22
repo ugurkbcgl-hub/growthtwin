@@ -58,6 +58,11 @@ Client schema/project/ID/secret bounds are checked but secret material is not
 returned. Reparse/ancestor checks in the script are best effort, not an atomic
 no-follow guarantee. No writes, refresh, revoke or network request are performed.
 
+The reader entry masks traceback locals through Django's exception reporter.
+Session-bearing recovery/path helpers are additionally annotated for direct calls,
+so their raw session dictionaries/bindings are also masked without that entry.
+This is defense in depth, not evidence of a leak through the protected entry.
+
 ## Result and failure
 
 Only frozen request/attempt IDs and an advisory disposition are returned:

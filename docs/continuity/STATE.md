@@ -33,8 +33,10 @@ verify latest head/checks. Attachment100-item limit known; remove no unrelated i
   Reparse checks best effort; no production no-follow/crossprocess guarantee.
 - Only safe advisory metadata returned; match is NOT token/account/activation proof.
   Consumption terminal even on failure/crash, no retry/renewal/result persistence.
-- New54 tests:52 passed,2 PostgreSQL skips. Combined with permit/readback/retirement:
-  119 total,112 passed,7 skipped. Ruff format/lint, migration drift and whitespace
+- New58 tests:56 passed,2 PostgreSQL skips. Combined with permit/readback/retirement:
+  123 total,116 passed,7 skipped. Four real Django reporter-filter checks verify
+  direct session-bearing helpers; entry already protects its nested frames.
+  Ruff format/lint, migration drift and whitespace
   checks passed. Independent review found two gaps (late DB wait and final client
   configuration drift); corrected and regression-tested, no remaining source blocker.
 - All storage/stat/PowerShell mocked; no actual file/client/credential/provider/

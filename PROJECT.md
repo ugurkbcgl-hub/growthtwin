@@ -263,8 +263,10 @@ legacy contents remain unread. Scope/session/digest/time and captured configurat
 are rechecked, including after final client observation and DB-lock waits. A local
 envelope match is advisory, not token/account proof or activation. Source has no
 HTTP route, refresh/provider/write/adoption operation; normal switches remain off.
-54 new tests:52 local passes,2 PostgreSQL skips. Combined focused suites:112 passes,
+58 new tests:56 local passes,2 PostgreSQL skips. Combined focused suites:116 passes,
 7 PostgreSQL skips; formatting/lint/migration drift and independent review passed.
+Direct session-bearing helper calls also mask Django traceback locals; four tests
+verify actual reporter filtering. The protected reader entry already masks its chain.
 No new migration or actual protected DB/file/credential/provider/Heroku operation.
 PowerShell checks are mocked source contracts, not actual Windows DPAPI evidence.
 See [ADR0039](docs/adr/0039-closed-recovered-candidate-readback.md).

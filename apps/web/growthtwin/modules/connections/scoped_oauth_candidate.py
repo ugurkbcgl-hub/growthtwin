@@ -76,6 +76,7 @@ def _gate():
     backend._enabled()
 
 
+@sensitive_variables()
 def _session_key(session_key):
     if not isinstance(session_key, str) or not session_key or len(session_key) > 256:
         raise IdentityConflict("A server session binding is required.")

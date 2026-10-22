@@ -14,6 +14,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone
 from django.utils.crypto import salted_hmac
+from django.views.decorators.debug import sensitive_variables
 
 from . import scoped_oauth_candidate as candidate
 from .candidate_retirement import receipt_binding_digest
@@ -52,6 +53,7 @@ def _gate():
         raise IdentityConflict("Recovery requires no caller transaction.")
 
 
+@sensitive_variables()
 def _session(session_key):
     if type(session_key) is not str or not session_key or len(session_key) > 256:
         raise ValueError("A current server session is required.")
@@ -131,6 +133,7 @@ def _snapshot(permit):
     )
 
 
+@sensitive_variables()
 def issue_inspection_permit(
     *,
     owner,
@@ -191,6 +194,7 @@ def issue_inspection_permit(
         return _snapshot(permit)
 
 
+@sensitive_variables()
 def consume_inspection_permit(
     *, owner, workspace_id, connection_id, attempt_id, request_id, session_key
 ):

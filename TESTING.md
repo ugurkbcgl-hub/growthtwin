@@ -340,8 +340,11 @@ See [ADR0038](docs/adr/0038-synthetic-inspection-recovery-executor.md).
 ## Closed recovered reader and bounded storage — 2026-10-22
 
 New reader37 tests:35 local passes,2 PostgreSQL-only skips. New storage17 tests all
-passed; every filesystem/stat/PowerShell operation was mocked. Combined invocation
-with permit/readback/retirement:119 total,112 passed,7 PostgreSQL-only skips, using
+passed; every filesystem/stat/PowerShell operation was mocked. Four additional
+SafeExceptionReporterFilter tests passed with DEBUG=False: reader chain and direct
+session-bearing recovery/path helper calls mask their locals. Direct-call helper
+annotations are defense in depth; the protected reader entry already covers its chain.
+Combined invocation with permit/readback/retirement:123 total,116 passed,7 PostgreSQL-only skips, using
 ephemeral in-memory config.test_settings. No preserved DB or credential was opened.
 
 Checks cover exact scope-derived storage locations (same durable legacy location
