@@ -72,3 +72,16 @@ readiness before enabling a separately authorized candidate exercise. Preserve
 legacy grant/ledgers; no publishing, account upgrade, candidate adoption, refresh
 or actual credential cleanup. Orphan reconciliation, legacy adoption/rollback,
 production vault/access/privacy/recovery/financial gates remain open.
+
+
+### Configuration follow-up — 2026-10-22
+
+After implementation PR #311 merged, the owner explicitly approved registering
+only the scoped callback in the existing TEST client. Saved configuration was
+reopened and both legacy and scoped redirect URIs verified. Normal flags remain
+False; no candidate exercise, exchange, refresh, credential read or preserved DB
+migration occurred. Current API-level TEST child proof and isolated runtime binding
+remain open. See [readiness audit](../product/google-production-access-audit.md#scoped-test-hazırlığı--22-ekim-2026).
+Required CI39765174203 and main CI39765596754 passed586 PostgreSQL tests and11
+browser E2E tests. Configuration registration does not expand this ADR's mocked
+validation acceptance into an actual rollout or successful OAuth claim.

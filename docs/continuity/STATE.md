@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 13:42 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 14:04 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,31 +13,31 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main29217c0: PR310 merged. Latest-head CI39761138226 passed561
-PostgreSQL tests and11 browser E2E tests; main CI39761601822 passed. No open PR
-at slice start. Current branch feat/scoped-candidate-endpoints, PR311; implementation head5a64e31.
-Initial CI39765118546 running at this snapshot, which precedes its own follow-up
-commit. Verify latest head/checks before merge. PR311 attachment failed once at
-the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
+Baseline main8fd13b5: PR311 merged. Latest-head required CI39765174203 and
+main CI39765596754 passed586 PostgreSQL tests and11 browser E2E tests.
+No open PR at audit start. Current branch docs/scoped-test-readiness-audit;
+documentation-only follow-up, before its own PR/CI. Verify live head/checks.
+PR attachment has a known100-item limit; remove no unrelated attachments.
 
-## Current slice — closed scoped TEST endpoint wiring
+## Current slice — scoped TEST configuration readiness
 
-- New separate metadata overview/start/callback/retire routes; endpoint+candidate
-  flags remain False. Existing exact configured owner/workspace/loopback8002,
-  DEBUG False/no-forward guards apply. No legacy runtime/redirect/grant change.
-- Signed5-minute session/scope/action forms and CSRF. State SHA256 marker (no raw
-  state/code/verifier) rejects old/wrong callback before current nonce consumption.
-  Allowed callback303 cleans URL; slashless alias avoids query-bearing redirect.
-- Retirement digest now checked UNDER service locks following independent TOCTOU
-  finding; regression mutates receipt between endpoint read and service lock and
-  proves409/no retirement/rotation. Independent final re-review approved.
--25 new tests plus adapter/retirement/legacy:76 local passes,4 PostgreSQL skips.
-  Ruff/format, migration drift and whitespace checks run. No new migration or
-  actual provider/credential/files/preserved Google/fixture DB/Heroku operation.
-  No manual browser check; request-level validation. CI pending.
-- Separate scoped callback URI must be checked/configured with current isolated
-  TEST target before enabling. No actual OAuth success, active grant, refresh,
-  adoption or cleanup claim. See ADR0036 and its process/logging/rollout limits.
+- Owner explicitly approved only the new local scoped callback on GrowthTwin
+  Web Test. Saved/reopened client contains both original /google/callback/ and
+  new /google/scoped/callback/ at http://127.0.0.1:8002/connections.
+- Cloud rechecked today: Ads API Enabled/Test; OAuth External/Testing, one test
+  user; Branding URLs/domains empty. No upgrade/publish/scope/credential change.
+- Ads UI manager/child IDs match preserved helper source constants, not verified
+  current process/owner/workspace binding. Three campaigns; paused/no-serving
+  warning and zero displayed clicks/impressions/cost for October16–22 only.
+- Current customer.test_account=True not re-queried. No grant refresh, OAuth
+  exercise, candidate activation/adoption, campaign action or ledger SQL read.
+  Helper inspected as AST only because executing it changes DB/user state.
+  No credential read, preserved DB migration, Heroku or runtime flag change.
+- Both scoped flags remain False. Same-process PKCE, proxy/access/error logging,
+  isolated identity/client/target binding and uncertain-outcome reconciliation
+  must be established before any separately authorized actual candidate exercise.
+  No local tests run for this documentation/configuration slice; code unchanged.
+  See docs/product/google-production-access-audit.md, October22 follow-up.
 
 ## Verified existing product evidence
 
@@ -69,9 +69,9 @@ No actual grant, provider, configuration value or DB read in this hook review.
 
 ## Open production gates
 
-October 19 Cloud observations (not rechecked today): Test API access, OAuth
-External/Testing, one test user; Branding/publish and home/privacy/terms/domain
-incomplete. Owner reported no domain then. No upgrade, publish, purchase, new
+October22 Cloud observations: Test API access, OAuth External/Testing, one test
+user; Branding/publish and home/privacy/terms/domain incomplete. Owner reported
+no domain on October19; ownership status not rechecked today. No upgrade, publish, purchase, new
 scope or real account action. Exact current grant expiry was not inspected.
 Domain/business/contact, real data recipients/retention/legal review, production
 vault/tenant identity, fresh provider evidence, durable restore barriers, configured
@@ -81,8 +81,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete scoped-endpoint PR/required CI/merge and main CI. Then verify isolated
-TEST OAuth configuration/new redirect and current target readiness before any
-separately authorized candidate exercise. Preserve legacy grant/ledgers; no
-publishing, account upgrade, adoption, refresh or actual cleanup. Normal flags
-remain off; reconciliation, rollback and production gates remain open.
+Complete the isolated candidate-exercise preparation: separate synthetic
+owner/workspace/client binding, fresh TEST child proof, same-process PKCE and
+callback/proxy/error-log controls, while preserving legacy grant and ledgers.
+Do not enable flags or start OAuth before these gates and the specific exercise
+consent are satisfied. No publishing, upgrade, adoption, refresh or cleanup.
