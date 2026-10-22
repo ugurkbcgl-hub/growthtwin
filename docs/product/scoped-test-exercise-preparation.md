@@ -164,3 +164,60 @@ onaylı yeni deneme kapsamı belirlenmeli. Var olan helper başlangıçta attemp
 beklediği için bu DB'de yeniden çalıştırılamaz; koşulu kaldırarak aşma veya başka
 DB/kimlikle geçmişi atlama. Eski TEST hedef kanıtını güncel kabul etmeden önce
 zaman/client/target bağını yeniden doğrula.
+
+
+## Başarılı inactive aday denemesi — 22 Ekim, 19:07
+
+Kullanıcı Google kimlik doğrulamasını tamamlayıp devam etti. Geçiş anahtarı
+ayarları açılmıştı; ajan yeni Google credential oluşturmadı veya güvenlik ayarı
+zayıflatmadı. Aynı izinli TEST client/owner/workspace kapsamı korundu.
+
+1. Güncel hedef kontrolü tekrarlandı: bir legacy refresh ve bir sabit Ads kimlik
+   SELECT'i doğru non-manager TEST child/client eşleşmesini doğruladı. Preflight
+   sırasında şifreli dosya hash'leri ve korunan DB stat'ı aynıydı; yazı yoktu.
+2. Süresi dolmuş tek RESERVED, mevcut `retire_reserved` servisiyle kapatıldı.
+   Kalıcı request/digest niyeti işlemden önce kaydedildi. Eski satır REJECTED /
+   retired_before_exchange oldu; generation rotation aynı işlemde gerçekleşti.
+   Geçmiş silinmedi, provider/credential işlemi veya yeni DB/kimlik yaratılmadı.
+3. Ayrı kaynak incelemesinden geçen çalıştırıcı, tam bu retired history/request/
+   digest/old-new generation bağını zorunlu tuttu. Önceki zero-attempt kontrolü
+   kaldırılarak aşılmadı: onun yerine geçerli ve korunmuş retirement kanıtı arandı.
+   Candidate yazısı exact yeni attempt ve current generation'a bağlandı.
+4. Aynı sentetik kullanıcı ve çalışma alanında yeni, kullanıcı devamıyla başlatılan
+   deneme Google'a gitti. Google bağlantıya özel ek cihaz doğrulaması istedi;
+   kullanıcı bunu da tamamladı. Callback temiz `/connections/google/scoped/`
+   adresine döndü; query/fragment yoktu. UI inactive aday sonucunu gösterdi.
+5. Bağımsız salt okunur yeni-DB metadata kontrolü: identity quarantined/revision1,
+   generation zinciri tutarlı, eski REJECTED geçmiş korunmuş, yeni tek CANDIDATE
+   current connection/generation/revision ile eşleşiyor. Exact türetilen dosya
+   mevcut ve boş değil. İçeriği/şifresi bu kontrolde okunmadı.
+6. Logout ardından süreç durduruldu;8002 dinleyicisi kalmadı. Interrupt sonrası
+   finally varsayılmadı: exact yeni DB'de unusable password, session0 ve iki history
+   satırının korunduğu ayrıca doğrulandı. Normal kaynak bayrakları False kaldı.
+
+Tek exchange/yazı sınırı kaynakta uygulanmıştır; başarılı CANDIDATE + dosya sonucu
+bu sınır içinde bir exchange/yazıyla tutarlıdır. Başlangıç raporunun sayaçları,
+zorla kapanma sonrasındaki ölçülmüş final sayaçlar gibi sunulmadı. Eski grant'in
+uzak geçerliliği yeni consent sonrasında yeniden denenmedi; yerel koruma bunun
+uzak garantisi değildir. Yeni aday üzerinden refresh/Ads sorgusu/adoption/aktivasyon,
+revoke/unlink veya reklam işlemi yapılmadı. Envelope decrypt/readback, token
+geçerliliği ve yeni adayın hesap erişimi **doğrulanmadı**.
+
+### Oturum kaybı ve sıradaki sınır
+
+Logout ve süreç kapanışı özgün session'ı ve yalnız bellekteki Django süreç
+anahtarını kaybettirdi. `inspect_candidate()` session HMAC eşitliği gerektirir;
+yeni session/SECRET_KEY üretmek veya receipt hash'ini değiştirmekle bu koruma
+atlatılamaz. Var olan guarded readback bu kayıtta çalıştırılmadı.
+
+**Sonraki tek iş:** Yeni owner oturumundan, immutable receipt/geçmiş korunarak
+kısa ömürlü ve yalnız inceleme amaçlı bir kurtarma yetkisinin protokolünü tasarla
+ve sentetik verilerle doğrula. Scope owner/workspace/connection/generation/revision/
+attempt/digest'e bağlı olmalı; yalnız current quarantined CANDIDATE için, okuma
+sonrasında yeniden scope doğrulamalı. Tasarımda gerçek dosyayı okuma; hiçbir refresh,
+adoption, aktivasyon veya yeniden gönderim yetkisi çıkarma. Yeni actual launcher
+artık tek eski retired history şartını karşılamaz; yeniden çalıştırma/guard gevşetme.
+
+Kanıtlar Git dışında aynı hazırlık dizininde: target-preflight.json,
+retirement-intent.json, preparation.json, candidate-runtime.json,
+inactive-candidate-success.png. Açık parola/code/state/verifier/token yazılmadı.
