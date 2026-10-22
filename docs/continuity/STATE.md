@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 11:59 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 12:02 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -15,10 +15,11 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main a060234: PR307 merged. Latest-head CI39747787250 passed509
 PostgreSQL tests and10 browser E2E tests; main CI39748174729 passed. No open PR
-at slice start. Current branch feat/synthetic-authorization-session-journey;
-implementation/docs in progress, PR not yet created at this snapshot. Verify
-latest head/required checks before merging. PR attachment has hit this chat's
-100-item limit; attempt once per new PR without removing unrelated attachments.
+at slice start. Current branch feat/synthetic-authorization-session-journey, PR308; implementation
+head e0d6141. Initial CI39752146038 running at this snapshot, which precedes its
+own follow-up commit. Verify latest head/checks before merging. PR308 attachment
+failed once with the known100-item limit; GitHub PR is intact. Do not remove
+unrelated attachments.
 
 ## Current slice — synthetic owner/session/CSRF journey
 
@@ -34,9 +35,10 @@ latest head/required checks before merging. PR attachment has hit this chat's
   New browser test passed desktop/mobile/keyboard, fixed outcomes and refresh;
   source CSS screenshots reviewed in Temp/growthtwin-authorization-rehearsal-20261022.
 - Independent review found missing framework-error header coverage. Prefix and
-  three403/404 no-store/private/noindex regressions fixed; final review follows.
+  three403/404 no-store/private/noindex regressions fixed. Independent final
+  re-review found no blocking issue.
   Ruff/format, migration drift and whitespace checks run. No migration.
-- Actual candidate adapter remains off/unwired. No actual provider, secret, file,
+- Actual candidate adapter remains off/unwired. No actual provider, secret or credential file,
   preserved Google/fixture DB or Heroku action. Browser used ephemeral test DB.
   Existing dev Playwright pin installed locally; dependency manifests unchanged.
   See ADR0033 and its explicit session/recovery limits.
