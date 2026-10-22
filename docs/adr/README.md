@@ -40,3 +40,5 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 - [0029 — Durable connector identity/generations](0029-durable-connector-identity-generations.md) — Accepted for isolated synthetic validation only
 
 - [0030 — Generation-bound synthetic authorization attempts](0030-synthetic-generation-bound-authorization-attempts.md) — Accepted for isolated rehearsal only
+
+- [0031 — Scoped Google TEST candidate boundary](0031-scoped-google-test-candidate-boundary.md) — Accepted for mocked adapter validation only

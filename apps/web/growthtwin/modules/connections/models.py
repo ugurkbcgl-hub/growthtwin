@@ -177,3 +177,49 @@ class SyntheticAuthorizationAttempt(models.Model):
                 name="unique_active_synthetic_auth",
             ),
         ]
+
+
+class ScopedOAuthCandidateAttempt(models.Model):
+    """TEST adapter receipt only; no token/code/query/state/verifier or file path."""
+
+    class State(models.TextChoices):
+        RESERVED = "reserved"
+        EXCHANGING = "exchanging"
+        CANDIDATE = "candidate"
+        REJECTED = "rejected"
+        UNCERTAIN = "uncertain"
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    connection = models.ForeignKey(ConnectorIdentity, on_delete=models.PROTECT)
+    generation = models.UUIDField(editable=False)
+    expected_revision = models.PositiveBigIntegerField()
+    session_key_hash = models.CharField(max_length=64, editable=False)
+    client_id_hash = models.CharField(max_length=64, editable=False)
+    state = models.CharField(max_length=16, choices=State, default=State.RESERVED)
+    reason = models.CharField(max_length=24, blank=True, default="")
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    expires_at = models.DateTimeField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=("connection", "generation"),
+                name="unique_scoped_oauth_generation",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(
+                    state__in=(
+                        "reserved",
+                        "exchanging",
+                        "candidate",
+                        "rejected",
+                        "uncertain",
+                    )
+                ),
+                name="scoped_oauth_known_state",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(expires_at__gt=models.F("created_at")),
+                name="scoped_oauth_positive_lifetime",
+            ),
+        ]

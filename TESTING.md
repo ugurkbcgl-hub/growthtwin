@@ -169,7 +169,7 @@ exactly-once, stop/revocation or independent restore-barrier guarantee is implie
 
 `test_synthetic_authorization` adds23 local tests and2 PostgreSQL races. With
 `test_connector_identity`,38 tests pass locally and4 PostgreSQL tests skip.
-New races require PostgreSQL: a second perform during a running fake must not
+PR305 required CI39720686706 verified the four pending races in465 PostgreSQL tests and10 browser E2E tests; main CI39720985597 passed. New races require PostgreSQL: a second perform during a running fake must not
 execute twice; a block must commit while fake waits and reject its late success.
 Other tests cover default/confirmation, scoped generation/revision, expiry before/
 during fake, switch/block/rotation while fake runs, stale active replacement,
@@ -185,3 +185,23 @@ No browser check for this service-only slice. A running fake is never resumed or
 re-executed automatically; an expired/stale active example may be retired before
 a new explicitly confirmed example. This is not real OAuth callback verification,
 authorization, grant storage, remote exactly-once or independent restore evidence.
+
+
+## Scoped TEST candidate boundary
+
+`test_scoped_oauth_candidate` adds20 local tests and2 PostgreSQL races. With
+existing `test_backend`, `connections.tests` and `test_views`,51 local tests pass
+and2 PostgreSQL tests skip. Every client, token-path check, transport, encrypted
+write and read is mocked; only fabricated fixtures are used. No actual grant,
+client, endpoint or candidate file is accessed. Tests check default-off, legacy
+preservation, one exchange per callback receipt, session/state/client binding,
+pre/post scope and lifetime, candidate-only schema/path, inactive permission,
+transport/write uncertainty, simulated DB failure after possible file write,
+late legacy-file presence, immutable binding and no automatic retry/revoke.
+
+PostgreSQL races remove the process lock to exercise durable parallel-callback
+reservation, and block the connector while mocked transport waits to prove no
+candidate storage follows. Required CI must verify them. Ruff/format/migration
+drift and independent source review passed. Migration0005 only ran in ephemeral
+test DBs. No browser test or actual filesystem write/decrypt/Google operation.
+The mocked orphan test is not real filesystem/DB distributed recovery proof.
