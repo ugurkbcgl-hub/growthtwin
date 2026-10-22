@@ -220,3 +220,19 @@ legacy/client changes, malformed/missing storage and post-read scope/binding
 changes are covered. The PostgreSQL race allows a concurrent block to commit
 during read and denies a match afterward. No actual decrypt/file/provider action,
 new migration, browser test or recovery certification. See ADR0032.
+
+PR307 required CI39747787250 and main CI39748174729 subsequently passed509
+PostgreSQL tests and10 browser E2E tests, including all three candidate races.
+
+## Synthetic authorization session journey
+
+`test_authorization_journey` adds17 endpoint tests. With
+`test_synthetic_authorization`:40 local passes,2 PostgreSQL skips. Coverage includes
+double default-off, owner/session/CSRF, signed action/scope/expiry, exact form
+shape, replay, blocked/expired/running state, no GET work and framework-error
+private/no-store/noindex headers. Real backend/candidate/readback calls are
+forbidden by mocks. No new migration or actual credential/provider/preserved DB operation.
+`e2e.test_connector_rehearsal` passed locally: desktop/mobile/keyboard, both fake
+outcomes, refresh and quarantine preservation; screenshots reviewed outside Git.
+Local Playwright1.63.0 (existing dev pin) was installed in the development venv;
+no dependency manifest changed. See ADR0033 for session/recovery limits.

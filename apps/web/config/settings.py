@@ -182,6 +182,7 @@ LOGGING = {
 
 # Internal rehearsal only; enable explicitly with isolated test settings.
 SYNTHETIC_CONNECTOR_AUTHORIZATION_ENABLED = False
+SYNTHETIC_CONNECTOR_UI_ENABLED = False
 
 # Unwired candidate adapter; never adopt an existing grant implicitly.
 GOOGLE_ADS_SCOPED_CANDIDATE_ENABLED = False

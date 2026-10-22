@@ -8,6 +8,10 @@ from growthtwin.site.forms import GrowthTwinAuthenticationForm
 
 urlpatterns = [
     path(
+        "workspace/connection-rehearsal/",
+        include("growthtwin.modules.connections.authorization_urls"),
+    ),
+    path(
         "workspace/control/", include("growthtwin.modules.connections.lifecycle_urls")
     ),
     path("connections/google/", include("growthtwin.modules.connections.urls")),
