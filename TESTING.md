@@ -380,3 +380,30 @@ See [Ubuntu APT transport documentation](https://manpages.ubuntu.com/manpages/ja
 and the [runner-image stall report](https://github.com/actions/runner-images/issues/14594).
 Actual workflow execution is the validation for these Linux-only CI commands;
 no local device APT configuration is changed.
+
+PR318 latest required CI39843136730 and main CI39843726808 passed708 PostgreSQL
+tests +11 browser E2E; the bounded official-mirror dependency installation passed
+both runs. Earlier cancelled attempts are not the successful evidence.
+
+## Actual Windows bounded-decoder rehearsal — 2026-10-22
+
+Source-reviewed `scripts/rehearse_inspection_storage.py` ran on Windows with actual
+DPAPI only for new disposable fabricated files:12 checks passed, cleanup_complete
+true, forbidden_boundary_attempts0. DB and network guards precede Django setup;
+legacy client/read/transport/path calls are forbidden. No existing credentials or
+DB are fixture inputs; only safe result counts are printed.
+
+Valid Turkish JSON and a30000-character payload round-trip; duplicate/malformed/
+non-object/NaN JSON, empty/invalid-UTF8/bad/oversized ciphertext, missing file and
+oversized text reject. The oversized text ciphertext exceeds131072 bytes before
+the later plaintext guard, so plaintext_limit_independently_exercised=false.
+No limit changes or unsupported plaintext-boundary proof. Exact manifest cleanup
+is nonrecursive. Ruff format/lint and whitespace checks passed. No new local Django
+suite was needed for this harness/docs slice; last verified full suite is above.
+
+A separately reviewed immutable RO SQLite/metadata/ACL audit verified the same
+preserved DB unchanged, coherent two-attempt history, disabled login/session0,
+regular exact client/candidate files and private protected-root ACL. No encrypted
+contents were read/decrypted. Migration0007 and permit table are absent; no backup,
+migration/permit/provider/actual reader/adoption/activation occurred. See
+[current preparation evidence and next plan](docs/product/recovered-inspection-exercise-preparation.md).
