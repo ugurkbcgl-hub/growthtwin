@@ -104,17 +104,20 @@ def _submitted(request, workspace_id, action):
     if (
         type(value) is not dict
         or set(value)
-        != {
-            "owner",
-            "workspace",
-            "session",
-            "connection",
-            "generation",
-            "revision",
-            "attempt",
-            "scenario",
-            "action",
-        }
+        != (
+            {
+                "owner",
+                "workspace",
+                "session",
+                "connection",
+                "generation",
+                "revision",
+                "attempt",
+                "scenario",
+                "action",
+            }
+            | ({"receipt_expires"} if action == "recover" else set())
+        )
         or value["owner"] != request.user.pk
         or value["workspace"] != workspace_id
         or value["session"] != _session(request)
@@ -139,6 +142,8 @@ def _submitted(request, workspace_id, action):
         parsed = UUID(value[key])
         if not parsed.int or str(parsed) != value[key]:
             raise ValueError
+    if action == "recover" and type(value["receipt_expires"]) is not str:
+        raise ValueError
     return {key: item for key, item in value.items() if key != "action"}
 
 
@@ -220,7 +225,7 @@ def start(request, workspace_id):
     )
 
 
-def _record(request, workspace_id, connection_id, attempt_id):
+def _lookup(request, workspace_id, connection_id, attempt_id):
     snapshot = rehearsal.get_example(
         owner=request.user,
         workspace_id=workspace_id,
@@ -242,9 +247,94 @@ def _record(request, workspace_id, connection_id, attempt_id):
         str(snapshot.generation),
         snapshot.expected_revision,
     )
+    return snapshot, current, value
+
+
+def _record(request, workspace_id, connection_id, attempt_id):
+    snapshot, current, value = _lookup(request, workspace_id, connection_id, attempt_id)
     if request.session.get(MARKER) != value:
         raise Http404
     return snapshot, current, value
+
+
+@never_cache
+@_enabled
+@login_required
+@require_safe
+def recovery(request, workspace_id):
+    workspace = _workspace(request, workspace_id)
+    rows = []
+    # Fixed synthetic receipts ONLY. Never inspect candidate files or actual grants.
+    records = SyntheticAuthorizationAttempt.objects.filter(
+        connection__workspace=workspace
+    ).order_by("-created_at")[:20]
+    try:
+        for record in records:
+            snapshot, _, value = _lookup(
+                request, workspace_id, record.connection_id, record.pk
+            )
+            ticket = signing.dumps(
+                value
+                | {
+                    "action": "recover",
+                    "receipt_expires": snapshot.expires_at.isoformat(),
+                },
+                salt=SALT,
+            )
+            rows.append(
+                {
+                    "snapshot": snapshot,
+                    "message": LABELS[snapshot.state],
+                    "token": ticket,
+                    "scenario_label": "Başarı örneği"
+                    if snapshot.scenario is rehearsal.FakeAuthorizationScenario.ALLOW
+                    else "Ret örneği",
+                }
+            )
+    except IdentityConflict:
+        return _problem(request)
+    except (
+        Workspace.DoesNotExist,
+        ConnectorIdentity.DoesNotExist,
+        SyntheticAuthorizationAttempt.DoesNotExist,
+    ):
+        raise Http404 from None
+    return render(
+        request,
+        "connections/authorization_recovery.html",
+        {"workspace": workspace, "rows": rows},
+    )
+
+
+@never_cache
+@_enabled
+@login_required
+@require_POST
+def recover(request, workspace_id, connection_id, attempt_id):
+    _workspace(request, workspace_id)
+    try:
+        value = _submitted(request, workspace_id, "recover")
+        snapshot, _, expected = _lookup(
+            request, workspace_id, connection_id, attempt_id
+        )
+        if value != expected | {"receipt_expires": snapshot.expires_at.isoformat()}:
+            raise ValueError
+    except (signing.BadSignature, ValueError, TypeError, IdentityConflict):
+        return _problem(request)
+    except (
+        Workspace.DoesNotExist,
+        ConnectorIdentity.DoesNotExist,
+        SyntheticAuthorizationAttempt.DoesNotExist,
+    ):
+        raise Http404 from None
+    # Deliberately rebind ONLY synthetic metadata. No reservation or fake execution.
+    request.session[MARKER] = expected
+    return redirect(
+        "authorization_rehearsal:status",
+        workspace_id=workspace_id,
+        connection_id=connection_id,
+        attempt_id=attempt_id,
+    )
 
 
 @never_cache

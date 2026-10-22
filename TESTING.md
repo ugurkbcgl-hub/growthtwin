@@ -236,3 +236,8 @@ forbidden by mocks. No new migration or actual credential/provider/preserved DB 
 outcomes, refresh and quarantine preservation; screenshots reviewed outside Git.
 Local Playwright1.63.0 (existing dev pin) was installed in the development venv;
 no dependency manifest changed. See ADR0033 for session/recovery limits.
+
+
+## Recovery dispositions
+
+Connection recovery dispositions (2026-10-22): owned metadata-only assessment separates callback wait/restart review, uncertainty reconciliation, inactive review and rejected history; scope/session flags never permit retry or activation. Synthetic-only signed CSRF recovery reopens an existing fixed example in a new owner session by changing only its session marker. Receipt expiry/scope/scenario are bound; no begin/perform, new receipt or deadline extension. Run guards deny stale/expired/running/terminal execution.18 new tests plus17 prior journey tests:35 local passes; extended isolated browser and mobile visual check passed. No migration or actual credentials/provider/preserved DB/Heroku operation. See ADR0034. PR308 required CI39752232154 and main CI39752610827 passed527 tests and11 browser tests. Next: explicit RESERVED-only retirement with generation fencing in mocks; uncertainty cannot be retired/retried automatically.

@@ -38,6 +38,11 @@ the common middleware. No raw exception/payload is reflected in error content.
 
 ## Limits and recovery
 
+Follow-up: ADR0034 adds explicitly confirmed reopening of existing synthetic
+metadata in a new owner session. The missing UI recovery below describes the
+original ADR0033 slice, not the follow-up. Actual candidate/OAuth recovery stays
+unimplemented; the session still keeps only the last opened/started example.
+
 The session keeps only the LAST successfully started example across these pages.
 Starting another example replaces that marker, without deleting history. Logout,
 session loss/rotation, or session-store failure after metadata reservation can

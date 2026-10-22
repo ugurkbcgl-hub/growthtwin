@@ -14,6 +14,7 @@
     <section class="summary-card" role="alert"><h2>Bu işlem doğrulanamadı</h2><p>Formun süresi, oturumun veya bağlantı bilgileri değişmiş olabilir. Prova sayfasını yeniden açıp güncel durumu kontrol et.</p><a class="button button-secondary" href="{{ retry_url }}">Prova seçeneklerine dön</a></section>
   {% else %}
     <p class="lead">{{ workspace.name }}</p>
+    <p><a class="back-link" href="{% url 'authorization_rehearsal:recovery' workspace.pk %}">Önceki örnek kayıtları incele</a></p>
     {% if snapshot %}
       <section class="summary-card" aria-labelledby="rehearsal-result">
         <h2 id="rehearsal-result">Kaydedilen örnek durum</h2>
