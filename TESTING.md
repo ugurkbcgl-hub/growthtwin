@@ -142,3 +142,5 @@ local endpoint authorization. Actual protected views/CSRF are exercised in tests
 Preserved Google DB/grant/ledgers, Heroku and real data remain untouched.
 
 Shared result/error documents preserve same-origin referrers for their local logout form CSRF Origin. Callback/start remain no-referrer; external referrers remain suppressed. Existing header test and result assertions passed.
+
+PR303 first PostgreSQL CI39716734298 rejected an overlength synthetic unknown-state fixture (varchar20). The test label was shortened; application/model constraints unchanged. Latest-head CI must pass before merge.

@@ -17,8 +17,9 @@ Verified base main 5ee3647: PR #302 merged. Latest-head required CI 39653009712
 passed 409 PostgreSQL tests and 10 browser E2E tests; post-merge main CI
 39653441692 passed. No open PR at this slice start.
 Current branch feat/test-campaign-journey-navigation, PR #303; implementation
-head f1e6dad. Required CI 39716699055 in progress at this snapshot, which
-precedes its own follow-up commit. Verify latest head/checks before merge.
+head199239a CI39716734298 failed one new test fixture: unknown state exceeded
+PostgreSQL varchar20. Fixed only the synthetic test label to unknown-private;
+latest-head CI must rerun. Snapshot precedes its own follow-up commit.
 PR303 attachment failed once with the known 100-item limit; GitHub PR is intact.
 PR attachment to this chat has hit its 100-item limit; attempt once for a new PR,
 do not remove unrelated attachments. GitHub PRs remain intact.

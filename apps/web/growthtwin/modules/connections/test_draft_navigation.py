@@ -99,10 +99,10 @@ class DraftNavigationTests(TestCase):
         self.assertNotContains(response, "not-readable")
 
     def test_unknown_status_is_not_reflected_or_claimed_verified(self):
-        self.store(state="unexpected-private-state", observed="ENABLED")
+        self.store(state="unknown-private", observed="ENABLED")
         response = self.get()
         self.assertContains(response, "Kayıt var · Durum doğrulanmalı")
-        self.assertNotContains(response, "unexpected-private-state")
+        self.assertNotContains(response, "unknown-private")
         self.assertNotContains(response, "ENABLED")
         self.assertNotContains(response, "Google durumu PAUSED")
 
