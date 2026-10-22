@@ -15,9 +15,10 @@ connection/data, production publication, media spend or production AI in this sl
 
 Verified base main3eb143e: PR308 merged. Latest-head CI39752232154 passed527
 PostgreSQL tests and11 browser E2E tests; main CI39752610827 passed. No open PR
-at slice start. Current branch feat/connection-recovery-dispositions; implementation
-and docs in progress, PR not yet created at this snapshot. Verify latest head/CI.
-Attachment limit100 remains; attempt once per PR, remove none.
+at slice start. Current branch feat/connection-recovery-dispositions, PR309; implementation head
+afa2f49. Initial CI39756385104 running at this snapshot, which precedes its own
+follow-up commit. Verify latest head/checks before merge. PR309 attachment failed
+once at the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
 
 ## Current slice — recovery assessment and synthetic reopening
 
@@ -34,7 +35,7 @@ Attachment limit100 remains; attempt once per PR, remove none.
   desktop/mobile/keyboard and preserved quarantine. Recovery mobile screenshot
   reviewed in Temp/growthtwin-authorization-recovery-20261022.
 - Independent review found no blocker and requested stronger stale/expired/terminal
-  tests; added/passed. Final re-review and required CI follow. No migration or
+  tests; added/passed. Independent final re-review found no blocker; required CI follows. No migration or
   actual credential/provider/preserved Google/fixture DB/Heroku operation.
   See ADR0034. No automatic retry/revoke/adoption.
 
