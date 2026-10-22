@@ -7,7 +7,9 @@ class LocalOAuthHeadersMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        if request.path.startswith("/workspace/control/") or (
+        if request.path.startswith(
+            ("/workspace/control/", "/workspace/connection-rehearsal/")
+        ) or (
             request.path.startswith("/workspace/campaigns/")
             and request.path.endswith("/journey/")
         ):

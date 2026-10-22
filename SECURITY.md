@@ -32,6 +32,11 @@
 
 ## Operations
 
+- Synthetic authorization pages (ADR0033) remain double default-off, owner/session
+  bound, signed and CSRF protected. They use fixed examples only and cannot call
+  the real candidate adapter. Status URLs are origin-session scoped; loss of a
+  session is not evidence to retry, recover or activate a grant automatically.
+
 - Scoped TEST candidate inspection is default-off, unwired and advisory only
   (ADR0032). Exact owned receipt/envelope binding and current quarantine checks
   never authorize provider work. Uncertain/orphaned attempts require explicit

@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 11:27 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 12:02 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,32 +13,35 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main9132e1e: PR306 merged. Latest-head CI39722697389 passed487
-PostgreSQL tests and10 browser E2E tests; main CI39722996360 passed. No open PR
-at slice start. Current branch feat/scoped-candidate-readback, PR307; implementation head
-3e3758d. Initial required CI39747720288 running at this snapshot, which precedes
-its own follow-up commit. Verify latest head/checks before merging. PR307
-attachment failed once with the known100-item limit; GitHub PR is intact. Do not
-remove unrelated attachments.
+Verified base main a060234: PR307 merged. Latest-head CI39747787250 passed509
+PostgreSQL tests and10 browser E2E tests; main CI39748174729 passed. No open PR
+at slice start. Current branch feat/synthetic-authorization-session-journey, PR308; implementation
+head e0d6141. Initial CI39752146038 running at this snapshot, which precedes its
+own follow-up commit. Verify latest head/checks before merging. PR308 attachment
+failed once with the known100-item limit; GitHub PR is intact. Do not remove
+unrelated attachments.
 
-## Current slice — scoped candidate advisory readback
+## Current slice — synthetic owner/session/CSRF journey
 
-- Shared strict version-one codec validates exact keys, owned receipt binding,
-  scope/client and bounded refresh material. Legacy/unknown/mismatched envelopes
-  are rejected. Writer uses the same codec; no current runtime reader changes.
-- Default-off unwired inspection permits candidate-only readback for committed
-  current quarantined receipts. Pending/rejected/uncertain dispositions never
-  promote an orphan. Ownership/session and current scope are checked before I/O;
-  fresh scope/immutable receipt/client/legacy checks follow it. Match is advisory,
-  not permission, actual token validity or independent recovery evidence.
-- Five-minute handshake/write deadline does not expire stored inactive candidates.
-  No activation, metadata/file mutation, auto retry/revoke/unlink or provider call.
--21 new local tests and1 PostgreSQL race; focused readback/adapter/backend run:
-  55 local passes,3 PostgreSQL skips. Ruff/format and migration drift checks run;
-  independent source review and final re-review found no blocker. Broad exception
-  assertion tightened to PermissionDenied; required CI follows. No browser check.
-- All client/path/transport/encrypted read/write mocked. No migration or actual
-  credential/file/provider/preserved Google/fixture DB/Heroku operation. See ADR0032.
+- New double-default-off fixture pages call only the fixed synthetic coordinator.
+  Signed10-minute owner/workspace/session-HMAC/connection/generation/revision/
+  attempt/scenario/action tickets and exact fields/confirmation protect two POSTs.
+  Start reserves; separate perform runs the fake. GET never runs work; replay
+  cannot duplicate it. Accepted example is never a grant or provider permission.
+- Initiating session marker scopes status/result access; only LAST started example
+  is accessible. Lost/rotated sessions or session-store failure after reservation
+  have no UI recovery. Preserve pending history; do not auto-retry or activate.
+-17 new endpoint tests plus coordinator:40 local passes,2 PostgreSQL skips.
+  New browser test passed desktop/mobile/keyboard, fixed outcomes and refresh;
+  source CSS screenshots reviewed in Temp/growthtwin-authorization-rehearsal-20261022.
+- Independent review found missing framework-error header coverage. Prefix and
+  three403/404 no-store/private/noindex regressions fixed. Independent final
+  re-review found no blocking issue.
+  Ruff/format, migration drift and whitespace checks run. No migration.
+- Actual candidate adapter remains off/unwired. No actual provider, secret or credential file,
+  preserved Google/fixture DB or Heroku action. Browser used ephemeral test DB.
+  Existing dev Playwright pin installed locally; dependency manifests unchanged.
+  See ADR0033 and its explicit session/recovery limits.
 
 ## Verified existing product evidence
 
@@ -82,9 +85,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete this reviewed readback PR, required CI, squash merge and main CI.
-Then design/rehearse owner/session/CSRF endpoint wiring with explicit fixtures,
-keeping the real adapter off. Before actual hook rollout, configured TEST target
-proof, pending/orphan recovery handling, explicit legacy adoption/rollback,
-scoped refresh and separately permitted stop/reconcile remain open. No activation
-or actual credential/file/provider access is authorized by this preparation.
+Complete this reviewed session-journey PR/CI/merge and verify main CI. Then
+design/test explicit lost-session and pending/uncertain candidate recovery
+dispositions, preserving legacy grants and separately permitted stop/reconcile.
+Keep the actual adapter off. Configured TEST target proof, callback/recovery
+wiring and explicit legacy adoption/rollback remain prerequisites to rollout.

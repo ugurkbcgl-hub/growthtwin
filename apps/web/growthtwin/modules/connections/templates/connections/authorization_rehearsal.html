@@ -1,0 +1,49 @@
+{% extends "campaigns/base.html" %}
+{% block title %}Bağlantı provası{% endblock %}
+{% block extra_head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block scripts %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'campaigns:list' %}">← Kampanyalarına dön</a>
+  <p class="eyebrow">Güvenli deneme alanı</p>
+  <h1>Bağlantı akışını<br>güvenle dene.</h1>
+  <aside class="notice" role="note">
+    <strong>Sentetik prova · Gerçek hesap bağlanmaz</strong>
+    <p>Yalnızca sabit örnekler çalışır. Google'a gidilmez, anahtar okunmaz ve reklam yayımlanmaz. Bu sonuçlar gerçek bağlantının durumunu göstermez.</p>
+  </aside>
+  {% if problem %}
+    <section class="summary-card" role="alert"><h2>Bu işlem doğrulanamadı</h2><p>Formun süresi, oturumun veya bağlantı bilgileri değişmiş olabilir. Prova sayfasını yeniden açıp güncel durumu kontrol et.</p><a class="button button-secondary" href="{{ retry_url }}">Prova seçeneklerine dön</a></section>
+  {% else %}
+    <p class="lead">{{ workspace.name }}</p>
+    {% if snapshot %}
+      <section class="summary-card" aria-labelledby="rehearsal-result">
+        <h2 id="rehearsal-result">Kaydedilen örnek durum</h2>
+        <p role="status">{{ message }}</p>
+        {% if scope_changed %}<p class="notice" role="note">Bağlantı bilgileri değişti. Bu eski kayıt yeni bir sonuç çalıştıramaz.</p>{% endif %}
+        {% if expired %}<p class="notice" role="note">Bu örneğin çalışma süresi doldu. Yeni bir prova başlatabilirsin.</p>{% endif %}
+        <p>Sayfayı yenilemek işlem başlatmaz. Başarı örneği de gerçek erişim veya reklam yetkisi vermez.</p>
+        {% if token %}
+          <form method="post" action="{% url 'authorization_rehearsal:perform' workspace.pk snapshot.connection_id snapshot.attempt_id %}">
+            {% csrf_token %}<input type="hidden" name="token" value="{{ token }}">
+            <p><label><input type="checkbox" name="synthetic_only" value="yes" required> Yalnızca örnek sonucun çalışacağını anladım.</label></p>
+            <button class="button button-primary" type="submit">Örnek sonucu çalıştır</button>
+          </form>
+        {% endif %}
+        <a class="back-link" href="{% url 'authorization_rehearsal:overview' workspace.pk %}">Prova seçeneklerine dön</a>
+      </section>
+    {% elif examples %}
+      <section class="summary-card" aria-labelledby="rehearsal-start">
+        <h2 id="rehearsal-start">Bir örnek seç</h2>
+        <p>Önce örnek istek kaydedilir. Sonraki ekranda sonucu ayrıca çalıştırabilirsin. Formlar 10 dakika geçerlidir.</p>
+        {% for example in examples %}
+          <form method="post" action="{% url 'authorization_rehearsal:start' workspace.pk %}">
+            {% csrf_token %}<input type="hidden" name="token" value="{{ example.token }}">
+            <p><label><input type="checkbox" name="synthetic_only" value="yes" required> {{ example.label }} için yalnızca sentetik deneme yapılmasını onaylıyorum.</label></p>
+            <button class="button button-secondary" type="submit">{{ example.label }}</button>
+          </form>
+        {% endfor %}
+      </section>
+    {% else %}
+      <section class="summary-card"><h2>Prova henüz hazır değil</h2><p>Bu çalışma alanında uygun bir örnek bağlantı kaydı bulunmuyor. Gerçek hesabına işlem yapılmadı.</p></section>
+    {% endif %}
+  {% endif %}
+{% endblock %}
