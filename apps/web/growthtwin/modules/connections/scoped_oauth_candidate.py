@@ -48,6 +48,7 @@ REASONS = {
     "configuration",
     "exchange_uncertain",
     "storage_uncertain",
+    "retired_before_exchange",
 }
 
 
@@ -127,6 +128,23 @@ def _metadata(row):
         pk=row.generation, connection=row.connection, ordinal=row.expected_revision + 1
     ).exists():
         raise IdentityConflict("Candidate generation is inconsistent.")
+    if row.reason == "retired_before_exchange":
+        _uuid(row.retirement_request_id)
+        _uuid(row.retired_generation)
+        if (
+            row.state != Attempt.State.REJECTED
+            or not ConnectorGeneration.objects.filter(
+                pk=row.retired_generation,
+                request_id=row.retirement_request_id,
+                connection_id=row.connection_id,
+                from_generation=row.generation,
+                from_revision=row.expected_revision,
+                ordinal=row.expected_revision + 2,
+            ).exists()
+        ):
+            raise IdentityConflict("Candidate retirement receipt is inconsistent.")
+    elif row.retirement_request_id is not None or row.retired_generation is not None:
+        raise IdentityConflict("Unexpected retirement metadata.")
     return CandidateSnapshot(
         row.pk, row.connection_id, row.generation, row.state, row.reason, row.expires_at
     )

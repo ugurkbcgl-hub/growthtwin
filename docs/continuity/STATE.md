@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 12:34 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 13:09 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,31 +13,29 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified base main3eb143e: PR308 merged. Latest-head CI39752232154 passed527
-PostgreSQL tests and11 browser E2E tests; main CI39752610827 passed. No open PR
-at slice start. Current branch feat/connection-recovery-dispositions, PR309; implementation head
-afa2f49. Initial CI39756385104 running at this snapshot, which precedes its own
-follow-up commit. Verify latest head/checks before merge. PR309 attachment failed
-once at the known100-item limit; GitHub PR intact. Remove no unrelated attachments.
+Verified base main89be175: PR309 merged. Latest-head CI39756480228 passed545
+PostgreSQL tests and11 browser E2E tests; main CI39756903416 passed. No open PR
+at slice start. Current branch feat/retire-reserved-candidate; implementation/docs
+in progress, PR not yet created at this snapshot. Verify latest head/checks.
+Attachment limit100 remains; attempt once per new PR without removing any.
 
-## Current slice — recovery assessment and synthetic reopening
+## Current slice — explicit RESERVED-only retirement
 
-- Owned candidate metadata assessment preserves uncertainty despite elapsed time,
-  session loss/block/rotation. No retry/activation, secret I/O or candidate mutation.
-- Double-default-off synthetic recovery GET lists20 recent owned fake receipts.
-  Signed session/owner/scope/scenario/expiry-bound confirmed CSRF POST changes ONLY
-  last-example marker. No begin/perform, new receipt or deadline extension. Actual
-  candidate/grant is never rebound; existing runtime/legacy access unchanged.
-- Stale/expired/running/terminal reopened examples cannot gain run controls.
-  Current pending fake still requires separate confirmed perform and DB checks.
--18 new tests plus17 prior journey tests:35 local passes. Extended isolated browser
-  passed new-session404, explicit same-receipt reopen, separate result execution,
-  desktop/mobile/keyboard and preserved quarantine. Recovery mobile screenshot
-  reviewed in Temp/growthtwin-authorization-recovery-20261022.
-- Independent review found no blocker and requested stronger stale/expired/terminal
-  tests; added/passed. Independent final re-review found no blocker; required CI follows. No migration or
-  actual credential/provider/preserved Google/fixture DB/Heroku operation.
-  See ADR0034. No automatic retry/revoke/adoption.
+- Default-off unwired metadata service requires typed scope/request and explicit
+  confirmation. Locks owned workspace/connector/attempt. Only current quarantined
+  RESERVED and no other unresolved history can retire. Every other state denies.
+- Generation rotation and original REJECTED/retired_before_exchange write share one
+  transaction. Permanent unique request/replacement-generation binding validated;
+  failed final write/validation rolls both back. History/deadlines preserved.
+- Exact replay returns current identity after later rotate/block; never reopens.
+  Old callback sealed by terminal receipt/generation, no process-store cleanup.
+  No retry/revoke/unlink/activation/adoption or actual legacy/runtime change.
+-14 new local tests plus2 PostgreSQL races; with adapter/recovery:42 local passes,
+  4 PostgreSQL skips pending CI. Independent final review found no blocker.
+  Races cover exchange-first deny and retirement-first zero callback transport.
+- Migration0006 only in ephemeral test DBs; no actual credentials/provider/files/
+  preserved Google/fixture DB/Heroku/UI operation. No manual browser check.
+  See ADR0035. Required CI must verify PostgreSQL races before merge.
 
 ## Verified existing product evidence
 
@@ -81,8 +79,8 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete this recovery PR/required CI/merge and main CI. Then implement explicit
-RESERVED-only retirement with generation fencing and mocked tests; never retire
-or retry EXCHANGING/UNCERTAIN, touch legacy grants or infer provider revocation.
-Actual adapter remains off; callback/recovery wiring, configured TEST target proof,
-orphan reconciliation and adoption/rollback remain prerequisites to rollout.
+Complete this retirement PR/required CI/merge and main CI. Then separately wire
+scoped start/callback/retirement endpoints with session/CSRF and mocked transport
+tests, keeping normal runtime off. Configured TEST target proof, uncertain/orphan
+reconciliation, legacy adoption/rollback, scoped refresh and production gates
+remain open; do not infer actual grant revocation or provider permission.
