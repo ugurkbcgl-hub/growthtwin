@@ -1,6 +1,6 @@
 # ADR-0036: Closed scoped TEST endpoint wiring
 
-Status: Accepted for mocked request validation only; not enabled or rolled out
+Status: Accepted for endpoint design and one isolated inactive-candidate exercise; normal runtime disabled; no activation or production rollout
 Date: 2026-10-22
 
 ## Routing and gates
@@ -85,3 +85,22 @@ remain open. See [readiness audit](../product/google-production-access-audit.md#
 Required CI39765174203 and main CI39765596754 passed586 PostgreSQL tests and11
 browser E2E tests. Configuration registration does not expand this ADR's mocked
 validation acceptance into an actual rollout or successful OAuth claim.
+
+
+### Isolated exercise follow-up — 2026-10-22
+
+The owner explicitly approved one inactive TEST authorization outcome, including
+shared-client remote token risk. After user-side Google identity/device verification,
+the exact expired RESERVED was retired without exchange through the existing
+service. A source-reviewed history-bound wrapper preserved the old rejected receipt
+and ran one new start/code exchange/candidate write on the same synthetic identity.
+SQL CANDIDATE, current quarantine/generation and nonempty exact file existence were
+independently verified. Clean status URL had no query/fragment. See [full evidence](../product/scoped-test-exercise-preparation.md).
+
+No actual candidate envelope readback, candidate refresh, account proof, activation,
+adoption, revoke, advertising or production rollout. Normal flags remain False;
+process stopped and temporary login disabled. Origin session/process-secret loss
+now prevents guarded readback. Next is a separately designed inspection-only
+recovery protocol with immutable receipt/history preserved and synthetic validation;
+do not bypass the session hash or infer provider permission. This isolated result
+does not satisfy the open normal-runtime adoption/refresh/recovery/production gates.

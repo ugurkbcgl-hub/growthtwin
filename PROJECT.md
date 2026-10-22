@@ -208,3 +208,18 @@ RESERVED history retained without retry/rotation. No successful exchange/candida
 adoption claim. Normal source flags False. See [current protocol/evidence](docs/product/scoped-test-exercise-preparation.md).
 PR313 required CI39792541560 and main CI39795773585 passed586 PostgreSQL tests
 and11 browser E2E. No new local automated test suite was run for this slice.
+
+
+Inactive scoped TEST candidate (2026-10-22): after the user's Google verification
+and resumed approved flow, the exact expired RESERVED was retired via the existing
+service with stable request/digest and generation fencing; history retained.
+A separately reviewed history-bound single-exchange launcher completed callback
+into CANDIDATE on the same synthetic owner/workspace. Independent metadata/file-
+existence review confirmed quarantined revision1, old rejected receipt, current
+candidate and nonempty exact file. No encrypted contents/token validity/candidate
+account proof inspected. Logout, process stop and explicit unusable-password/
+session0 cleanup completed; source flags False, no activation/consumer/advertising.
+Origin-session/process-secret loss prevents existing guarded readback; next design
+owner-bound inspection-only recovery with unchanged receipts, using synthetic data.
+See [exercise result](docs/product/scoped-test-exercise-preparation.md).
+No application code change or new local automatic test suite in this slice.
