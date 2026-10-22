@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-22 17:02 Europe/Istanbul (+03:00).
+Verified: 2026-10-22 17:49 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -13,11 +13,10 @@ connection/data, production publication, media spend or production AI in this sl
 
 ## Repository and CI
 
-Verified main0c87014: PR312 merged. Required CI39768028595 and main CI39768447961
-passed586 PostgreSQL tests and11 browser E2E tests. No open PR at slice start;
-main clean. Current branch docs/isolated-scoped-preparation; documentation-only
-follow-up before its own PR/CI. Verify live head/checks. PR attachment has a
-known100-item limit; remove no unrelated attachments.
+Verified mainb310e7d: PR313 merged. Required CI39792541560 and main CI39795773585
+passed586 PostgreSQL tests and11 browser E2E. Main was clean; current branch
+is docs/scoped-target-and-runtime-verification, before its own PR/CI.
+PR attachment has a known100-item limit; remove no unrelated attachments.
 
 ## Preserved configuration readiness — earlier October22 audit
 
@@ -39,7 +38,7 @@ known100-item limit; remove no unrelated attachments.
   No local tests run for this documentation/configuration slice; code unchanged.
   See docs/product/google-production-access-audit.md, October22 follow-up.
 
-## Current slice — closed isolated preparation
+## Earlier closed preparation — 17:02
 
 - Fresh DB only: %TEMP%\gwt-scoped-preparation-_jafwrsl\synthetic.sqlite3.
   Private preparation.json holds owner/workspace PKs and connector/generation IDs.
@@ -59,6 +58,31 @@ known100-item limit; remove no unrelated attachments.
   re-establish this DB/identity/settings. No local automated test suite run for docs/bootstrap. Readiness still blocked
   on fresh TEST target proof, exact runtime/client/session, logging controls and
   uncertainty plan. See docs/product/scoped-test-exercise-preparation.md.
+
+## Current verified follow-up — target/readiness and one approved attempt
+
+- Bounded preflight ran one legacy refresh +one fixed Ads identity SELECT.
+  Correct non-manager TEST child and registered client verified. Encrypted
+  client/grant hashes and preserved DB stat unchanged; no credential writes.
+  This is NOT candidate proof or remote grant preservation guarantee.
+- Closed isolated single-process loopback8002 login/logout,404/no-store callback
+  checks passed. Python connect and credential calls denied in that closed process;
+  log/error output discarded. After interrupt, explicit exact-DB cleanup disabled
+  synthetic login, session0/attempt0. No general logging/network guarantee.
+- Owner explicitly approved one actual inactive candidate exercise after shared-
+  client remote-token risk disclosure. Independently reviewed Git-external
+  %TEMP%\growthtwin_one_candidate_runtime.py launched on SAME prepared DB.
+  Normal source flags False; only this process true; allowlisted routes, one
+  start/exchange/candidatewrite, no refresh/revoke/Ads/adoption/retire routes.
+- One start at17:42; Google passkey missing. Handshake expired17:47:23+03,
+  still RESERVED, never EXCHANGING; exact candidate file absent. Process stopped,
+  exact-DB synthetic login disabled/session0, receipt unchanged. No retry/rotation/
+  revoke/unlink. Google identity fix is user-only; no successful OAuth/candidate.
+- Private target-preflight.json, closed-runtime.json, candidate-runtime.json and
+  browser proofs are under the SAME temp preparation directory. Open passwords,
+  codes/state/verifier/tokens never copied into these docs. Actual launcher checks
+  proof freshness at startup/start/exchange and attempts synthetic login cleanup on
+  normal shutdown; forced stop required explicit exact-DB cleanup, now verified.
 
 ## Verified existing product evidence
 
@@ -102,8 +126,9 @@ financial consent/caps must be resolved before real publishing.
 
 ## Next action
 
-Complete the exact scope of fresh TEST-target verification (the existing verifier
-reads/refreshes the preserved grant) and the isolated runtime/client binding.
-No such credential/provider operation occurred in preparation. Do not enable flags
-or start OAuth until evidence, session/logging/uncertainty gates and specific
-exercise consent are satisfied. Preserve legacy grant/ledgers and stop/reconcile.
+User must resolve Google passkey authentication. Then review the exact expired
+RESERVED retirement and authorization scope before a new attempt. Do not rerun the
+one-candidate launcher (it requires zero attempts), remove that guard, reset/delete
+history or create a new identity/DB to bypass the retained receipt. Source flags
+remain off; process stopped, no candidate. Finish this docs PR's required CI/merge
+only when green; main CI must be checked. No production/publishing action.

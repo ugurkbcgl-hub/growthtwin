@@ -193,3 +193,18 @@ child proof, runtime/client/session/logging and uncertainty prerequisites remain
 open. See [exercise preparation](docs/product/scoped-test-exercise-preparation.md).
 PR312 required CI39768028595 and main CI39768447961 passed586 PostgreSQL tests
 and11 browser E2E; not actual isolated OAuth evidence.
+
+
+Scoped TEST preflight and closed runtime (2026-10-22): one bounded legacy-grant
+refresh plus one fixed Ads identity read verified the configured non-manager TEST
+child and registered client. Encrypted client/grant hashes and preserved DB stat
+unchanged; no credential write. Separate closed loopback8002 synthetic login/logout
+and404/no-store/no-referrer callback checks passed. Temporary login disabled after
+explicit shutdown cleanup. A separately reviewed one-shot candidate launcher was
+started under the owner's action-time approval; one RESERVED attempt reached a
+Google passkey block and expired before EXCHANGING. Exact candidate file absent;
+process stopped, synthetic password disabled and sessions cleared; original
+RESERVED history retained without retry/rotation. No successful exchange/candidate/
+adoption claim. Normal source flags False. See [current protocol/evidence](docs/product/scoped-test-exercise-preparation.md).
+PR313 required CI39792541560 and main CI39795773585 passed586 PostgreSQL tests
+and11 browser E2E. No new local automated test suite was run for this slice.
