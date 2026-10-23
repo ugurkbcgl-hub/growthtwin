@@ -315,3 +315,16 @@ paths/quotas, denied provider/write/socket boundaries and cleanup/history checks
 produce scalar results only. No CLI, production route, private fixture creator,
 Windows DPAPI runtime evidence or protected-candidate execution is introduced.
 See docs/product/recovered-inspection-exercise-preparation.md.
+
+
+Fresh private Windows fixture (2026-10-23): a no-path/no-credential-input CLI now
+creates only a new private fabricated DB/client/receipt, runs the real bounded
+DPAPI + one-shot inspection coordinator and disposes exact inventoried files.
+Actual four fresh scenarios (match, client change, invalid envelope, missing file)
+passed with consumed permit, replay refusal, session0/history preserved, verified
+private ACLs, complete cleanup and zero forbidden boundary attempts.30 new mocked
+unit tests plus37 prior focused tests passed (67 total). Independent source review
+passed, including swallowed startup DB/network guards. Defaults remain off; this
+is NOT actual preserved-candidate/account/provider evidence. No repeat of completed
+protected PREPARE/APPLY, refresh/activation or deployment. See
+[Windows fixture evidence](docs/product/windows-inspection-fixture.md).

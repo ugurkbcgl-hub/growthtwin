@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-23 07:20 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 07:54 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,11 +12,12 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main14a979f942d9e9c526808bad2af4cb664ef293b7: PR324 merged;
-required CI39897678185 and main CI39898098378 passed728 PostgreSQL+11 browser
-E2E. Current branch chore/fixture-inspection-once, independent source review
-completed after decoder privacy correction; verify this slice PR and CI live.
-Attachment100-item limit known. Work queue issue322.
+Verified base main43ffb1acd62832a643006bba01345ab9677f01b9: PR325 merged;
+required CI39899673407 and main CI39900021536 passed745 PostgreSQL+11 browser
+E2E. Current branch chore/windows-inspection-fixture; fresh Windows fixture code,
+actual four-scenario results, targeted tests and independent review completed.
+Current PR/required CI not yet created at this snapshot; verify final closure.
+Attachment100-item limit known. Work queue issue322, ordered24-step batch comment.
 
 ## Scheduler incident and current authorization
 
@@ -24,25 +25,39 @@ Owner extended work to2026-10-23 18:00 Europe/Istanbul; stop new work17:40.
 At06:47 automation was ACTIVE but last_run_at=null and zero run records; no Git/PR
 progress after PR323 at00:25. Cause unverified; do not claim configured timer is
 working. At07:18 still no run evidence; next trigger06:59 remained in the past.
-Do not claim unattended work is running or repaired; direct work is active.
+Official same-config update did not rearm. PAUSED then ACTIVE rearmed next07:38;
+execution remains unverified. Do not claim unattended work is repaired.
 Direct work resumed on owner's complaint; no additional authorization required.
 No auth/production/spending/privacy gate is overridden by the schedule.
 
-## Current slice - fabricated single-attempt integration
+## Current slice - fresh private Windows fabricated integration
 
-- Internal no-argument fixture coordinator combines the genuine synthetic-session,
-  issue and consume-before-decode reader services. Context defaultsNone; no CLI,
-  fixture factory, HTTP endpoint or real protected-candidate execution capability.
-- Deterministic exclusive marker precedes session bootstrap and is terminal even
-  on preclaim failure. Issued/consumed permits are not renewed/reset. Exact derived
-  fixed decoder quotas count failed attempts; swallowed forbidden calls still fail.
-- Provider/write/Python-socket guards and identity/history/session cleanup evidence
-  gate scalar output. These are process guards, not an OS network sandbox.
-- Independent review found a generator traceback-masking gap; regular decorated
-  context-manager methods replace it. Review found no remaining source blocker.
-- 17 new tests +20 preparation tests:37 focused local passes; Ruff clean.
-- Tests use only fabricated DB/client/envelope and mocked DPAPI boundary. This is
-  not Windows private-ACL/DPAPI runtime proof or evidence about the actual candidate.
+- Fixed-scenario CLI rejects caller paths/credentials, non-Windows and configured
+  Django. Startup DB and Python-socket attempts, including swallowed ones, refuse
+  before fresh fixture creation. Random process secret/testsettings/DEBUGFalse.
+- Fresh registered private root and child identities; strict current-user-only
+  protected directory DACL before any DB/file bytes; independent file ACL checks.
+  Only fresh SQLite schema/owner/workspace/quarantined TEST receipt are created.
+- Real DPAPI CreateNew writes only fixed fabricated client/derived candidate.
+  Actual existing coordinator/session/issue/consume-before-decode services run once;
+  fixed2 client/1 candidate quota, no provider/write/socket operation allowed.
+- Four separate actual Windows commands passed: match(2/1), clientchange(2/0),
+  invalidenvelope(2/1), unreadable exact-file-absent(2/1). Every run consumed,
+  refused replay, session0/historypreserved/privateACLverified/cleanupcomplete and
+  boundary0. Exact owned-file cleanup is nonrecursive; unexpected sidecars retained.
+- 17 helper+13 creator+17 coordinator+20 preparation tests:67 local SQLite passes;
+  Ruff/format/whitespace and independent source/docs review passed.
+- Actual result concerns ONLY fabricated fixtures. No protected-candidate DB/helper/
+  backup/credential contents or provider access; no OS sandbox/race guarantee.
+  Empty fresh root may remain on initial ACL failure, cleanup may fail on crash.
+- Detail: docs/product/windows-inspection-fixture.md. Normal source switches off.
+
+## Previous milestone - fabricated coordinator
+
+PR325 internal no-argument coordinator retains deterministic terminal marker before
+bootstrap, invokes genuine issue/consume services, counts failed fixed decoder and
+swallowed boundary attempts, masks direct-helper tracebacks and preserves changed
+sessions for review.37 focused local tests, required and main CI passed.
 
 ## Previous milestone - session expiry
 
@@ -149,12 +164,14 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Finish current fixture integration PR after focused tests/source review/required
-CI; verify main CI. Then implement and independently review a fresh private
-Windows fabricated-fixture creator and bounded DPAPI exercise BEFORE proposing
-any actual protected-candidate launcher. Keep the SAME candidate/history intact.
+Finish current fresh Windows fixture PR after required CI and verify main CI.
+Then separately design/review a fixed-scope actual preserved-candidate launcher:
+SAME DB/receipt/history/private backup admission, exact source/decoder/scope pins,
+one-shot terminal session/permit/failure plan before actual content access.
 No retry/renewal/reset/restore/new identity/session-hash rewrite. PREPARE/APPLY are
-complete; preserve history/backup. No provider/refresh/adoption/activation/publishing.
+complete and must not repeat; preserve history/backup. No provider/refresh/adoption/
+activation/publishing. Current24-step batch is local fabricated integration only,
+not completion of product launch readiness.
 By17:40 stop new implementation and finish/preserve work; final report by18:00
 Europe/Istanbul2026-10-23 and pause heartbeat. Scheduling remains unverified;
 configuration alone is not proof of background progress.
