@@ -18,14 +18,11 @@
 - Keep the state model-neutral and useful to a new person. Never include passwords, API keys, tokens, private customer data, or secret values. Record only where secrets are safely stored, if needed.
 - Keep history compact: replace the current snapshot instead of appending a transcript. Record uncertainty as unverified rather than guessing.
 
-## Low-usage session handoff
+## Session handoff preference
 
-- If the current Codex window reports 10% remaining or less, begin the handoff early; finish it by 5% so there is room for a clear transfer.
-- At 5% remaining, stop starting new implementation tasks. Verify repository and PR state, settle or explicitly note running work, audit the canonical project documents, and update only documents whose facts changed: PROJECT, ROADMAP, DEPLOYMENT, TESTING, SECURITY, accepted ADRs, and STATE as applicable.
-- Keep STATE concise and current: timestamp/timezone; branch, worktree and latest commit; current PR and required/post-merge CI results; verified accomplishments; unresolved issues; one next action.
-- Produce a ready-to-paste Turkish continuation prompt for the next AI chat with repository location, required read order, current verified state, Phase 0 scope and security constraints, and the exact next action. The new chat must verify facts that can change.
-- Never include secrets, private data, or unverified claims. Do not edit accurate documents just to touch every file.
-- If corrections need commits, use a feature branch and PR; never push directly to `main`. Merge only under the owner's standing authorization and after review and required CI pass.
+- On 2026-10-23 the owner explicitly disabled usage-limit monitoring. Do not query usage limits, start a usage monitor, or stop work because of a usage threshold unless the owner requests it again.
+- Continue maintaining verified milestone notes and normal session handoffs. Record current branch/PR, checks, unresolved work and one next action; never invent completion.
+- Use feature branches and PRs for corrections; merge only after review and required CI under standing authorization.
 
 ## Engineering workflow
 - The user has authorized local product development while the remaining Phase 0 staging/recovery checks are outstanding. Keep product prototypes local and synthetic until the relevant security, provider, and launch gates are met.

@@ -1,56 +1,56 @@
 # Yaparo — current handoff
 
-Verified: 2026-10-23 21:10 Europe/Istanbul (+03:00); recheck mutable Git/CI facts.
+Verified: 2026-10-23 21:36 Europe/Istanbul (+03:00). Recheck mutable facts.
 
-## Current objective and authorization
+## Objective and user preference
 
-Owner explicitly requested deep research and an end-to-end transition plan using
-maintained open-source components, self-operated editing and replaceable AI.
-ADR-0040 accepts the strategy and new priorities; individual new packages remain
-candidates until the scoped comparison passes. Local synthetic development remains
-authorized. Real customer data/accounts/payment/publication/spend and new paid
-resources retain separate readiness/authorization gates. Reviewed green PRs may
-squash merge under standing authorization; no direct main push or check bypass.
+Implement the owned-core/open-source plan starting with Y01–Y03. On 23 October
+2026 the owner explicitly disabled usage checks and threshold-triggered stops.
+Do not query limits or reactivate a usage monitor; normal milestone notes continue.
+Existing low-usage automation was verified PAUSED without querying account usage.
+Local synthetic development is authorized; customer data/accounts, payment,
+production publishing/spend and new paid infrastructure remain separately gated.
+Reviewed green PRs may merge; never push directly to main.
 
-## Repository and latest completed implementation
+## Repository and current deliverable
 
 Checkout: C:\Users\ugrkb\OneDrive\Masaüstü\yaparo
 Remote: https://github.com/ugurkbcgl-hub/yaparo
-Private Python: %USERPROFILE%\.yaparo\.venv; credentials/DB outside OneDrive.
-Base main: 229382f3c70dd977e23b88d0e50e6ebe68f1599e (merged rename PR #327).
-Verified main CI 39993279858 succeeded. Rename closure evidence:
-https://github.com/ugurkbcgl-hub/yaparo/pull/327#issuecomment-6370586203
-Current planning branch: docs/oss-first-product-plan; PR #329:
-https://github.com/ugurkbcgl-hub/yaparo/pull/329
-Initial planning commit b550da5; its required CI 40000965407 is in progress at
-this snapshot. This handoff update changes the head, so verify the latest PR
-head/required CI and eventual post-merge CI before continuing. Changes are
-documentation only, with no runtime/schema/provider/credential/deployment changes.
-Desktop attachment hit the existing 100-identity limit; use the PR URL directly.
+Private Python: %USERPROFILE%\.yaparo\.venv; secrets stay outside OneDrive.
+Base main: 33fede6ae4e30b72d17c76b38c34efa0f7f2fc6f (planning PR #329).
+Its main CI 40001542569 succeeded. Branch: feat/synthetic-editor-spike.
+PR #330: https://github.com/ugurkbcgl-hub/yaparo/pull/330
+Earlier documentation head 88ef554 passed required CI 40003109879. This local
+implementation changes that head; verify its new CI before merging. This is a
+pre-commit snapshot; eventual commit/merge evidence belongs to PR closure.
+Durable task: https://github.com/ugurkbcgl-hub/yaparo/issues/328
 
-## Current planning milestone
+## Verified milestone
 
-- Three independent read-only research/review streams: editor/media, architecture,
-  market/platforms. Primary-source README/license/docs plus live repo metadata;
-  no candidate package installed, built or tested.
-- docs/product/yaparo-open-source-master-plan.md: customer journey, owned data,
-  editing, AI capability evolution, channel/measurement, pricing, legal and upkeep.
-- docs/product/open-source-candidate-research.md: 34 candidate rows with scope,
-  license, maintenance evidence and adoption conditions; popularity is not proof.
-- docs/product/yaparo-delivery-plan.md: Y01–Y32 with dependencies and acceptance.
-- PROJECT/ROADMAP/AI/provider/blueprint/gap/legal docs point to the current plan.
-- Delivery order corrected after independent review: Y23 uses TEST/fixtures;
-  Y26 proves pre-pilot readiness; first genuine metrics/attribution evidence is
-  separately authorized Y27. Editor final selection follows the Y03 spike;
-  Y06 requires portable package import, offline-provider editing and upgrade recovery.
-- Durable tracking issue: https://github.com/ugurkbcgl-hub/yaparo/issues/328
-- Market size does not prove customer demand. User interviews/pilot observations,
-  actual provider compatibility, costs and production legal readiness are pending.
-- Local document checks: 138 relative Markdown links resolve; git diff --check
-  passed. No local application suite rerun for this documentation-only change;
-  the repository's required CI executes its configured checks automatically.
-- Current research identifies a July 2026 Turkish AI-ad disclosure/endorsement
-  rule; full effective regulation/sector/legal review remains required.
+- Y01 domain mapping: docs/product/creative-editor-domain-map.md.
+- Working isolated experiment: experiments/creative-editor. Fabric7.4.0 pinned
+  with lockfile, MIT; own bounded scene v1; two generated synthetic bitmap examples.
+  Turkish text/color and image/logo transforms, local save/reopen, PNG800x800.
+- Five focused browser tests passed (3.613s), PNG actually decoded, external
+  requests0. Mobile no-overflow, malicious storage and server boundaries checked.
+  npm ci reproduced; audit optional-excluded installed tree0findings; JS syntax,
+  Python lint/format passed. Desktop/mobile screenshots reviewed.
+- First implementation CI exposed cwd-dependent import grouping; CI now uses
+  repository-root lint invocation. A local retry exposed CSP/string-eval polling;
+  locator expectations fixed the test without weakening CSP. All5 passed again.
+- Independent source review found color type coercion; fixed with regressions.
+  No remaining blocker reported. Required CI now includes this focused workflow.
+- Local server started at http://127.0.0.1:8012/ (session55151); recheck liveness.
+  No app DB, Django production routes, Google history, AI or paid API changes.
+- react-design-editor v0.2.1 exact b1a09dd700dbba95c6770ed91043d1228afaeea4 installed
+  in private temp research clone; JS bundle passed, declaration build TS2883 failed.
+  Production audit4packages (1critical/3moderate), full5 (2critical/3moderate).
+  No same-task browser comparison passed. Y02–Y03 comparative acceptance OPEN.
+- Full results/limits: docs/product/creative-editor-spike-results.md. No production
+  editor adoption claimed; permanent brand/assets/campaign integration is pending.
+- Research clone/evidence: %LOCALAPPDATA%\Yaparo\research\react-design-editor-bd35bbe8c3304192aa67a576d27cc129.
+  No running comparison install/build. Audit data contains only public packages.
+- Desktop PR attachment is unavailable at the existing100identity limit; use URL.
 
 ## Preserved implementation evidence and boundaries
 
@@ -86,8 +86,8 @@ created/resumed by the new maintenance cadence proposal. No unattended work clai
 
 ## Next action
 
-Verify the planning PR/CI and clean repository, then execute Y01–Y03 in a feature
-branch: map existing models, pin Fabric and one complete MIT editor, compare the
-same synthetic Turkish brand/image/text save/reopen/PNG workflow. Select only after
-measured compatibility/license/upgrade/portability findings. Keep local assets
-synthetic and private; no new paid resource, provider call or actual Google action.
+Verify PR #330 latest head/required CI and merge state, then close the Y02–Y03
+editor decision with the recorded full-editor security/build failures and an
+explicit acceptance scope before permanent Y04 brand-kit integration. Do not
+claim the unrun comparator roundtrip or full upgrade/portability checks passed.
+Continue local synthetic work; no real customer upload or protected Google action.

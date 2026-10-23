@@ -63,6 +63,26 @@ jobs:
         timeout-minutes: 8
         run: python -m playwright install --with-deps chromium
 
+      - name: Set up Node for the isolated creative editor experiment
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24.11.1"
+
+      - name: Install pinned creative editor dependency without install scripts
+        working-directory: experiments/creative-editor
+        timeout-minutes: 3
+        run: |
+          npm ci --ignore-scripts --omit=optional --no-fund
+          npm audit --omit=optional --audit-level=high
+
+      - name: Check isolated editor formatting and offline browser workflow
+        working-directory: .
+        timeout-minutes: 2
+        run: |
+          python -m ruff format --check --config apps/web/pyproject.toml experiments/creative-editor/serve.py experiments/creative-editor/test_editor.py
+          python -m ruff check --config apps/web/pyproject.toml experiments/creative-editor/serve.py experiments/creative-editor/test_editor.py
+          python experiments/creative-editor/test_editor.py
+
       - name: Verify Heroku root dependencies and entry point
         working-directory: .
         run: python -m pip install -r requirements.txt

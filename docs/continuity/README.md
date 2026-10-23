@@ -20,13 +20,12 @@ Update `STATE.md` with only verified current facts: objective, completed work, b
 
 Never record API keys, passwords, access tokens, secret values, or private customer data here. If relevant, record only that a credential is stored in an approved secret store and whether it needs rotation. Do not copy credentials into another chat or model.
 
-## Low-usage transition
+## Handoff preference — updated 23 October 2026
 
-- When the Codex usage tool shows 10% remaining or less, begin preparing the handoff; complete it by 5% remaining.
-- At the threshold, check the live usage value, repository branch/worktree, latest commit, open PRs, and CI results. Resolve or clearly record in-flight work.
-- Audit the canonical docs and fix only stale facts. Update `STATE.md` with the verified state and exactly one next action. Do not rewrite accurate documents or invent completion claims.
-- End by generating one current, copy-ready Turkish prompt for the next AI chat. It should make the next chat read the required files and recheck current Git/PR facts before acting.
-- If repository access or the usage limit is unavailable, say what could not be verified and do not present an unverified handoff as current.
+The owner disabled usage-limit checks and threshold-triggered stops. Do not query
+usage or reactivate a usage monitor unless requested again. Existing monitors stay
+paused. Normal milestone and end-of-session handoffs still apply: verify Git/PR/CI,
+record unfinished work, update only changed facts and identify one next action.
 
 ## Copyable handoff prompt
 

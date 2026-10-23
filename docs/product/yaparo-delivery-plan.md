@@ -1,8 +1,18 @@
 # Yaparo uygulama sırası ve kabul ölçütleri
 
-23 Ekim 2026. [Ana plan](yaparo-open-source-master-plan.md) ve [ADR-0040](../adr/0040-owned-core-and-open-source-adoption.md) kapsamındadır. Aşağıdaki işler **planlandı**, tamamlanmadı. Her PR somut müşteri çıktısı veya onun gerekli korumasını teslim eder. Yeni genel amaçlı altyapı, ilk akış onu gerektirmedikçe eklenmez. Gerçek veri/yayın/ödeme/ücretli kaynak kapıları korunur.
+23 Ekim 2026. [Ana plan](yaparo-open-source-master-plan.md) ve [ADR-0040](../adr/0040-owned-core-and-open-source-adoption.md) kapsamındadır. Aşağıdaki tablolar kabul ölçütlerini tanımlar; güncel ilerleme aşağıda ayrı belirtilir. Her PR somut müşteri çıktısı veya onun gerekli korumasını teslim eder. Yeni genel amaçlı altyapı, ilk akış onu gerektirmedikçe eklenmez. Gerçek veri/yayın/ödeme/ücretli kaynak kapıları korunur.
 
 Kalıcı iş takibi: [GitHub #328](https://github.com/ugurkbcgl-hub/yaparo/issues/328).
+
+## 23 Ekim uygulama ilerlemesi
+
+- **Y01 tamamlandı:** [kaynak/domain haritası](creative-editor-domain-map.md), iki
+  sabit sentetik ürün/hizmet örneği ve tek düzenle/kaydet/aç/PNG görevi tanımlandı.
+- **Y02–Y03 sürüyor:** Fabric 7.4.0 ile yerel çalışan deneme ve beş odaklı tarayıcı
+  testi var. Hazır editörün aynı görevdeki karşılaştırması ve nihai paket seçimi
+  henüz tamamlanmadı. Çalışan deneme üretim kabulü veya Y04–Y07 entegrasyonu değildir.
+- Kullanıcı 23 Ekim'de kullanım limiti kontrolünü kaldırdı; çalışmayı kullanım
+  eşiğine göre durdurma kuralı uygulanmaz. Normal doğrulanmış devir notları korunur.
 
 ## A — Marka, materyal ve kendi editörümüz
 

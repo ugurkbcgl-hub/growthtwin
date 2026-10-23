@@ -6,7 +6,12 @@ The owner requested a sustainable, self-operated product built with maintained
 open-source components and easily replaceable AI providers. [ADR-0040](docs/adr/0040-owned-core-and-open-source-adoption.md)
 accepts this strategy and the [new master plan](docs/product/yaparo-open-source-master-plan.md).
 The [repository research](docs/product/open-source-candidate-research.md) distinguishes
-candidate packages from adopted implementations; none was installed in this planning milestone.
+candidate packages from adopted implementations. The planning milestone installed
+none; the subsequent local experiment now pins Fabric 7.4.0 solely for evaluation.
+See [domain map](docs/product/creative-editor-domain-map.md) and
+[working synthetic experiment](experiments/creative-editor/README.md). Five focused
+browser tests passed; final editor comparison/adoption and campaign integration
+remain open.
 
 - Retain Django/PostgreSQL and application-owned customer, brand, asset, editable
   creative, campaign, consent, money and report records. Prefer reusable packages
