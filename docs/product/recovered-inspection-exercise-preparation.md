@@ -72,8 +72,9 @@ before reuse. The audit is not a reusable product endpoint or trusted capability
 4. Separately review a one-shot local launcher: exact owner/workspace/connection/
    candidate/generation/revision/digest, short-lived fresh server-session binding,
    explicit scope confirmation, process-only flags and no external HTTP endpoint.
-   Verify the bounded configured-client hash without exposing its contents, then
-   issue/consume at most one permit and return only the advisory disposition.
+   Issue at most one permit; the fixed reader consumes it BEFORE observing the
+   configured client or candidate contents. Client binding is checked only after
+   consumption. Return only the advisory disposition; no pre-claim decoding.
 5. Define failure handling BEFORE claiming. A consumed/expired permit is terminal;
    no rerun, new request, reset, backup restore or fabricated session-hash rewrite
    may bypass it. Preserve uncertainty for explicit reconciliation. Retain the same
@@ -243,3 +244,26 @@ candidate session/permit/decoder call occurred. The command remains plan-only.
 The real launcher must still invoke this checkpoint at appropriate pre/post-claim
 boundaries, implement its terminal failure plan, rehearse the full fixture flow
 and pass independent review before any actual execution.
+
+
+## Fabricated single-attempt coordinator - 2026-10-23
+
+`scripts/rehearse_inspection_once.py` is internal fixture-only code, with no CLI,
+HTTP route, fresh-fixture creator or protected-candidate execution mode. Its
+context defaults to None. Isolated tests supply fresh fabricated owner/workspace,
+client receipt, temporary root and ephemeral DB; this does not establish Windows
+DPAPI/ACL or real preserved-candidate execution evidence.
+
+The coordinator creates an exclusive deterministic terminal marker before session
+bootstrap, uses the reviewed synthetic session primitive, issues once and calls
+the actual reader, which consumes before decoding. Decoder quotas include failed
+attempts: at most two fixed client reads and one candidate read through the fixed
+bounded script and derived paths. Provider, writes and Python socket calls are
+denied and counted even when swallowed. This is a process guard, not an OS network
+sandbox. Session cleanup and original identity/history preservation gate the safe
+scalar outcome. No envelope/session/credential is returned. Failed marker/permit
+state cannot be retried or reset.
+
+Next: independently review a fresh private Windows fabricated-fixture creator and
+exercise actual bounded DPAPI before proposing any protected-candidate launcher.
+Do not run completed PREPARE/APPLY or reinterpret this fixture as provider proof.
