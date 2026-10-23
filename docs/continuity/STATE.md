@@ -1,6 +1,6 @@
 # Yaparo — current handoff
 
-Verified: 2026-10-23 21:08 Europe/Istanbul (+03:00); recheck mutable Git/CI facts.
+Verified: 2026-10-23 21:10 Europe/Istanbul (+03:00); recheck mutable Git/CI facts.
 
 ## Current objective and authorization
 
@@ -20,9 +20,13 @@ Private Python: %USERPROFILE%\.yaparo\.venv; credentials/DB outside OneDrive.
 Base main: 229382f3c70dd977e23b88d0e50e6ebe68f1599e (merged rename PR #327).
 Verified main CI 39993279858 succeeded. Rename closure evidence:
 https://github.com/ugurkbcgl-hub/yaparo/pull/327#issuecomment-6370586203
-Current planning branch: docs/oss-first-product-plan. Plan PR not yet opened at
-this snapshot; verify live PR and CI before merging/continuing. Local changes are
+Current planning branch: docs/oss-first-product-plan; PR #329:
+https://github.com/ugurkbcgl-hub/yaparo/pull/329
+Initial planning commit b550da5; its required CI 40000965407 is in progress at
+this snapshot. This handoff update changes the head, so verify the latest PR
+head/required CI and eventual post-merge CI before continuing. Changes are
 documentation only, with no runtime/schema/provider/credential/deployment changes.
+Desktop attachment hit the existing 100-identity limit; use the PR URL directly.
 
 ## Current planning milestone
 
@@ -42,6 +46,9 @@ documentation only, with no runtime/schema/provider/credential/deployment change
 - Durable tracking issue: https://github.com/ugurkbcgl-hub/yaparo/issues/328
 - Market size does not prove customer demand. User interviews/pilot observations,
   actual provider compatibility, costs and production legal readiness are pending.
+- Local document checks: 138 relative Markdown links resolve; git diff --check
+  passed. No local application suite rerun for this documentation-only change;
+  the repository's required CI executes its configured checks automatically.
 - Current research identifies a July 2026 Turkish AI-ad disclosure/endorsement
   rule; full effective regulation/sector/legal review remains required.
 
