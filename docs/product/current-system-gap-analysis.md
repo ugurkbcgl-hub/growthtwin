@@ -1,5 +1,13 @@
 # Mevcut sistem denetimi ve altyapı hazırlık sırası
 
+**23 Ekim 2026 yön güncellemesi:** Bu belgedeki tarihsel eksik envanteri,
+[yeni ana plan](yaparo-open-source-master-plan.md) ve [Y01–Y32 iş sırası](yaparo-delivery-plan.md)
+ile birlikte okunmalıdır. Yeni öncelik sentetik marka/materyal/editör/export
+akışıdır. Aday açık kaynak bileşenleri henüz kurulmadı. Google TEST'te seçilmiş
+taslağın duraklatılmış create/read/stop kanıtı vardır; gerçek yayın, canlı rapor,
+ödeme ve müşteri AI hizmeti tamamlanmış değildir. Eski tablolardaki “yok”
+ifadeleri sonraki tarihli tamamlanmaların yerine geçmez.
+
 **Güncel okuma notu (2026-10-19):** Aşağıdaki tablolar tarihsel denetimdir. PR #281–287 ile yerel şifreli OAuth, belirlenmiş TEST hesabı, sürüme bağlı onay, kalıcı tekrar-gönderim koruması ve PAUSED TEST create/read/stop tamamlandı. “OAuth/yayın/idempotency yok” satırlarını güncel yokluk kanıtı sayma. Gerçek yayın kapıları ve toplam bütçe doğrulamasının güncel denetimi [Google Search canlı hazırlık listesinde](google-search-live-readiness.md). Gerçek veri/üretim/harcama hâlâ kapalı; 3 Ekim profil E2E ve aynı-kod rollback kanıtı yalnız tarihli dar kapsam için geçerli.
 
 **Denetim tarihi:** 2026-09-29 13:38 (Europe/Istanbul)

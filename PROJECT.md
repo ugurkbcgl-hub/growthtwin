@@ -1,5 +1,32 @@
 # Yaparo project brief
 
+## Current direction — 2026-10-23
+
+The owner requested a sustainable, self-operated product built with maintained
+open-source components and easily replaceable AI providers. [ADR-0040](docs/adr/0040-owned-core-and-open-source-adoption.md)
+accepts this strategy and the [new master plan](docs/product/yaparo-open-source-master-plan.md).
+The [repository research](docs/product/open-source-candidate-research.md) distinguishes
+candidate packages from adopted implementations; none was installed in this planning milestone.
+
+- Retain Django/PostgreSQL and application-owned customer, brand, asset, editable
+  creative, campaign, consent, money and report records. Prefer reusable packages
+  and thin adapters; no whole-platform fork or production hosting switch selected.
+- Independence means portable data and self-operated core/editing with replaceable
+  providers. Advertising networks, payment processors and hosted AI remain external.
+- Prioritize the synthetic brand/material/editor/export journey, then evaluated
+  AI, commerce and a complete Google Search path. [Y01–Y32](docs/product/yaparo-delivery-plan.md)
+  supersedes the older recovery-first task order. First next slice: Y01–Y03.
+- Basic editing should work without an AI call. Candidate editor/AI/worker
+  choices require a pinned-version comparison before adoption. New worker/storage
+  costs, real data, publishing and payments retain their existing release gates.
+- Customer demand, exact first tariff/guarantee and production provider choices
+  remain unverified/open. Research and a green CI are not product-market proof.
+- Protected Google TEST histories, private candidate and completed backup/schema
+  preparation remain intact; their review is a separate integration workstream.
+
+The dated status entries below retain historical evidence; later entries and
+current live repository checks take precedence for mutable facts.
+
 ## Current status
 
 - On 2026-10-19 the local application created a fixed synthetic Search campaign/ad group/keyword/responsive ad in the verified Google test account, read back PAUSED and confirmed stop as PAUSED. Durable intent prevented repeat creation while reconciliation recovered a budget-name mismatch. No live serving/spend; this is a separate fixed test, not arbitrary workspace draft dispatch. See ADR-0022 and Google test integration readiness.

@@ -12,6 +12,8 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 
 ## Decisions
 
+- [0040 — Yaparo-owned core and staged open-source adoption](0040-owned-core-and-open-source-adoption.md) — Accepted strategy/priority; new components remain evaluation candidates
+
 - [0001 — Modular monolith boundaries](0001-modular-monolith.md) — Accepted
 - [0002 — Application stack and local environment](0002-application-stack-and-local-environment.md) — Accepted
 - [0003 — Heroku Phase 0 staging](0003-heroku-phase-0-staging.md) — Accepted

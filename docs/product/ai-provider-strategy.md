@@ -1,5 +1,14 @@
 # AI provider combinations and selection plan
 
+**23 October 2026 update:** The [Yaparo master plan](yaparo-open-source-master-plan.md)
+and [ADR-0040](../adr/0040-owned-core-and-open-source-adoption.md) extend this
+strategy with versioned task/capability profiles, editable asset ownership,
+measured model promotion/fallback and upgrade/exit checks. PydanticAI is an
+evaluation candidate against existing direct adapters; LangGraph/LiteLLM/Haystack
+are conditional, not an adopted stack. Historical provider/model evaluations
+below are not current rankings. No new billable experiment or production
+provider selection is authorized by this document update.
+
 **Status:** Recommended architecture and evaluation shortlist; no provider or
 model is approved for production. Reviewed against official vendor material on
 2026-10-03. Prices, model IDs, terms, regions, and availability change and must
