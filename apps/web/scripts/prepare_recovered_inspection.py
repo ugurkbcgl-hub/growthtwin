@@ -169,13 +169,16 @@ def _owned_synthetic_session(*, owner, workspace_id):
         @sensitive_variables()
         def validate(self):
             now = timezone.now()
+            observed_monotonic = monotonic()
             if (
                 self._key is None
                 or self._expected_expiry is None
                 or self._started_at is None
                 or self._started_monotonic is None
                 or not self._started_at <= now < self._expected_expiry
-                or not 0 <= monotonic() - self._started_monotonic < 300
+                or not self._started_monotonic
+                <= observed_monotonic
+                < self._started_monotonic + 300
                 or not Session.objects.filter(
                     session_key=self._key,
                     session_data=self._expected_encoded,
@@ -189,9 +192,12 @@ def _owned_synthetic_session(*, owner, workspace_id):
             ):
                 raise ValueError("Synthetic session deadline or binding changed.")
             finished_at = timezone.now()
+            finished_monotonic = monotonic()
             if (
                 not self._started_at <= finished_at < self._expected_expiry
-                or not 0 <= monotonic() - self._started_monotonic < 300
+                or not self._started_monotonic
+                <= finished_monotonic
+                < self._started_monotonic + 300
             ):
                 raise ValueError("Synthetic session deadline or binding changed.")
 

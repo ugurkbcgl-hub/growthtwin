@@ -18,8 +18,9 @@ Desktop checkout moved and removed. GitHub https://github.com/ugurkbcgl-hub/yapa
 Private rebuilt Python %USERPROFILE%\.yaparo\.venv, installed yaparo-web editable
 against newsource. Credentials/DB remain outsideOneDrive with original stable IDs.
 Base main555ca07b0f852fe5f67268d2e3b5366156a17cc3(PR326): required39902796016 and
-main39903123677 passed775+11. Branch chore/yaparo-rename-relocation; rename review
-and local checks completed; verify current PR/CI/closure live. Attachment100limit.
+main39903123677 passed775+11. Branch chore/yaparo-rename-relocation, PR327; rename review/localchecks complete.
+FirstCI39991662424 failed existing exactmonotonic boundary test; precisionfix
+reviewed,21targettests passed; latesthead requiredCI/closure mustbe verified. Attachment100limit.
 
 ## Current authorization and old scheduler window
 
@@ -49,6 +50,9 @@ claimed. Current rename work follows user request, not the expired schedule.
 - Home+healthHTTP200; homepageYaparo/noGrowthTwin. Server127.0.0.1:8002 started
   through dev wrapper. Independent source review resolved OneDrive separator guard
   and Turkish suffix issues; final Ruff checks performed. No provider/deployment.
+- CI foundexisting fractional monotonic subtraction could accept exactdeadline.
+  Absolute sample intervals now reject exact/rollback both pre/postDBquery;21
+  targettests and independent review passed.8 extra mocked statusview tests passed.
 - Full evidence: docs/continuity/RENAMING.md. Real grant/publishing gates unchanged.
 
 ## Previous milestone - private Windows fabricated integration

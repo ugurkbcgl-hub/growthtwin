@@ -80,6 +80,11 @@ this relocation nor the plan authorizes new claim, retry/reset or publication.
 
 Fresh fabricated Windows DPAPI match also passed after the move:consumed,2 client/1
 candidate reads,session0,history/privateACL/replay/cleanup verified,boundary0.
+CI exposed an existing exact-deadline rounding defect:subtracting a fractional
+monotonic start could yield299.9999999999999 at the300second boundary. Both
+pre/post-DB checks now compare captured samples against the absolute interval;
+21 focused preparation tests passed, including deterministic exact/before/rollback
+cases. Independent review confirmed no relaxed guard or identity/history change.
 Final lint/CI outcomes are recorded in TESTING, STATE and PR closure. Real grant/account/publishing readiness remains
 unchanged. No external staging deployment was made by this local rename.
 
