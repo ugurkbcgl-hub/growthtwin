@@ -31,10 +31,13 @@ Durable task: https://github.com/ugurkbcgl-hub/yaparo/issues/328
 - Working isolated experiment: experiments/creative-editor. Fabric7.4.0 pinned
   with lockfile, MIT; own bounded scene v1; two generated synthetic bitmap examples.
   Turkish text/color and image/logo transforms, local save/reopen, PNG800x800.
-- Five focused browser tests passed (3.505s), PNG actually decoded, external
+- Five focused browser tests passed (3.613s), PNG actually decoded, external
   requests0. Mobile no-overflow, malicious storage and server boundaries checked.
   npm ci reproduced; audit optional-excluded installed tree0findings; JS syntax,
   Python lint/format passed. Desktop/mobile screenshots reviewed.
+- First implementation CI exposed cwd-dependent import grouping; CI now uses
+  repository-root lint invocation. A local retry exposed CSP/string-eval polling;
+  locator expectations fixed the test without weakening CSP. All5 passed again.
 - Independent source review found color type coercion; fixed with regressions.
   No remaining blocker reported. Required CI now includes this focused workflow.
 - Local server started at http://127.0.0.1:8012/ (session55151); recheck liveness.

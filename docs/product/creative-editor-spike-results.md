@@ -51,7 +51,7 @@ Bu nedenle hazır adayın büyük özellik listesi doğrudan entegrasyon kazanc�
 
 ## Doğrulama ve sınırlar
 
-- `python test_editor.py`: 5 test geçti (yerel son koşu 3,505 saniye); bu süre
+- `python test_editor.py`: 5 test geçti (yerel son koşu 3,613 saniye); bu süre
   gerçek kullanıcı görevi süresi veya üretim performans ölçümü değildir.
 - Türkçe karakterler, x/y/scale/angle ve logo konumu kaydet/aç işleminde korundu.
 - PNG başlığı, boyutları ve tarayıcıda gerçek decode doğrulandı.
@@ -62,6 +62,10 @@ Bu nedenle hazır adayın büyük özellik listesi doğrudan entegrasyon kazanc�
 - JavaScript sözdizimi, Python Ruff biçim/lint ve yeniden `npm ci` geçti.
 - Masaüstü ve mobil ekran görüntüleri incelendi. Bağımsız kaynak incelemesinin
   renk türü bulgusu düzeltildi; regresyon testi eklendi; kalan blocker bildirilmedi.
+- İlk CI koşusunda çalışma dizinine bağlı import sıralaması farkı bulundu;
+  lint adımı yereldeki gibi depo kökünden çalışacak şekilde hizalandı. Yerel
+  tekrarda CSP ile çakışan string-eval beklemesi de görüldü; güvenlik başlığı
+  değiştirilmeden locator beklemesine geçildi. Ardından beş test yeniden geçti.
 - CI aynı kilitli kurulumu, audit'i ve odaklı tarayıcı testini artık çalıştırır;
   güncel CI sonucu PR üzerinden ayrıca doğrulanmalıdır.
 

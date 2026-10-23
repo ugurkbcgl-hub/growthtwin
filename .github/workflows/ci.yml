@@ -76,12 +76,12 @@ jobs:
           npm audit --omit=optional --audit-level=high
 
       - name: Check isolated editor formatting and offline browser workflow
-        working-directory: experiments/creative-editor
+        working-directory: .
         timeout-minutes: 2
         run: |
-          python -m ruff format --check --config ../../apps/web/pyproject.toml serve.py test_editor.py
-          python -m ruff check --config ../../apps/web/pyproject.toml serve.py test_editor.py
-          python test_editor.py
+          python -m ruff format --check --config apps/web/pyproject.toml experiments/creative-editor/serve.py experiments/creative-editor/test_editor.py
+          python -m ruff check --config apps/web/pyproject.toml experiments/creative-editor/serve.py experiments/creative-editor/test_editor.py
+          python experiments/creative-editor/test_editor.py
 
       - name: Verify Heroku root dependencies and entry point
         working-directory: .

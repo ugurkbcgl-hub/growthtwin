@@ -9,7 +9,7 @@ import threading
 import unittest
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 from serve import make_server
 
 
@@ -56,7 +56,7 @@ class SyntheticEditorTests(unittest.TestCase):
 
     def open(self):
         self.page.goto(self.base)
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
 
     def test_turkish_text_transform_save_reload_and_png_without_external_requests(self):
         self.open()
@@ -76,7 +76,7 @@ class SyntheticEditorTests(unittest.TestCase):
         self.assertNotIn("objects", stored)
         self.assertNotIn("version", stored)
         self.page.reload()
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
         self.assertEqual(title, self.page.locator("#copy").input_value())
         self.assertEqual("72", self.page.locator("#x").input_value())
         self.assertEqual("145", self.page.locator("#y").input_value())
@@ -109,12 +109,12 @@ class SyntheticEditorTests(unittest.TestCase):
         self.page.locator("#copy").fill("Ürün taslağı özel başlık")
         self.page.locator("#save").click()
         self.page.locator("#fixture").select_option("service")
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
         self.assertIn("Evin", self.page.locator("#copy").input_value())
         self.page.locator("#copy").fill("Şehrinde özenli hizmet")
         self.page.locator("#save").click()
         self.page.locator("#fixture").select_option("product")
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
         self.assertEqual(
             "Ürün taslağı özel başlık", self.page.locator("#copy").input_value()
         )
@@ -137,7 +137,7 @@ class SyntheticEditorTests(unittest.TestCase):
             ),
         )
         self.page.reload()
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
         self.page.get_by_role("button", name="Örnek logo", exact=True).click()
         self.assertEqual("120", self.page.locator("#x").input_value())
         self.assertEqual("0.75", self.page.locator("#scale").input_value())
@@ -174,7 +174,7 @@ class SyntheticEditorTests(unittest.TestCase):
                     payload,
                 )
                 self.page.reload()
-                self.page.wait_for_function("!document.getElementById('save').disabled")
+                expect(self.page.locator("#save")).to_be_enabled()
                 self.assertIn(
                     "güvenli değil", self.page.locator("#status").inner_text()
                 )
@@ -201,7 +201,7 @@ class SyntheticEditorTests(unittest.TestCase):
         )
         self.page.once("dialog", lambda dialog: dialog.accept())
         self.page.locator("#fixture").select_option("service")
-        self.page.wait_for_function("!document.getElementById('save').disabled")
+        expect(self.page.locator("#save")).to_be_enabled()
         self.assertIn("Evin", self.page.locator("#copy").input_value())
 
     def test_server_exposes_only_allowlisted_experiment_files(self):
