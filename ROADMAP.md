@@ -19,6 +19,12 @@ checks. See [domain map](docs/product/creative-editor-domain-map.md) and the
 comparison with the pinned full-editor candidate before final adoption. This is
 not yet integrated into campaign persistence; no production provider is selected.
 
+The owner's multi-brand requirement is now part of Y04: separate identity,
+character, assets and creative history per brand. See [brand experience and
+acceptance](docs/product/brand-specific-experience.md). Y29 remains advanced
+portfolio/team work; basic multi-brand use is earlier. Brand-aware AI and
+story-led video are specified as staged experiments, not ready capabilities.
+
 This supersedes the ordering of the 21 October recovery-first sequence below,
 not its security requirements. Keep protected TEST candidate/history/backup and
 old read/stop paths intact; no reset, bypass or repeated preparation. Complete

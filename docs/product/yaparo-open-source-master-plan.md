@@ -52,6 +52,17 @@ Araştırma hedefi: her gruptan dört kişiyle toplam 12 görüşme; altı gözl
 
 İlk teslim: marka + metin + sabit görsel tasarım + düzenleme/dışa aktarma. İlk yayın: Google Search. Görsel stüdyosunun tamamlanması Google Search'ün her yerleşimde aynı görseli kullanacağı anlamına gelmez. Meta ücretli reklamları görsel yayın genişlemesi olarak daha sonra gelir. Organik sosyal takvim ilk ücretli reklam ürününe zorunlu bağımlılık yapılmaz.
 
+### Markaya özel deneyim — 23 Ekim kapsam netleştirmesi
+
+Bir kullanıcı birden fazla markayı yönetebilir. Her markanın ayrı kimliği,
+karakteri, renk/logo/font kuralları, doğrulanmış gerçekleri, içerik kütüphanesi ve
+tercih geçmişi vardır. Temel çok markalı deneyim Y04'te başlar; Y29'a ertelenmez.
+Marka/kimlik sürümü üretim işi, tasarım ve kampanyaya bağlanır; erişim sunucuda
+kontrol edilir ve marka değişimi devam eden işi başka markaya taşımaz.
+[Marka deneyimi gereksinimleri](brand-specific-experience.md) hafıza, özgünlük,
+sohbetle düzenleme, çok format ve senaryolu video deneylerinin kabul sınırlarını
+belirler. Bunlar henüz uygulanmış değildir; kesin özgünlük/performans vaadi yoktur.
+
 ## 4. Kendi sistemimizde editör ve materyal kütüphanesi
 
 İlk aday bileşim Fabric.js + Uppy + Pillow'dur. Fabric ile küçük Yaparo editörü ve bir hazır MIT editör aynı örnek üzerinde karşılaştırılır; seçim deneme sonunda kaydedilir. Konva yedek adaydır, aynı ekran için iki canvas kütüphanesi kurulmaz. Kaynak/lisans ayrıntısı [araştırma tablosunda](open-source-candidate-research.md).
