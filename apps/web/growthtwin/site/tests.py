@@ -21,6 +21,15 @@ class CampaignDraftFlowTests(TestCase):
             "duration_days": "14",
         }
 
+    def test_public_pages_use_yaparo_name_and_accessible_brand(self):
+        for name in ("home", "contact", "privacy", "terms", "lifecycle-preview"):
+            with self.subTest(page=name):
+                response = self.client.get(reverse(f"site:{name}"))
+                self.assertContains(response, "Yaparo")
+                self.assertContains(response, 'aria-label="Yaparo ana sayfa"')
+                self.assertNotContains(response, "GrowthTwin")
+                self.assertNotContains(response, "growth<span")
+
     def test_valid_post_persists_and_refresh_shows_session_draft(self):
         response = self.client.post(self.url, self.valid_data)
 

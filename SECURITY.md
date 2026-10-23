@@ -21,12 +21,12 @@
 - Enforce per-campaign and aggregate ceilings in application code and verify the current state immediately before every external spend-affecting action. Fail closed if a limit, permission, destination response, or currency conversion cannot be verified.
 - AI output is untrusted input. It cannot set limits, bypass validators, mark its own output safe, access tokens, or call external APIs.
 - Pause and notify the advertiser when required facts are missing, output or policy checks fail, platform behavior is ambiguous, or a configured limit is reached. Provide a prominent stop/revoke path.
-- Routine campaigns should not require a GrowthTwin employee to approve each step. This does not remove advertiser consent, platform review, or the need to pause exceptional cases.
+- Routine campaigns should not require a Yaparo employee to approve each step. This does not remove advertiser consent, platform review, or the need to pause exceptional cases.
 
 ## AI and data handling
 
 - Use synthetic data with hosted free/trial endpoints. Do not send private advertiser, lead, customer, or account data to them.
-- NVIDIA Build/NIM hosted trial endpoints are for evaluation and development only; they must not serve GrowthTwin end users.
+- NVIDIA Build/NIM hosted trial endpoints are for evaluation and development only; they must not serve Yaparo end users.
 - Check provider terms, model licenses, retention, rate limits, and commercial-use permission before enabling an AI provider. Keep providers behind the server-side AI gateway.
 - Validate every AI result against a strict schema and deterministic content/policy checks before storing or passing it to another step.
 

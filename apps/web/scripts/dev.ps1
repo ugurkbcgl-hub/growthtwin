@@ -31,7 +31,8 @@ function Read-LocalProtectedSecret {
 }
 
 $webRoot = Split-Path -Parent $PSScriptRoot
-$pythonPath = Join-Path $webRoot ".venv\Scripts\python.exe"
+. (Join-Path $PSScriptRoot "local-python.ps1")
+$pythonPath = Get-YaparoPython -WebRoot $webRoot
 $managePath = Join-Path $webRoot "manage.py"
 
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf)) {
@@ -39,6 +40,7 @@ if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf)) {
 }
 
 $processSettings = [ordered]@{
+    PYTHONDONTWRITEBYTECODE = "1"
     DJANGO_SECRET_KEY = Read-LocalProtectedSecret -Path $djangoSecretFile
     POSTGRES_DB = "growthtwin"
     POSTGRES_USER = "growthtwin_app"

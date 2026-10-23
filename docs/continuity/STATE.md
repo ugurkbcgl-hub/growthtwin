@@ -1,6 +1,6 @@
-# GrowthTwin — current handoff
+# Yaparo — current handoff
 
-Verified: 2026-10-23 07:54 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 19:59 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,45 +12,51 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main43ffb1acd62832a643006bba01345ab9677f01b9: PR325 merged;
-required CI39899673407 and main CI39900021536 passed745 PostgreSQL+11 browser
-E2E. Current branch chore/windows-inspection-fixture; fresh Windows fixture code,
-actual four-scenario results, targeted tests and independent review completed.
-Current PR/required CI not yet created at this snapshot; verify final closure.
-Attachment100-item limit known. Work queue issue322, ordered24-step batch comment.
+Current source/Git checkout C:\Users\ugrkb\OneDrive\Masaüstü\yaparo; old public
+Desktop checkout moved and removed. GitHub https://github.com/ugurkbcgl-hub/yaparo
+(same repositoryID1389718599; strict requiredcheck/force/deletion rules verified).
+Private rebuilt Python %USERPROFILE%\.yaparo\.venv, installed yaparo-web editable
+against newsource. Credentials/DB remain outsideOneDrive with original stable IDs.
+Base main555ca07b0f852fe5f67268d2e3b5366156a17cc3(PR326): required39902796016 and
+main39903123677 passed775+11. Branch chore/yaparo-rename-relocation; rename review
+and local checks completed; verify current PR/CI/closure live. Attachment100limit.
 
-## Scheduler incident and current authorization
+## Current authorization and old scheduler window
 
-Owner extended work to2026-10-23 18:00 Europe/Istanbul; stop new work17:40.
-At06:47 automation was ACTIVE but last_run_at=null and zero run records; no Git/PR
-progress after PR323 at00:25. Cause unverified; do not claim configured timer is
-working. At07:18 still no run evidence; next trigger06:59 remained in the past.
-Official same-config update did not rearm. PAUSED then ACTIVE rearmed next07:38;
-execution remains unverified. Do not claim unattended work is repaired.
-Direct work resumed on owner's complaint; no additional authorization required.
-No auth/production/spending/privacy gate is overridden by the schedule.
+Owner explicitly requested product rename and source move with same-function
+verification AFTER the old23October18:00 work window. That expired heartbeat is
+now PAUSED; names and paths updated, existing automation IDs preserved. Low-usage
+monitor was already paused and stayed paused. No background execution proof is
+claimed. Current rename work follows user request, not the expired schedule.
 
-## Current slice - fresh private Windows fabricated integration
+## Current slice - Yaparo rename and relocation
 
-- Fixed-scenario CLI rejects caller paths/credentials, non-Windows and configured
-  Django. Startup DB and Python-socket attempts, including swallowed ones, refuse
-  before fresh fixture creation. Random process secret/testsettings/DEBUGFalse.
-- Fresh registered private root and child identities; strict current-user-only
-  protected directory DACL before any DB/file bytes; independent file ACL checks.
-  Only fresh SQLite schema/owner/workspace/quarantined TEST receipt are created.
-- Real DPAPI CreateNew writes only fixed fabricated client/derived candidate.
-  Actual existing coordinator/session/issue/consume-before-decode services run once;
-  fixed2 client/1 candidate quota, no provider/write/socket operation allowed.
-- Four separate actual Windows commands passed: match(2/1), clientchange(2/0),
-  invalidenvelope(2/1), unreadable exact-file-absent(2/1). Every run consumed,
-  refused replay, session0/historypreserved/privateACLverified/cleanupcomplete and
-  boundary0. Exact owned-file cleanup is nonrecursive; unexpected sidecars retained.
-- 17 helper+13 creator+17 coordinator+20 preparation tests:67 local SQLite passes;
-  Ruff/format/whitespace and independent source/docs review passed.
-- Actual result concerns ONLY fabricated fixtures. No protected-candidate DB/helper/
-  backup/credential contents or provider access; no OS sandbox/race guarantee.
-  Empty fresh root may remain on initial ACL failure, cleanup may fail on crash.
-- Detail: docs/product/windows-inspection-fixture.md. Normal source switches off.
+- Public title/logo/accessibility labels/copy/download nowYaparo; distribution
+  yaparo-web. Keep Python package/classes/app/migrations, salts/UUIDs/receipts,
+  DB growthtwin/growthtwin_app, DPAPI roots, Google/Heroku identities unchanged.
+- Source+.git moved into empty target; ignored runtimes/cache/build archived
+  outside sync. No source .env/SQLite/key/DPAPI files moved intoOneDrive.
+- New private runtime;3 launchers share resolver, refuses OneDrive localvenv
+  fallback ifprivateenvmissing.4 actual Windows resolver tests passed.
+- Pinned helper source/hash unchanged. Only reviewed legacy/current REPO plus
+  exact0007 path admitted, two helper vars rebound in memory.6 puretests passed.
+- Actual readonly plan passed same history/backup/permit0/session0/no credential
+  contents/currentclientproof/execute. No PREPARE/APPLY repeat or newclaim.
+- Local PostgreSQLcheck, pendingmigration and modeldrift checks passed; app767suite
+  completed746passes/21PostgreSQL-only skips;11 browserE2E passed onnewpath/runtime.
+- Yaparo wheel/sdist built+assetsverified; fresh Windows fabricated DPAPI match
+  passed consumed/replay/session0/history/privateACL/cleanup/boundary0.
+- Home+healthHTTP200; homepageYaparo/noGrowthTwin. Server127.0.0.1:8002 started
+  through dev wrapper. Independent source review resolved OneDrive separator guard
+  and Turkish suffix issues; final Ruff checks performed. No provider/deployment.
+- Full evidence: docs/continuity/RENAMING.md. Real grant/publishing gates unchanged.
+
+## Previous milestone - private Windows fabricated integration
+
+PR326 fresh private-root/SQLite/fakeclient/receipt creator passed four actual
+Windows DPAPI scenarios:match2/1,clientchanged2/0,invalid2/1,missing2/1; everyrun
+consumed,replayrefused,session0,history/privateACL/cleanup verified,boundary0.
+67 focused tests and independent review passed; normal source switches off.
 
 ## Previous milestone - fabricated coordinator
 
@@ -164,14 +170,11 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Finish current fresh Windows fixture PR after required CI and verify main CI.
-Then separately design/review a fixed-scope actual preserved-candidate launcher:
-SAME DB/receipt/history/private backup admission, exact source/decoder/scope pins,
-one-shot terminal session/permit/failure plan before actual content access.
-No retry/renewal/reset/restore/new identity/session-hash rewrite. PREPARE/APPLY are
-complete and must not repeat; preserve history/backup. No provider/refresh/adoption/
-activation/publishing. Current24-step batch is local fabricated integration only,
-not completion of product launch readiness.
-By17:40 stop new implementation and finish/preserve work; final report by18:00
-Europe/Istanbul2026-10-23 and pause heartbeat. Scheduling remains unverified;
-configuration alone is not proof of background progress.
+Close current Yaparo rename PR after reviewed requiredCI, then verify mainCI
+and clean newcheckout. Resume separately reviewed fixed-scope actual preserved-
+candidate launcher:SAME DB/receipt/history/privatebackup, source/decoder/scope pins,
+one-shot terminal session/permit/failure plan before any credentialcontents.
+Do not globalreplace compatibility IDs, reset/renew/retry permits, restoreoverclaim,
+substituteidentity/sessionhash or rerun completedPREPARE/APPLY. No provider refresh/
+adoption/activation/publishing/deployment. Rootrename docs describe source vs
+private runtimes; never put .env/DB/keys intoOneDrive. Reverify live repo/PR facts.

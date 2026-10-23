@@ -97,7 +97,7 @@ class CampaignWorkspaceBrowserTests(LiveServerTestCase):
                 download = download_info.value
                 self.assertEqual(
                     download.suggested_filename,
-                    f"growthtwin-draft-{draft_id}-v1.txt",
+                    f"yaparo-draft-{draft_id}-v1.txt",
                 )
                 downloaded_text = Path(download.path()).read_text(encoding="utf-8")
                 self.assertIn("YAYINLANMADI", downloaded_text)

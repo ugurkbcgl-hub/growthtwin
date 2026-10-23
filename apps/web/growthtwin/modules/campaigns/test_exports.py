@@ -51,10 +51,15 @@ class CampaignDownloadTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response["Content-Type"], "text/plain; charset=utf-8")
         self.assertIn("attachment;", response["Content-Disposition"])
+        self.assertIn(
+            f'filename="yaparo-draft-{self.draft.pk}-v1.txt"',
+            response["Content-Disposition"],
+        )
         self.assertIn("no-store", response["Cache-Control"])
         self.assertEqual(response["X-Content-Type-Options"], "nosniff")
         text = response.content.decode("utf-8")
         for expected in (
+            "Yaparo · Sentetik kampanya inceleme dosyası",
             self.variant["body"],
             "5000.00 TRY",
             "2026-10-15",

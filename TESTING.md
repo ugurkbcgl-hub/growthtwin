@@ -480,3 +480,14 @@ Each returned consumed/replayrefused/session0/historypreserved/privateACLverifie
 cleanupcomplete/boundary0. Unit native calls were mocked; separate CLI runs used
 actual bounded DPAPI. No protected candidate or provider operation.
 Full boundary/evidence: docs/product/windows-inspection-fixture.md.
+
+
+Yaparo rename/relocation (2026-10-23): from the new Unicode OneDrive source and
+rebuilt external runtime,767-test app suite completed:746 passed,21 local PostgreSQL-only skips;
+11 browser E2E passed. Four actual Windows runtime-resolver tests passed (CI may
+skip these native checks);6 relocation-adapter tests included in app run. Local
+PostgreSQL check/pending migration/model drift checks passed. Yaparo wheel/sdist
+contain required assets. HTTP home/health200 with new branding. Actual read-only
+preparation admitted same private backup/history with permit0/session0 and no
+credential decode; private helper source/hash untouched, PREPARE/APPLY not rerun.
+See docs/continuity/RENAMING.md for technical compatibility IDs and boundaries.

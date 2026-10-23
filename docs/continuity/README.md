@@ -1,6 +1,6 @@
 # Session continuity
 
-This folder carries GrowthTwin's current working context between Codex chats, models, and people.
+This folder carries Yaparo's current working context between Codex chats, models, and people.
 
 ## Source of truth
 
@@ -30,6 +30,10 @@ Never record API keys, passwords, access tokens, secret values, or private custo
 
 ## Copyable handoff prompt
 
-> GrowthTwin projesini kaldığı yerden sürdür. Önce `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md` ve `docs/continuity/STATE.md` dosyalarını bu sırayla oku; sonra dalı, çalışma ağacını, son commit'i, açık PR'ları ve CI durumunu yeniden doğrula. Teknik koordinatör olarak işi küçük adımlarla ilerlet; terminal işlerini kullanıcıya yaptırma. Ürün Türkiye'de reklam vermek isteyen farklı kişi ve işletmelere hitap eder; diş klinikleri yalnızca olası müşteri örneğidir. Omneky, marka ve brief alımından çok formatlı reklam üretimi, bağlı kanallarda kampanya yayını, birleşik raporlama ve sınırlar içindeki iyileştirme için uzun vadeli yetenek ölçütüdür; tüm özellik ve kanallar ilk sürüme girmez. Sentetik veriyle yerel ürün geliştirmesi Phase 0 yayın hazırlığı tamamlanmadan da sürebilir; gerçek veri, canlı reklam hesabı, yayın, medya harcaması ve üretim AI kullanımı ayrı readiness kapıları geçilene kadar kapalıdır. Her gerçek kanal/harcama için reklamverenin açık izni, bağlı hesabı ve uygulanabilir sert limitleri gerekir; belirsizlikte dur. Gizli bilgileri hiçbir yere yazma ve ücretli altyapı ekleme. `STATE.md` içindeki tek Next action adımından devam et, uygun dokümanları güncel tut ve ilerlemeyi anlaşılır Türkçe özetle.
+> `C:\Users\ugrkb\OneDrive\Masaüstü\yaparo` deposundaki Yaparo (eski adı GrowthTwin) projesini kaldığı yerden sürdür. Önce `AGENTS.md`, `PROJECT.md`, `ROADMAP.md`, `docs/continuity/README.md` ve `docs/continuity/STATE.md` dosyalarını bu sırayla oku; sonra dalı, çalışma ağacını, son commit'i, açık PR'ları ve CI durumunu yeniden doğrula. Teknik koordinatör olarak işi küçük adımlarla ilerlet; terminal işlerini kullanıcıya yaptırma. Ürün Türkiye'de reklam vermek isteyen farklı kişi ve işletmelere hitap eder; diş klinikleri yalnızca olası müşteri örneğidir. Omneky, marka ve brief alımından çok formatlı reklam üretimi, bağlı kanallarda kampanya yayını, birleşik raporlama ve sınırlar içindeki iyileştirme için uzun vadeli yetenek ölçütüdür; tüm özellik ve kanallar ilk sürüme girmez. Sentetik veriyle yerel ürün geliştirmesi Phase 0 yayın hazırlığı tamamlanmadan da sürebilir; gerçek veri, canlı reklam hesabı, yayın, medya harcaması ve üretim AI kullanımı ayrı readiness kapıları geçilene kadar kapalıdır. Her gerçek kanal/harcama için reklamverenin açık izni, bağlı hesabı ve uygulanabilir sert limitleri gerekir; belirsizlikte dur. Gizli bilgileri hiçbir yere yazma ve ücretli altyapı ekleme. `STATE.md` içindeki tek Next action adımından devam et, uygun dokümanları güncel tut ve ilerlemeyi anlaşılır Türkçe özetle.
 
 If the next model cannot access the repository, provide it the current `STATE.md` text and the user's new request. The repository remains the durable source of truth; never include secrets in the pasted context.
+
+
+Current rename/runtime/compatibility evidence: [RENAMING.md](RENAMING.md).
+Do not migrate secrets or reset durable IDs merely to match the new brand.

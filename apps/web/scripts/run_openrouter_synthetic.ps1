@@ -7,7 +7,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 $webRoot = Split-Path -Parent $PSScriptRoot
-$pythonPath = Join-Path $webRoot ".venv\Scripts\python.exe"
+. (Join-Path $PSScriptRoot "local-python.ps1")
+$pythonPath = Get-YaparoPython -WebRoot $webRoot
 $manageSecretPath = Join-Path $env:LOCALAPPDATA "GrowthTwin\secrets\django-secret-key.dpapi"
 $openRouterSecretPath = Join-Path $env:LOCALAPPDATA "GrowthTwin\secrets\openrouter-api-key.dpapi"
 

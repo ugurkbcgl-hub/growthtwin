@@ -1,10 +1,10 @@
-# GrowthTwin roadmap
+# Yaparo roadmap
 
 ## Direction reset — 2026-09-27
 
-The owner clarified that Türkiye is the target market and GrowthTwin should serve anyone who wants to advertise. Dental clinics, creators, and small businesses are examples, not product boundaries. Omneky is a long-term capability benchmark for ad creation, campaign launch, unified reporting, and bounded optimization. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md), and [ADR-0005](docs/adr/0005-turkey-first-advertising-platform.md).
+The owner clarified that Türkiye is the target market and Yaparo should serve anyone who wants to advertise. Dental clinics, creators, and small businesses are examples, not product boundaries. Omneky is a long-term capability benchmark for ad creation, campaign launch, unified reporting, and bounded optimization. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md), and [ADR-0005](docs/adr/0005-turkey-first-advertising-platform.md).
 
-The product should remove routine GrowthTwin-operator work after an advertiser explains a goal, authorizes an account, and sets explicit limits. Routine work may run within those boundaries; the system must pause and notify the advertiser when it cannot safely proceed. Omneky-style multi-channel breadth is a long-term target, not the first-release scope. Current work prioritizes the local website and synthetic-data development; it does not authorize production publishing, real ad spend, or additional paid infrastructure.
+The product should remove routine Yaparo-operator work after an advertiser explains a goal, authorizes an account, and sets explicit limits. Routine work may run within those boundaries; the system must pause and notify the advertiser when it cannot safely proceed. Omneky-style multi-channel breadth is a long-term target, not the first-release scope. Current work prioritizes the local website and synthetic-data development; it does not authorize production publishing, real ad spend, or additional paid infrastructure.
 
 ## Existing foundation — in place for local product work
 
@@ -33,10 +33,10 @@ Status: **Phase 1 acceptance verified on 2026-09-29 for the original synthetic p
 
 This work is required before expanding the authenticated workspace beyond its current synthetic-only owner flow or accepting real advertiser, customer, or lead data. The long-term direction and owner requirements are expanded in [the product/service blueprint](docs/product/growthtwin-service-blueprint.md). Phase 1.5 remains **in progress** until its open decisions and narrow MVP are resolved. The blueprint records the full desired service while separating customer requirements, recommendations, findings, and undecided implementation/commercial/legal choices.
 
-- Specify the two content paths: GrowthTwin-created content paid from credits, and customer-owned documents/assets that can be analyzed, edited, improved, adapted and versioned without overwriting the original.
+- Specify the two content paths: Yaparo-created content paid from credits, and customer-owned documents/assets that can be analyzed, edited, improved, adapted and versioned without overwriting the original.
 - Map beginner and professional experiences across intake, strategy, content, pre-purchase plan/estimates, price breakdown, approval, publication, reporting, experimentation, pause, recovery, export and deletion.
-- Treat owner-provided credit anchors (100 credits = USD 10; USD 100 for 1,000 purchased credits plus 20% bonus = 1,200 credits) and free initial credits as pricing requirements to cost and validate; distinguish creation credits, GrowthTwin campaign fees, platform media spend, tax and currency. The precise rate card and outcome/refund guarantee remain unresolved pending economics and legal review.
-- Research Türkiye channel availability separately from GrowthTwin's API/SaaS approval. Score objective/format, OAuth and app review, forecast/report coverage, account/currency, lead sync, policies, maintenance and cost. Initial official-source findings and unknown channels are recorded in the blueprint; do not describe a candidate as integrated until access is verified.
+- Treat owner-provided credit anchors (100 credits = USD 10; USD 100 for 1,000 purchased credits plus 20% bonus = 1,200 credits) and free initial credits as pricing requirements to cost and validate; distinguish creation credits, Yaparo campaign fees, platform media spend, tax and currency. The precise rate card and outcome/refund guarantee remain unresolved pending economics and legal review.
+- Research Türkiye channel availability separately from Yaparo's API/SaaS approval. Score objective/format, OAuth and app review, forecast/report coverage, account/currency, lead sync, policies, maintenance and cost. Initial official-source findings and unknown channels are recorded in the blueprint; do not describe a candidate as integrated until access is verified.
 - Define the pre-purchase calculator's channel-level budget, estimated reach/impressions/engagement ranges, assumptions, source and freshness, confidence, fees and platform spend. Never invent or present uncertain results as guarantees.
 - Follow the [AI provider-combination strategy](docs/product/ai-provider-strategy.md): the local GPU is optional, not a runtime dependency. The provider-neutral creative-copy profile/harness supports bounded synthetic evaluation. GPT-6 Luna comparisons show a modest diversity improvement after a prompt iteration, but drafts remain generic and non-publishable. PR #246 adds a Gemini 3.8 Flash evaluation option; its first attempt stopped after one call with provider usage unverified, while the other eight calls were not sent. PR #247 fixes the benchmark exception path. On 2026-10-04, the owner authorized evaluation using existing OpenRouter credits up to USD 16 without top-up or auto-recharge; a dedicated no-reset cap was verified, and the owner checks the account balance. Two separately authorized image calls through the pinned ZDR-eligible Google Vertex endpoint completed upstream and were each charged USD 0.0336, matching OpenRouter Logs entries. The local runner failed to save output; exact response rejection remains unverified. It incorrectly required PNG, so now detects PNG/JPEG/WebP using documented media type and stores the matching extension. The USD 0.20 local reservation was reconciled; the local ledger records USD 0.12744185 spent and USD 0.00078075 reserved for an earlier unresolved GPT call, separate from provider billing. Any additional billable call requires renewed owner authorization. Keep providers disconnected from product routes; do not use OpenRouter video under current ZDR controls. No production provider is selected.
 - Separate advertiser service requests from generated campaign leads; decide collection, purpose, destination, consent, account/role access, delivery/retry/audit, retention and deletion.
@@ -49,7 +49,7 @@ The code-to-plan inventory is [the current system gap analysis](docs/product/cur
 
 **Acceptance:** owner-facing review selects one initial advertiser workflow/objective and cohort hypothesis, first platform candidate (or records an explicit API/access blocker), first service boundary, lead destination/consent approach, supported first creative tasks, credit/fee hypothesis, beginner/pro defaults and bounded autonomy. Open legal, partner, privacy and pricing items have named evidence and next steps. The blueprint does not itself authorize real accounts, data, payment, publishing, ad spend or paid infrastructure. Those remain blocked until the separate readiness gate and owner decision.
 
-**Decision:** the project owner delegated product and sequencing decisions. ADR-0008 selects a synthetic Ankara city-service quote/contact workflow, Google Search as the first technical channel candidate, the advertiser's own site as destination, no raw lead custody in GrowthTwin, and a fake-only adapter boundary. This is a prototype scope decision; user-demand validation, API access approval, forecasts, real-data/legal review, fees and live spend remain open gates.
+**Decision:** the project owner delegated product and sequencing decisions. ADR-0008 selects a synthetic Ankara city-service quote/contact workflow, Google Search as the first technical channel candidate, the advertiser's own site as destination, no raw lead custody in Yaparo, and a fake-only adapter boundary. This is a prototype scope decision; user-demand validation, API access approval, forecasts, real-data/legal review, fees and live spend remain open gates.
 
 **Completed:** PR #110 adds the workspace-owned synthetic campaign draft and owner-scoped services; PR #111 adds focused tenant-isolation/input validation tests. The anonymous `site.CampaignDraft` path remains separate.
 
@@ -159,7 +159,7 @@ Status: the minimal user-owned `Workspace` and owner-scoped synthetic campaign f
 
 **Completed manual review (2026-09-29):** inspected the authenticated report empty state at a narrow ~596 px viewport and a ~1265 px desktop viewport using isolated synthetic data. Planned dates, absent observed period, unknown freshness, and six unavailable metrics remained legible; no horizontal overflow was visible. No code or live integration changed. The prior anonymous browser session no longer exposes two still-stored synthetic drafts; see [continuity state](docs/continuity/STATE.md).
 
-**Completed research (2026-09-29):** Google Ads Search remains a technical candidate for Türkiye based on documented `TR` targeting and the current country-restrictions list. The official API access levels, SaaS permissible-use review, payment-country dependencies, report capabilities, and test-account limits are recorded in the [feasibility note](docs/product/google-ads-search-turkiye-api-feasibility.md). GrowthTwin's own production access, external-client approval, Turkish account onboarding, forecasts, and legal/policy readiness remain unverified. No account or live API was used.
+**Completed research (2026-09-29):** Google Ads Search remains a technical candidate for Türkiye based on documented `TR` targeting and the current country-restrictions list. The official API access levels, SaaS permissible-use review, payment-country dependencies, report capabilities, and test-account limits are recorded in the [feasibility note](docs/product/google-ads-search-turkiye-api-feasibility.md). Yaparo's own production access, external-client approval, Turkish account onboarding, forecasts, and legal/policy readiness remain unverified. No account or live API was used.
 
 **Completed initial legal/product landscape (2026-09-29):** mapped official sources for ad-claim substantiation, online consumer checkout, commercial email/SMS/call follow-up, KVKK notice/consent and international transfers, and the current health-sector advertising rules. Product gates and unresolved legal questions are in the [Türkiye readiness map](docs/product/turkiye-advertising-privacy-readiness.md). This is not a complete legal review; no real data, payment or live campaign was enabled.
 
@@ -460,3 +460,16 @@ passed, including swallowed startup DB/network guards. Defaults remain off; this
 is NOT actual preserved-candidate/account/provider evidence. No repeat of completed
 protected PREPARE/APPLY, refresh/activation or deployment. See
 [Windows fixture evidence](docs/product/windows-inspection-fixture.md).
+
+
+## Yaparo rename and relocated checkout - 2026-10-23
+
+The owner renamed the product to Yaparo and moved the source/Git checkout to
+`C:\Users\ugrkb\OneDrive\Masaüstü\yaparo`. GitHub is now
+https://github.com/ugurkbcgl-hub/yaparo (same repository and protection). The fresh
+private Python runtime is `%USERPROFILE%\.yaparo\.venv`; secrets and databases stay
+outside sync under existing compatibility IDs. Public UI and distribution name
+are Yaparo/yaparo-web; Python package, migration labels, DPAPI/database/OAuth IDs
+remain stable. Local app/browser/PostgreSQL/packaging/read-only recovery admission
+checks passed. No schema/data reset, provider call, deployment or publishing.
+See [relocation evidence](docs/continuity/RENAMING.md).
