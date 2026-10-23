@@ -267,3 +267,14 @@ state cannot be retried or reset.
 Next: independently review a fresh private Windows fabricated-fixture creator and
 exercise actual bounded DPAPI before proposing any protected-candidate launcher.
 Do not run completed PREPARE/APPLY or reinterpret this fixture as provider proof.
+
+
+## Fresh private fabricated Windows integration - 2026-10-23
+
+The next fabricated Windows gate is now exercised separately; see
+[the fixed CLI, isolation boundaries and actual four-scenario evidence](windows-inspection-fixture.md).
+A fresh private root/DB/client/receipt is created for each run. All four expected
+outcomes passed actual bounded DPAPI with terminal consumption/replay refusal,
+session0/history preserved/privateACL checks/cleanup complete and boundary0.
+This supersedes the prior next-step proposal for a fresh fabricated creator;
+it does not establish a protected-candidate launcher or actual client/token proof.

@@ -469,3 +469,14 @@ for review, repeated decode quotas, swallowed provider/socket attempts, scope
 rejection and direct decoder-guard traceback session masking. Independent source
 review found/resolved generator masking gap. Ruff/format/whitespace passed.
 No actual protected DB/client/candidate, Windows DPAPI or private-ACL operation.
+
+
+Fresh Windows fixture integration (2026-10-23):17 new helper +13 creator tests
+passed; combined coordinator/preparation run67 local SQLite tests passed. Ruff
+format/check and whitespace passed; independent source review completed. All four
+real Windows fabricated scenarios separately passed: match(client2/candidate1),
+client-changed(2/0), invalid-envelope(2/1), unreadable exact-file-absent(2/1).
+Each returned consumed/replayrefused/session0/historypreserved/privateACLverified/
+cleanupcomplete/boundary0. Unit native calls were mocked; separate CLI runs used
+actual bounded DPAPI. No protected candidate or provider operation.
+Full boundary/evidence: docs/product/windows-inspection-fixture.md.
