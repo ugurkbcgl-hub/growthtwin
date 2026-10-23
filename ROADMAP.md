@@ -431,3 +431,10 @@ synthetic operator-session bootstrap primitive passed14 focused fabricated local
 checks; it is not called by plan. No actual session/permit/credential/provider
 operation or execute command. Next: integrate/rehearse/review the single-attempt
 launcher and terminal-failure flow before any actual claim. See exercise preparation.
+
+
+Session expiry hardening (2026-10-23): the isolated synthetic session primitive now
+captures expire_date before insertion and rechecks the exact row, owned scope,
+wall-clock and five-minute monotonic budget before returning, including after DB
+queries. Changed expiry is retained for review, not silently deleted.20 focused
+fabricated local tests passed; no preserved session/permit/decoder/provider use.

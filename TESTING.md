@@ -443,3 +443,18 @@ same post0007 identity/history/backup admission,
 permit0/session0, no protected contents read/current-client proof/execute capability.
 Ruff format/lint/whitespace passed; no broad local Django suite or actual protected
 session/permit/decoder invocation. Full execution/failure rehearsal remains next.
+
+
+## Synthetic session deadline hardening - 2026-10-23
+
+20 focused tests passed ephemeral local SQLite (previous14 plus6 new tests): exact
+expiry drift during context/reload, unchanged-DB monotonic exhaustion, wall-clock
+expiry/backward movement, changed workspace owner and delayed final scope query.
+The last case independently advances wall clock or monotonic time during the final
+query and proves the after-query deadline check rejects late success.
+Expiry is captured before DB insertion; cleanup matches original encoded bytes,
+payload and expire_date and retains changed rows. validate() can be reused for
+future launcher checkpoints; this is not full execution integration or a hard
+cancellation of blocked queries. Ruff lint/format ran from apps/web like CI and
+whitespace checks passed. Required PostgreSQL CI pending for this slice. No real
+preserved session/permit/credential operation or broad local suite was run.

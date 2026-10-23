@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-23 00:15 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 06:53 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,31 +12,41 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base main16fab445fb00f53da3f946e445ae84ca4ad96c9b: PR321 merged;
-required CI39852614274 and main CI39853130617 passed708 PostgreSQL+11 browser
-E2E. No open PR at slice start. Current branch chore/recovered-inspection-launcher,
-before its preparation PR/required CI. Verify final PR/closure comment and latest
-checks. Attachment100-item limit known. Overnight queue issue322; thread heartbeat
-active every15 minutes until2026-10-23 11:00 Europe/Istanbul, no new work after10:40.
-Only quiet/non-actionable runs stay silent; record meaningful results/real blockers.
+Verified base mainff32417434e7722f770486d5f2a2c1774573a696: PR323 merged;
+required CI39856678034 and main CI39857094533 passed722 PostgreSQL+11 browser
+E2E. No open PR at slice start. Current branch fix/inspection-session-expiry,
+before its source-review/PR/required CI. Verify final PR/closure comment.
+Attachment100-item limit known. Work queue issue322.
 
-## Current slice - read-only launcher preparation, not execution
+## Scheduler incident and current authorization
 
-- New scripts/prepare_recovered_inspection.py exposes only Windows read-only plan.
-  Pinned schema helper/audit, exact pointer/backup/schema/data/history, zero permits
-  and sessions; no Django setup/session/permit/decode/execute path from plan.
-- Independent source review preceded actual plan. All read-only admission checks
-  passed; client_hash_proved=False, execution_available=False. Protected contents
-  unread. No preserved DB/session/permit writes or provider operation.
-- Separate internal local-operator synthetic-session bootstrap primitive (not called
-  by plan): unusable password stays unchanged; exact configured owned workspace,
-  server-generated5min session, DB reload/get_user exact-owner proof. Not a password
-  login or public authentication/advertiser permission.
-- Cleanup checks nonce/owner/exact encoded row; deletes only minted unchanged row.
-  Changed/concurrent sessions retained with explicit failure; crash may need review.
-- 14 focused fabricated tests passed ephemeral local SQLite,11 session+3 plan.
-  Ruff format/lint/whitespace passed. Full real launcher not integrated or exercised;
-  current PR's required PostgreSQL CI pending at snapshot.
+Owner extended work to2026-10-23 18:00 Europe/Istanbul; stop new work17:40.
+At06:47 automation was ACTIVE but last_run_at=null and zero run records; no Git/PR
+progress after PR323 at00:25. Cause unverified; do not claim configured timer is
+working. Observed next trigger06:59 must be checked against actual run evidence.
+Direct work resumed on owner's complaint; no additional authorization required.
+No auth/production/spending/privacy gate is overridden by the schedule.
+
+## Current slice - session expiry acceptance and preservation
+
+- Captures original expire_date before insertion; verifies exact expiry at reload
+  and cleanup. Changed expiry retained for explicit review, never silently deleted.
+- validate() checks original encoded row, owner/workspace and original wall-clock/
+  300s monotonic window. Rechecks BOTH clocks after all DB queries to refuse late
+  success. No hard cancellation of arbitrary blocked queries is claimed.
+- 20 focused fabricated local tests passed (prior14+6 new), including scope drift,
+  expiry/clock drift and delayed final query; Ruff from apps/web and whitespace pass.
+- No real preserved session/permit/decode/provider use. Source remains plan-only;
+  full single-attempt execution/failure integration is still the next bounded task.
+
+## Previous milestone - read-only preparation and synthetic bootstrap
+
+PR323 added a fixed Windows read-only plan using pinned helper/audit and exact
+private backup/post0007 history/schema/data admission; actual read-only plan passed
+with permit0/session0, no protected credential contents read, no current-client
+proof or execute capability. Its separate synthetic operator-session primitive
+was tested only with fabricated DB rows, not the preserved candidate. Password
+unchanged; explicit local operator authority is not password/public authentication.
 
 ## Previous milestone - same-DB backup and only forward0007 completed
 
@@ -127,7 +137,7 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Close this preparation PR after independent review/green required CI and verify
+Close this expiry PR after independent review/green required CI and verify
 main CI. Then integrate and rehearse ONE bounded single-attempt local inspection
 launcher using the reviewed synthetic-owner session primitive and the SAME candidate.
 Complete terminal failure/cleanup behavior, exact scope/source/receipt pins,
@@ -136,6 +146,6 @@ real session bootstrap, permit claim or protected content read. Existing bounded
 reader proves client binding only AFTER consumption; no pre-claim decode bypass.
 No retry/renewal/reset/restore/new identity/session-hash rewrite. PREPARE/APPLY are
 complete; preserve history/backup. No provider/refresh/adoption/activation/publishing.
-By10:40 stop new implementation and finish/preserve work; final report by11:00
+By17:40 stop new implementation and finish/preserve work; final report by18:00
 Europe/Istanbul2026-10-23 and pause heartbeat. Authentication blockers skip to
 independent safe roadmap work; no gates weakened to fill the overnight window.

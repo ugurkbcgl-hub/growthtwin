@@ -15,6 +15,7 @@ import stat
 import sys
 import types
 from pathlib import Path
+from time import monotonic
 from unittest.mock import patch
 
 SCHEMA_HELPER_SHA = "d5742e54d168e7e31d64e8ff2ecb68083f7747be0d7c25192d68efabbc69acee"
@@ -50,6 +51,7 @@ def _owned_synthetic_session(*, owner, workspace_id):
     from django.contrib.sessions.models import Session
     from django.db import connection
     from django.http import HttpRequest
+    from django.utils import timezone
     from django.views.decorators.debug import sensitive_variables
 
     from growthtwin.modules.workspaces.models import Workspace
@@ -60,6 +62,9 @@ def _owned_synthetic_session(*, owner, workspace_id):
             self._store = None
             self._expected_data = None
             self._expected_encoded = None
+            self._expected_expiry = None
+            self._started_at = None
+            self._started_monotonic = None
             self._nonce = secrets.token_urlsafe(24)
             self._password = owner.password
 
@@ -82,6 +87,8 @@ def _owned_synthetic_session(*, owner, workspace_id):
             ):
                 raise ValueError("Synthetic session admission refused.")
             try:
+                self._started_at = timezone.now()
+                self._started_monotonic = monotonic()
                 binding = self
 
                 class MintedSessionStore(SessionStore):
@@ -89,6 +96,12 @@ def _owned_synthetic_session(*, owner, workspace_id):
                     def key_salt(self):
                         # Preserve the standard backend's signing domain on reload.
                         return SessionStore().key_salt
+
+                    @sensitive_variables()
+                    def create_model_instance(self, data):
+                        row = super().create_model_instance(data)
+                        binding._expected_expiry = row.expire_date
+                        return row
 
                     @sensitive_variables()
                     def encode(self, session_dict):
@@ -126,10 +139,40 @@ def _owned_synthetic_session(*, owner, workspace_id):
                     ).exists()
                 ):
                     raise ValueError("Synthetic session verification refused.")
+                self.validate()
                 return authenticated, self._key
             except Exception:
                 self._cleanup()
                 raise
+
+        @sensitive_variables()
+        def validate(self):
+            now = timezone.now()
+            if (
+                self._key is None
+                or self._expected_expiry is None
+                or self._started_at is None
+                or self._started_monotonic is None
+                or not self._started_at <= now < self._expected_expiry
+                or not 0 <= monotonic() - self._started_monotonic < 300
+                or not Session.objects.filter(
+                    session_key=self._key,
+                    session_data=self._expected_encoded,
+                    expire_date=self._expected_expiry,
+                    expire_date__gt=now,
+                ).exists()
+                or not type(owner)
+                .objects.filter(pk=owner.pk, is_active=True, password=self._password)
+                .exists()
+                or not Workspace.objects.filter(pk=workspace_id, owner=owner).exists()
+            ):
+                raise ValueError("Synthetic session deadline or binding changed.")
+            finished_at = timezone.now()
+            if (
+                not self._started_at <= finished_at < self._expected_expiry
+                or not 0 <= monotonic() - self._started_monotonic < 300
+            ):
+                raise ValueError("Synthetic session deadline or binding changed.")
 
         @sensitive_variables()
         def _cleanup(self):
@@ -143,6 +186,7 @@ def _owned_synthetic_session(*, owner, workspace_id):
                     nonce = data.get("inspection_nonce")
                     if (
                         row.session_data != self._expected_encoded
+                        or row.expire_date != self._expected_expiry
                         or data != self._expected_data
                         or type(nonce) is not str
                         or not secrets.compare_digest(nonce, self._nonce)
@@ -150,7 +194,9 @@ def _owned_synthetic_session(*, owner, workspace_id):
                     ):
                         raise ValueError("Synthetic session cleanup requires review.")
                     Session.objects.filter(
-                        session_key=key, session_data=self._expected_encoded
+                        session_key=key,
+                        session_data=self._expected_encoded,
+                        expire_date=self._expected_expiry,
                     ).delete()
             current = type(owner).objects.get(pk=owner.pk)
             if current.password != self._password or Session.objects.exists():
