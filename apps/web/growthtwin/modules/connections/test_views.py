@@ -66,6 +66,14 @@ class LocalConnectionViewsTests(SimpleTestCase):
         self.assertIn("Reklam yayımlamaz", response.content.decode())
         self.assert_private(response)
 
+    def test_failure_guidance_does_not_assume_an_external_oauth_app_rename(self):
+        self.session["google_local_result"] = "failed"
+        response = views.status(self.request())
+        self.assertContains(response, "ilgili uygulamanın erişimini kaldırabilirsiniz")
+        self.assertNotContains(response, "GrowthTwin erişimini")
+        self.assertNotContains(response, "Yaparo erişimini")
+        self.assert_private(response)
+
     def test_disabled_debug_remote_forwarded_and_other_owner_denied(self):
         for setting in ({"GOOGLE_ADS_LOCAL_OAUTH_ENABLED": False}, {"DEBUG": True}):
             with self.settings(**setting):
