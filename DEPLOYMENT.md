@@ -24,7 +24,7 @@ Do not copy production data into development or staging. Promotion must never ca
 - Estimate recurring and one-time charges before enabling a service; record an owner, expected cost, and shutdown path.
 - The Phase 0 approval covers one Heroku Basic web dyno and one Essential-0 PostgreSQL database, observed near USD 12/month before tax. It does not authorize add-ons, more dynos, production hosting, or paid AI. Delete the app and database when staging is no longer needed.
 - No production AI provider, cloud host, queue, object storage, or paid integration is selected. Do not add paid resources without a new owner decision.
-- NVIDIA Build/NIM trial endpoints are only for synthetic development/evaluation and cannot serve GrowthTwin end users.
+- NVIDIA Build/NIM trial endpoints are only for synthetic development/evaluation and cannot serve Yaparo end users.
 
 ## Heroku Phase 0 staging snapshot
 

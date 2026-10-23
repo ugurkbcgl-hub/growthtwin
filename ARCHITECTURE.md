@@ -1,10 +1,10 @@
-# GrowthTwin architecture
+# Yaparo architecture
 
 Status: the product objective is a user-authorized advertising autopilot. The accepted modular-monolith and Django/PostgreSQL decisions remain in [ADR-0001](docs/adr/0001-modular-monolith.md) and [ADR-0002](docs/adr/0002-application-stack-and-local-environment.md). No production AI provider or publishing platform is selected.
 
 ## Product boundary
 
-GrowthTwin receives a plain-language campaign request from an individual, creator, or business, produces and validates campaign assets, publishes and measures them through an authorized destination, and reports results. The ordinary journey should not need a GrowthTwin staff operator. The advertiser initiates the work, connects the destination, and configures the permitted channels, schedule, content boundaries, and spend caps. Application rules enforce those limits; incomplete or unsafe cases pause and explain what is needed.
+Yaparo receives a plain-language campaign request from an individual, creator, or business, produces and validates campaign assets, publishes and measures them through an authorized destination, and reports results. The ordinary journey should not need a Yaparo staff operator. The advertiser initiates the work, connects the destination, and configures the permitted channels, schedule, content boundaries, and spend caps. Application rules enforce those limits; incomplete or unsafe cases pause and explain what is needed.
 
 The website should reduce user effort by asking only for missing essential facts, showing progress in plain language, and keeping preview, limits, and stop controls visible. Dental-clinic examples are a potential pilot dataset, not a domain boundary.
 
@@ -16,7 +16,7 @@ Start with one modular Django application and PostgreSQL. Add a separate worker 
 
 ```mermaid
 flowchart LR
-  Advertiser[Advertiser] --> Web[GrowthTwin web experience]
+  Advertiser[Advertiser] --> Web[Yaparo web experience]
   Web --> App[Campaign application boundary]
   App --> Identity[Advertiser and workspace]
   App --> Brand[Brand facts, documents, and asset versions]
@@ -53,8 +53,8 @@ The diagram is a logical view, not a deployment topology. It does not require a 
 - **Advertiser and workspace:** accounts, memberships, tenant context, and connected destinations. Enforce authorization on the server for every read and write.
 - **Brand facts, documents, and assets:** advertiser-supplied facts, references, source documents, permitted claims, and reusable creative inputs. Preserve original uploads and record rights/source/version metadata. Isolate parsing and text extraction.
 - **Campaign brief and media plan:** validated objective, audience/geography, budget ceiling and currency, schedule, channel/placement, status, and required facts. Forecasts carry source, timestamp, assumptions and confidence; missing forecast data must not be filled with invented values.
-- **Creative generation and versions:** customer-owned material and GrowthTwin-created copy/image/video are distinct paths; record immutable source versions, derivatives, destination formatting, rights and traceability to briefs. Regeneration creates a new version instead of overwriting edits.
-- **Pricing and credit ledger:** keep purchased/granted/bonus credits, holds, consumption, releases/refunds and adjustments auditable and idempotent. Separate creative credits, GrowthTwin service fees, platform media spend, tax and currency. Prices remain a product decision.
+- **Creative generation and versions:** customer-owned material and Yaparo-created copy/image/video are distinct paths; record immutable source versions, derivatives, destination formatting, rights and traceability to briefs. Regeneration creates a new version instead of overwriting edits.
+- **Pricing and credit ledger:** keep purchased/granted/bonus credits, holds, consumption, releases/refunds and adjustments auditable and idempotent. Separate creative credits, Yaparo service fees, platform media spend, tax and currency. Prices remain a product decision.
 - **Consent, budget, and safety policy:** accepted account scopes, per-campaign and aggregate spend ceilings, allowed schedules and content, stop conditions, and auditable decisions. Fail closed when state is missing or stale.
 - **AI gateway:** server-side contract and replaceable providers for generation and checking. Outputs are untrusted suggestions and must pass deterministic schema and policy validation.
 - **Publishing adapters:** provider-neutral external-action contract. Adapters own OAuth/token details, platform payloads, idempotency keys, failure mapping, and reconciliation. Only the application policy layer may authorize dispatch.
@@ -83,7 +83,7 @@ Do not turn every box in the diagram into a database model before the first MVP 
 1. Domain modules own their rules and expose application contracts; avoid cross-module database access and import cycles.
 2. Enforce workspace/advertiser scoping at application and persistence boundaries.
 3. External AI and publishing providers are server-side adapters. Never expose provider credentials to the browser or model.
-4. Hosted trial models receive synthetic evaluation examples only and never serve GrowthTwin end users.
+4. Hosted trial models receive synthetic evaluation examples only and never serve Yaparo end users.
 5. Verify platform permissions, terms, and reporting coverage before selecting an adapter for real use.
 6. Keep budget, consent, validation, pause, and idempotency rules deterministic and testable.
 7. Keep early product work in the existing application. Add infrastructure only when measured workflow needs justify it.

@@ -149,7 +149,7 @@ def status(request, binding):
         "saved": "Yetkilendirme şifreli olarak kaydedildi.",
         "failed": (
             "Bağlantı tamamlanamadı. İzin iptali tamamlanamadıysa Google "
-            "hesabınızdan GrowthTwin erişimini kaldırabilirsiniz."
+            "hesabınızdaki ilgili uygulamanın erişimini kaldırabilirsiniz."
         ),
         "exists": "Yetkilendirme zaten kayıtlı. Yeniden bağlanmadan önce kaldırın.",
         "removed": "Yerel yetkilendirme kaldırıldı.",

@@ -263,7 +263,7 @@ def campaign_download(request, draft_id):
         )
     response = HttpResponse(text, content_type="text/plain; charset=utf-8")
     response["Content-Disposition"] = (
-        f'attachment; filename="growthtwin-draft-{draft.pk}'
+        f'attachment; filename="yaparo-draft-{draft.pk}'
         f'-v{draft.preferred_creative_version}.txt"'
     )
     response["X-Content-Type-Options"] = "nosniff"

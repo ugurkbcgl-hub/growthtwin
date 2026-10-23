@@ -1,4 +1,4 @@
-# GrowthTwin web application
+# Yaparo web application
 
 This folder contains the Django application, a legacy synthetic profile demo,
 and the first local campaign-experience slice. Local product work is authorized
@@ -88,3 +88,20 @@ python scripts/verify_build_artifacts.py
 Ruff's formatting and lint rules are configured in `pyproject.toml`. To apply
 formatting locally, run `python -m ruff format .` and review the resulting diff.
 The build command writes distribution files under `build/` and `dist/`; Git ignores both.
+
+
+## Renamed local checkout
+
+The product/distribution is Yaparo (`yaparo-web`); Python package/app labels
+`growthtwin` remain stable for migration and connection compatibility. Current
+source: `C:\Users\ugrkb\OneDrive\Masaüstü\yaparo`. Keep runtime outside OneDrive:
+
+```powershell
+python -m venv "$env:USERPROFILE\.yaparo\.venv"
+& "$env:USERPROFILE\.yaparo\.venv\Scripts\python.exe" -m pip install -e ".[dev,e2e]"
+```
+
+`dev.ps1` and the two opt-in OpenRouter runners share `local-python.ps1` to locate
+that runtime (ordinary repo/web-local venvs remain fallbacks for other checkouts).
+No secret file, database name, OAuth project or encrypted grant is renamed. Never
+rerun database setup merely because the product name or source path changed.

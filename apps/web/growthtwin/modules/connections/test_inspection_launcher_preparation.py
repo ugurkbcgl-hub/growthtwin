@@ -5,6 +5,7 @@ import json
 import os
 import tempfile
 from datetime import timedelta
+from math import nextafter
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -201,6 +202,31 @@ class SyntheticOperatorSessionTests(TransactionTestCase):
                 launcher, "monotonic", return_value=binding._started_monotonic + 300
             ):
                 with self.assertRaises(ValueError):
+                    binding.validate()
+        self.assertFalse(Session.objects.exists())
+
+    def test_fractional_monotonic_start_obeys_exact_absolute_deadline(self):
+        with patch.object(launcher, "monotonic", return_value=1000.1):
+            binding = self.binding()
+            with binding:
+                deadline = 1300.1
+                self.assertEqual(binding._started_monotonic + 300, deadline)
+                before = nextafter(deadline, float("-inf"))
+                with patch.object(launcher, "monotonic", return_value=before):
+                    binding.validate()
+                for observed in (deadline, 1000.0):
+                    with (
+                        self.subTest(observed=observed),
+                        patch.object(launcher, "monotonic", return_value=observed),
+                        self.assertRaisesRegex(
+                            ValueError, "deadline or binding changed"
+                        ),
+                    ):
+                        binding.validate()
+                with (
+                    patch.object(launcher, "monotonic", side_effect=[before, deadline]),
+                    self.assertRaisesRegex(ValueError, "deadline or binding changed"),
+                ):
                     binding.validate()
         self.assertFalse(Session.objects.exists())
 

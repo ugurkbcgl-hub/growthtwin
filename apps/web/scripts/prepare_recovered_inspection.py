@@ -21,6 +21,29 @@ from unittest.mock import patch
 SCHEMA_HELPER_SHA = "d5742e54d168e7e31d64e8ff2ecb68083f7747be0d7c25192d68efabbc69acee"
 TARGET = ("connections", "0007_candidate_inspection_permit")
 NEW_TABLE = "connections_candidateinspectionpermit"
+_LEGACY_REPOSITORY = Path(r"C:\Users\Public\Desktop\GrowthTwin")
+_MIGRATION_RELATIVE = Path(
+    "apps/web/growthtwin/modules/connections/migrations/0007_candidate_inspection_permit.py"
+)
+
+
+def _bind_repository(helper):
+    """Rebind only reviewed repository locations after pinned source loading.
+
+    Database, backup, audit and source-hash bindings remain untouched. This admits
+    the single known legacy checkout, never an arbitrary caller-selected root.
+    The read-only plan still checks the relocated migration against its manifest.
+    """
+    current = Path(__file__).resolve().parents[3]
+    original = getattr(helper, "REPO", None)
+    if (
+        original not in (current, _LEGACY_REPOSITORY)
+        or getattr(helper, "MIGRATION", None) != original / _MIGRATION_RELATIVE
+    ):
+        raise ValueError("Repository scope changed.")
+    helper.REPO = current
+    helper.MIGRATION = current / _MIGRATION_RELATIVE
+    return helper
 
 
 def _load_preparation():
@@ -38,9 +61,7 @@ def _load_preparation():
     module = types.ModuleType("reviewed_schema_preparation")
     module.__file__ = str(path)
     exec(compile(raw, str(path), "exec"), module.__dict__)
-    if module.REPO != Path(__file__).resolve().parents[3]:
-        raise ValueError("Repository scope changed.")
-    return module
+    return _bind_repository(module)
 
 
 def _owned_synthetic_session(*, owner, workspace_id):
@@ -148,13 +169,16 @@ def _owned_synthetic_session(*, owner, workspace_id):
         @sensitive_variables()
         def validate(self):
             now = timezone.now()
+            observed_monotonic = monotonic()
             if (
                 self._key is None
                 or self._expected_expiry is None
                 or self._started_at is None
                 or self._started_monotonic is None
                 or not self._started_at <= now < self._expected_expiry
-                or not 0 <= monotonic() - self._started_monotonic < 300
+                or not self._started_monotonic
+                <= observed_monotonic
+                < self._started_monotonic + 300
                 or not Session.objects.filter(
                     session_key=self._key,
                     session_data=self._expected_encoded,
@@ -168,9 +192,12 @@ def _owned_synthetic_session(*, owner, workspace_id):
             ):
                 raise ValueError("Synthetic session deadline or binding changed.")
             finished_at = timezone.now()
+            finished_monotonic = monotonic()
             if (
                 not self._started_at <= finished_at < self._expected_expiry
-                or not 0 <= monotonic() - self._started_monotonic < 300
+                or not self._started_monotonic
+                <= finished_monotonic
+                < self._started_monotonic + 300
             ):
                 raise ValueError("Synthetic session deadline or binding changed.")
 

@@ -46,7 +46,7 @@ def campaign_review_text(draft, *, version_number, variant_key):
     generated_at = timezone.now().isoformat(timespec="seconds")
     budget = Decimal(draft.media_budget_minor) / 100
     lines = [
-        "GrowthTwin · Sentetik kampanya inceleme dosyası",
+        "Yaparo · Sentetik kampanya inceleme dosyası",
         "YAYINLANMADI · GERÇEK REKLAM DEĞİLDİR",
         "Bu dosya inceleme içindir; Google Ads'e aktarılacak bir reklam paketi değildir.",
         "Hesap bağlantısı, yayın onayı, reklam harcaması veya ücret tahsilatı yapılmadı.",
@@ -63,7 +63,7 @@ def campaign_review_text(draft, *, version_number, variant_key):
         f"Planlanan başlangıç: {draft.flight_start or 'Belirtilmedi'}",
         f"Planlanan bitiş: {draft.flight_end or 'Belirtilmedi'}",
         f"Toplam örnek medya tavanı: {budget:.2f} {draft.currency}",
-        "GrowthTwin içerik/hizmet bedelleri bu tutara dahil değildir; hesaplanmadı.",
+        "Yaparo içerik/hizmet bedelleri bu tutara dahil değildir; hesaplanmadı.",
         "Bu tutar gerçek harcama veya platformda uygulanmış bir limit değildir.",
         "",
         f"TERCİH EDİLEN METİN · Sürüm {version_number}",

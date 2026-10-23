@@ -10,7 +10,7 @@ PAGES = {
         "sections": (
             (
                 "İşletme ve destek bilgileri hazırlanıyor",
-                "GrowthTwin'in doğrulanmış hizmet sağlayıcı bilgileri ve takip edilen "
+                "Yaparo'nun doğrulanmış hizmet sağlayıcı bilgileri ve takip edilen "
                 "destek adresi henüz yayımlanmadı. Bu sayfada şu an başvuru alınmıyor.",
             ),
             (
@@ -65,7 +65,7 @@ PAGES = {
         "sections": (
             (
                 "Şu an neyi deneyebilirsin?",
-                "GrowthTwin'in yerel prototipinde sabit sentetik kampanya örneklerini "
+                "Yaparo'nun yerel prototipinde sabit sentetik kampanya örneklerini "
                 "inceleyebilirsin. Gerçek müşteri kullanımı, ödeme ve canlı reklam "
                 "yayını bu hazırlık sayfalarıyla açılmaz.",
             ),
@@ -77,7 +77,7 @@ PAGES = {
             ),
             (
                 "Üretim bedeli ile reklam bütçesi farklıdır",
-                "İçerik üretim kredileri, GrowthTwin hizmet bedeli ve reklam "
+                "İçerik üretim kredileri, Yaparo hizmet bedeli ve reklam "
                 "platformuna ayrılan medya bütçesi ayrı kalemler olarak planlanıyor. "
                 "Nihai fiyat, vergi, iptal ve iade koşulları henüz belirlenmedi. "
                 "Bu sayfadan paket satın alınamaz; sonuç veya ücret iadesi garantisi verilmez.",
