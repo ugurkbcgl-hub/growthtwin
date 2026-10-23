@@ -21,11 +21,15 @@ Kalıcı iş takibi: [GitHub #328](https://github.com/ugurkbcgl-hub/yaparo/issue
 | Y01 | Mevcut domain ve arayüz haritası; başlangıç | Gerçek mevcut marka/asset/creative/campaign modelleri ve yeni ihtiyaçların eşlemesi; sabit sentetik hizmet + ürün örneği; tek kullanıcı görevi ve test dosyası sınırı |
 | Y02 | Editör adayını daralt; Y01 | Fabric ve tek hazır MIT editör için sabit sürüm, lisans/bağımlılık/güvenlik ve entegrasyon incelemesi; geçici kısa liste, nihai seçim Y03 sonucuna bağlı |
 | Y03 | Uçtan uca geçici editör denemesi; Y02 | Ayrı dal/kapalı yerel sentetik ekran: logo/resim + Türkçe yazı → düzenle → kaydet/aç → PNG; hosted editör/AI bağlantısı gerektirmeyen kanıt; ölçülen görev ve upgrade maliyetiyle gerekçeli nihai seçim |
-| Y04 | Marka kiti ve kaynak gerçekleri; Y01/Y03 | Sahip kapsamlı marka renk/logo/izinli font/teklif/kanıt verisi; bilinmeyen iddia üretilemez; eski sentetik kampanyalar korunur |
+| Y04 | Çok markalı kimlik ve kaynak gerçekleri; Y01/Y03 | Aynı kullanıcıya iki ayrı sentetik marka; kimlik/karakter/renk/logo/font/teklif/kanıt sürümü ve marka seçici; sunucuda erişim; eski kampanyalar sessizce tahmini markaya bağlanmaz |
 | Y05 | Kalıcı materyal kütüphanesi; Y04 | Sentetik JPG/PNG/WebP alımı, özel depo, MIME/byte/piksel sınırı, karantina/işleme, hak ve kaynak/sürüm kayıtları; başka tenant erişemez |
 | Y06 | Editör ürünleştirme; Y03/Y05 | Yaparo şeması, metin/logo/crop/katman/undo, kare/dikey export; orijinaller + sahne + asset/font/lisans manifesti yeni çalışma alanına aktarılıp düzenlenir; dış AI/editör/CDN erişimi engelliyken export çalışır; Türkçe/klavye ve desteklenen sürüm upgrade/geri dönüş örneği geçer |
 | Y07 | Tek müşteri yolculuğu; Y06 | Mevcut kampanyadan marka → içerik → düzenleme → önizleme → indirme; mobil kullanım, açık ilerleme, örnek/gerçek ayrımı; kayıp düzenleme yok |
 | Y08 | Kullanılabilirlik ve kapsam kontrolü; Y07 | Sentetik senaryolarda ölçülmüş hata/süre; izinli katılımcı bulununca 6 gözlem, en az 5 bağımsız tamamlama hedefi; yoksa kullanıcı doğrulaması açık yazılır |
+
+[Markaya özel deneyim](brand-specific-experience.md), Y04–Y14 ve Y30 için ek kabul
+ölçütüdür: marka sürümü/izin/varlık/üretim bağı, ayrı yaratıcı hafıza, kural kontrolü
+ve eski çalışmaların korunması. Temel çok marka ilk kit diliminde yer alır.
 
 Y01–Y03 bir sonraki küçük deneme dilimidir. Bütün müşteri dosya türlerini açmaz. Y05 gerçek upload servisini ancak ilgili veri/güvenlik kapıları sonrası açar; önce sentetik yerel örneklerle geliştirilir.
 
@@ -79,8 +83,8 @@ Pilot kapısı tamamlanmadan gerçek müşteri dosyası, hesap, ödeme veya rekl
 | ID | İş / bağımlılık | Teslim ve tamamlanma ölçütü |
 |---|---|---|
 | Y28 | Meta ücretli reklamları; Y27 ve API uygunluğu | Ayrı müşteri izinleri, yerleşim/render, bütçe/stop ve rapor; sosyal post bağlantısı ücretli reklam diye sunulmaz |
-| Y29 | Lead iletimi ve profesyonel işler; Y27 | CRM/webhook hedef doğrulama, minimum veri/tekilleştirme/teslim/retention; çok marka/rol/toplu varyant; WhatsApp tıklaması satış sayılmaz |
-| Y30 | Video düzenleme/üretim ve TikTok; Y27, ayrı uygunluk | Önce kısa klip/crop/yazı/altyazı/export; codec/model/ses hakları, maliyet ve API izni; tam profesyonel video editörü vaadi yok |
+| Y29 | Lead iletimi ve profesyonel işler; Y27 | CRM/webhook hedef doğrulama, minimum veri/tekilleştirme/teslim/retention; Y04 temel çok markalı kullanımın üstüne portföy/ekip rolleri/toplu varyant; WhatsApp tıklaması satış sayılmaz |
+| Y30 | Video düzenleme/üretim ve TikTok; Y27, ayrı uygunluk | Önce kısa klip/crop/yazı/altyazı/export; sonra marka briefi → senaryo → sahne planı → tutarlı ürün/karakter → ses/kurgu denemesi; codec/model/ses hakları, maliyet ve API izni; tam profesyonel video editörü vaadi yok |
 | Y31 | Deney ve kontrollü optimizasyon; Y23/Y27 | Hipotez, örneklem/süre/atıf gecikmesi/kayıp tavanı; önce öneri, sonra izinli otomasyon; yetersiz kanıtta kazanan yok |
 | Y32 | İsteğe bağlı organik sosyal ve ileri özellikler; talep kanıtı | Postiz/Mixpost veya başka adaptörün gerçek ek değeri/lisansı/maliyeti; gerektiğinde RAG/çoklu ajan/retail media; çekirdek veriler taşınabilir |
 

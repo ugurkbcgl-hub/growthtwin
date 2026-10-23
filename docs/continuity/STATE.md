@@ -1,6 +1,6 @@
 # Yaparo — current handoff
 
-Verified: 2026-10-23 21:36 Europe/Istanbul (+03:00). Recheck mutable facts.
+Verified: 2026-10-23 22:06 Europe/Istanbul (+03:00). Recheck mutable facts.
 
 ## Objective and user preference
 
@@ -16,13 +16,19 @@ Reviewed green PRs may merge; never push directly to main.
 
 Checkout: C:\Users\ugrkb\OneDrive\Masaüstü\yaparo
 Remote: https://github.com/ugurkbcgl-hub/yaparo
-Private Python: %USERPROFILE%\.yaparo\.venv; secrets stay outside OneDrive.
-Base main: 33fede6ae4e30b72d17c76b38c34efa0f7f2fc6f (planning PR #329).
-Its main CI 40001542569 succeeded. Branch: feat/synthetic-editor-spike.
-PR #330: https://github.com/ugurkbcgl-hub/yaparo/pull/330
-Earlier documentation head 88ef554 passed required CI 40003109879. This local
-implementation changes that head; verify its new CI before merging. This is a
-pre-commit snapshot; eventual commit/merge evidence belongs to PR closure.
+Private Python: %USERPROFILE%\.yaparo\.venv; secrets outside OneDrive.
+Verified main cf49e3250a4e911dd40338727e5fe44bcacb6d4c: PR330 merged;
+PR CI40005035260 and post-merge CI40005637231 succeeded. Closure:
+https://github.com/ugurkbcgl-hub/yaparo/pull/330#issuecomment-6372293320
+Current branch docs/brand-specific-experience. This milestone changes planning
+only; no application, schema, provider, credential or budget changes. Look up the
+branch PR/latest CI live; this is its pre-commit snapshot.
+Owner now requires multiple brands per user with separate identity/personality,
+assets, content and preferences. Basic multi-brand moves explicitly into Y04;
+Y29 is advanced team/portfolio use. PROJECT/ROADMAP/master/delivery docs linked.
+Details and acceptance: docs/product/brand-specific-experience.md.
+No current model/technology superiority asserted. Innovation experiments remain
+unimplemented; no promise of absolute originality or advertising performance.
 Durable task: https://github.com/ugurkbcgl-hub/yaparo/issues/328
 
 ## Verified milestone
@@ -86,8 +92,8 @@ created/resumed by the new maintenance cadence proposal. No unattended work clai
 
 ## Next action
 
-Verify PR #330 latest head/required CI and merge state, then close the Y02–Y03
-editor decision with the recorded full-editor security/build failures and an
-explicit acceptance scope before permanent Y04 brand-kit integration. Do not
-claim the unrun comparator roundtrip or full upgrade/portability checks passed.
-Continue local synthetic work; no real customer upload or protected Google action.
+Close the Y02–Y03 editor decision with the recorded comparator failures and
+explicit acceptance scope, then implement the first Y04 slice using two different
+synthetic brands for one owner and a third for an unauthorized owner. Follow
+brand-specific-experience.md for identity versions, access and brand context.
+No implicit legacy campaign reassignment, real upload, provider or Google action.

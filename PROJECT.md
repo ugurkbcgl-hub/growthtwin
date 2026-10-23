@@ -13,6 +13,11 @@ See [domain map](docs/product/creative-editor-domain-map.md) and
 browser tests passed; final editor comparison/adoption and campaign integration
 remain open.
 
+- Each user may manage multiple brands from the initial brand-kit slice. Each
+  brand has its own versioned identity, character, palette/logo, assets, preferences
+  and campaign context. Basic multi-brand use is not deferred to the agency phase.
+  [Brand-specific experience](docs/product/brand-specific-experience.md) defines
+  acceptance and innovation experiments; these capabilities are not implemented yet.
 - Retain Django/PostgreSQL and application-owned customer, brand, asset, editable
   creative, campaign, consent, money and report records. Prefer reusable packages
   and thin adapters; no whole-platform fork or production hosting switch selected.
