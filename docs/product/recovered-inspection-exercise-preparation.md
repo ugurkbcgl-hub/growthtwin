@@ -209,9 +209,8 @@ Regular sensitive_variables-decorated methods protect traceback locals.
 Cleanup validates the minted session's nonce and owner and deletes only the exact
 unchanged encoded row. It also handles an exception immediately after insertion.
 Changed or concurrently added sessions are retained and cause an explicit review
-failure, not broad deletion or an unconditional cleanup-success claim. This byte/
-payload check does not prove expire_date-column immutability: the real launcher
-must separately capture/revalidate the server-session deadline before use. A process
+failure, not broad deletion or an unconditional cleanup-success claim. At PR323 this byte/payload check did not prove expire_date-column immutability;
+the separately reviewed hardening below addresses the primitive, not full execution. A process
 crash can leave a row and requires explicit reviewed reconciliation. No permit,
 receipt or backup is deleted/reset by this primitive.
 
@@ -225,3 +224,22 @@ Next integrate the reviewed primitive into a separate fail-closed single-attempt
 launcher, rehearse its full fixture/error flow and review before any real claim.
 Client binding must be proved by the existing bounded reader AFTER consumption;
 metadata admission is not a substitute and there is no pre-claim decode bypass.
+
+
+## Session deadline primitive hardening - 2026-10-23
+
+The synthetic session object captures the database expire_date BEFORE insertion,
+including the post-insert-exception cleanup path. Reload must match that exact
+expiry. Cleanup deletes only matching original encoded bytes AND expiry; changed
+expiry is retained for explicit review. A new validate() checkpoint requires the
+same live session/owner/workspace, unchanged row, start<=wall_clock<expiry and
+0<=monotonic_elapsed<300. Both clocks are checked again AFTER the database queries,
+so a late query cannot turn an expired observation into a successful validation.
+These are acceptance limits, not hard cancellation of arbitrary database waits.
+
+Six additional fabricated checks bring the focused local suite to20 passes.
+Only ephemeral test databases were used for session operations. No preserved
+candidate session/permit/decoder call occurred. The command remains plan-only.
+The real launcher must still invoke this checkpoint at appropriate pre/post-claim
+boundaries, implement its terminal failure plan, rehearse the full fixture flow
+and pass independent review before any actual execution.

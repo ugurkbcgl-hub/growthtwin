@@ -4,6 +4,7 @@ import copy
 import json
 import os
 import tempfile
+from datetime import timedelta
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -163,6 +164,112 @@ class SyntheticOperatorSessionTests(TransactionTestCase):
                     self.fail("Changed row must not yield a binding")
         self.assertEqual(len(minted), 1)
         self.assertTrue(Session.objects.filter(session_key=minted[0]).exists())
+
+    def test_expiry_change_with_same_payload_is_retained_and_refused(self):
+        binding = self.binding()
+        key = None
+        with self.assertRaisesRegex(ValueError, "cleanup requires review"):
+            with binding as (_, key):
+                Session.objects.filter(session_key=key).update(
+                    expire_date=binding._expected_expiry + timedelta(minutes=1)
+                )
+                with self.assertRaisesRegex(ValueError, "deadline or binding changed"):
+                    binding.validate()
+        self.assertTrue(Session.objects.filter(session_key=key).exists())
+
+    def test_expiry_drift_during_reload_never_yields_binding(self):
+        minted = []
+
+        def changed_reload(request):
+            key = request.session.session_key
+            minted.append(key)
+            Session.objects.filter(session_key=key).update(
+                expire_date=timezone.now() + timedelta(minutes=10)
+            )
+            return self.owner
+
+        with patch("django.contrib.auth.get_user", side_effect=changed_reload):
+            with self.assertRaises(ValueError):
+                with self.binding():
+                    self.fail("Changed expiry must not yield a binding")
+        self.assertTrue(Session.objects.filter(session_key=minted[0]).exists())
+
+    def test_monotonic_deadline_refuses_even_with_unchanged_db_expiry(self):
+        binding = self.binding()
+        with binding:
+            with patch.object(
+                launcher, "monotonic", return_value=binding._started_monotonic + 300
+            ):
+                with self.assertRaises(ValueError):
+                    binding.validate()
+        self.assertFalse(Session.objects.exists())
+
+    def test_wall_clock_expiry_or_backwards_movement_refuses(self):
+        binding = self.binding()
+        with binding:
+            for changed in (
+                binding._expected_expiry,
+                binding._started_at - timedelta(seconds=1),
+            ):
+                with self.subTest(clock=changed):
+                    with patch("django.utils.timezone.now", return_value=changed):
+                        with self.assertRaises(ValueError):
+                            binding.validate()
+        self.assertFalse(Session.objects.exists())
+
+    def test_changed_workspace_owner_invalidates_live_binding(self):
+        binding = self.binding()
+        with binding:
+            other = get_user_model().objects.create_user(
+                username="fabricated-other-owner", password=None
+            )
+            Workspace.objects.filter(pk=self.workspace.pk).update(owner=other)
+            with self.assertRaises(ValueError):
+                binding.validate()
+        self.assertFalse(Session.objects.exists())
+
+    def test_deadline_during_last_scope_query_is_rechecked_before_return(self):
+        for budget in ("wall_clock", "monotonic"):
+            with self.subTest(budget=budget):
+                binding = self.binding()
+                with binding:
+                    late = False
+                    original_filter = Workspace.objects.filter
+                    observed_at = timezone.now()
+
+                    def delayed_filter(*args, **kwargs):
+                        query = original_filter(*args, **kwargs)
+
+                        def exists():
+                            nonlocal late
+                            result = query.exists()
+                            late = True
+                            return result
+
+                        return SimpleNamespace(exists=exists)
+
+                    def wall_clock():
+                        return (
+                            binding._expected_expiry
+                            if late and budget == "wall_clock"
+                            else observed_at
+                        )
+
+                    def elapsed():
+                        return binding._started_monotonic + (
+                            300 if late and budget == "monotonic" else 1
+                        )
+
+                    with (
+                        patch.object(Workspace.objects, "filter", delayed_filter),
+                        patch("django.utils.timezone.now", side_effect=wall_clock),
+                        patch.object(launcher, "monotonic", side_effect=elapsed),
+                        self.assertRaisesRegex(
+                            ValueError, "deadline or binding changed"
+                        ),
+                    ):
+                        binding.validate()
+                self.assertFalse(Session.objects.exists())
 
 
 class FabricatedPlanTests(SimpleTestCase):
