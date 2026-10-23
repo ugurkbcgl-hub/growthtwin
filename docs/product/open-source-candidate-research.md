@@ -64,3 +64,26 @@ Geçen adaylar aynı örnekte karşılaştırılır: müşteri görevini tamamla
 Kod lisansı, model ağırlığı, şablon/font/stok materyal hakkı, platform API koşulu ve ödeme/AI ticari sözleşmesi farklıdır. SBOM/yasal bildirimler exact sürüm ve kullanılan dosyalar üzerinden tutulur. Lisans yorumları kullanım mimarisi kesinleşmeden hukuki onay sayılmaz.
 
 Araştırmada seçilmeyen bir proje sonsuza kadar reddedilmiş değildir. Kanonik repo taşınması, güvenlik olayı, lisans veya özellik değişimi yeniden değerlendirme tetikler. Son push tarihleri yukarıdaki denetimin anlık kayıtlarıdır; kurulumdan önce yeniden okunur.
+
+## 5. İlk uygulama incelemesi — 23 Ekim 2026, 21:25 (+03)
+
+Y02/Y03 henüz tamamlanmadı. Yerel Node 24.11.1 ve npm 11.6.2 doğrulandı.
+Npm kayıt servisi Fabric **7.4.0**, MIT ve dağıtım bütünlük bilgisini döndürdü;
+paket kurulmadı, çalışma kanıtı elde edilmedi.
+
+Hazır aday [react-design-editor v0.2.1](https://github.com/salgum1114/react-design-editor/tree/b1a09dd700dbba95c6770ed91043d1228afaeea4)
+özel geçici klasöre alındı; MIT lisansı kaynakta doğrulandı. Yayınlanan paket
+Canvas/handler bileşenlerini sunuyor; tam araç çubuğu ve özellik panelleri demo
+kaynağında. Dolayısıyla tam editörü doğrudan takıp kullanma varsayımı doğru değil.
+Repo `.npmrc` ayarları lockfile üretimini kapatıyor ve legacy peer çözümüne izin
+veriyor. Sabit sürümlü, yeniden üretilebilir bağımlılık kurulumu ayrıca incelenmeli.
+`--ignore-scripts` ile başlayan kurulum kullanım eşiği devri nedeniyle kesildi;
+kurulum başarıyla tamamlanmadı, build ve güvenlik taraması çalıştırılmadı.
+Bu bulgular adayın elenmesi veya seçilmesi için yeterli değil.
+
+Mevcut Yaparo kaynak eşlemesi: `workspaces/models.py` sahibi olan çalışma alanını;
+`campaigns/models.py` marka adı ve metin yaratıcı sürümlerini tutuyor.
+`assets/contracts.py` yalnız saf durum/izin sözleşmeleri içeriyor. Yeniden
+kullanılabilir marka kiti, dosya deposu ve grafik sahne henüz bu modellerde yok.
+Görsel deneme Google onay/gönderim kayıtlarından ayrı tutulmalı. Ayrıntılı Y01
+haritası ve aynı görevde ölçülen karşılaştırma sonraki uygulamanın parçasıdır.
