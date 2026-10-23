@@ -12,9 +12,12 @@ jobs → accounts/credits/payment → Google Search and real measurement → gat
 pilot → evidence-based channel/video/optimization expansion. Customer discovery
 and legal/platform readiness run alongside local synthetic implementation.
 
-**Next:** Y01–Y03, map the current models and compare Fabric with one complete
-MIT editor on a synthetic Turkish creative save/reopen/export task. No candidate
-is adopted or installed yet. No production service/provider/budget is selected.
+**Current:** Y01 mapped; an isolated Fabric 7.4.0 synthetic editor now supports
+Turkish text/layer edits, save/reopen and PNG export with five focused browser
+checks. See [domain map](docs/product/creative-editor-domain-map.md) and the
+[experiment](experiments/creative-editor/README.md). **Next:** complete Y02–Y03's
+comparison with the pinned full-editor candidate before final adoption. This is
+not yet integrated into campaign persistence; no production provider is selected.
 
 This supersedes the ordering of the 21 October recovery-first sequence below,
 not its security requirements. Keep protected TEST candidate/history/backup and

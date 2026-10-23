@@ -500,3 +500,16 @@ wallclock/DB/scope/privacy rules retained.21 preparation tests passed, including
 new deterministic fractional1000.1/nextafter/exact1300.1/backwards/postquery cases.
 An extra8 mocked view checks passed for provider-removal guidance that does not
 assume an external OAuth application rename. Required CI must pass latest head.
+
+
+## Isolated synthetic creative editor (23 October 2026)
+
+From `experiments/creative-editor`, install its pinned browser dependency with
+`npm ci --ignore-scripts --omit=optional`, then run `python test_editor.py` with
+the existing private Python/Playwright environment. Five focused tests passed
+locally: Turkish save/reopen and decoded PNG, transforms/fixture isolation/mobile,
+invalid storage, unsaved-change cancellation and loopback server boundaries.
+External requests are blocked and fail the test. No DB/credentials/provider calls.
+The required CI job repeats this suite and audits the installed optional-excluded
+npm dependency tree. [Evidence and limits](docs/product/creative-editor-spike-results.md).
+This does not establish production asset isolation or full-editor comparator success.

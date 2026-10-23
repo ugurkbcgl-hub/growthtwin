@@ -1,52 +1,53 @@
 # Yaparo — current handoff
 
-Verified: 2026-10-23 21:25 Europe/Istanbul (+03:00). Recheck mutable facts.
+Verified: 2026-10-23 21:36 Europe/Istanbul (+03:00). Recheck mutable facts.
 
-## Objective and authorization
+## Objective and user preference
 
-Implement ADR-0040/Y01–Y03: existing domain mapping and a pinned Fabric versus
-one complete MIT editor comparison using synthetic Turkish text/image/logo,
-save/reopen and PNG export. No production package choice yet. Real customer
-files/accounts, payments, publishing, spend and new paid resources remain gated.
-Reviewed green PRs may merge under standing authorization; never push to main.
+Implement the owned-core/open-source plan starting with Y01–Y03. On 23 October
+2026 the owner explicitly disabled usage checks and threshold-triggered stops.
+Do not query limits or reactivate a usage monitor; normal milestone notes continue.
+Existing low-usage automation was verified PAUSED without querying account usage.
+Local synthetic development is authorized; customer data/accounts, payment,
+production publishing/spend and new paid infrastructure remain separately gated.
+Reviewed green PRs may merge; never push directly to main.
 
-## Verified repository and stopping point
+## Repository and current deliverable
 
 Checkout: C:\Users\ugrkb\OneDrive\Masaüstü\yaparo
 Remote: https://github.com/ugurkbcgl-hub/yaparo
-Private Python: %USERPROFILE%\.yaparo\.venv; secrets remain outside OneDrive.
-Base main: 33fede6ae4e30b72d17c76b38c34efa0f7f2fc6f, planning PR #329 merged.
-Post-merge required CI 40001542569 succeeded; no open PR at session start.
-Current branch: feat/synthetic-editor-spike. This turn only updates research and
-handoff documentation; no app/dependency/schema/runtime changes were made.
-Find this branch's handoff PR live; its number and CI are not yet known in this
-pre-commit snapshot. Required CI must pass before merge.
+Private Python: %USERPROFILE%\.yaparo\.venv; secrets stay outside OneDrive.
+Base main: 33fede6ae4e30b72d17c76b38c34efa0f7f2fc6f (planning PR #329).
+Its main CI 40001542569 succeeded. Branch: feat/synthetic-editor-spike.
+PR #330: https://github.com/ugurkbcgl-hub/yaparo/pull/330
+Earlier documentation head 88ef554 passed required CI 40003109879. This local
+implementation changes that head; verify its new CI before merging. This is a
+pre-commit snapshot; eventual commit/merge evidence belongs to PR closure.
 Durable task: https://github.com/ugurkbcgl-hub/yaparo/issues/328
 
-The usage tool reported primary 100% used (0% remaining), secondary 16% used.
-New implementation stopped under AGENTS low-usage rule. No unattended work is
-running or promised. Incomplete trial files were removed; an empty ignored-by-Git
-experiments/creative-editor directory remains. No browser/editor
-workflow, build, dependency audit or application tests passed in this turn.
+## Verified milestone
 
-## Findings to reuse
-
-- Workspace has owner/name; campaign draft has brand_name and text creative_versions,
-  not a reusable brand kit or graphical scene. Asset module has pure lifecycle
-  contracts, not uploaded-file storage. Keep Google approval/dispatch history apart.
-- Node 24.11.1/npm 11.6.2 verified. npm registry confirmed Fabric 7.4.0/MIT and
-  integrity metadata; Fabric was not installed.
-- react-design-editor tag v0.2.1 pinned to
-  b1a09dd700dbba95c6770ed91043d1228afaeea4. MIT confirmed. Package exports canvas
-  and handlers; full toolbar/property panels live in demo source and require work.
-- Its .npmrc disables the lockfile and permits legacy peers; inspect reproducibility
-  before adopting. Dependency install was interrupted without success; build/audit
-  were not run. No candidate is selected from these partial findings.
-- Private comparison clone (outside repository/OneDrive):
-  %LOCALAPPDATA%\Yaparo\research\react-design-editor-bd35bbe8c3304192aa67a576d27cc129
-  Inspect before reuse. Install session exited; no known running comparison job.
-- Research details: docs/product/open-source-candidate-research.md. Y01–Y03 remain
-  incomplete; no generated UI or implementation should be inferred from this branch.
+- Y01 domain mapping: docs/product/creative-editor-domain-map.md.
+- Working isolated experiment: experiments/creative-editor. Fabric7.4.0 pinned
+  with lockfile, MIT; own bounded scene v1; two generated synthetic bitmap examples.
+  Turkish text/color and image/logo transforms, local save/reopen, PNG800x800.
+- Five focused browser tests passed (3.505s), PNG actually decoded, external
+  requests0. Mobile no-overflow, malicious storage and server boundaries checked.
+  npm ci reproduced; audit optional-excluded installed tree0findings; JS syntax,
+  Python lint/format passed. Desktop/mobile screenshots reviewed.
+- Independent source review found color type coercion; fixed with regressions.
+  No remaining blocker reported. Required CI now includes this focused workflow.
+- Local server started at http://127.0.0.1:8012/ (session55151); recheck liveness.
+  No app DB, Django production routes, Google history, AI or paid API changes.
+- react-design-editor v0.2.1 exact b1a09dd700dbba95c6770ed91043d1228afaeea4 installed
+  in private temp research clone; JS bundle passed, declaration build TS2883 failed.
+  Production audit4packages (1critical/3moderate), full5 (2critical/3moderate).
+  No same-task browser comparison passed. Y02–Y03 comparative acceptance OPEN.
+- Full results/limits: docs/product/creative-editor-spike-results.md. No production
+  editor adoption claimed; permanent brand/assets/campaign integration is pending.
+- Research clone/evidence: %LOCALAPPDATA%\Yaparo\research\react-design-editor-bd35bbe8c3304192aa67a576d27cc129.
+  No running comparison install/build. Audit data contains only public packages.
+- Desktop PR attachment is unavailable at the existing100identity limit; use URL.
 
 ## Preserved implementation evidence and boundaries
 
@@ -82,8 +83,8 @@ created/resumed by the new maintenance cadence proposal. No unattended work clai
 
 ## Next action
 
-Recheck this handoff branch/PR/CI, then implement Y01–Y03 as one coherent local
-synthetic editor spike. Complete the domain map; compare pinned Fabric 7.4.0 and
-react-design-editor v0.2.1 on the same Turkish edit/save/reopen/PNG task. Use a
-versioned Yaparo scene, local assets, no remote URL/upload/provider calls; choose
-a candidate only after measured runtime, dependency and upgrade evidence.
+Verify PR #330 latest head/required CI and merge state, then close the Y02–Y03
+editor decision with the recorded full-editor security/build failures and an
+explicit acceptance scope before permanent Y04 brand-kit integration. Do not
+claim the unrun comparator roundtrip or full upgrade/portability checks passed.
+Continue local synthetic work; no real customer upload or protected Google action.

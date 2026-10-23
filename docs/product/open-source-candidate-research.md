@@ -87,3 +87,13 @@ Mevcut Yaparo kaynak eşlemesi: `workspaces/models.py` sahibi olan çalışma al
 kullanılabilir marka kiti, dosya deposu ve grafik sahne henüz bu modellerde yok.
 Görsel deneme Google onay/gönderim kayıtlarından ayrı tutulmalı. Ayrıntılı Y01
 haritası ve aynı görevde ölçülen karşılaştırma sonraki uygulamanın parçasıdır.
+
+
+## 6. Devam eden oturumun çalışma kanıtı
+
+Kullanıcı kullanım kontrolünü kaldırıp uygulamaya devam edilmesini istedi.
+Fabric yerel denemesi artık çalışıyor; hazır adayın kurulumu da tamamlandı.
+Önceki kesilmiş kurulum kaydı tarihsel olarak korunur. Güncel sürüm, lisans,
+tarama, derleme ve tarayıcı sonuçları [editör denemesi raporunda](creative-editor-spike-results.md).
+Hazır adayın bildirim derlemesi ve güvenlik kapıları geçmedi; tarayıcıda eş görev
+kanıtı yok. Karşılaştırma tamamlandı veya üretim paketi seçildi diye yorumlanmamalı.

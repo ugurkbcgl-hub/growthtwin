@@ -1,0 +1,7 @@
+{
+  "name": "yaparo-creative-editor-spike",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Isolated synthetic local Fabric editor candidate",
+  "dependencies": { "fabric": "7.4.0" }
+}
