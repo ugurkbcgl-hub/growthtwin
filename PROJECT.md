@@ -306,3 +306,12 @@ captures expire_date before insertion and rechecks the exact row, owned scope,
 wall-clock and five-minute monotonic budget before returning, including after DB
 queries. Changed expiry is retained for review, not silently deleted.20 focused
 fabricated local tests passed; no preserved session/permit/decoder/provider use.
+
+
+Fabricated inspection coordinator (2026-10-23): internal test-only orchestration
+now combines the synthetic operator session, permanent exclusive attempt marker,
+one permit issue and the real consume-before-decode reader. Fixed derived decoder
+paths/quotas, denied provider/write/socket boundaries and cleanup/history checks
+produce scalar results only. No CLI, production route, private fixture creator,
+Windows DPAPI runtime evidence or protected-candidate execution is introduced.
+See docs/product/recovered-inspection-exercise-preparation.md.

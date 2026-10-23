@@ -458,3 +458,14 @@ future launcher checkpoints; this is not full execution integration or a hard
 cancellation of blocked queries. Ruff lint/format ran from apps/web like CI and
 whitespace checks passed. Required PostgreSQL CI pending for this slice. No real
 preserved session/permit/credential operation or broad local suite was run.
+
+
+Fabricated inspection integration (2026-10-23):17 new focused tests pass ephemeral
+SQLite; combined with20 preparation/session tests,37 passed. Real ORM/session/
+issue/consume and bounded JSON codec are exercised; DPAPI return bytes are mocked.
+Covers exact success, consumed invalid/unreadable/client drift, permanent preclaim
+marker, committed ISSUED interruption, postconsume expiry/cleanup drift retained
+for review, repeated decode quotas, swallowed provider/socket attempts, scope
+rejection and direct decoder-guard traceback session masking. Independent source
+review found/resolved generator masking gap. Ruff/format/whitespace passed.
+No actual protected DB/client/candidate, Windows DPAPI or private-ACL operation.

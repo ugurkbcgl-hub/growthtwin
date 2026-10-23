@@ -1,6 +1,6 @@
 # GrowthTwin — current handoff
 
-Verified: 2026-10-23 06:53 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 07:20 Europe/Istanbul (+03:00).
 
 ## Objective and authorization
 
@@ -12,10 +12,10 @@ auto-merge or checks bypass. No paid resources/deployment in this slice.
 
 ## Repository and CI
 
-Verified base mainff32417434e7722f770486d5f2a2c1774573a696: PR323 merged;
-required CI39856678034 and main CI39857094533 passed722 PostgreSQL+11 browser
-E2E. No open PR at slice start. Current branch fix/inspection-session-expiry,
-before its source-review/PR/required CI. Verify final PR/closure comment.
+Verified base main14a979f942d9e9c526808bad2af4cb664ef293b7: PR324 merged;
+required CI39897678185 and main CI39898098378 passed728 PostgreSQL+11 browser
+E2E. Current branch chore/fixture-inspection-once, independent source review
+completed after decoder privacy correction; verify this slice PR and CI live.
 Attachment100-item limit known. Work queue issue322.
 
 ## Scheduler incident and current authorization
@@ -23,21 +23,33 @@ Attachment100-item limit known. Work queue issue322.
 Owner extended work to2026-10-23 18:00 Europe/Istanbul; stop new work17:40.
 At06:47 automation was ACTIVE but last_run_at=null and zero run records; no Git/PR
 progress after PR323 at00:25. Cause unverified; do not claim configured timer is
-working. Observed next trigger06:59 must be checked against actual run evidence.
+working. At07:18 still no run evidence; next trigger06:59 remained in the past.
+Do not claim unattended work is running or repaired; direct work is active.
 Direct work resumed on owner's complaint; no additional authorization required.
 No auth/production/spending/privacy gate is overridden by the schedule.
 
-## Current slice - session expiry acceptance and preservation
+## Current slice - fabricated single-attempt integration
 
-- Captures original expire_date before insertion; verifies exact expiry at reload
-  and cleanup. Changed expiry retained for explicit review, never silently deleted.
-- validate() checks original encoded row, owner/workspace and original wall-clock/
-  300s monotonic window. Rechecks BOTH clocks after all DB queries to refuse late
-  success. No hard cancellation of arbitrary blocked queries is claimed.
-- 20 focused fabricated local tests passed (prior14+6 new), including scope drift,
-  expiry/clock drift and delayed final query; Ruff from apps/web and whitespace pass.
-- No real preserved session/permit/decode/provider use. Source remains plan-only;
-  full single-attempt execution/failure integration is still the next bounded task.
+- Internal no-argument fixture coordinator combines the genuine synthetic-session,
+  issue and consume-before-decode reader services. Context defaultsNone; no CLI,
+  fixture factory, HTTP endpoint or real protected-candidate execution capability.
+- Deterministic exclusive marker precedes session bootstrap and is terminal even
+  on preclaim failure. Issued/consumed permits are not renewed/reset. Exact derived
+  fixed decoder quotas count failed attempts; swallowed forbidden calls still fail.
+- Provider/write/Python-socket guards and identity/history/session cleanup evidence
+  gate scalar output. These are process guards, not an OS network sandbox.
+- Independent review found a generator traceback-masking gap; regular decorated
+  context-manager methods replace it. Review found no remaining source blocker.
+- 17 new tests +20 preparation tests:37 focused local passes; Ruff clean.
+- Tests use only fabricated DB/client/envelope and mocked DPAPI boundary. This is
+  not Windows private-ACL/DPAPI runtime proof or evidence about the actual candidate.
+
+## Previous milestone - session expiry
+
+PR324 captures original expire_date before insertion, verifies exact expiry and
+both original wall-clock/300s monotonic windows, including after final DB queries.
+Changed session/expiry retained for explicit review; no hard cancellation claim.
+20 focused ephemeral local tests, reviewed source, required and main CI passed.
 
 ## Previous milestone - read-only preparation and synthetic bootstrap
 
@@ -137,15 +149,12 @@ commercial/payment/refund/enforceable financial consent gates remain open.
 
 ## Next action
 
-Close this expiry PR after independent review/green required CI and verify
-main CI. Then integrate and rehearse ONE bounded single-attempt local inspection
-launcher using the reviewed synthetic-owner session primitive and the SAME candidate.
-Complete terminal failure/cleanup behavior, exact scope/source/receipt pins,
-process-only flags and fixed decoder boundary; independently review before any
-real session bootstrap, permit claim or protected content read. Existing bounded
-reader proves client binding only AFTER consumption; no pre-claim decode bypass.
+Finish current fixture integration PR after focused tests/source review/required
+CI; verify main CI. Then implement and independently review a fresh private
+Windows fabricated-fixture creator and bounded DPAPI exercise BEFORE proposing
+any actual protected-candidate launcher. Keep the SAME candidate/history intact.
 No retry/renewal/reset/restore/new identity/session-hash rewrite. PREPARE/APPLY are
 complete; preserve history/backup. No provider/refresh/adoption/activation/publishing.
 By17:40 stop new implementation and finish/preserve work; final report by18:00
-Europe/Istanbul2026-10-23 and pause heartbeat. Authentication blockers skip to
-independent safe roadmap work; no gates weakened to fill the overnight window.
+Europe/Istanbul2026-10-23 and pause heartbeat. Scheduling remains unverified;
+configuration alone is not proof of background progress.
