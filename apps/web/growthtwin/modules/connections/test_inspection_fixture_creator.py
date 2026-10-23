@@ -158,6 +158,7 @@ class InspectionFixtureCreatorTests(SimpleTestCase):
             patch.object(sys, "argv", ["fabricated-fixture-command", "match"]),
             patch.object(sys, "path", list(sys.path)),
             patch.object(os, "name", "nt"),
+            patch.object(creator, "Path") as startup_path,
             patch("django.conf.settings", SimpleNamespace(configured=False)),
             patch("django.apps.apps.ready", False),
             patch("django.setup", side_effect=setup_side_effect),
@@ -165,6 +166,11 @@ class InspectionFixtureCreatorTests(SimpleTestCase):
             patch.object(tempfile, "mkdtemp") as files,
             contextlib.redirect_stdout(output),
         ):
+            # Only the Windows admission gate is simulated. Never construct a
+            # WindowsPath on Linux CI for this unrelated startup import path.
+            startup_path.return_value.resolve.return_value.parent.parent = (
+                "fabricated-startup-module-root"
+            )
             self.assertEqual(creator.main(), 1)
         self.assertEqual(dict(os.environ), environment)
         exercise.assert_not_called()
