@@ -1,5 +1,14 @@
 # AI provider evaluation and current direction
 
+> **Strategy update (2026-10-23):** [ADR-0040](docs/adr/0040-owned-core-and-open-source-adoption.md)
+> and the [master plan](docs/product/yaparo-open-source-master-plan.md) now govern
+> provider evolution. Keep task/capability profiles, provenance, cost and data
+> eligibility in Yaparo; compare a typed-output library with existing direct
+> adapters before adopting it. New model releases require measured quality,
+> permissions/cost review and reversible promotion. Core editing must remain
+> usable without AI. No new model/provider call, package installation or
+> production selection occurred during this research.
+
 > **Current recommendation (2026-10-03):** Do not bind GrowthTwin to Ollama,
 > a workstation GPU, or a single provider. Use the application-owned,
 > provider-neutral gateway to route text, image, video, and asset-analysis

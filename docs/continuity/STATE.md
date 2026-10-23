@@ -1,184 +1,86 @@
 # Yaparo — current handoff
 
-Verified: 2026-10-23 19:59 Europe/Istanbul (+03:00).
+Verified: 2026-10-23 21:08 Europe/Istanbul (+03:00); recheck mutable Git/CI facts.
 
-## Objective and authorization
+## Current objective and authorization
 
-Türkiye self-service advertising across industries; clinics are examples. Normal
-journey should not need staff. Local synthetic development authorized; real data,
-production accounts/publication/spend remain behind release gates. Reviewed green
-PRs may squash merge under standing owner authorization; no force, main push,
-auto-merge or checks bypass. No paid resources/deployment in this slice.
+Owner explicitly requested deep research and an end-to-end transition plan using
+maintained open-source components, self-operated editing and replaceable AI.
+ADR-0040 accepts the strategy and new priorities; individual new packages remain
+candidates until the scoped comparison passes. Local synthetic development remains
+authorized. Real customer data/accounts/payment/publication/spend and new paid
+resources retain separate readiness/authorization gates. Reviewed green PRs may
+squash merge under standing authorization; no direct main push or check bypass.
 
-## Repository and CI
+## Repository and latest completed implementation
 
-Current source/Git checkout C:\Users\ugrkb\OneDrive\Masaüstü\yaparo; old public
-Desktop checkout moved and removed. GitHub https://github.com/ugurkbcgl-hub/yaparo
-(same repositoryID1389718599; strict requiredcheck/force/deletion rules verified).
-Private rebuilt Python %USERPROFILE%\.yaparo\.venv, installed yaparo-web editable
-against newsource. Credentials/DB remain outsideOneDrive with original stable IDs.
-Base main555ca07b0f852fe5f67268d2e3b5366156a17cc3(PR326): required39902796016 and
-main39903123677 passed775+11. Branch chore/yaparo-rename-relocation, PR327; rename review/localchecks complete.
-FirstCI39991662424 failed existing exactmonotonic boundary test; precisionfix
-reviewed,21targettests passed; latesthead requiredCI/closure mustbe verified. Attachment100limit.
+Checkout: C:\Users\ugrkb\OneDrive\Masaüstü\yaparo
+Remote: https://github.com/ugurkbcgl-hub/yaparo
+Private Python: %USERPROFILE%\.yaparo\.venv; credentials/DB outside OneDrive.
+Base main: 229382f3c70dd977e23b88d0e50e6ebe68f1599e (merged rename PR #327).
+Verified main CI 39993279858 succeeded. Rename closure evidence:
+https://github.com/ugurkbcgl-hub/yaparo/pull/327#issuecomment-6370586203
+Current planning branch: docs/oss-first-product-plan. Plan PR not yet opened at
+this snapshot; verify live PR and CI before merging/continuing. Local changes are
+documentation only, with no runtime/schema/provider/credential/deployment changes.
 
-## Current authorization and old scheduler window
+## Current planning milestone
 
-Owner explicitly requested product rename and source move with same-function
-verification AFTER the old23October18:00 work window. That expired heartbeat is
-now PAUSED; names and paths updated, existing automation IDs preserved. Low-usage
-monitor was already paused and stayed paused. No background execution proof is
-claimed. Current rename work follows user request, not the expired schedule.
+- Three independent read-only research/review streams: editor/media, architecture,
+  market/platforms. Primary-source README/license/docs plus live repo metadata;
+  no candidate package installed, built or tested.
+- docs/product/yaparo-open-source-master-plan.md: customer journey, owned data,
+  editing, AI capability evolution, channel/measurement, pricing, legal and upkeep.
+- docs/product/open-source-candidate-research.md: 34 candidate rows with scope,
+  license, maintenance evidence and adoption conditions; popularity is not proof.
+- docs/product/yaparo-delivery-plan.md: Y01–Y32 with dependencies and acceptance.
+- PROJECT/ROADMAP/AI/provider/blueprint/gap/legal docs point to the current plan.
+- Delivery order corrected after independent review: Y23 uses TEST/fixtures;
+  Y26 proves pre-pilot readiness; first genuine metrics/attribution evidence is
+  separately authorized Y27. Editor final selection follows the Y03 spike;
+  Y06 requires portable package import, offline-provider editing and upgrade recovery.
+- Durable tracking issue: https://github.com/ugurkbcgl-hub/yaparo/issues/328
+- Market size does not prove customer demand. User interviews/pilot observations,
+  actual provider compatibility, costs and production legal readiness are pending.
+- Current research identifies a July 2026 Turkish AI-ad disclosure/endorsement
+  rule; full effective regulation/sector/legal review remains required.
 
-## Current slice - Yaparo rename and relocation
+## Preserved implementation evidence and boundaries
 
-- Public title/logo/accessibility labels/copy/download nowYaparo; distribution
-  yaparo-web. Keep Python package/classes/app/migrations, salts/UUIDs/receipts,
-  DB growthtwin/growthtwin_app, DPAPI roots, Google/Heroku identities unchanged.
-- Source+.git moved into empty target; ignored runtimes/cache/build archived
-  outside sync. No source .env/SQLite/key/DPAPI files moved intoOneDrive.
-- New private runtime;3 launchers share resolver, refuses OneDrive localvenv
-  fallback ifprivateenvmissing.4 actual Windows resolver tests passed.
-- Pinned helper source/hash unchanged. Only reviewed legacy/current REPO plus
-  exact0007 path admitted, two helper vars rebound in memory.6 puretests passed.
-- Actual readonly plan passed same history/backup/permit0/session0/no credential
-  contents/currentclientproof/execute. No PREPARE/APPLY repeat or newclaim.
-- Local PostgreSQLcheck, pendingmigration and modeldrift checks passed; app767suite
-  completed746passes/21PostgreSQL-only skips;11 browserE2E passed onnewpath/runtime.
-- Yaparo wheel/sdist built+assetsverified; fresh Windows fabricated DPAPI match
-  passed consumed/replay/session0/history/privateACL/cleanup/boundary0.
-- Home+healthHTTP200; homepageYaparo/noGrowthTwin. Server127.0.0.1:8002 started
-  through dev wrapper. Independent source review resolved OneDrive separator guard
-  and Turkish suffix issues; final Ruff checks performed. No provider/deployment.
-- CI foundexisting fractional monotonic subtraction could accept exactdeadline.
-  Absolute sample intervals now reject exact/rollback both pre/postDBquery;21
-  targettests and independent review passed.8 extra mocked statusview tests passed.
-- Full evidence: docs/continuity/RENAMING.md. Real grant/publishing gates unchanged.
+Rename/relocation evidence: docs/continuity/RENAMING.md. Keep stable Python package
+and migration names, DB growthtwin/growthtwin_app, salts/UUIDs/receipts, DPAPI roots,
+Google/Heroku technical identities. No global replacements or secret moves.
 
-## Previous milestone - private Windows fabricated integration
+Local prototype has owner-scoped synthetic drafts/editable text/history/export,
+report empty states and rehearsals. Google daily/total-budget PAUSED TEST
+create/read/repeat/stop was previously verified; no live serving/cap-exhaustion
+or real conversion proof. Existing lifecycle contracts/fake scenarios do not
+prove actual grant revocation/erasure. Preserve legacy stop/reconcile independently.
 
-PR326 fresh private-root/SQLite/fakeclient/receipt creator passed four actual
-Windows DPAPI scenarios:match2/1,clientchanged2/0,invalid2/1,missing2/1; everyrun
-consumed,replayrefused,session0,history/privateACL/cleanup verified,boundary0.
-67 focused tests and independent review passed; normal source switches off.
+The actual scoped candidate remains quarantined. Its credential contents/account
+access were not verified by this planning task. Origin session/process secret
+were lost at logout; do not substitute a session/hash/identity or recreate history.
+Private root: %TEMP%\gwt-scoped-preparation-_jafwrsl\synthetic.sqlite3.
+preparation.json, retirement-intent.json and inspection-schema-preparation.json
+retain exact history and private backup pointer. Completed PREPARE/forward0007
+APPLY must not rerun. No new DB, permit retry/reset, activation or provider refresh.
+Detailed continuation: docs/product/recovered-inspection-exercise-preparation.md
+and docs/product/windows-inspection-fixture.md. Fabricated fixture tests are not
+proof of the preserved real candidate. Actual launcher review remains a separate
+Y19 integration task, not a blocker for the synthetic creative-studio slice.
 
-## Previous milestone - fabricated coordinator
+Earlier cloud record: API Test/OAuth Testing/one test user and incomplete branding;
+not freshly rechecked here. Fresh campaign staging E2E, configured DB/files restore,
+code/schema recovery, domain/identity/privacy, production token/tenant controls,
+actual metrics and payment/financial consent remain open release gates.
 
-PR325 internal no-argument coordinator retains deterministic terminal marker before
-bootstrap, invokes genuine issue/consume services, counts failed fixed decoder and
-swallowed boundary attempts, masks direct-helper tracebacks and preserves changed
-sessions for review.37 focused local tests, required and main CI passed.
-
-## Previous milestone - session expiry
-
-PR324 captures original expire_date before insertion, verifies exact expiry and
-both original wall-clock/300s monotonic windows, including after final DB queries.
-Changed session/expiry retained for explicit review; no hard cancellation claim.
-20 focused ephemeral local tests, reviewed source, required and main CI passed.
-
-## Previous milestone - read-only preparation and synthetic bootstrap
-
-PR323 added a fixed Windows read-only plan using pinned helper/audit and exact
-private backup/post0007 history/schema/data admission; actual read-only plan passed
-with permit0/session0, no protected credential contents read, no current-client
-proof or execute capability. Its separate synthetic operator-session primitive
-was tested only with fabricated DB rows, not the preserved candidate. Password
-unchanged; explicit local operator authority is not password/public authentication.
-
-## Previous milestone - same-DB backup and only forward0007 completed
-
-- Owner requested completing next steps after usage handoff; additional credits
-  enabled, bounded work resumed under current instruction. No change to standing
-  low-usage rule or production permissions.
-- Private helper reporting now waits for outer network checks. Three PREPARE ACL
-  failures stopped BEFORE copying DB data; fresh failed directories remain empty.
-  Independently reviewed native ACL handling on fresh empty owned directory fixed
-  this; strict private ACL checked before copying. No original ACL/owner changed.
-- PREPARE passed: same DB admission/history/session0, private backup byte/snapshot
-  equivalence, unchanged source DB and actual ONLY-forward connections.0007 plan.
-  Independent review checked actual manifest/hash/ACL/migration source before APPLY.
-- Exactly one APPLY passed: original application schema/table-data/history preserved
-  except added0007 recorder row; new permit table/indexes only; permit_count0;
-  backup unchanged. SQLite internals excluded; no restore/APPLY retry/post_migrate.
-- Later separate RO audit passed: coherent current owned inactive candidate/history,
-  preparation IDs, disabled login/session0, migration0007 and permit table present,
-  exact client/candidate regular/private and identity legacy absent. DB unchanged
-  DURING later audit; schema migration intentionally changed original DB bytes.
-- Ruff/compilation passed. No new local Django suite. No permit claim, protected
-  credential content read/decryption, provider, activation, publishing or deployment.
-- Full evidence/helper hash: docs/product/recovered-inspection-exercise-preparation.md.
-
-## Verified milestone — inactive scoped candidate
-
-- User completed Google general account verification and then application-specific
-  device verification. No Google credential created or security setting weakened.
-- Bounded preflight repeated18:57: one legacy refresh +one fixed Ads identity
-  SELECT proved non-manager TEST child and registered client. Encrypted client/
-  grant hashes and preserved DB stat unchanged DURING PREFLIGHT; no writes.
-  This is old-grant evidence, not candidate target proof or post-consent remote
-  token preservation guarantee.
-- Exact expired RESERVED retired with existing locked service, stable request/
-  immutable digest, atomic generation rotation. Old REJECTED/retired_before_exchange
-  history retained. No provider/credential I/O in retirement, no reset/new DB.
-- Reviewed wrapper requires exact old retirement proof/current generation/history,
-  one start/exchange/exact-envelope write. Same synthetic owner/workspace; only
-  isolated process flags enabled. Callback produced CANDIDATE and clean status URL,
-  no query/fragment. No candidate refresh/Ads/adoption/activation/revoke/advertising.
-- Independent read-only NEW-DB metadata/file-existence check: quarantine/revision1,
-  generation chain, old rejected receipt and current candidate all consistent;
-  exact candidate file exists and nonempty. Contents NOT read/decrypted. Token
-  validity and candidate account access unverified. No active grant.
-- Logout/process stop completed; explicit exact-DB cleanup after interrupt proved
-  unusable synthetic password, session0, two retained history rows. No8002 listener.
-  Normal source flags remain False. Forced stop does not guarantee finally.
-
-## Continuation resources and limits
-
-Same private temp DB: %TEMP%\gwt-scoped-preparation-_jafwrsl\synthetic.sqlite3.
-preparation.json has exact owner/workspace/connection/generation/attempt metadata;
-retirement-intent.json preserves stable old request/digest. target-preflight.json,
-candidate-runtime.json and inactive-candidate-success.png are in the same directory.
-No passwords/code/state/verifier/token in these notes. Temporary files may vanish.
-
-Git-external helpers were source-reviewed. Original preparation helper creates NEW
-DB and is not resume. Old one-candidate launcher requires zero history; replacement
-%TEMP%\growthtwin_after_retirement_candidate_runtime.py requires exactly one old
-retired row and now also cannot rerun (two rows). Never relax these guards or use
-new DB/identity to bypass history. Candidate encrypted material remains inert.
-
-Origin session and random process-only Django SECRET_KEY were lost at logout/stop.
-Existing inspect_candidate requires original session HMAC; cannot recreate by a
-new session/secret or mutate stored hash. Guarded actual readback not performed.
-Separate recovery adapter exists. Backup/schema preparation is now complete;
-reviewed launcher/scope/session/permit/failure plan still required before actual
-inspection. No bypass, activation or provider use.
-
-Private backup pointer: same prepared root's inspection-schema-preparation.json;
-read only that exact pointer with typed/path/no-reparse checks. It identifies the
-private backup/manifest outside Git. Completed PREPARE/APPLY must not be rerun.
-Private helper %TEMP%\gwt_prepare_inspection_schema.py final reviewed SHA256:
-d5742e54d168e7e31d64e8ff2ecb68083f7747be0d7c25192d68efabbc69acee.
-
-## Existing evidence and open gates
-
-Local prior Google DAILY/total-budget PAUSED TEST create/read/repeat/stop verified;
-drafts1/2 remain historical stopped examples, no serving/spend/cap-exhaustion proof.
-ADR0027 lifecycle decisions, synthetic persistence/owner journey and fake result
-examples exist; not actual grant closure/revocation/erasure integration. Existing
-legacy stop/reconcile must remain separately usable; fixture UUIDs are not grant
-mapping. Cloud earlier October22: API Test, OAuth External/Testing, one test user,
-Branding URLs/domains incomplete; no production upgrade or scope/publish change.
-Fresh deployment/campaign stagingE2E, configured recovery/schema rollback, privacy/
-retention/legal/domain/contact, production vault/tenant identity, real metrics and
-commercial/payment/refund/enforceable financial consent gates remain open.
+The expired work heartbeat and low-usage monitor remain PAUSED; no automation was
+created/resumed by the new maintenance cadence proposal. No unattended work claim.
 
 ## Next action
 
-Close current Yaparo rename PR after reviewed requiredCI, then verify mainCI
-and clean newcheckout. Resume separately reviewed fixed-scope actual preserved-
-candidate launcher:SAME DB/receipt/history/privatebackup, source/decoder/scope pins,
-one-shot terminal session/permit/failure plan before any credentialcontents.
-Do not globalreplace compatibility IDs, reset/renew/retry permits, restoreoverclaim,
-substituteidentity/sessionhash or rerun completedPREPARE/APPLY. No provider refresh/
-adoption/activation/publishing/deployment. Rootrename docs describe source vs
-private runtimes; never put .env/DB/keys intoOneDrive. Reverify live repo/PR facts.
+Verify the planning PR/CI and clean repository, then execute Y01–Y03 in a feature
+branch: map existing models, pin Fabric and one complete MIT editor, compare the
+same synthetic Turkish brand/image/text save/reopen/PNG workflow. Select only after
+measured compatibility/license/upgrade/portability findings. Keep local assets
+synthetic and private; no new paid resource, provider call or actual Google action.

@@ -1,5 +1,14 @@
 # Türkiye advertising, consumer, and privacy readiness map
 
+**Targeted research update — 2026-10-23:** The [new master plan](yaparo-open-source-master-plan.md)
+adds a material official-source finding from the [Ministry's 1 July 2026 announcement](https://www.ticaret.gov.tr/haberler/ticaret-bakanligi-tarafindan-ticari-reklam-ve-haksiz-ticari-uygulamalar-yonetmeliginde-yapilan-degisikliklerle-tuketicilerin-aldatici-reklam-ve-ticari-uygulamalara-karsi-korunmasi-guclendiriliyor):
+human-indistinguishable AI characters require clear disclosure, and digital
+copies of real people cannot imply personal product experience/endorsement in
+ads. Add AI-character provenance/disclosure and endorsement eligibility to the
+creative policy review. Verify the full current regulation, effective provisions
+and sector rules with qualified counsel before launch. This targeted update is
+not a complete re-audit or legal approval of the dated map below.
+
 **Reviewed:** 2026-09-29 (Europe/Istanbul)
 **Scope:** initial product-planning map from current official Turkish sources. This is not legal advice or a complete sector-by-sector compliance opinion. It identifies product gates that need qualified legal review before checkout, real data, lead handling, or campaign publication.
 

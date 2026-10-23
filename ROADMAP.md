@@ -1,5 +1,28 @@
 # Yaparo roadmap
 
+## Active delivery plan — 2026-10-23
+
+Owner direction: build a sustainable Yaparo-owned product using maintained,
+self-hostable components and replaceable AI services. Follow [ADR-0040](docs/adr/0040-owned-core-and-open-source-adoption.md)
+and the [master plan](docs/product/yaparo-open-source-master-plan.md).
+
+The [Y01–Y32 sequence and acceptance criteria](docs/product/yaparo-delivery-plan.md)
+is now the active backlog: brand/assets/editor/export → evaluated AI and durable
+jobs → accounts/credits/payment → Google Search and real measurement → gated
+pilot → evidence-based channel/video/optimization expansion. Customer discovery
+and legal/platform readiness run alongside local synthetic implementation.
+
+**Next:** Y01–Y03, map the current models and compare Fabric with one complete
+MIT editor on a synthetic Turkish creative save/reopen/export task. No candidate
+is adopted or installed yet. No production service/provider/budget is selected.
+
+This supersedes the ordering of the 21 October recovery-first sequence below,
+not its security requirements. Keep protected TEST candidate/history/backup and
+old read/stop paths intact; no reset, bypass or repeated preparation. Complete
+real-data/financial/platform/operational gates before any customer pilot.
+
+Earlier sections remain dated implementation evidence and longer-term scope.
+
 ## Direction reset — 2026-09-27
 
 The owner clarified that Türkiye is the target market and Yaparo should serve anyone who wants to advertise. Dental clinics, creators, and small businesses are examples, not product boundaries. Omneky is a long-term capability benchmark for ad creation, campaign launch, unified reporting, and bounded optimization. See [PROJECT.md](PROJECT.md), [ARCHITECTURE.md](ARCHITECTURE.md), accepted [ADR-0004](docs/adr/0004-self-service-advertising-autopilot.md), and [ADR-0005](docs/adr/0005-turkey-first-advertising-platform.md).

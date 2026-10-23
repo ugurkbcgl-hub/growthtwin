@@ -1,5 +1,13 @@
 # GrowthTwin — ürün ve hizmet blueprint'i
 
+**23 Ekim 2026 Yaparo güncellemesi:** Güncel mimari/ürün öncelikleri
+[açık kaynak ana planında](yaparo-open-source-master-plan.md), aday kanıtları
+[araştırma kaydında](open-source-candidate-research.md), uygulama sırası
+[Y01–Y32 planında](yaparo-delivery-plan.md) tutulur. Bu eski marka adlı belge
+hizmet gereksinimlerinin tarihsel kaydıdır. Fiyat çıpaları ve garanti fikri
+nihai satış şartı değildir; 2026 mevzuat/kanal gelişmeleri yeni planda ayrıca
+ele alınmıştır. Aday bileşenlerin kurulumu veya canlı veri/yayın açılması yapılmadı.
+
 **Durum:** Araştırma ve planlama taslağı; kullanıcı gereksinimlerini ve doğrulanmış kaynakları bir araya getirir. Buradaki öneriler, ayrıca “karar” diye işaretlenmedikçe nihai ticari, hukuki veya teknik karar değildir.
 
 **Güncelleme:** 2026-09-29 (Europe/Istanbul)  

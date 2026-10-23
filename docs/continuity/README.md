@@ -37,3 +37,9 @@ If the next model cannot access the repository, provide it the current `STATE.md
 
 Current rename/runtime/compatibility evidence: [RENAMING.md](RENAMING.md).
 Do not migrate secrets or reset durable IDs merely to match the new brand.
+
+Current product priority (23 October 2026): [owned-core/open-source plan](../product/yaparo-open-source-master-plan.md)
+and [Y01–Y32 delivery sequence](../product/yaparo-delivery-plan.md), accepted in
+ADR-0040. Begin with the synthetic brand/material/editor/export slice; protected
+Google candidate recovery is a separate integration workstream. No package or
+provider choice is production-approved merely because it appears in research.
