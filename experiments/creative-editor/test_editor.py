@@ -10,7 +10,6 @@ import unittest
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
-
 from serve import make_server
 
 
