@@ -177,3 +177,51 @@ class BrandIdentity(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError("Marka sürümleri tek başına silinemez.")
+
+
+class BrandCreativeDocumentQuerySet(models.QuerySet):
+    def update(self, **kwargs):
+        if {"id", "pk", "identity", "identity_id"} & kwargs.keys():
+            raise ValidationError("Çalışmanın marka kimliği bağı değiştirilemez.")
+        return super().update(**kwargs)
+
+    def bulk_update(self, objs, fields, **kwargs):
+        if {"id", "pk", "identity", "identity_id"} & set(fields):
+            raise ValidationError("Çalışmanın marka kimliği bağı değiştirilemez.")
+        return super().bulk_update(objs, fields, **kwargs)
+
+
+class BrandCreativeDocument(models.Model):
+    """Saved synthetic scene with one permanent brand-identity binding.
+
+    Revision protects concurrent edits; this is not scene edit history or a SQL
+    vault. The owner-scoped service is the supported read/write application API.
+    """
+
+    id = models.UUIDField(primary_key=True, editable=False)
+    identity = models.ForeignKey(
+        BrandIdentity, on_delete=models.PROTECT, related_name="creative_documents"
+    )
+    scene = models.JSONField()
+    revision = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = BrandCreativeDocumentQuerySet.as_manager()
+
+    class Meta:
+        ordering = ("-created_at", "pk")
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(revision__gte=1),
+                name="brand_creative_revision_positive",
+            )
+        ]
+
+    def save(self, *args, **kwargs):
+        original = type(self).objects.filter(pk=self.pk).first() if self.pk else None
+        if original and (
+            self._state.adding or original.identity_id != self.identity_id
+        ):
+            raise ValidationError("Çalışmanın marka kimliği bağı değiştirilemez.")
+        return super().save(*args, **kwargs)

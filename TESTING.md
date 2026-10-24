@@ -523,3 +523,9 @@ unchanged; desktop/mobile screenshots reviewed. Source review found no blocker.
 Ruff lint/format, migration drift and wheel/source asset verification passed.
 PostgreSQL races must pass in required CI before merge. No configured DB migration,
 customer upload, provider call or production deployment was performed.
+
+Saved-document follow-on:77 focused workspace cases (73 local passes,4 PostgreSQL
+skips), plus one actual Chromium create/edit/reopen/download/identity-change test
+passed. The downloaded JSON was decoded and checked. Source reviewed by root;
+independent helper review was interrupted by workspace-credit errors. Required
+PostgreSQL CI is the remaining merge gate. No configured DB migration performed.

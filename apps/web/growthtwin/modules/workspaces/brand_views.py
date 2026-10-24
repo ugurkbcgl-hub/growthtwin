@@ -1,6 +1,7 @@
 """Owner-scoped, synthetic brand identity screens."""
 
 import re
+import uuid
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -20,7 +21,12 @@ from growthtwin.modules.workspaces.brand_forms import (
     BrandCreateForm,
     BrandIdentityForm,
 )
-from growthtwin.modules.workspaces.models import Brand, BrandIdentity, Workspace
+from growthtwin.modules.workspaces.models import (
+    Brand,
+    BrandCreativeDocument,
+    BrandIdentity,
+    Workspace,
+)
 from growthtwin.modules.workspaces.services import (
     SYNTHETIC_BRAND_PRESETS,
     create_brand_for_owner,
@@ -145,6 +151,10 @@ def brand_detail(request, brand_id):
             "preview": _identity_row(brand.current_identity),
             "history": [_identity_row(item) for item in identities],
             "preset": SYNTHETIC_BRAND_PRESETS[brand.fixture],
+            "document_request_id": uuid.uuid4(),
+            "documents": BrandCreativeDocument.objects.filter(identity__brand=brand)
+            .select_related("identity")
+            .order_by("-created_at"),
         },
     )
 

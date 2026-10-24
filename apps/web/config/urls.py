@@ -28,5 +28,9 @@ urlpatterns = [
     path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("demo/", include("growthtwin.demo.urls")),
     path("workspace/campaigns/", include("growthtwin.modules.campaigns.urls")),
+    path(
+        "workspace/brands/<int:brand_id>/documents/",
+        include("growthtwin.modules.workspaces.document_urls"),
+    ),
     path("workspace/brands/", include("growthtwin.modules.workspaces.brand_urls")),
 ]

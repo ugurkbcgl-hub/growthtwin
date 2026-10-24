@@ -1,5 +1,14 @@
 # Yaparo roadmap
 
+
+## Saved synthetic creative work — 24 October 2026
+
+The local brand slice now has identity-pinned saved scene documents: explicit
+creation, title/color edits, reopen and owned JSON download. Replays do not reset
+work; stale saves are rejected. Brand edits do not rebind existing documents.
+The schema is the bounded editor experiment v1. Django graphical editing/PNG,
+custom assets, creative edit history and campaign association remain open.
+
 ## Active delivery plan — 2026-10-23
 
 Owner direction: build a sustainable Yaparo-owned product using maintained,
