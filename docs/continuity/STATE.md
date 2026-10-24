@@ -14,22 +14,25 @@ work only; actual customer data/accounts, payments/publishing remain gated.
 Checkout: C:\Users\ugrkb\OneDrive\Masaüstü\yaparo
 Remote: https://github.com/ugurkbcgl-hub/yaparo
 Private Python: %USERPROFILE%\.yaparo\.venv; secrets outside OneDrive.
-Base main84c53b8 (PR331 merged); post-merge CI40009304096 succeeded.
-Current branch feat/synthetic-brand-workspaces; pre-commit snapshot: resolve PR
-and its checks live. Durable task: GitHub issue328.
+PR332 merged as9e615d76b96af2dfe63faaf42be1754699d1fac4; required
+CI40066617140 succeeded. Current branch feat/brand-creative-documents; resolve
+new PR/current CI live (pre-commit snapshot). Durable task: GitHub issue328.
 
-- ADR0041 selects Fabric7.4.0 for the bounded local slice. Full-editor comparator
-  failed build/security gate; no same-task browser pass claimed. Y06 remains open.
-- Y04 now implements two fixed synthetic brands per workspace, owner-scoped
-  list/create/detail/edit, palette/tone/tagline, literal identity snapshots,
-  immutable version history, optimistic edit protection and repeat-create safety.
-- Auth/CSRF/GET-no-mutation/foreign-owner guards; no legacy campaign reassignment.
-- 31 focused tests:29 local passes,2 PostgreSQL races skipped on SQLite. Browser
-  mobile/desktop reviewed; lint/format/migration drift/distribution assets passed.
-  Independent source review no blocker. PostgreSQL CI remains to be verified.
-- No persistent configured DB migration, custom upload, provider or deployment.
-- 8012 is the standalone editor experiment, not the new Django brand UI.
-- Desktop PR attachment may fail at existing100identity limit; use PR URL.
+- Y04 synthetic brand create/list/edit and immutable identity versions merged.
+- Follow-on local saved documents pin BrandIdentity; owner+brand scoping,
+  request UUID replay, optimistic save revision, fixed scene v1 server validation.
+- Explicit brand-page create → bounded title/color edit → reopen → JSON download.
+  No arbitrary import/custom uploads/Fabric-in-Django/PNG rendering yet.
+- 77 focused workspace tests:73 passed,4 PostgreSQL races skipped on SQLite.
+  New document browser test passed (3.258s), retained old identity after brand edit,
+  edited text reopened and actual downloaded JSON decoded. Mobile screenshot
+  reviewed. Lint/format and migration drift passed; required PG CI pending.
+- Root reviewed source after helper agents hit workspace-credit errors; no claim
+  of completed independent review for this second package. No usage query made.
+- Scene edit history/undo is not implemented; revision is a concurrency token.
+- No persistent configured DB migration/provider/deployment/customer data.
+- 8012 remains standalone experiment, not the Django document UI.
+- Desktop PR attachments unavailable at existing100identity limit; use URLs.
 
 ## Preserved implementation evidence and boundaries
 
@@ -65,7 +68,6 @@ created/resumed by the new maintenance cadence proposal. No unattended work clai
 
 ## Next action
 
-Finish PR/required PostgreSQL CI for the brand slice and merge only if green;
-then bind synthetic saved creative work to an explicit owned brand identity
-version, preserving old work after edits. Custom assets and campaign binding
-remain separate unfinished Y04/Y05 work; no implicit legacy reassignment.
+Finish saved-document PR and required PostgreSQL CI, then connect the bounded
+Fabric editor to owned saved documents without using browser localStorage as the
+source of truth. Preserve pinned identity and existing campaign/Google history.

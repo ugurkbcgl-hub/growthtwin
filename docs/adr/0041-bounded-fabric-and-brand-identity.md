@@ -49,3 +49,20 @@ cannot access either brand. Invalid fields, forged fixture/workspace, duplicate
 creation and stale saves are covered by focused local and PostgreSQL CI checks.
 Browser verification must show the complete create/edit/switch experience and
 mobile layout. A successful local rehearsal is not a production launch gate.
+
+## Follow-on local document binding — 24 October 2026
+
+A saved synthetic creative document pins one immutable BrandIdentity. Ownership
+and brand are derived through that identity, never accepted from scene metadata.
+Creation explicitly names the brand and expected current identity version; a
+request UUID prevents duplicate creation. Saving requires the document revision;
+a stale writer cannot silently replace a newer saved scene. The revision is a
+concurrency token, not a full creative edit-history or undo implementation.
+
+The first UI only edits bounded title/subtitle and text colors and exports the
+owned scene JSON. It does not provide arbitrary scene imports, custom assets,
+Fabric editing inside Django or PNG rendering. Scene v1 retains the experiment's
+fixed dimensions/layers/assets. Its title seeds from the pinned identity tagline
+and primary color; secondary color and tone are preserved by the identity link,
+but are not silently mapped to unsupported v1 fields. Existing campaign records
+and publication approvals remain unchanged. Full visual integration remains Y06.
