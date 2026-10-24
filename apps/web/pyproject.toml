@@ -53,3 +53,7 @@ include = ["config*", "growthtwin*"]
     "static/campaigns/js/*.js",
 ]
 "growthtwin.modules.connections" = ["templates/connections/*.html"]
+"growthtwin.modules.workspaces" = [
+    "templates/workspaces/*.html",
+    "static/workspaces/css/*.css",
+]

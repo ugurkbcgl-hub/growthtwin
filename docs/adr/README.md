@@ -12,6 +12,8 @@ ADRs capture decisions that would be costly or confusing to reverse. Keep propos
 
 ## Decisions
 
+- [0041 — Bounded Fabric and versioned multi-brand identity](0041-bounded-fabric-and-brand-identity.md) — Accepted for local synthetic implementation
+
 - [0040 — Yaparo-owned core and staged open-source adoption](0040-owned-core-and-open-source-adoption.md) — Accepted strategy/priority; new components remain evaluation candidates
 
 - [0001 — Modular monolith boundaries](0001-modular-monolith.md) — Accepted

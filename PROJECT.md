@@ -10,14 +10,16 @@ candidate packages from adopted implementations. The planning milestone installe
 none; the subsequent local experiment now pins Fabric 7.4.0 solely for evaluation.
 See [domain map](docs/product/creative-editor-domain-map.md) and
 [working synthetic experiment](experiments/creative-editor/README.md). Five focused
-browser tests passed; final editor comparison/adoption and campaign integration
-remain open.
+browser tests passed. ADR-0041 selects Fabric for the bounded local slice;
+production editor readiness and campaign integration remain open.
 
 - Each user may manage multiple brands from the initial brand-kit slice. Each
   brand has its own versioned identity, character, palette/logo, assets, preferences
   and campaign context. Basic multi-brand use is not deferred to the agency phase.
   [Brand-specific experience](docs/product/brand-specific-experience.md) defines
-  acceptance and innovation experiments; these capabilities are not implemented yet.
+  acceptance and innovation experiments. The first synthetic brand list/create/edit
+  slice now preserves identity versions and owner boundaries; assets, campaign
+  binding, custom uploads and brand-aware AI remain pending.
 - Retain Django/PostgreSQL and application-owned customer, brand, asset, editable
   creative, campaign, consent, money and report records. Prefer reusable packages
   and thin adapters; no whole-platform fork or production hosting switch selected.
@@ -25,7 +27,7 @@ remain open.
   providers. Advertising networks, payment processors and hosted AI remain external.
 - Prioritize the synthetic brand/material/editor/export journey, then evaluated
   AI, commerce and a complete Google Search path. [Y01–Y32](docs/product/yaparo-delivery-plan.md)
-  supersedes the older recovery-first task order. First next slice: Y01–Y03.
+  supersedes the older recovery-first task order. Current slice: Y04; Y01–Y03 local selection is recorded in ADR-0041.
 - Basic editing should work without an AI call. Candidate editor/AI/worker
   choices require a pinned-version comparison before adoption. New worker/storage
   costs, real data, publishing and payments retain their existing release gates.

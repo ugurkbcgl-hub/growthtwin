@@ -12,12 +12,12 @@ jobs → accounts/credits/payment → Google Search and real measurement → gat
 pilot → evidence-based channel/video/optimization expansion. Customer discovery
 and legal/platform readiness run alongside local synthetic implementation.
 
-**Current:** Y01 mapped; an isolated Fabric 7.4.0 synthetic editor now supports
-Turkish text/layer edits, save/reopen and PNG export with five focused browser
-checks. See [domain map](docs/product/creative-editor-domain-map.md) and the
-[experiment](experiments/creative-editor/README.md). **Next:** complete Y02–Y03's
-comparison with the pinned full-editor candidate before final adoption. This is
-not yet integrated into campaign persistence; no production provider is selected.
+**Current:** Y01 mapped; Y02–Y03 bounded local editor decision recorded in
+[ADR-0041](docs/adr/0041-bounded-fabric-and-brand-identity.md). Y04 now has
+owner-scoped synthetic brand creation/list/edit, immutable identity versions and
+stale-edit protection. Desktop/mobile journey passed locally. Custom logo/font
+intake, creative/campaign binding and production editor readiness remain open.
+**Next:** bind saved creative work to an explicit owned brand identity version.
 
 The owner's multi-brand requirement is now part of Y04: separate identity,
 character, assets and creative history per brand. See [brand experience and

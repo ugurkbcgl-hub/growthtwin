@@ -15,6 +15,9 @@ REQUIRED_FILES = {
     "growthtwin/demo/templates/demo/profile_edit.html",
     "growthtwin/demo/templates/registration/login.html",
     "growthtwin/modules/campaigns/static/campaigns/js/campaigns.js",
+    "growthtwin/modules/workspaces/templates/workspaces/brand_list.html",
+    "growthtwin/modules/workspaces/templates/workspaces/brand_detail.html",
+    "growthtwin/modules/workspaces/static/workspaces/css/brands.css",
 }
 
 

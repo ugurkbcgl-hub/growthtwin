@@ -82,3 +82,11 @@ paket import/export veya kampanya entegrasyonu sunmaz. Sistem Arial kullanır;
 font indirme/dağıtma yoktur ve platformlar arasında piksel eşitliği vaat edilmez.
 Y04–Y07 ve Y06 font/şema/taşınabilirlik kapıları devam eder. Yerel storage silinirse
 taslak kaybolur; gerçek müşteri verisi girilmemelidir.
+
+
+## Sonraki karar
+
+[ADR-0041](../adr/0041-bounded-fabric-and-brand-identity.md), bu sonuçlardan sonra
+hazır adayı güvenlik/derleme kapısında dışlayarak Fabric'i yalnız dar yerel dilim
+ için seçti. Önceki açık karşılaştırma kaydı tarihsel kanıttır; yapılmamış aday
+browser testi tamamlandı sayılmadı. Y06 kapsamlı kabulü hâlâ bekler.
