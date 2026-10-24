@@ -513,3 +513,13 @@ External requests are blocked and fail the test. No DB/credentials/provider call
 The required CI job repeats this suite and audits the installed optional-excluded
 npm dependency tree. [Evidence and limits](docs/product/creative-editor-spike-results.md).
 This does not establish production asset isolation or full-editor comparator success.
+
+## Multi-brand identity slice — 24 October 2026
+
+Focused local workspace plus brand browser run: 31 tests, 29 passed and two
+PostgreSQL concurrency tests skipped under in-memory SQLite. The browser creates
+two synthetic brands, edits one and verifies the other and prior identity remain
+unchanged; desktop/mobile screenshots reviewed. Source review found no blocker.
+Ruff lint/format, migration drift and wheel/source asset verification passed.
+PostgreSQL races must pass in required CI before merge. No configured DB migration,
+customer upload, provider call or production deployment was performed.

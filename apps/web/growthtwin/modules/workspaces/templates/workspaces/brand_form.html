@@ -1,0 +1,14 @@
+{% extends 'campaigns/base.html' %}{% load static %}
+{% block title %}{% if creating %}Örnek marka ekle{% else %}Marka kimliğini düzenle{% endif %}{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'workspaces/css/brands.css' %}">{% endblock %}
+{% block content %}
+<a href="{% url 'brands:list' %}">← Markalarım</a>
+<section class="brand-heading"><div><p class="brand-eyebrow">MARKA KİMLİĞİ</p><h1>{% if creating %}Bir örnekle başla.{% else %}{{ brand.name }}{% endif %}</h1><p>{% if creating %}Kurgusal ürün veya hizmet markasını kendi çalışma alanına ekle. Aynı örnek tekrar eklenirse mevcut marka açılır.{% else %}Renkleri ve sesi birlikte seç. Kaydettiğinde eski kimlik sürümleri korunur.{% endif %}</p></div></section>
+<div class="brand-form-layout"><section class="brand-card">
+{% if creating and not has_workspace %}<h2>Markalarına bir alan aç.</h2><p>Örnek markaların yalnızca sana ait çalışma alanında saklanır.</p><form method="post" action="{% url 'brands:prepare' %}">{% csrf_token %}<button class="brand-button" type="submit">Örnek çalışma alanını hazırla</button></form>{% else %}
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for hidden in form.hidden_fields %}{{ hidden }}{{ hidden.errors }}{% endfor %}
+{% for field in form.visible_fields %}<div class="brand-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}{% if field.help_text %}<p>{{ field.help_text }}</p>{% endif %}</div>{% endfor %}
+<button class="brand-button" type="submit">{% if creating %}Örnek markayı ekle{% else %}Kimliği kaydet{% endif %}</button>
+{% if not creating %}<a class="brand-cancel" href="{% url 'brands:edit' brand.pk %}">Güncel sürümü yeniden aç</a>{% endif %}</form>{% endif %}
+</section><aside class="brand-card brand-guide"><h2>Markanın tutarlılığı burada başlar.</h2><p>Renk, mesaj ve konuşma biçimi aynı markanın kimliğini oluşturur.</p><p>Şimdilik hazır örnekler üzerinde çalışıyoruz. Gerçek işletme bilgileri, belge yükleme ve içerik üretimi bu ekrana dahil değildir.</p></aside></div>
+{% endblock %}

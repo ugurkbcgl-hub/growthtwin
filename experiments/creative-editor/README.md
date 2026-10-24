@@ -1,6 +1,6 @@
 # Yaparo synthetic creative editor experiment
 
-This is the isolated Fabric candidate for Y01–Y03, not a production editor or an adopted product dependency. It does not use Django, databases, accounts, credentials, uploads, APIs, AI or paid resources. Only this directory's explicitly allowlisted static files are served by its loopback helper; the repository is not exposed.
+This is the isolated Fabric implementation selected for the bounded local slice by [ADR-0041](../../docs/adr/0041-bounded-fabric-and-brand-identity.md), not a production-ready editor. It does not use Django, databases, accounts, credentials, uploads, APIs, AI or paid resources. Only this directory's explicitly allowlisted static files are served by its loopback helper; the repository is not exposed.
 
 ## Run
 
@@ -35,4 +35,4 @@ For CI, with Python Playwright/browser already installed: `python test_editor.py
 
 Five focused Chromium tests passed locally on Windows using the private Yaparo Python runtime (3.505 seconds test execution, not a user-task benchmark). The PNG was decoded by the browser and verified at 800×800, not merely checked for a filename/header. Title and logo transformations survived reload. Eight malformed saved-state cases were refused, including non-string colors and remote asset references; external request count was zero. Ruff and JavaScript syntax checks passed. npm installed Fabric 7.4.0 alone with optional canvas/jsdom excluded and reported zero audit findings for the installed two-package tree at that time. Desktop and 390px mobile screenshots were visually reviewed outside Git.
 
-Candidate comparison with a complete editor, full license/dependency review, measured performance and upgrade/portability evaluation remain separate Y02/Y03 evidence. The initial npm audit result is not a complete security review or an adoption decision. No changes to production infrastructure or the main Django application are implied.
+The later ADR-0041 rejects the complete-editor candidate at its build/security gate; it does not claim an identical browser-task comparison passed. Full product license/dependency review, performance and upgrade/portability evaluation remain Y06 work. The initial npm audit result is not a complete security review or an adoption decision. No changes to production infrastructure or the main Django application are implied.

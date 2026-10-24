@@ -8,9 +8,13 @@ Kalıcı iş takibi: [GitHub #328](https://github.com/ugurkbcgl-hub/yaparo/issue
 
 - **Y01 tamamlandı:** [kaynak/domain haritası](creative-editor-domain-map.md), iki
   sabit sentetik ürün/hizmet örneği ve tek düzenle/kaydet/aç/PNG görevi tanımlandı.
-- **Y02–Y03 sürüyor:** Fabric 7.4.0 ile yerel çalışan deneme ve beş odaklı tarayıcı
-  testi var. Hazır editörün aynı görevdeki karşılaştırması ve nihai paket seçimi
-  henüz tamamlanmadı. Çalışan deneme üretim kabulü veya Y04–Y07 entegrasyonu değildir.
+- **Y02–Y03 yerel seçim kapısı kapandı:** [ADR-0041](../adr/0041-bounded-fabric-and-brand-identity.md)
+  güvenlik/derleme kapısında kalan hazır adayı dışlar ve dar yerel dilim için
+  Fabric 7.4.0 seçer. Hazır adayın yapılmamış eş görev testi başarılı sayılmaz;
+  bu aday için o koşul açıkça değiştirilmiştir. Y06 üretim, yükseltme ve taşınabilirlik
+  koşulları devam eder. Y04 ilk dilimi: iki sentetik marka oluşturma/seçme/düzenleme, kimlik sürümleri
+  ve sahiplik sınırları uygulandı. Logo/font yükleme, yaratıcı çalışma bağı ve
+  kaynak kanıtları açık; Y04 bütünü tamamlanmış değildir.
 - Kullanıcı 23 Ekim'de kullanım limiti kontrolünü kaldırdı; çalışmayı kullanım
   eşiğine göre durdurma kuralı uygulanmaz. Normal doğrulanmış devir notları korunur.
 
@@ -31,7 +35,7 @@ Kalıcı iş takibi: [GitHub #328](https://github.com/ugurkbcgl-hub/yaparo/issue
 ölçütüdür: marka sürümü/izin/varlık/üretim bağı, ayrı yaratıcı hafıza, kural kontrolü
 ve eski çalışmaların korunması. Temel çok marka ilk kit diliminde yer alır.
 
-Y01–Y03 bir sonraki küçük deneme dilimidir. Bütün müşteri dosya türlerini açmaz. Y05 gerçek upload servisini ancak ilgili veri/güvenlik kapıları sonrası açar; önce sentetik yerel örneklerle geliştirilir.
+Y01–Y03 yerel seçim kararı ADR-0041 ile kaydedildi; sırada Y04 yaratıcı çalışma bağı vardır. Bütün müşteri dosya türlerini açmaz. Y05 gerçek upload servisini ancak ilgili veri/güvenlik kapıları sonrası açar; önce sentetik yerel örneklerle geliştirilir.
 
 ## B — Değiştirilebilir AI üretimi ve maliyet
 
